@@ -26,10 +26,10 @@ fraction_components(A, N, D):- numerator(A, N), denominator(A, D).
 
 irreducible_fraction(A/B):- gcd(A, B, G), G is 1.
 
-reduced_fraction(0/_, 0):- !.
+reduced_fraction(0/_, 0).
 reduced_fraction(A/0, A/0):- write('Warning (reduced_fraction): denominator is zero.'), nl, !.
-reduced_fraction(A/1, A):- !.
-reduced_fraction(A/A, 1):- !.
+reduced_fraction(A/1, A).
+reduced_fraction(A/A, 1).
 reduced_fraction(A/B, C):- gcd(A, B, G), G is B, !, C is A/G.
 reduced_fraction(A/B, C/D):- gcd(A, B, G), C is A/G, D is B/G.
 
@@ -52,9 +52,14 @@ fraction(A):- numerator(A, N), denominator(A, D), integer(N), natural(D).
 rational(A):- integer(A), !.
 rational(A):- fraction(A).
 
+% IRRATIONALS
+
+irrational(A):- not(rational(A)), number(A).
+
 % REALS
 
-real(A):- number(A).
+real(A):- rational(A), !.
+real(A):- irrational(A).
 
 % C is A + B
 sum(A, B, C):- fraction(A), fraction(B), fraction_sum(A, B, R), reduced_fraction(R, C), !.
