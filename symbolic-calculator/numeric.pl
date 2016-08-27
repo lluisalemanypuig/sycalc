@@ -18,7 +18,7 @@ gcd(X, Y, D):- Z is Y mod X, gcd(X, Z, D).
 
 % FRACTIONS
 
-% A fraction is the quotient of two integer numbers
+% A fraction is the quotient of two ¡integer! numbers
 
 numerator(A/_, A).
 denominator(_/B, B).
@@ -39,22 +39,61 @@ fraction_sum(A/B, C/D, E/F):- F is B*D, E is A*D + B*C.
 fraction_sub(A/B, C/B, E/B):- E is A - C, !.
 fraction_sub(A/B, C/D, E/F):- F is B*D, E is A*D - B*C.
 
+fraction_prod(A/B, C/D, E/F):- E is A*C, F is B*D.
+fraction_div(A/B, C/D, E/F):- E is A*D, F is B*C.
+fraction_pow(A/B, C, E/F):- E is A^C, F is B^C.
+
 eval_fraction(A/B, C):- B \= 0, C is A/B.
 
-% RATIONALS
-
 fraction(A):- numerator(A, N), denominator(A, D), integer(N), natural(D).
+
+% RATIONALS
 
 rational(A):- integer(A), !.
 rational(A):- fraction(A).
 
-sum(A, B, C):- fraction(A), fraction(B), fraction_sum(A, B, D), reduced_fraction(D, C), !.
-sum(A, B, C):- fraction(A), fraction_sum(A, B/1, D), reduced_fraction(D, C), !.
-sum(A, B, C):- fraction(B), fraction_sum(A/1, B, D), reduced_fraction(D, C), !.
+% REALS
+
+real(A):- number(A).
+
+% C is A + B
+sum(A, B, C):- fraction(A), fraction(B), fraction_sum(A, B, R), reduced_fraction(R, C), !.
+sum(A, B, C):- fraction(A), fraction_sum(A, B/1, R), reduced_fraction(R, C), !.
+sum(A, B, C):- fraction(B), fraction_sum(A/1, B, R), reduced_fraction(R, C), !.
 sum(A, B, C):- C is A + B.
 
 % C is A - B
-sub(A, B, C):- fraction(A), fraction(B), fraction_sum(A, B, D), reduced_fraction(D, C), !.
-sub(A, B, C):- fraction(A), fraction_sum(A, B/1, D), reduced_fraction(D, C), !.
-sub(A, B, C):- fraction(B), fraction_sum(A/1, B, D), reduced_fraction(D, C), !.
+sub(A, B, C):- fraction(A), fraction(B), fraction_sub(A, B, R), reduced_fraction(R, C), !.
+sub(A, B, C):- fraction(A), fraction_sub(A, B/1, R), reduced_fraction(R, C), !.
+sub(A, B, C):- fraction(B), fraction_sub(A/1, B, R), reduced_fraction(R, C), !.
 sub(A, B, C):- C is A - B.
+
+% C is A*B
+prod(A, B, C):- fraction(A), fraction(B), fraction_prod(A, B, R), reduced_fraction(R, C), !.
+prod(A, B, C):- fraction(A), fraction_prod(A, B/1, R), reduced_fraction(R, C), !.
+prod(A, B, C):- fraction(B), fraction_prod(A/1, B, R), reduced_fraction(R, C), !.
+prod(A, B, C):- C is A*B.
+
+% C is A/B
+div(A, B, C):- fraction(A), fraction(B), fraction_div(A, B, R), reduced_fraction(R, C), !.
+div(A, B, C):- fraction(A), fraction_div(A, B/1, R), reduced_fraction(R, C), !.
+div(A, B, C):- fraction(B), fraction_div(A/1, B, R), reduced_fraction(R, C), !.
+div(A, B, C):- C is A/B.
+
+% C is A^B
+pow(A, B, C):- fraction(A), fraction(B), fraction_pow(A, B, R), reduced_fraction(R, C), !.
+pow(A, B, C):- fraction(A), fraction_pow(A, B/1, R), reduced_fraction(R, C), !.
+pow(A, B, C):- fraction(B), fraction_pow(A/1, B, R), reduced_fraction(R, C), !.
+pow(A, B, C):- C is A^B.
+
+eval(A, A):- number(A), !.
+eval(A + B, C):- eval(A, AA), eval(B, BB), sum(AA, BB, C), !.
+eval(A - B, C):- eval(A, AA), eval(B, BB), sub(AA, BB, C), !.
+eval(A*B, C):- eval(A, AA), eval(B, BB), prod(AA, BB, C), !.
+eval(A/B, C):- eval(A, AA), eval(B, BB), reduced_fraction(AA/BB, C), !.
+eval(A^B, C):- eval_pow(A^B, C), !.
+eval(A^B, C):- eval(A, AA), eval(B, BB), pow(AA, BB, C).
+
+eval_pow(A^B^C, R):- eval(A^B, R1), eval(R1^C, R).
+
+
