@@ -2,6 +2,9 @@
 
 % NATURALS
 
+zero(0).
+one(1).
+
 natural(N):- integer(N), N >= 0.
 
 % multiple(A, B, X):- X = (A mod B == 0)
@@ -61,6 +64,8 @@ irrational(A):- not(rational(A)), number(A).
 real(A):- rational(A), !.
 real(A):- irrational(A).
 
+% ARITHMETIC EXPRESSIONS' EVALUATION
+
 % C is A + B
 sum(A, B, C):- fraction(A), fraction(B), fraction_sum(A, B, R), reduced_fraction(R, C), !.
 sum(A, B, C):- fraction(A), fraction_sum(A, B/1, R), reduced_fraction(R, C), !.
@@ -101,4 +106,18 @@ eval(A^B, C):- eval(A, AA), eval(B, BB), pow(AA, BB, C).
 
 eval_pow(A^B^C, R):- eval(A^B, R1), eval(R1^C, R).
 
+% COMPARISONS
 
+eq(X, Y):- eval(X, XX), eval(Y, YY), XX == YY.
+lt(X, Y):- eval(X, XX), eval(Y, YY), XX <  YY.
+le(X, Y):- eval(X, XX), eval(Y, YY), XX =< YY.
+gt(X, Y):- eval(X, XX), eval(Y, YY), XX >  YY.
+ge(X, Y):- eval(X, XX), eval(Y, YY), XX >= YY.
+
+% EXPRESSIONS
+
+expr(_ + _).
+expr(_ - _).
+expr(_*_).
+expr(_/_).
+expr(_^_).
