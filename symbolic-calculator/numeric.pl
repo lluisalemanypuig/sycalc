@@ -73,10 +73,7 @@ sum(A, B, C):- fraction(B), fraction_sum(A/1, B, R), reduced_fraction(R, C), !.
 sum(A, B, C):- C is A + B.
 
 % C is A - B
-sub(A, B, C):- fraction(A), fraction(B), fraction_sub(A, B, R), reduced_fraction(R, C), !.
-sub(A, B, C):- fraction(A), fraction_sub(A, B/1, R), reduced_fraction(R, C), !.
-sub(A, B, C):- fraction(B), fraction_sub(A/1, B, R), reduced_fraction(R, C), !.
-sub(A, B, C):- C is A - B.
+sub(A, B, C):- sum(A, -B, C).
 
 % C is A*B
 prod(A, B, C):- fraction(A), fraction(B), fraction_prod(A, B, R), reduced_fraction(R, C), !.
@@ -85,10 +82,7 @@ prod(A, B, C):- fraction(B), fraction_prod(A/1, B, R), reduced_fraction(R, C), !
 prod(A, B, C):- C is A*B.
 
 % C is A/B
-div(A, B, C):- fraction(A), fraction(B), fraction_div(A, B, R), reduced_fraction(R, C), !.
-div(A, B, C):- fraction(A), fraction_div(A, B/1, R), reduced_fraction(R, C), !.
-div(A, B, C):- fraction(B), fraction_div(A/1, B, R), reduced_fraction(R, C), !.
-div(A, B, C):- C is A/B.
+div(A, B, C):- prod(A, 1/B, C).
 
 % C is A^B
 pow(A, B, C):- fraction(A), fraction(B), fraction_pow(A, B, R), reduced_fraction(R, C), !.

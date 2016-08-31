@@ -25,16 +25,31 @@ degree_comp(M1, M2):- monomial_degree(M1, D1), monomial_degree(M2, D2), D1 < D2.
 sort_mon_degree(L, R):- isort_by(degree_comp, L, R).
 
 list_monomials_reduced([M], [RM]):- monomial_reduced(M, RM), !.
+list_monomials_reduced([M1,M2|L], [M1|R]):-
+	monomial_sum(M1, M2, M1 + M2),
+	list_monomials_reduced([M2|L], R), !.
+
 list_monomials_reduced([M1,M2|L], Q):-
-	monomial_degree(M1, D1), monomial_degree(M2, D2),
-	D1 == D2,
 	monomial_sum(M1, M2, S),
 	list_monomials_reduced([S|L], R), !,
 	list_monomials_reduced(R, Q), !.
 
-list_monomials_reduced([M1,M2|L], [M1|R]):-
-	list_monomials_reduced([M2|L], R), !.
-
 polynomial_reduced(P, PR):-
 	polynomial_monomials(P, M), sort_mon_degree(M, R),
 	list_monomials_reduced(R, LR), polynomial_list(LR, PR).
+
+%%%%%%%%%%%%
+% ----------
+% DEBUG
+
+red_poly(P, TAB, RES):- write(P), write(': '), polynomial_reduced(P, R), write(R), write(TAB), write(' | correct? '), R == RES, write('Yes'), !, nl.
+red_poly(_,   _,   _):- write('No'), nl, false.
+
+debug_polynomials:-
+		write('POLYNOMIAL REDUCTION'), nl, 
+		red_poly(0*x^0,     '             ', 0),
+		red_poly(0 + x + 0, '             ', x),
+		red_poly(0 + x^2 + x^(1 + 1), '', 2*x^2),
+		red_poly(x^2 - 2*x^(3 - 1), ' ', -x^2),
+
+		true.
