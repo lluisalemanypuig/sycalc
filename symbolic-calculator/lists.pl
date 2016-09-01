@@ -5,7 +5,7 @@ min([X|L], M):- min(L, N), X > N, !, M is N.
 min([X|_], X).
 
 max([X], X).
-max([X|L], M):- max(L, N), X < N, M is N, !.
+max([X|L], M):- max(L, N), X < N, !, M is N.
 max([X|_], X).
 
 % High order functions
