@@ -14,20 +14,15 @@ polynomial_monomials(E, _):-
 	write('Error (polynomial_monomials): error when parsing monomials. Monomial received: '),
 	write(E), nl, false.
 
-
 polynomial_list([M], RM):- monomial_reduced(M, RM), !.
 polynomial_list([M|L], M + S):- polynomial_list(L, S), !.
 
-
 polynomial(P):- polynomial_monomials(P, _).
-
 
 polynomial_degree(P, D):- polynomial_monomials(P, MS), map(monomial_degree, MS, DS), max(DS, D).
 
-
 degree_comp(M1, M2):- monomial_degree(M1, D1), monomial_degree(M2, D2), D1 < D2.
 sort_mon_degree(L, R):- isort_by(degree_comp, L, R).
-
 
 list_monomials_reduced([M], [RM]):- monomial_reduced(M, RM), !.
 list_monomials_reduced([M1,M2|L], [M1|R]):-
