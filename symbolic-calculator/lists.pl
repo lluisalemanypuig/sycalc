@@ -8,6 +8,9 @@ max([X], X).
 max([X|L], M):- max(L, N), X < N, !, M is N.
 max([X|_], X).
 
+last([X], X).
+last([_|L], S):- last(L, S), !.
+
 % High order functions
 
 map(_, [], []).
@@ -16,7 +19,7 @@ map(F, [X|L], [E|R]):- call(F, X, E), map(F, L, R), !.
 zip([A], [B], [(A, B)]).
 zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S), !.
 
-zipWith(_, [], [], []).
+zipWith(F, [], [], X):- call(F, [], [], X), !.
 zipWith(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zipWith(L, R, S), !.
 
 concat([], L, L).
