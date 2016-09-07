@@ -1,7 +1,9 @@
 
 ALL_FILES = main.pl load.pl \
-			lists.pl numeric.pl \
-			polynomials.pl monomials.pl
+			lists.pl numerical_algorithms.pl numbers.pl arithmetic_evaluation.pl \
+			polynomials.pl monomials.pl \
+			debug.pl
+
 
 OPT = -O0
 FLAGS = $(OPT)

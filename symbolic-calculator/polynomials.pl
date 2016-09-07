@@ -1,4 +1,4 @@
-:-include(lists).
+:-ensure_loaded(lists).
 
 % POLYNOMIALS
 % A polynomial is a reduced sum of reduced monomials.
@@ -7,11 +7,11 @@
 % These are not monomials:
 % 	(x + 3)*(x - 2), x*x, x*y
 
-polynomial_monomials(M, [R]):- monomial_reduced(M, R), !.
+polynomial_monomials(M, [R]):- monomial_red(M, R), !.
 polynomial_monomials(A + B, S):- polynomial_monomials(A, L), polynomial_monomials(B, R), concat(L, R, S), !.
 polynomial_monomials(A - B, S):- polynomial_monomials(A, L), polynomial_monomials(-B, R), concat(L, R, S), !.
 
-polynomial_list([M], RM):- monomial_reduced(M, RM), !.
+polynomial_list([M], RM):- monomial_red(M, RM), !.
 polynomial_list([M|L], M + S):- polynomial_list(L, S), !.
 
 polynomial_eq(P1, P2):- polynomial_monomials(P1, M1), polynomial_monomials(P2, M1).
@@ -24,11 +24,11 @@ degree_comp(M1, M2):- monomial_degree(M1, D1), monomial_degree(M2, D2), D1 < D2.
 sort_mon_degree(L, R):- isort_by(degree_comp, L, R).
 
 list_monomials_reduced([], []).
-list_monomials_reduced([M], [RM]):- monomial_reduced(M, RM), !.
-list_monomials_reduced([M1,M2], [M1,M2]):- monomial_sum(M1, M2, S), S == M1 + M2, !.
-list_monomials_reduced([M1,M2], [S]):- monomial_sum(M1, M2, S), !.
-list_monomials_reduced([M1,M2|L], [M1|R]):- monomial_sum(M1, M2, R), R == M1 + M2, list_monomials_reduced([M2|L], R), !.
-list_monomials_reduced([M1,M2|L], Q):- monomial_sum(M1, M2, S), list_monomials_reduced([S|L], R), list_monomials_reduced(R, Q), !.
+list_monomials_reduced([M], [RM]):- monomial_red(M, RM), !.
+list_monomials_reduced([M1,M2], [M1,M2]):- mon_sum(M1, M2, S), S == M1 + M2, !.
+list_monomials_reduced([M1,M2], [S]):- mon_sum(M1, M2, S), !.
+list_monomials_reduced([M1,M2|L], [M1|R]):- mon_sum(M1, M2, R), R == M1 + M2, list_monomials_reduced([M2|L], R), !.
+list_monomials_reduced([M1,M2|L], Q):- mon_sum(M1, M2, S), list_monomials_reduced([S|L], R), list_monomials_reduced(R, Q), !.
 list_monomials_reduced(X, X).
 
 polynomial_reduced(P, PR):-
