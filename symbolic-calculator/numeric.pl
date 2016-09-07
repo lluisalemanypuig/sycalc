@@ -1,4 +1,4 @@
-%% NUMERICAL FUNCTIONS
+:-include(numerical_algorithms).
 
 % NATURALS
 
@@ -6,18 +6,6 @@ zero(0).
 one(1).
 
 natural(N):- integer(N), N >= 0.
-
-% multiple(A, B, X):- X = (A mod B == 0)
-multiple(A, A):- true, !.
-multiple(A, B):- D is A mod B, D == 0, !.
-multiple(_, _):- false.
-
-gcd(X, 0, X):- !.
-gcd(0, X, X):- !.
-gcd(X, Y, D):- X > Y, !, Z is X mod Y, gcd(Y, Z, D).
-gcd(X, Y, D):- Z is Y mod X, gcd(X, Z, D).
-
-% INTEGRALS
 
 % FRACTIONS
 
@@ -50,11 +38,17 @@ fraction_prod(A/B, C/D, E/F):- E is A*C, F is B*D.
 fraction_div(A/B, C/D, E/F):- E is A*D, F is B*C.
 fraction_pow(A/B, C, E/F):- E is A^C, F is B^C.
 
-fraction_neg(A/B, C/B):- C is -A.
+fraction_rev(A/B, B/A).
+
+neg_fraction(A/B, C/B):- B >= 0, C is -A, !.
+neg_fraction(A/B, A/D):- D is -B.
 
 eval_fraction(A/B, C):- B \= 0, C is A/B.
 
-fraction(A):- numerator(A, N), denominator(A, D), integer(N), natural(D).
+% A fraction is a numerator divided by a denominator. It does not
+% matter whether the numerator and/or denominator are not numerals
+%*-- An integer x, although equal to x/1, is not a fraction --*
+fraction(_/_).
 
 % RATIONALS
 
@@ -73,49 +67,48 @@ real(A):- irrational(A).
 % ARITHMETIC EXPRESSIONS' EVALUATION
 
 % C is A + B
-sum(A, B, C):- fraction(A), fraction(B), fraction_sum(A, B, R), reduced_fraction(R, C), !.
-sum(A, B, C):- fraction(A), fraction_sum(A, B/1, R), reduced_fraction(R, C), !.
-sum(A, B, C):- fraction(B), fraction_sum(A/1, B, R), reduced_fraction(R, C), !.
-sum(A, B, C):- C is A + B.
+eval_sum(A, B, C):- fraction(A), fraction(B), fraction_sum(A, B, R), reduced_fraction(R, C), !.
+eval_sum(A, B, C):- fraction(A), fraction_sum(A, B/1, R), reduced_fraction(R, C), !.
+eval_sum(A, B, C):- fraction(B), fraction_sum(A/1, B, R), reduced_fraction(R, C), !.
+eval_sum(A, B, C):- C is A + B.
 
 % C is A - B
-sub(A, B, C):- fraction(A), fraction(B), fraction_sub(A, B, R), reduced_fraction(R, C), !.
-sub(A, B, C):- fraction(A), fraction_sub(A, B/1, R), reduced_fraction(R, C), !.
-sub(A, B, C):- fraction(B), fraction_sub(A/1, B, R), reduced_fraction(R, C), !.
-sub(A, B, C):- C is A - B.
+eval_sub(A, B, C):- fraction(A), fraction(B), fraction_sub(A, B, R), reduced_fraction(R, C), !.
+eval_sub(A, B, C):- fraction(A), fraction_sub(A, B/1, R), reduced_fraction(R, C), !.
+eval_sub(A, B, C):- fraction(B), fraction_sub(A/1, B, R), reduced_fraction(R, C), !.
+eval_sub(A, B, C):- C is A - B.
 
 % C is A*B
-prod(A, B, C):- fraction(A), fraction(B), fraction_prod(A, B, R), reduced_fraction(R, C), !.
-prod(A, B, C):- fraction(A), fraction_prod(A, B/1, R), reduced_fraction(R, C), !.
-prod(A, B, C):- fraction(B), fraction_prod(A/1, B, R), reduced_fraction(R, C), !.
-prod(A, B, C):- C is A*B.
+eval_prod(A, B, C):- fraction(A), fraction(B), fraction_prod(A, B, R), reduced_fraction(R, C), !.
+eval_prod(A, B, C):- fraction(A), fraction_prod(A, B/1, R), reduced_fraction(R, C), !.
+eval_prod(A, B, C):- fraction(B), fraction_prod(A/1, B, R), reduced_fraction(R, C), !.
+eval_prod(A, B, C):- C is A*B.
 
 % C is A/B
-div(A, B, C):- prod(A, 1/B, C).
+eval_div(A, B, C):- fraction(A), fraction(B), fraction_div(A, B, R), reduced_fraction(R, C), !.
+eval_div(A, B, C):- fraction(A), fraction_div(A, B/1, R), reduced_fraction(R, C), !.
+eval_div(A, B, C):- fraction(B), fraction_div(A/1, B, R), reduced_fraction(R, C), !.
+eval_div(A, B, C):- multiple(A, B), C is A/B.
+eval_div(A, B, A/B).
 
 % C is A^B
-pow(A, B, C):- fraction(A), fraction(B), fraction_pow(A, B, R), reduced_fraction(R, C), !.
-pow(A, B, C):- fraction(A), fraction_pow(A, B/1, R), reduced_fraction(R, C), !.
-pow(A, B, C):- fraction(B), fraction_pow(A/1, B, R), reduced_fraction(R, C), !.
-pow(A, B, C):- C is A^B.
+eval_pow(A, B, C):- fraction(A), fraction(B), fraction_pow(A, B, R), reduced_fraction(R, C), !.
+eval_pow(A, B, C):- fraction(A), fraction_pow(A, B/1, R), reduced_fraction(R, C), !.
+eval_pow(A, B, C):- fraction(B), fraction_pow(A/1, B, R), reduced_fraction(R, C), !.
+eval_pow(A, B, C):- C is A^B.
 
-eval(A, A):- number(A), !.
-eval(A + B, C):- eval(A, AA), eval(B, BB), sum(AA, BB, C), !.
-eval(A - B, C):- eval(A, AA), eval(B, BB), sub(AA, BB, C), !.
-eval(A*B, C):- eval(A, AA), eval(B, BB), prod(AA, BB, C), !.
-eval(A/B, C):- eval(A, AA), eval(B, BB), reduced_fraction(AA/BB, C), !.
-eval(A^B, C):- eval_pow(A^B, C), !.
-eval(A^B, C):- eval(A, AA), eval(B, BB), pow(AA, BB, C).
+% ARITHMETIC EVALUATION
 
-eval_pow(A^B^C, R):- eval(A^B, R1), eval(R1^C, R).
+% An arithmetic expression is a sum, sub, prod, div or pow of real numbers
+arithmetic_eval(A + B, C):- arithmetic_eval(A, AA), arithmetic_eval(B, BB), eval_sum(AA, BB, C), !.
+arithmetic_eval(A - B, C):- arithmetic_eval(A, AA), arithmetic_eval(B, BB), eval_sub(AA, BB, C), !.
+arithmetic_eval(A*B, C):- arithmetic_eval(A, AA), arithmetic_eval(B, BB), eval_prod(AA, BB, C), !.
+arithmetic_eval(A/B, C):- arithmetic_eval(A, AA), arithmetic_eval(B, BB), reduced_fraction(AA/BB, C), !.
+arithmetic_eval(A^B, C):- arithmetic_eval_pow(A^B, C), !.
+arithmetic_eval(A^B, C):- arithmetic_eval(A, AA), arithmetic_eval(B, BB), eval_pow(AA, BB, C), !.
+arithmetic_eval(A, A):- real(A).
 
-% COMPARISONS
-
-eq(X, Y):- eval(X, XX), eval(Y, YY), XX == YY.
-lt(X, Y):- eval(X, XX), eval(Y, YY), XX <  YY.
-le(X, Y):- eval(X, XX), eval(Y, YY), XX =< YY.
-gt(X, Y):- eval(X, XX), eval(Y, YY), XX >  YY.
-ge(X, Y):- eval(X, XX), eval(Y, YY), XX >= YY.
+arithmetic_eval_pow(A^B^C, R):- arithmetic_eval(A^B, R1), arithmetic_eval(R1^C, R).
 
 % EXPRESSIONS
 
@@ -125,26 +118,32 @@ expr(_*_).
 expr(_/_).
 expr(_^_).
 
-
-
-%%%%%%%%%%%%
-% ----------
-% DEBUG
+/*
+-----------------------------
+DEBUG
+*/
 
 red_frac(F, TAB, RES):- reduced_fraction(F, R), write(F), write(' = '), write(R), write(TAB), write(' | correct? '), R == RES, !, write('Yes'), nl.
 red_frac(_,   _,   _):- write('No'), nl, false.
 
-sum_deb(A, B, TAB, RES):- sum(A, B, R), write(A), write(' + '), write(B), write(' = '), write(R), write(TAB), write(' | correct? '), RES == R, !, write('Yes'), nl.
+sum_deb(A, B, TAB, RES):- eval_sum(A, B, R), write(A), write(' + '), write(B), write(' = '), write(R), write(TAB), write(' | correct? '), RES == R, !, write('Yes'), nl.
 sum_deb(_, _,   _,   _):- write('No'), nl, false.
 
-sub_deb(A, B, TAB, RES):- sub(A, B, R), write(A), write(' - '), write(B), write(' = '), write(R), write(TAB), write(' | correct? '), RES == R, !, write('Yes'), nl.
+sub_deb(A, B, TAB, RES):- eval_sub(A, B, R), write(A), write(' - '), write(B), write(' = '), write(R), write(TAB), write(' | correct? '), RES == R, !, write('Yes'), nl.
 sub_deb(_, _,   _,   _):- write('No'), nl, false.
 
-prod_deb(A, B, TAB, RES):- prod(A, B, R), write(A), write('*'), write(B), write(' = '), write(R), write(TAB), write(' | correct? '), RES == R, !, write('Yes'), nl.
+prod_deb(A, B, TAB, RES):- eval_prod(A, B, R), write(A), write('*'), write(B), write(' = '), write(R), write(TAB), write(' | correct? '), RES == R, !, write('Yes'), nl.
 prod_deb(_, _,   _,   _):- write('No'), nl, false.
 
+power_deb(A, B, TAB, RES):- eval_pow(A, B, R), write(A), write('^'), write(B), write(' = '), write(R), write(TAB), write(' | correct? '), RES == R, !, write('Yes'), nl.
+power_deb(_, _,   _,   _):- write('No'), nl, false.
+
+arithm_deb(E, TAB, RES):- arithmetic_eval(E, R), write(E), write(' = '), write(R), write(TAB), write(' | correct? '), RES == R, !, write('Yes'), nl.
+arithm_deb(_,   _,   _):- write('No'), nl, false.
+
 debug_numeric:-
-	write('- REDUCED FRACTIONS -'), nl, nl,
+	nl, write('-- NUMERICAL DEBUG --'), nl,
+	nl, write('- REDUCED FRACTIONS -'), nl, nl,
 
 	write(' 1) '), red_frac(0/1, '     ', 0),
 	write(' 2) '), red_frac(0/5, '     ', 0),
@@ -210,4 +209,32 @@ debug_numeric:-
 	write('11) '), prod_deb(2/2, 3/2, '', 3/2),
 	write('12) '), prod_deb(3/2, 1, '  ', 3/2),
 	
+	nl, write('- POWERS -'), nl, nl,
+
+	write(' 1) '), power_deb(0, 0, '    ', 1),
+	write(' 2) '), power_deb(1, 0, '    ', 1),
+	write(' 3) '), power_deb(4, 0, '    ', 1),
+	write(' 4) '), power_deb(0, 1, '    ', 0),
+	write(' 5) '), power_deb(0, 5, '    ', 0),
+	write(' 6) '), power_deb(1/2, 2, '', 1/4),
+	write(' 7) '), power_deb(1/2, 1, '', 1/2),
+	write(' 8) '), power_deb(2, 3, '    ', 8),
+	write(' 9) '), power_deb(2/2, 2, '  ', 1),
+	write('10) '), power_deb(2/2, 3, '  ', 1),
+	write('11) '), power_deb(3/2, 1, '', 3/2),
+	write('12) '), power_deb(3/2, 2, '', 9/4),
+	
+	nl, write('- ARITHMETIC EXPRESSIONS -'), nl, nl,
+	write(' 1) '), arithm_deb(3 + 3, '                 ', 6),
+	write(' 2) '), arithm_deb(3 - 4, '                ', -1),
+	write(' 3) '), arithm_deb(3^4, '                ', 81),
+	write(' 4) '), arithm_deb(2^2^2^2, '           ', 256),
+	write(' 5) '), arithm_deb(2^2^2^2^2, '       ', 65536),
+	write(' 6) '), arithm_deb(2^(1 + 1)^2, '         ', 16),
+	write(' 7) '), arithm_deb(2^2^(2 + 1 - 1)^2^2, '', 65536),
+	write(' 8) '), arithm_deb((1/2)^2 + 3/4, '         ', 1),
+	write(' 9) '), arithm_deb((1/2)^0, '             ', 1),
+	write('10) '), arithm_deb((1/2)^0 + 3/4, '       ', 7/4),
+	write('11) '), arithm_deb(1 - (1 + 1), '           ', -1),
+	write('12) '), arithm_deb(1/2, '               ', 1/2),
 	true.

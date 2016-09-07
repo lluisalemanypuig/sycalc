@@ -43,6 +43,7 @@ red_poly(P, TAB, RES):- write(P), write(': '), polynomial_reduced(P, R), write(R
 red_poly(_,   _,   _):- write('No'), nl, false.
 
 debug_polynomials:-
+	nl, write('-- POLYNOMIALS DEBUG --'), nl,
 	nl, write('- POLYNOMIAL REDUCTION -'), nl, nl,
 
 	write(' 1) '), red_poly(0*x^0,     '             ', 0),
