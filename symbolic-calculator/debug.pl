@@ -269,3 +269,31 @@ debug_monomials:-
 	write('12) '), mon_prod(0, 0, '            ', 0),
 
 	true.
+
+/*
+-----------------------------
+DEBUG - POLYNOMIAL EVALUATION
+*/
+
+red_poly(P, TAB, RES):- write(P), write(': '), polynomial_reduced(P, R), write(R), write(TAB), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
+red_poly(_,   _,   _):- write('No'), nl, false.
+
+debug_polynomials:-
+	nl, write('-- POLYNOMIALS DEBUG --'), nl,
+	nl, write('- POLYNOMIAL REDUCTION -'), nl, nl,
+
+	write(' 1) '), red_poly(0*x^0,     '             ', 0),
+	write(' 2) '), red_poly(0 + x + 0, '             ', x),
+	write(' 3) '), red_poly(0 + x^2 + x^(1 + 1), '', 2*x^2),
+	write(' 4) '), red_poly(x^2 - 2*x^(3 - 1), ' ', -x^2),
+	write(' 5) '), red_poly(x^2 - 2*x^(3 - 1), ' ', -x^2),
+	write(' 6) '), red_poly((1/2)*x - (1/2)*x, '       ', 0),
+	write(' 7) '), red_poly((1/2)*x + x^2 - (1/2)*x, ' ', x^2),
+	write(' 8) '), red_poly((1/2)*x - (3/2)*x , '      ', -x),
+	write(' 9) '), red_poly(0 + (1/2)*x + (3/2)*x , '   ', 2*x),
+	write(' 10) '), red_poly(0 + (1/2)*x - 0 + (3/2)*x , '', 2*x),
+	write(' 11) '), red_poly(x^2 + (1/2)*x - 0 + (3/2)*x , ' ', 2*x + x^2),
+	write(' 12) '), red_poly(x - x^2 + x^3 - x^4 + x^5, '   ', x - x^2 + x^3 - x^4 + x^5),
+	write(' 13) '), red_poly((1/3)*x^4 + (1/2)*x^3 + (1/6)*x^2 - (1/6)*x^3 + (1/4)*x^2 - (1/12)*x - (1/12)*x^2 + (1/12)*x - x^3, '', (1/3)*x^2 - (2/3)*x^3 + (1/3)*x^4),
+
+	true.

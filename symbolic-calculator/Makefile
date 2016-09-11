@@ -4,6 +4,10 @@ ALL_FILES = main.pl load.pl \
 			polynomials.pl monomials.pl \
 			debug.pl
 
+OBJECTS = main.o load.o \
+		  lists.o numerical_algorithms.o numbers.o arithmetic_evaluation.o \
+		  polynomials.o monomials.o \
+		  debug.o
 
 OPT = -O0
 FLAGS = $(OPT)

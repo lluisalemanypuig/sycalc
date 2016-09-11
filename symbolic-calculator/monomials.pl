@@ -7,6 +7,8 @@
 % The coefficient or the exponent may be inexistent (= 1), but the variable can not.
 % A red numerical value is the result of eval(E) where E is an arithmetic expression.
 
+monomial_comps(_ + _, _, _, _):- !, false.
+monomial_comps(_ - _, _, _, _):- !, false.
 monomial_comps(- (M), NC, V, E):- monomial_comps(M, C, V, E), rational(C), neg_frac(C, NC), !.
 monomial_comps(- (M), NC, V, E):- monomial_comps(M, C, V, E), NC is -C, !.
 monomial_comps(C*X^E, CE, X, EE):- arithmetic_eval(C, CE), arithmetic_eval(E, EE), !.
@@ -39,6 +41,11 @@ monomial_red__( C, V, E, C*V^E):- !.
 monomial_red_comps(C, V, E, R):- arithmetic_eval(C, CE), arithmetic_eval(E, EE), monomial_red__(CE, V, EE, R).
 
 monomial_red(M, R):- monomial_comps(M, C, V, E), monomial_red_comps(C, V, E, R).
+
+monomial_comp(M1, M2):- monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2), E1 == E2, C1 < C2, !.
+monomial_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 < E2.
+
+monomial_sort(L, R):- isort_by(monomial_comp, L, R).
 
 %					  C1, V1, E1, C2, V2, E2, R
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
