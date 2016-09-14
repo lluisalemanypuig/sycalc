@@ -96,6 +96,8 @@ mon_sum(M1, M2, M3 + M4):-
 	monomial_comps(M1, C1, V, E1), monomial_comps(M2, C2, V, E2),
 	monomial_red_comps(C1, V, E1, M3), monomial_red_comps(C2, V, E2, M4).
 
+mon_sum([M1,M2], S):- mon_sum(M1, M2, S).
+
 % SUBSTRACTION
 
 mon_sub(0, M2, M3):- monomial_comps(M2, C, V, E), K is -C, monomial_red_comps(K, V, E, M3), !.
@@ -123,6 +125,8 @@ mon_sub(M1, M2, M3 - M4):-
 	monomial_comps(M1, C1, V, E1), monomial_comps(M2, C2, V, E2),
 	monomial_red_comps(C1, V, E1, M3), monomial_red_comps(C2, V, E2, M4).
 
+mon_sub([M1,M2], S):- mon_sub(M1, M2, S).
+
 % PRODUCT
 
 mon_prod(0, _, 0):- !.
@@ -141,3 +145,5 @@ mon_prod(M1, M2, M3):-
 mon_prod(M1, M2, M3):-
 	monomial_comps(M1, C1, V1, E1), monomial_comps(M2, C2, V1, E2),
 	arithmetic_eval(C1*C2, C), arithmetic_eval(E1 + E2, E), monomial_red_comps(C, V1, E, M3).
+
+mon_prod([M1,M2], S):- mon_prod(M1, M2, S).
