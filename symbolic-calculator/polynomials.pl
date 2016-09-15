@@ -1,7 +1,8 @@
+:-ensure_loaded(monomials).
 :-ensure_loaded(lists).
 
 % POLYNOMIALS
-% A polynomial is a reduced sum of reduced monomials.
+% A polynomial is a sum of monomials.
 % These are monomials:
 % 	x^3, -2*x, 6*x^2, x, -2
 % These are not monomials:
@@ -19,22 +20,3 @@ polynomial_eq(P1, P2):- polynomial_monomials(P1, M1), monomial_sort(M1, S1), pol
 polynomial(P):- polynomial_monomials(P, _).
 
 polynomial_degree(P, D):- polynomial_monomials(P, MS), map(monomial_degree, MS, DS), max(DS, D).
-
-list_monomials_reduced([], []).
-list_monomials_reduced([M], [RM]):- monomial_red(M, RM), !.
-list_monomials_reduced([M1,M2], [S]):- mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)), !.
-list_monomials_reduced([M1,M2], [M1,M2]):- !.
-list_monomials_reduced([M1,M2|L], R):- mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)), list_monomials_reduced([S|L], R), !.
-list_monomials_reduced([M1,M2|L], [M1|R]):- list_monomials_reduced([M2|L], R), !.
-list_monomials_reduced(X, X).
-
-list_polynomial_reduced(P, LR):- polynomial_monomials(P, M), monomial_sort(M, R), list_monomials_reduced(R, LR).
-
-polynomial_reduced(P, PR):-
-	polynomial_monomials(P, M), monomial_sort(M, R),
-	list_monomials_reduced(R, LR), polynomial_list(LR, PR).
-
-polynomial_product(P1, P2, P):-
-	list_polynomial_reduced(P1, L1), list_polynomial_reduced(P2, L2),
-	cartesian_product(L1, L2, CP), map(mon_prod, CP, MON_PROD),
-	list_monomials_reduced(MON_PROD, MON_PRODR), polynomial_list(MON_PRODR, P).
