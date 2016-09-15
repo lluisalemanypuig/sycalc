@@ -1,3 +1,9 @@
+:-ensure_loaded(arithmetic_evaluation).
+:-ensure_loaded(polynomial_evaluation).
+:-ensure_loaded(monomial_evaluation).
+:-ensure_loaded(polynomials).
+:-ensure_loaded(monomials).
+
 /*
 -----------------------------
 DEBUG - ARITHMETIC EVALUATION
@@ -275,25 +281,39 @@ debug_monomials:-
 DEBUG - POLYNOMIAL EVALUATION
 */
 
-red_poly(P, TAB, RES):- write(P), write(': '), polynomial_reduced(P, R), write(R), write(TAB), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
-red_poly(_,   _,   _):- write('No'), nl, false.
+poly_sum(P, TAB, RES):- write(P), write(': '), polynomial_sum(P, R), write(R), write(TAB), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
+poly_sum(_,   _,   _):- write('No'), nl, false.
+
+poly_prod(P1, P2, TAB, RES):- write(P1), write('*'), write(P2), write(': '), polynomial_prod(P1, P2, R), write(R), write(TAB), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
+poly_prod(_,   _,   _,   _):- write('No'), nl, false.
 
 debug_polynomials:-
 	nl, write('-- POLYNOMIALS DEBUG --'), nl,
+
 	nl, write('- POLYNOMIAL REDUCTION -'), nl, nl,
 
-	write(' 1) '), red_poly(0*x^0,     '             ', 0),
-	write(' 2) '), red_poly(0 + x + 0, '             ', x),
-	write(' 3) '), red_poly(0 + x^2 + x^(1 + 1), '', 2*x^2),
-	write(' 4) '), red_poly(x^2 - 2*x^(3 - 1), ' ', -x^2),
-	write(' 5) '), red_poly(x^2 - 2*x^(3 - 1), ' ', -x^2),
-	write(' 6) '), red_poly((1/2)*x - (1/2)*x, '       ', 0),
-	write(' 7) '), red_poly((1/2)*x + x^2 - (1/2)*x, ' ', x^2),
-	write(' 8) '), red_poly((1/2)*x - (3/2)*x , '      ', -x),
-	write(' 9) '), red_poly(0 + (1/2)*x + (3/2)*x , '   ', 2*x),
-	write(' 10) '), red_poly(0 + (1/2)*x - 0 + (3/2)*x , '', 2*x),
-	write(' 11) '), red_poly(x^2 + (1/2)*x - 0 + (3/2)*x , ' ', 2*x + x^2),
-	write(' 12) '), red_poly(x - x^2 + x^3 - x^4 + x^5, '   ', x - x^2 + x^3 - x^4 + x^5),
-	write(' 13) '), red_poly((1/3)*x^4 + (1/2)*x^3 + (1/6)*x^2 - (1/6)*x^3 + (1/4)*x^2 - (1/12)*x - (1/12)*x^2 + (1/12)*x - x^3, '', (1/3)*x^2 - (2/3)*x^3 + (1/3)*x^4),
+	write(' 1) '), poly_sum(0*x^0,     '                                        ', 0),
+	write(' 2) '), poly_sum(0 + x + 0, '                                        ', x),
+	write(' 3) '), poly_sum(0 + x^2 + x^(1 + 1), '                           ', 2*x^2),
+	write(' 4) '), poly_sum(x^2 - 2*x^(3 - 1), '                            ', -x^2),
+	write(' 5) '), poly_sum(x^2 - 2*x^(3 - 1), '                            ', -x^2),
+	write(' 6) '), poly_sum((1/2)*x - (1/2)*x, '                                  ', 0),
+	write(' 7) '), poly_sum((1/2)*x + x^2 - (1/2)*x, '                            ', x^2),
+	write(' 8) '), poly_sum((1/2)*x - (3/2)*x , '                                 ', -x),
+	write(' 9) '), poly_sum(0 + (1/2)*x + (3/2)*x , '                              ', 2*x),
+	write(' 10) '), poly_sum(0 + (1/2)*x - 0 + (3/2)*x , '                           ', 2*x),
+	write(' 11) '), poly_sum(x^2 + (1/2)*x - 0 + (3/2)*x , '                     ', 2*x + x^2),
+	write(' 12) '), poly_sum(x - x^2 + x^3 - x^4 + x^5, '', x - x^2 + x^3 - x^4 + x^5),
+	write(' 13) '), poly_sum((1/3)*x^4 + (1/2)*x^3 + (1/6)*x^2 - (1/6)*x^3 + (1/4)*x^2 - (1/12)*x - (1/12)*x^2 + (1/12)*x - x^3, '', (1/3)*x^2 - (2/3)*x^3 + (1/3)*x^4),
 
+	nl, write('- POLYNOMIAL PRODUCT -'), nl, nl,
+
+	write(' 1) '), poly_prod(x, x, '                           ', x^2),
+	write(' 2) '), poly_prod(x^2, x, '                         ', x^3),
+	write(' 3) '), poly_prod(x + 1, x, '                       ', x^2 + x),
+	write(' 4) '), poly_prod(x, x + 1, '                       ', x^2 + x),
+	write(' 5) '), poly_prod(x + 1, x + 1, '              ', x^2 + 2*x + 1),
+	write(' 5) '), poly_prod(x^2 + 1, x + 1, '       ', x^3 + x^2 + x + 1),
+	write(' 6) '), poly_prod(x^2 + 2, 6*x + 1, '', 6*x^3 + x^2 + 12*x + 2),
+	write(' 7) '), poly_prod(x^2 + 2*x^2, -6*x - 1, '  ', -18*x^3 - 3*x^2),
 	true.
