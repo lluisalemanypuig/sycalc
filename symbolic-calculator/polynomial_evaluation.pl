@@ -10,37 +10,51 @@ list_monomials_sum([M1,M2|L], R):- mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2
 list_monomials_sum([M1,M2|L], [M1|R]):- list_monomials_sum([M2|L], R), !.
 list_monomials_sum(X, X).
 
-% takes a polynomial as a lsit and returns it as a reduced list of monomials
-list_polynomial_sum(L, LR):- monomial_sort(L, R), list_monomials_sum(R, LR).
+% takes a polynomial as a list and returns it as a reduced list of monomials
+list_polynomial_sum_list(L, LR):- monomial_sort(L, R), list_monomials_sum(R, LR).
 
 % takes a polynomial and reduces it
 polynomial_sum(P, PR):-
-	polynomial_monomials(P, M), list_polynomial_sum(M, LR),
+	polynomial_monomials(P, M), list_polynomial_sum_list(M, LR),
 	polynomial_list(LR, PR).
 
 % takes two polynomials each of them as a list, multiplies them and returns it as
 % a reduced list of monomials
-list_polynomial_prod(L1, L2, L):-
+list_polynomial_prod_list(L1, L2, L):-
 	cartesian_product(L1, L2, CP), map(mon_prod, CP, MON_PROD),
-	list_polynomial_sum(MON_PROD, L).
+	list_polynomial_sum_list(MON_PROD, L).
 
 % takes two polynomials and multiplies them
 polynomial_prod(P1, P2, P):-
 	polynomial_monomials(P1, L1), polynomial_monomials(P2, L2),
-	list_polynomial_prod(L1, L2, MON_PROD), polynomial_list(MON_PROD, P).
+	list_polynomial_prod_list(L1, L2, MON_PROD), polynomial_list(MON_PROD, P).
 
-polynomial_evaluation_list(P, [R]):- monomial_red(P, R), !.
+% takes a polynomial as a list, an integer number and performs the power P^N
+list_polynomial_power_list(_, 0, [1]):- !.
+list_polynomial_power_list(L, 1, L):- !.
+list_polynomial_power_list(LP, N, LN):-
+	natural(N), N1 is N - 1, list_polynomial_power_list(LP, N1, L),
+	list_polynomial_prod_list(LP, L, LN).
+
+% takes a polynomial, an integer number and performs the power P^N
+polynomial_power(_, 0, 1):- !.
+polynomial_power(P, 1, P):- !.
+polynomial_power(P, N, PN):-
+	polynomial_monomials(P, M), list_polynomial_power_list(M, N, L),
+	polynomial_list(L, PN).
+
+% POLYNOMIAL EXPRESSIONS' EVALUATION
+
 polynomial_evaluation_list(Q1 + Q2, R):-
 	polynomial_evaluation_list(Q1, L1), polynomial_evaluation_list(Q2, L2),
-	write('L1='), write(L1), nl,
-	write('L2='), write(L2), nl,
-	concat(L1, L2, L),
-	write('L='), write(L), nl,
-	list_polynomial_sum(L, R), !.
+	concat(L1, L2, L), list_polynomial_sum_list(L, R), !.
 polynomial_evaluation_list(Q1 * Q2, R):-
 	polynomial_evaluation_list(Q1, L1), polynomial_evaluation_list(Q2, L2),
 	cartesian_product(L1, L2, L), map(mon_prod, L, PROD),
-	list_polynomial_sum(PROD, R), !.
+	list_polynomial_sum_list(PROD, R), !.
+polynomial_evaluation_list(Q1 ^ N, R):-
+	polynomial_evaluation_list(Q1, L1), list_polynomial_power_list(L1, N, R), !.
+polynomial_evaluation_list(P, [R]):- monomial_red(P, R), !.
 
 polynomial_evaluation(P, R):- polynomial_evaluation_list(P, L), polynomial_list(L, R).
 
