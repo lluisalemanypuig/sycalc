@@ -55,6 +55,9 @@ fraction(_/_).
 rational(A):- integer(A), !.
 rational(A):- fraction(A).
 
+rational_neg(I, N):- integer(I), N is -I, !.
+rational_neg(F, N):- neg_frac(F, N).
+
 % IRRATIONALS
 
 irrational(A):- not(fraction(A)), number(A).

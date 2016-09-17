@@ -22,29 +22,30 @@ monomial_comps(X, 1, X, 1):- not(expr(X)).
 
 monomial(M):- monomial_comps(M, C, _, E), arithmetic_eval(C, _), arithmetic_eval(E, _).
 
-monomial_neg(M, CN*V^E):- monomial_comps(M, C, V, E), CN is -C.
+monomial_neg(M, N):- monomial_comps(M, C, V, E), rational_neg(C, CN), red_monomial_comps(CN, V, E, N).
 
 monomial_degree(M, D):- monomial_comps(M, _, _, D).
 
 % Reduction of monomials
 
-monomial_red__( 0, _, _, 0):- !.
-monomial_red__( 1, _, 0, 1):- !.
-monomial_red__( 1, V, 1, V):- !.
-monomial_red__( 1, V, E, V^E):- !.
-monomial_red__(-1, _, 0, -1):- !.
-monomial_red__(-1, V, 1, -V):- !.
-monomial_red__(-1, V, E, -V^E):- !.
-monomial_red__( C, _, 0, C):- !.
-monomial_red__( C, V, 1, C*V):- !.
-monomial_red__( C, V, E, C*V^E):- !.
+red_monomial__( 0, _, _, 0):- !.
+red_monomial__( 1, _, 0, 1):- !.
+red_monomial__( 1, V, 1, V):- !.
+red_monomial__( 1, V, E, V^E):- !.
+red_monomial__(-1, _, 0, -1):- !.
+red_monomial__(-1, V, 1, -V):- !.
+red_monomial__(-1, V, E, -V^E):- !.
+red_monomial__( C, _, 0, C):- !.
+red_monomial__( C, V, 1, C*V):- !.
+red_monomial__( C, V, E, C*V^E):- !.
 
-monomial_red_comps(C, V, E, R):- arithmetic_eval(C, CE), arithmetic_eval(E, EE), monomial_red__(CE, V, EE, R).
+red_monomial_comps(C, V, E, R):- arithmetic_eval(C, CE), arithmetic_eval(E, EE), red_monomial__(CE, V, EE, R).
 
-monomial_red(M, R):- monomial_comps(M, C, V, E), monomial_red_comps(C, V, E, R).
+red_monomial(M, R):- monomial_comps(M, C, V, E), red_monomial_comps(C, V, E, R).
 
 monomial_comp(M1, M2):- monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2), E1 == E2, C1 < C2, !.
 monomial_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 < E2.
 
 monomial_sort(L, R):- isort_by(monomial_comp, L, R).
 
+monomial_positive_coefficient(M):- monomial_comps(M, C, _, _), C >= 0.

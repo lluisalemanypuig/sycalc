@@ -141,7 +141,7 @@ debug_numeric:-
 DEBUG - MONOMIAL EVALUATION
 */
 
-deb_red_mon(M, RES):- write(M), write(' '), monomial_red(M, R), write(R), write(' | correct? '), R == RES, write('Yes'), nl, !.
+deb_red_mon(M, RES):- write(M), write(' = '), red_monomial(M, R), write(R), write(' | correct? '), R == RES, write('Yes'), nl, !.
 deb_red_mon(_, RES):- write('No - Expected to see '), write(RES), nl, false.
 
 deb_mon_sum(M1, M2, RES):- write(M1), write(' + '), write(M2), write(' = '), mon_sum(M1, M2, S), write(S), write(' | correct? '), S == RES, write('Yes'), nl, !.
@@ -292,13 +292,13 @@ debug_monomials:-
 DEBUG - POLYNOMIAL EVALUATION
 */
 
-deb_poly_sum(P, RES):- write(P), write(': '), polynomial_sum(P, R), write(R), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
+deb_poly_sum(P, RES):- write(P), write(' = '), polynomial_sum(P, R), write(R), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
 deb_poly_sum(_, RES):- write('No - Expected to see '), write(RES), nl, false.
 
-deb_poly_prod(P1, P2, RES):- write('('), write(P1), write(')*('), write(P2), write('): '), polynomial_prod(P1, P2, R), write(R), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
+deb_poly_prod(P1, P2, RES):- write('('), write(P1), write(')*('), write(P2), write(') = '), polynomial_prod(P1, P2, R), write(R), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
 deb_poly_prod(_,   _, RES):- write('No - Expected to see '), write(RES), nl, false.
 
-deb_poly_pow(P, N, RES):- write('('), write(P), write(')^'), write(N), write(': '), polynomial_power(P, N, R), write(R), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
+deb_poly_pow(P, N, RES):- write('('), write(P), write(')^'), write(N), write(' = '), polynomial_power(P, N, R), write(R), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
 deb_poly_pow(_, _, RES):- write('No - Expected to see '), write(RES), nl, false.
 
 deb_poly_eval(E, RES):- write(E), write(' = '), polynomial_evaluation(E, R), write(R), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
@@ -358,6 +358,10 @@ debug_polynomials:-
 
 	nl, write('- POLYNOMIAL EVALUATION -'), nl, nl,
 
-
+	write(' 1) '), deb_poly_eval(x + x - 2, 2*x - 2),
+	write(' 2) '), deb_poly_eval(x + x^2 - 2, x^2 + x - 2),
+	write(' 3) '), deb_poly_eval(x*x^2 - 2, x^3 - 2),
+	write(' 4) '), deb_poly_eval((x + 1)^2 - 1, x^2 + 2*x),
+	write(' 4) '), deb_poly_eval(x*(x + 1)^2 - 1, x^3 + 2*x^2 + x - 1),
 
 	true.

@@ -8,8 +8,15 @@ max([X], X).
 max([X|L], M):- max(L, N), X < N, !, M is N.
 max([X|_], X).
 
-last([X], X).
-last([_|L], S):- last(L, S), !.
+first([X], X, []).
+first([X|L], X, L).
+
+last([X], [], X):- !.
+last([X|R], [X|K], L):- last(R, K, L), !.
+
+% replaces the first element of the list with Y
+replace_first([_], Y, [Y]).
+replace_first([_|L], Y, [Y|L]).
 
 % High order functions
 
@@ -32,16 +39,17 @@ cartesian_product([X|L], R, S):- cartesian_product([X], R, S1), cartesian_produc
 
 % SORTING ALGORITHMS
 
-% insertion sort
+lt__(X, Y):- X < Y.
 
 insert_by(_, X, [], [X]).
 insert_by(F, X, [Y|L], [Y|R]):- not(call(F, X, Y)), insert_by(F, X, L, R), !.
 insert_by(_, X, [Y|L], [X,Y|L]).
 
+% insertion sort
+
 isort_by(_, [], []).
 isort_by(_, [X], [X]):- !.
 isort_by(F, [X|L], R):- isort_by(F, L, S), !, insert_by(F, X, S, R).
 
-lt__(X, Y):- X < Y.
 insert(X, L, R):- insert_by(lt__, X, L, R).
 isort(L, R):- isort_by(lt__, L, R).
