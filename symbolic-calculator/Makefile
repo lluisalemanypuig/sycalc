@@ -1,24 +1,25 @@
 
-ALL_FILES = main.pl load.pl \
-			lists.pl numerical_algorithms.pl numbers.pl arithmetic_evaluation.pl \
-			polynomials.pl polynomial_evaluation.pl \
-			monomials.pl monomial_evaluation.pl \
-			debug.pl
+EXE_FILES = sycalc.pl debug_sycalc.pl
 
-OBJECTS = main.o load.o \
-		  lists.o numerical_algorithms.o numbers.o arithmetic_evaluation.o \
+ALL_FILES = lists.pl numerical_algorithms.pl numbers.pl arithmetic_evaluation.pl \
+			polynomials.pl polynomial_evaluation.pl \
+			monomials.pl monomial_evaluation.pl
+
+OBJECTS = lists.o numerical_algorithms.o numbers.o arithmetic_evaluation.o \
 		  polynomials.o polynomial_evaluation.o \
-		  monomials.o monomial_evaluation.o \
-		  debug.o
+		  monomials.o monomial_evaluation.o
 
 OPT = -O0
 FLAGS = $(OPT)
 
-TARGET = sycalc
-all: $(TARGET)
+all: sycalc debug_sycalc
 
-$(TARGET): $(ALL_FILES)
-	swipl --goal=main --stand_alone=true $(FLAGS) -o $(TARGET) -c load.pl
+sycalc: $(ALL_FILES) sycalc.pl
+	swipl --goal=main --stand_alone=true $(FLAGS) -o sycalc -c sycalc.pl
+
+debug_sycalc: $(ALL_FILES) debug_sycalc.pl
+	swipl --goal=main --stand_alone=true $(FLAGS) -o debug_sycalc -c debug_sycalc.pl
 
 clean:
-	rm -f $(TARGET)
+	rm -f sycalc
+	rm -f debug_sycalc

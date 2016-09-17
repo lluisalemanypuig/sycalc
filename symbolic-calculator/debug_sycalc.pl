@@ -1,8 +1,19 @@
 :-ensure_loaded(arithmetic_evaluation).
 :-ensure_loaded(polynomial_evaluation).
+:-ensure_loaded(numerical_algorithms).
 :-ensure_loaded(monomial_evaluation).
 :-ensure_loaded(polynomials).
 :-ensure_loaded(monomials).
+:-ensure_loaded(numbers).
+:-ensure_loaded(lists).
+
+debug:-
+	debug_numeric,
+	debug_monomials,
+	debug_polynomials.
+
+main:- debug, halt.
+main:- nl, write('ERROR'), nl, halt.
 
 /*
 -----------------------------
@@ -290,6 +301,9 @@ deb_poly_prod(_,   _, RES):- write('No - Expected to see '), write(RES), nl, fal
 deb_poly_pow(P, N, RES):- write('('), write(P), write(')^'), write(N), write(': '), polynomial_power(P, N, R), write(R), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
 deb_poly_pow(_, _, RES):- write('No - Expected to see '), write(RES), nl, false.
 
+deb_poly_eval(E, RES):- write(E), write(' = '), polynomial_evaluation(E, R), write(R), write(' | correct? '), polynomial_eq(R, RES), write('Yes'), !, nl.
+deb_poly_eval(_, RES):- write('No - Expected to see '), write(RES), nl, false.
+
 debug_polynomials:-
 	nl, write('-- POLYNOMIALS DEBUG --'), nl,
 
@@ -341,5 +355,9 @@ debug_polynomials:-
 	write('13) '), deb_poly_pow(2*x^2 - 3*x^3 + 30, 3, -27*x^9 + 54*x^8 - 36*x^7 + 818*x^6 - 1080*x^5 + 360*x^4 - 8100*x^3 + 5400*x^2 + 27000),
 	write('14) '), deb_poly_pow(2*x^2 - 3*x^3 + 30, 4, 81*x^12 - 216*x^11 + 216*x^10 - 3336*x^9 + 6496*x^8 - 4320*x^7 + 49560*x^6 - 64800*x^5 + 21600*x^4 - 324000*x^3 + 216000*x^2 + 810000),
 	write('15) '), deb_poly_pow(2*x^2 - 3*x^3 + 30, 5, -243*x^15 + 810*x^14 - 1080*x^13 + 12870*x^12 - 32640*x^11 + 32432*x^10 - 257400*x^9 + 488400*x^8 - 324000*x^7 + 2502000*x^6 - 3240000*x^5 + 1080000*x^4 - 12150000*x^3 + 8100000*x^2 + 24300000),
+
+	nl, write('- POLYNOMIAL EVALUATION -'), nl, nl,
+
+
 
 	true.

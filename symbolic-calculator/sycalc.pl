@@ -5,13 +5,6 @@
 :-ensure_loaded(polynomials).
 :-ensure_loaded(monomials).
 :-ensure_loaded(numbers).
-:-ensure_loaded(debug).
 :-ensure_loaded(lists).
 
-debug:-
-	debug_numeric,
-	debug_monomials,
-	debug_polynomials.
-
-main:- debug, halt.
-main:- nl, write('ERROR'), nl, halt.
+main.
