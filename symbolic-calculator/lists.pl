@@ -63,6 +63,11 @@ isort(L, R):- isort_by(lt__, L, R).
 
 % MATHEMATICAL OPERATIONS
 
+/*
+X = [x1, x2, ..., xn]
+Y = [y1, y2, ..., yn]
+R = x1*y1 + x2*y2 + ... + xn*yn
+*/
 dot_prod([X], [Y], P):- P is X*Y, !.
 dot_prod([X|Xs], [Y|Ys], R):- P is X*Y, dot_prod(Xs, Ys, Q), R is P + Q, !.
 
