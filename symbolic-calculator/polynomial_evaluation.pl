@@ -50,7 +50,8 @@ polynomial_evaluation_list(Q1 + Q2, R):-
 	concat(L1, L2, L), list_red_list_polynomial(L, R), !.
 polynomial_evaluation_list(Q1 - Q2, R):-
 	polynomial_evaluation_list(Q1, L1), polynomial_evaluation_list(Q2, L2),
-	concat(L1, L2, L), list_red_list_polynomial(L, R), !.
+	map(monomial_neg, L2, NL2),
+	concat(L1, NL2, L), list_red_list_polynomial(L, R), !.
 polynomial_evaluation_list(Q1 * Q2, R):-
 	polynomial_evaluation_list(Q1, L1), polynomial_evaluation_list(Q2, L2),
 	cartesian_product(L1, L2, L), map(mon_prod, L, PROD), list_red_list_polynomial(PROD, R), !.

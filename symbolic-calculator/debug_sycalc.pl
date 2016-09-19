@@ -362,6 +362,8 @@ debug_polynomials:-
 	write(' 2) '), deb_poly_eval(x + x^2 - 2, x^2 + x - 2),
 	write(' 3) '), deb_poly_eval(x*x^2 - 2, x^3 - 2),
 	write(' 4) '), deb_poly_eval((x + 1)^2 - 1, x^2 + 2*x),
-	write(' 4) '), deb_poly_eval(x*(x + 1)^2 - 1, x^3 + 2*x^2 + x - 1),
+	write(' 5) '), deb_poly_eval(x*(x + 1)^2 - 1, x^3 + 2*x^2 + x - 1),
+	write(' 6) '), deb_poly_eval(x*(x + 1)^2 - x, x^3 + 2*x^2),
+	write(' 7) '), deb_poly_eval((1/8)*x*((x + 1)^2)*(2*x + 1) - (1/16)*x*(x + 1)*(2*x + 1) - (1/16)*x*(x + 1), 1/4*x^4+1/2*x^3+1/4*x^2),
 
 	true.

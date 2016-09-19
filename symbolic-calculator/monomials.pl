@@ -10,7 +10,7 @@
 
 monomial_comps(_ + _, _, _, _):- !, false.
 monomial_comps(_ - _, _, _, _):- !, false.
-monomial_comps(- (M), NC, V, E):- monomial_comps(M, C, V, E), rational(C), neg_frac(C, NC), !.
+monomial_comps(- (M), NC, V, E):- monomial_comps(M, C, V, E), rational(C), rational_neg(C, NC), !.
 monomial_comps(- (M), NC, V, E):- monomial_comps(M, C, V, E), NC is -C, !.
 monomial_comps(C*X^E, CE, X, EE):- arithmetic_eval(C, CE), arithmetic_eval(E, EE), !.
 monomial_comps(X^E, 1, X, EE):- arithmetic_eval(E, EE), !.

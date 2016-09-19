@@ -21,11 +21,6 @@ first_monomial(    F, F,     _).
 last_monomial(A + B,     A, B):- monomial(B), !.
 last_monomial(A - B,     A, N):- monomial(B), monomial_neg(B, N), !.
 
-/*
-polynomial_list([M], RM):- monomial_red(M, RM), !.
-polynomial_list([M|L], M + S):- polynomial_list(L, S), !.
-*/
-
 list_polynomial([M], M).
 list_polynomial([M|L], S + M):- monomial_positive_coefficient(M), list_polynomial(L, S), !.
 list_polynomial([M|L], S - N):- monomial_neg(M, N), list_polynomial(L, S), !.
