@@ -1,4 +1,6 @@
+:-ensure_loaded(integer_algorithms).
 :-ensure_loaded(monomials).
+:-ensure_loaded(numbers).
 :-ensure_loaded(lists).
 
 % POLYNOMIALS
@@ -32,3 +34,20 @@ polynomial(P):- polynomial_monomials(P, _).
 polynomial_neg(P, N):- polynomial_monomials(P, L1), map(monomial_neg, L1, L2), polynomial_list(L2, N).
 
 polynomial_degree(P, D):- polynomial_monomials(P, MS), map(monomial_degree, MS, DS), max(DS, D).
+
+pretty_polynomial_roots([X], (x + XX)):- X < 0, rational_neg(X, XX).
+pretty_polynomial_roots([X], (x - X)).
+pretty_polynomial_roots([X|L], P*(x + XX)):- X < 0, rational_neg(X, XX), pretty_polynomial_roots(L, P), !.
+pretty_polynomial_roots([X|L], P*(x - X)):- pretty_polynomial_roots(L, P), !.
+
+ruffini([_], _, []):- !.
+ruffini(CS, [D|_], [D|L]):-
+	ladder_prod(D, 0, CS, RS, 0),
+	write('RS='), write(RS), nl,
+	last(RS, _, NC), divisors(NC, ND), ruffini(RS, ND, L), !.
+ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L).
+
+integer_roots_polynomial(P, R):-
+	polynomial_monomials(P, M), monomial_inv_sort(M, MIS), last(MIS, _, L), monomial_coefficient(L, CF), divisors(CF, DVS),
+	map(monomial_coefficient, MIS, MCFS),
+	ruffini(MCFS, DVS, R).

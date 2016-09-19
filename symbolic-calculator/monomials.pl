@@ -24,6 +24,7 @@ monomial(M):- monomial_comps(M, C, _, E), arithmetic_eval(C, _), arithmetic_eval
 
 monomial_neg(M, N):- monomial_comps(M, C, V, E), rational_neg(C, CN), red_monomial_comps(CN, V, E, N).
 
+monomial_coefficient(M, C):- monomial_comps(M, C, _, _).
 monomial_degree(M, D):- monomial_comps(M, _, _, D).
 
 % Reduction of monomials
@@ -46,6 +47,10 @@ red_monomial(M, R):- monomial_comps(M, C, V, E), red_monomial_comps(C, V, E, R).
 monomial_comp(M1, M2):- monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2), E1 == E2, C1 < C2, !.
 monomial_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 < E2.
 
+monomial_inv_comp(M1, M2):- monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2), E1 == E2, C1 > C2, !.
+monomial_inv_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 > E2.
+
 monomial_sort(L, R):- isort_by(monomial_comp, L, R).
+monomial_inv_sort(L, R):- isort_by(monomial_inv_comp, L, R).
 
 monomial_positive_coefficient(M):- monomial_comps(M, C, _, _), C >= 0.

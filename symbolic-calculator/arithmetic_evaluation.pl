@@ -1,4 +1,3 @@
-:-ensure_loaded(numerical_algorithms).
 :-ensure_loaded(numbers).
 
 % ARITHMETIC EXPRESSIONS' EVALUATION

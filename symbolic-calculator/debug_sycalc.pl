@@ -1,7 +1,7 @@
 :-ensure_loaded(arithmetic_evaluation).
 :-ensure_loaded(polynomial_evaluation).
-:-ensure_loaded(numerical_algorithms).
 :-ensure_loaded(monomial_evaluation).
+:-ensure_loaded(integer_algorithms).
 :-ensure_loaded(polynomials).
 :-ensure_loaded(monomials).
 :-ensure_loaded(numbers).
@@ -365,5 +365,6 @@ debug_polynomials:-
 	write(' 5) '), deb_poly_eval(x*(x + 1)^2 - 1, x^3 + 2*x^2 + x - 1),
 	write(' 6) '), deb_poly_eval(x*(x + 1)^2 - x, x^3 + 2*x^2),
 	write(' 7) '), deb_poly_eval((1/8)*x*((x + 1)^2)*(2*x + 1) - (1/16)*x*(x + 1)*(2*x + 1) - (1/16)*x*(x + 1), 1/4*x^4+1/2*x^3+1/4*x^2),
+	write(' 8) '), deb_poly_eval((-1/8)*(n^2 + n)^2 + (1/12)*n*(n - 2)*(n + 1)*(2*n + 1) + (1/4)*n*(n - 1)*(n + 1), 1/24*n^4-1/12*n^3-13/24*n^2-5/12*n),
 
 	true.

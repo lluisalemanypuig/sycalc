@@ -14,9 +14,16 @@ first([X|L], X, L).
 last([X], [], X):- !.
 last([X|R], [X|K], L):- last(R, K, L), !.
 
+reverse([X], [X]).
+reverse([X|L], S):- reverse(L, R), concat(R, [X], S), !.
+
 % replaces the first element of the list with Y
 replace_first([_], Y, [Y]).
 replace_first([_|L], Y, [Y|L]).
+
+member(X, [X]):- !.
+member(X, [X|_]):- !.
+member(X, [_|L]):- member(X, L), !.
 
 % High order functions
 
@@ -53,3 +60,25 @@ isort_by(F, [X|L], R):- isort_by(F, L, S), !, insert_by(F, X, S, R).
 
 insert(X, L, R):- insert_by(lt__, X, L, R).
 isort(L, R):- isort_by(lt__, L, R).
+
+% MATHEMATICAL OPERATIONS
+
+dot_prod([X], [Y], P):- P is X*Y, !.
+dot_prod([X|Xs], [Y|Ys], R):- P is X*Y, dot_prod(Xs, Ys, Q), R is P + Q, !.
+
+/*
+  | m n o p
+x | a B C D
+--+-------------
+  | B C D P
+
+B = x*(m + a)
+C = x*(n + B)
+D = x*(o + C)
+P = x*(p + D)
+
+L = [B,C,D]
+*/
+ladder_prod(X, A, [Y], [], P):- P is X*(Y + A), !.
+ladder_prod(X, A, [Y|Ys], [R|L], Q):- R is Y + A, P is X*R, ladder_prod(X, P, Ys, L, Q), !.
+

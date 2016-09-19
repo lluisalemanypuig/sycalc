@@ -1,4 +1,4 @@
-:-ensure_loaded(numerical_algorithms).
+:-ensure_loaded(integer_algorithms).
 
 % NATURALS
 
@@ -66,6 +66,10 @@ irrational(A):- not(fraction(A)), number(A).
 
 real(A):- rational(A), !.
 real(A):- irrational(A).
+
+abs_real(X, AX):- fraction(X), X < 0, neg_frac(X, AX), !.
+abs_real(X, X):- fraction(X), X > 0, !.
+abs_real(X, AX):- abs(X, AX).
 
 % UTILS
 
