@@ -9,7 +9,7 @@ OBJECTS = lists.o integer_algorithms.o numbers.o arithmetic_evaluation.o \
 		  polynomials.o polynomial_evaluation.o \
 		  monomials.o monomial_evaluation.o
 
-OPT = -O7
+OPT = -O0
 FLAGS = $(OPT)
 
 all: sycalc debug_sycalc
