@@ -390,6 +390,12 @@ deb_poly_pow(I, P, N, RES):- polynomial_power(P, N, R), write(I), write('( '), w
 deb_poly_eval(_, E, RES):- polynomial_evaluation(E, R), polynomial_eq(R, RES), !.
 deb_poly_eval(I, E, RES):- polynomial_evaluation(E, R), write(I), write(' '), write(E), write(' = '), output_text(R, RES).
 
+deb_poly_pad(_, L, RES):- padded_poly_mons_incr(L, R), R == RES, !.
+deb_poly_pad(I, L, RES):- padded_poly_mons_incr(L, R), write(I), write(' '), write(L), write(' -> '), output_text(R, RES).
+
+deb_poly_roots(_, P, RES):- polynomial_evaluation(P, E), integer_roots_polynomial(E, R), msort(R, RS), msort(RES, RESS), RS == RESS, !.
+deb_poly_roots(I, P, RES):- polynomial_evaluation(P, E), integer_roots_polynomial(E, R), write(I), write(' '), write(P), write(' -> '), output_text(R, RES).
+
 debug_polynomials:-
 	write('-- POLYNOMIAL EVALUATION DEBUG --'), nl,
 	write('* POLYNOMIAL REDUCTION'),
@@ -454,6 +460,29 @@ debug_polynomials:-
 	deb_poly_eval(' 6)', x*(x + 1)^2 - x, x^3 + 2*x^2),
 	deb_poly_eval(' 7)', (1/8)*x*((x + 1)^2)*(2*x + 1) - (1/16)*x*(x + 1)*(2*x + 1) - (1/16)*x*(x + 1), 1/4*x^4+1/2*x^3+1/4*x^2),
 	deb_poly_eval(' 8)', (-1/8)*(n^2 + n)^2 + (1/12)*n*(n - 2)*(n + 1)*(2*n + 1) + (1/4)*n*(n - 1)*(n + 1), 1/24*n^4-1/12*n^3-13/24*n^2-5/12*n),
+
+	write(' - OK'), nl,
+	write('* POLYNOMIAL PADDING'),
+
+	deb_poly_pad(' 1)', [2], [2]),
+	deb_poly_pad(' 2)', [x], [x, 0]),
+	deb_poly_pad(' 3)', [x, 3], [x, 3]),
+	deb_poly_pad(' 4)', [x^2], [x^2, 0, 0]),
+	deb_poly_pad(' 5)', [x^2, 3], [x^2, 0, 3]),
+	deb_poly_pad(' 6)', [x^3, x], [x^3, 0, x, 0]),
+	deb_poly_pad(' 7)', [x^4, x^3, x], [x^4, x^3, 0, x, 0]),
+	deb_poly_pad(' 8)', [x^4, x^2, 1], [x^4, 0, x^2, 0, 1]),
+	deb_poly_pad(' 9)', [x^3], [x^3, 0, 0, 0]),
+	deb_poly_pad('10)', [x^4], [x^4, 0, 0, 0, 0]),
+
+	write(' - OK'), nl,
+	write('* POLYNOMIAL ROOTS'),
+
+	deb_poly_roots(' 1)', (x + 1)^2, [-1, -1]),
+	deb_poly_roots(' 2)', ((x + 1)^2)*(x - 3), [-1, -1, 3]),
+	deb_poly_roots(' 3)', ((x + 1)^2)*(x - 3)^2, [-1, -1, 3, 3]),
+	deb_poly_roots(' 4)', ((x + 1)^2)*(x - 3)*(x + 3), [-1, -1, -3, 3]),
+	deb_poly_roots(' 5)', (x + 1)*(x - 1)*(x - 3)*(x + 3), [-1, 1, -3, 3]),
 
 	write(' - OK'), nl,
 	nl, true.
