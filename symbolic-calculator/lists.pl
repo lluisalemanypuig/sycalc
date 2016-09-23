@@ -39,6 +39,12 @@ zipWith(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zipWith(L, R, S), !.
 concat([], L, L).
 concat([A|L], R, [A|C]):- concat(L, R, C).
 
+padding(0, _, []).
+padding(K, S, [S|R]):- K1 is K - 1, padding(K1, S, R), !.
+
+padded_list(L, 0, _, L).
+padded_list(L, K, S, R):- padding(K, S, P), !, concat(L, P, R).
+
 cartesian_product([], _, []).
 cartesian_product(_, [], []).
 cartesian_product([X], [Y|R], [[X,Y]|S]):- cartesian_product([X], R, S), !.
