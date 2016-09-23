@@ -12,7 +12,8 @@ OBJECTS = lists.o integer_algorithms.o numbers.o arithmetic_evaluation.o \
 OPT = -O0
 FLAGS = $(OPT)
 
-all: sycalc debug_sycalc
+release: sycalc
+debug: debug_sycalc
 
 sycalc: $(ALL_FILES) sycalc.pl
 	swipl --goal=main --stand_alone=true $(FLAGS) -o sycalc -c sycalc.pl
