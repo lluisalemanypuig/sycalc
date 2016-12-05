@@ -12,6 +12,7 @@ OBJECTS = lists.o integer_algorithms.o numbers.o arithmetic_evaluation.o \
 OPT = -O0
 FLAGS = $(OPT)
 
+all: release debug
 release: sycalc
 debug: debug_sycalc
 

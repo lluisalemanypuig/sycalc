@@ -48,12 +48,13 @@ fraction_eval(A/B, C):- B \= 0, C is A/B.
 % A fraction is a numerator divided by a denominator. It does not
 % matter whether the numerator and/or denominator are not numbers
 %*-- An integer x, although equal to x/1, is not a fraction --*
+%*-- but it IS a rational --*
 fraction(_/_).
 
 % RATIONALS
 
-rational(A):- integer(A), !.
-rational(A):- fraction(A).
+rational(R):- integer(R), !.
+rational(R):- fraction(R).
 
 rational_neg(I, N):- integer(I), N is -I, !.
 rational_neg(F, N):- neg_frac(F, N).
@@ -64,9 +65,11 @@ irrational(A):- not(fraction(A)), number(A).
 
 % REALS
 
+% Is A a real number?
 real(A):- rational(A), !.
 real(A):- irrational(A).
 
+% Compute the absolute value of a real number
 abs_real(X, AX):- fraction(X), X < 0, neg_frac(X, AX), !.
 abs_real(X, X):- fraction(X), X > 0, !.
 abs_real(X, AX):- abs(X, AX).
@@ -78,3 +81,4 @@ max_num(_, Y, Y).
 
 min_num(X, Y, X):- X =< Y, !.
 min_num(_, Y, Y).
+

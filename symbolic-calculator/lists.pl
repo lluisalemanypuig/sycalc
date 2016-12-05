@@ -79,11 +79,11 @@ dot_prod([X|Xs], [Y|Ys], R):- P is X*Y, dot_prod(Xs, Ys, Q), R is P + Q, !.
 
 /*
   | m n o p
-x | a B C D
+x | 0 B C D
 --+-------------
   | B C D P
 
-B = x*(m + a)
+B = x*(m + 0)
 C = x*(n + B)
 D = x*(o + C)
 P = x*(p + D)
