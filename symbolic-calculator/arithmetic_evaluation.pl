@@ -1,4 +1,4 @@
-:-ensure_loaded(numbers).
+:-ensure_loaded(number).
 
 % ARITHMETIC EXPRESSIONS' EVALUATION
 

@@ -1,5 +1,5 @@
+:-ensure_loaded(number).
 :-ensure_loaded(arithmetic_evaluation).
-:-ensure_loaded(numbers).
 
 % MONOMIALS
 
@@ -28,6 +28,7 @@ monomial(M):- monomial_comps(M, C, _, E), arithmetic_eval(C, _), arithmetic_eval
 % N = -M, where M is a monomial
 monomial_neg(M, N):- monomial_comps(M, C, V, E), rational_neg(C, CN), red_monomial_comps(CN, V, E, N).
 
+% C (or D) is the coefficient (or the degree) of the monomial M
 monomial_coefficient(M, C):- monomial_comps(M, C, _, _).
 monomial_degree(M, D):- monomial_comps(M, _, _, D).
 
@@ -61,7 +62,7 @@ monomial_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E
 monomial_inv_comp(M1, M2):- monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2), E1 == E2, C1 > C2, !.
 monomial_inv_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 > E2.
 
-% Sort a list of monomials using different comparisons
+% Sort a list of monomials L into R using different comparisons
 monomial_sort(L, R):- isort_by(monomial_comp, L, R).
 monomial_inv_sort(L, R):- isort_by(monomial_inv_comp, L, R).
 

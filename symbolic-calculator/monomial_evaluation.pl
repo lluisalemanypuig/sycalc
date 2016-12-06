@@ -1,5 +1,5 @@
+:-ensure_loaded(monomial).
 :-ensure_loaded(arithmetic_evaluation).
-:-ensure_loaded(monomials).
 
 %					  C1, V1, E1, C2, V2, E2, R
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

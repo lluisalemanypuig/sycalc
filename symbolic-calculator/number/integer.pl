@@ -1,8 +1,5 @@
 % (INTEGER)-NUMERICAL ALGORITHMS
 
-next_natural(0).
-next_natural(N):- next_natural(M), N is M + 1.
-
 % A is multiple of B -- B divides A
 % 4 is a multiple of 2
 multiple(_, 0):- !, false.
@@ -14,8 +11,17 @@ multiple(_, _):- false.
 % Greatest common divisor
 gcd(X, 0, X):- !.
 gcd(0, X, X):- !.
+gcd(X, Y, G):- X < 0, Xp is -X, gcd(Xp, Y, G), !.
+gcd(X, Y, G):- Y < 0, Yp is -Y, gcd(X, Yp, G), !.
 gcd(X, Y, D):- X > Y, !, Z is X mod Y, gcd(Y, Z, D).
 gcd(X, Y, D):- Z is Y mod X, gcd(X, Z, D).
+
+gcd_rel(A, B, G, C, D):- gcd(A, B, G), C is A/G, D is B/G, !.
+
+% gcd_list(L, G): G is the greatest common divisor of all the integers in L
+gcd_list([X], X):- X > 0, !.
+gcd_list([X], Xp):- Xp is -X, !.
+gcd_list([X|L], G):- gcd_list(L, G1), gcd(X, G1, G).
 
 % Auxiliar predicate for divisors predicate
 divisorsp(X, X, [X]):- !.

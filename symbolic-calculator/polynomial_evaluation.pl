@@ -1,4 +1,4 @@
-:-ensure_loaded(polynomials).
+:-ensure_loaded(polynomial).
 :-ensure_loaded(lists).
 
 % Takes a polynomial as a list of monomials and reduces it

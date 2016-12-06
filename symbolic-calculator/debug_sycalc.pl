@@ -1,6 +1,9 @@
 :-ensure_loaded(lists).
+
 :-ensure_loaded(number).
+
 :-ensure_loaded(arithmetic_evaluation).
+
 :-ensure_loaded(monomial).
 :-ensure_loaded(monomial_evaluation).
 :-ensure_loaded(polynomial).
@@ -9,20 +12,14 @@
 debug:-
 	debug_integer_algs,
 	debug_lists,
-	debug_numbers,
-	debug_arithmetic_evaluation,
+	debug_numeric,
 	debug_monomials,
 	debug_polynomials.
 
 main:- debug, halt.
 main:- nl, write('ERROR'), nl, halt.
 
-output_text(OBT, EXP):- write(OBT), write(' | Not correct - Expected to see: '), write(EXP), nl, false.
-
-all_to_string([spc], ' '):- !.
-all_to_string([X], S):- term_to_atom(X, S), !.
-all_to_string([spc|L], S):- all_to_string(L, LS), atom_concat(' ', LS, S), !.
-all_to_string([X|L], S):- term_to_atom(X, AX), all_to_string(L, LS), atom_concat(AX, LS, S), !.
+output_text(OBT, EXP):- write(OBT), write(' | Not correct - Expected to see '), write(EXP), nl, false.
 
 /*
 -----------------------------
@@ -35,33 +32,19 @@ deb_divisors(I, N, RES):- divisors(N, R), write(I), write(' Divisors( '), write(
 deb_gcd(_, A, B, RES):- gcd(A, B, R), R == RES, !.
 deb_gcd(I, A, B, RES):- gcd(A, B, R), write(I), write(' gcd('), write(A), write(','), write(B), write(')= '), output_text(R, RES).
 
-deb_how_many(_, L, RES):- how_many(L, RES), !.
-deb_how_many(I, L, RES):- how_many(L, R), write(I), write(' Count of '), write(L), write(': '), output_text(R, RES).
-
 debug_integer_algs:-
 	write('-- INTEGER ALGORITHMS DEBUG --'), nl,
 	write('* DIVISORS'),
 
-	deb_divisors(' 1)', 1, [1,-1]),
-	deb_divisors(' 2)', 2, [1,-1,2,-2]),
-	deb_divisors(' 3)', 3, [1,-1,3,-3]),
-	deb_divisors(' 4)', 6, [1,-1,2,-2,3,-3,6,-6]),
-	deb_divisors(' 5)', 8, [1,-1,2,-2,4,-4,8,-8]),
-	deb_divisors(' 6)', 12, [1,-1,2,-2,3,-3,4,-4,6,-6,12,-12]),
-	deb_divisors(' 7)', 20, [1,-1,2,-2,4,-4,5,-5,10,-10,20,-20]),
-	deb_divisors(' 8)', 24, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,12,-12,24,-24]),
-	deb_divisors(' 9)', 32, [1,-1,2,-2,4,-4,8,-8,16,-16,32,-32]),
-	deb_divisors(' 10)', 576, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,9,-9,12,-12,16,-16,18,-18,24,-24,32,-32,36,-36,48,-48,64,-64,72,-72,96,-96,144,-144,192,-192,288,-288,576,-576]),	
-	deb_divisors(' 11)', -1, [1,-1]),
-	deb_divisors(' 12)', -2, [1,-1,2,-2]),
-	deb_divisors(' 13)', -3, [1,-1,3,-3]),
-	deb_divisors(' 14)', -6, [1,-1,2,-2,3,-3,6,-6]),
-	deb_divisors(' 15)', -8, [1,-1,2,-2,4,-4,8,-8]),
-	deb_divisors(' 16)', -12, [1,-1,2,-2,3,-3,4,-4,6,-6,12,-12]),
-	deb_divisors(' 17)', -20, [1,-1,2,-2,4,-4,5,-5,10,-10,20,-20]),
-	deb_divisors(' 18)', -24, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,12,-12,24,-24]),
-	deb_divisors(' 19)', -32, [1,-1,2,-2,4,-4,8,-8,16,-16,32,-32]),
-	deb_divisors(' 20)', -576, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,9,-9,12,-12,16,-16,18,-18,24,-24,32,-32,36,-36,48,-48,64,-64,72,-72,96,-96,144,-144,192,-192,288,-288,576,-576]),
+	deb_divisors(' 1)', 2, [1,-1,2,-2]),
+	deb_divisors(' 2)', 3, [1,-1,3,-3]),
+	deb_divisors(' 3)', 6, [1,-1,2,-2,3,-3,6,-6]),
+	deb_divisors(' 4)', 8, [1,-1,2,-2,4,-4,8,-8]),
+	deb_divisors(' 5)', 12, [1,-1,2,-2,3,-3,4,-4,6,-6,12,-12]),
+	deb_divisors(' 6)', 20, [1,-1,2,-2,4,-4,5,-5,10,-10,20,-20]),
+	deb_divisors(' 7)', 24, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,12,-12,24,-24]),
+	deb_divisors(' 8)', 32, [1,-1,2,-2,4,-4,8,-8,16,-16,32,-32]),
+	deb_divisors(' 9)', 576, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,9,-9,12,-12,16,-16,18,-18,24,-24,32,-32,36,-36,48,-48,64,-64,72,-72,96,-96,144,-144,192,-192,288,-288,576,-576]),
 
 	write(' - OK'), nl,
 	write('* GREATEST COMMON DIVISOR'),
@@ -81,6 +64,9 @@ debug_integer_algs:-
 	deb_gcd(' 13)', 5040, 49, 7),
 	deb_gcd(' 14)', 42, 49, 7),
 	deb_gcd(' 15)', 247, 270, 1),
+	deb_gcd(' 16)', 247, -270, 1),
+	deb_gcd(' 17)', -247, 270, 1),
+	deb_gcd(' 18)', -247, -270, 1),
 
 	write(' - OK'), nl,
 	nl, true.
@@ -102,52 +88,16 @@ debug_lists:-
 	deb_insertion_sort(' 3) ', [-4,8567,25,123,4,46,7,-8,578,67,-4,8567,58,21,-7,23,4,245,3,2,1,8567]),
 
 	write(' - OK'), nl,
-	write('* COUNTING HOW MANY'),
-
-	deb_how_many(' 1)', [1], [[1,1]]),
-	deb_how_many(' 2)', [1,1], [[1,2]]),
-	deb_how_many(' 3)', [1,1,1], [[1,3]]),
-	deb_how_many(' 4)', [2,1,1,1], [[1,3],[2,1]]),
-	deb_how_many(' 5)', [2,1,1,2], [[1,2],[2,2]]),
-	deb_how_many(' 6)', [3,1,1,2], [[1,2],[2,1],[3,1]]),
-	deb_how_many(' 7)', [3,1,1,2,7], [[1,2],[2,1],[3,1],[7,1]]),
-	deb_how_many(' 8)', [3,1,1,2,1], [[1,3],[2,1],[3,1]]),
-	deb_how_many(' 9)', [3,1,3,2,1], [[1,2],[2,1],[3,2]]),
-	deb_how_many(' 10)', [4,1,3,2,1], [[1,2],[2,1],[3,1],[4,1]]),
-
-	write(' - OK'), nl,
 	nl, true.
 
 /*
 -----------------------------
-DEBUG - NUMBERS
+DEBUG - ARITHMETIC EVALUATION
 */
 
-deb_red_frac(_, F, RES):- red_frac(F, RES), !.
+deb_red_frac(_, F, RES):- red_frac(F, R), R == RES, !.
 deb_red_frac(I, F, RES):- red_frac(F, R), write(I), write(' '), write(F), write(' = '), output_text(R, RES).
 
-<<<<<<< HEAD
-deb_sum(_, A, B, RES):- eval_sum(A, B, R), RES == R, !.
-deb_sum(I, A, B, RES):- eval_sum(A, B, R), write(I), write(' '), write(A), write(' + '), write(B), write(' = '), output_text(R, RES).
-
-deb_sub(_, A, B, RES):- eval_sub(A, B, R), R == RES, !.
-deb_sub(I, A, B, RES):- eval_sub(A, B, R), write(I), write(' '), write(A), write(' - '), write(B), write(' = '), output_text(R, RES).
-
-deb_prod(_, A, B, RES):- eval_prod(A, B, R), R == RES, !.
-deb_prod(I, A, B, RES):- eval_sub(A, B, R), write(I), write(' '), write(A), write(' * '), write(B), write(' = '), output_text(R, RES).
-
-deb_power(_, A, B, RES):- eval_pow(A, B, R), R == RES, !.
-deb_power(I, A, B, RES):- eval_pow(A, B, R), write(I), write(' '), write(A), write('^'), write(B), write(' = '), output_text(R, RES).
-
-deb_arithm(_, E, RES):- arithmetic_eval(E, R), R == RES, !.
-deb_arithm(I, E, RES):- arithmetic_eval(E, R), write(I), write(' '), write(E), write(' = '), output_text(R, RES).
-
-deb_abs(_, E, RES):- abs_real(E, R), R == RES, !.
-deb_abs(I, E, RES):- abs_real(E, R), write(I), write(' |'), write(E), write('| = '), output_text(R, RES), !.
-
-debug_numeric:-
-	write('-- ARITHMETIC EVALUATION DEBUG --'), nl,
-||||||| parent of db6ac39... sycalc - Fixed rational-gcd. More debug coming...
 deb_rat_gcd(_, F1, F2, RES1, RES2, RES3):- rational_gcd_rel(F1, F2, R1, R2, R3), R1 == RES1, R2 == RES2, R3 == RES3, !.
 deb_rat_gcd(I, F1, F2, RES1, RES2, RES3):- rational_gcd_rel(F1, F2, R1, R2, R3),
 	term_to_atom(R1, AR1), term_to_atom(R2, AR2), term_to_atom(R3, AR3),
@@ -178,20 +128,6 @@ deb_abs(I, E, RES):- abs_real(E, R), write(I), write(' |'), write(E), write('| =
 
 debug_numeric:-
 	write('-- ARITHMETIC EVALUATION DEBUG --'), nl,
-=======
-deb_rat_gcd(_, F1, F2, RES1, RES2, RES3):- rational_gcd_rel(F1, F2, RES1, RES2, RES3), !.
-deb_rat_gcd(I, F1, F2, RES1, RES2, RES3):- rational_gcd_rel(F1, F2, R1, R2, R3),
-	term_to_atom(R1, AR1), term_to_atom(R2, AR2), term_to_atom(R3, AR3),
-	term_to_atom(RES1, ARES1), term_to_atom(RES2, ARES2), term_to_atom(RES3, ARES3),
-
-	write(I), write(' '), write(F1), write(' + '), write(F2), write(' = '),
-	atom_concat(AR1, '*(', S1), atom_concat(S1, AR2, S2), atom_concat(S2, ' + ', S3), atom_concat(S3, AR3, S4), atom_concat(S4, ')', R),
-	atom_concat(ARES1, '*(', SES1), atom_concat(SES1, ARES2, SES2), atom_concat(SES2, ' + ', SES3), atom_concat(SES3, ARES3, SES4), atom_concat(SES4, ')', RES),
-	output_text(R, RES).
-
-debug_numbers:-
-	write('-- NUMBERS DEBUG --'), nl,
->>>>>>> db6ac39... sycalc - Fixed rational-gcd. More debug coming...
 	write('* REDUCED FRACTIONS'),
 
 	deb_red_frac(' 1)', 0/1, 0),
@@ -214,10 +150,8 @@ debug_numbers:-
 	deb_red_frac(' 18)', -6/10, -3/5),
 	
 	write(' - OK'), nl,
-<<<<<<< HEAD
-||||||| parent of dc01834... sycalc - Updated lists and polynomial
 	write('* RATIONAL GREATEST COMMON DIVISOR'),
-	
+
 	deb_rat_gcd(' 1)', 1, 2, 1, 1, 2),
 	deb_rat_gcd(' 2)', 2, 2, 2, 1, 1),
 	deb_rat_gcd(' 3)', 4, 2, 2, 2, 1),
@@ -228,122 +162,9 @@ debug_numbers:-
 	deb_rat_gcd(' 8)', -1/3, 1/6, 1/3, -1/1, 1/2),
 	deb_rat_gcd(' 9)', 1/3, -1/6, 1/3, 1/1, -1/2),
 	deb_rat_gcd(' 10)', -1/3, -1/6, 1/3, -1/1, -1/2),
-<<<<<<< HEAD
-	deb_rat_gcd(' 11)', 5, 5/3, 5, 1, 1/3),
-	
-	write(' - OK'), nl,
-	nl, true.
-
-/*
------------------------------
-DEBUG - ARITHMETIC EVALUATION
-*/
-
-deb_sum(_, A, B, RES):- eval_sum(A, B, RES), !.
-deb_sum(I, A, B, RES):- eval_sum(A, B, R), write(I), write(' '), write(A), write(' + '), write(B), write(' = '), output_text(R, RES).
-
-deb_sub(_, A, B, RES):- eval_sub(A, B, RES), !.
-deb_sub(I, A, B, RES):- eval_sub(A, B, R), write(I), write(' '), write(A), write(' - '), write(B), write(' = '), output_text(R, RES).
-
-deb_prod(_, A, B, RES):- eval_prod(A, B, RES), !.
-deb_prod(I, A, B, RES):- eval_sub(A, B, R), write(I), write(' '), write(A), write(' * '), write(B), write(' = '), output_text(R, RES).
-
-deb_power(_, A, B, RES):- eval_pow(A, B, RES), !.
-deb_power(I, A, B, RES):- eval_pow(A, B, R), write(I), write(' '), write(A), write('^'), write(B), write(' = '), output_text(R, RES).
-
-deb_arithm(_, E, RES):- arithmetic_eval(E, RES), !.
-deb_arithm(I, E, RES):- arithmetic_eval(E, R), write(I), write(' '), write(E), write(' = '), output_text(R, RES).
-
-deb_abs(_, E, RES):- abs_real(E, RES), !.
-deb_abs(I, E, RES):- abs_real(E, R), write(I), write(' |'), write(E), write('| = '), output_text(R, RES), !.
-
-debug_arithmetic_evaluation:-
-	write('-- ARITHMETIC EVALUATION DEBUG --'), nl,
-=======
-	write('* RATIONAL GREATEST COMMON DIVISOR'),
-	
-	deb_rat_gcd(' 1)', 1, 2, 1, 1, 2),
-	deb_rat_gcd(' 2)', 2, 2, 2, 1, 1),
-	deb_rat_gcd(' 3)', 4, 2, 2, 2, 1),
-	deb_rat_gcd(' 4)', 4, 4, 4, 1, 1),
-	deb_rat_gcd(' 5)', 7, 3, 1, 7, 3),
-	deb_rat_gcd(' 6)', 18, 12, 6, 3, 2),
-	deb_rat_gcd(' 7)', 15, 12, 3, 5, 4),
-	deb_rat_gcd(' 8)', 1/3, 1/6, 1/3, 1/1, 1/2),
-	deb_rat_gcd(' 9)', -1/3, 1/6, 1/3, -1/1, 1/2),
-	deb_rat_gcd(' 10)', 1/3, -1/6, 1/3, 1/1, -1/2),
-	deb_rat_gcd(' 11)', -1/3, -1/6, 1/3, -1/1, -1/2),
-	deb_rat_gcd(' 12)', 5, 5/3, 5, 1, 1/3),
-	deb_rat_gcd(' 13)', 2, 1/2, 1, 2, 1/2),
-	deb_rat_gcd(' 14)', 2, -1/2, 1, 2, -1/2),
-	
-||||||| parent of db6ac39... sycalc - Fixed rational-gcd. More debug coming...
 	deb_rat_gcd(' 11)', 2, 1/2, 2, 1, 1/1),
 
-=======
-	deb_rat_gcd(' 11)', 5, 5/3, 5, 1, 1/3),
-	
->>>>>>> db6ac39... sycalc - Fixed rational-gcd. More debug coming...
 	write(' - OK'), nl,
-<<<<<<< HEAD
-	nl, true.
-
-/*
------------------------------
-DEBUG - ARITHMETIC EVALUATION
-*/
-
-deb_sum(_, A, B, RES):- eval_sum(A, B, RES), !.
-deb_sum(I, A, B, RES):- eval_sum(A, B, R), write(I), write(' '), write(A), write(' + '), write(B), write(' = '), output_text(R, RES).
-
-deb_sub(_, A, B, RES):- eval_sub(A, B, RES), !.
-deb_sub(I, A, B, RES):- eval_sub(A, B, R), write(I), write(' '), write(A), write(' - '), write(B), write(' = '), output_text(R, RES).
-
-deb_prod(_, A, B, RES):- eval_prod(A, B, RES), !.
-deb_prod(I, A, B, RES):- eval_sub(A, B, R), write(I), write(' '), write(A), write(' * '), write(B), write(' = '), output_text(R, RES).
-
-deb_power(_, A, B, RES):- eval_pow(A, B, RES), !.
-deb_power(I, A, B, RES):- eval_pow(A, B, R), write(I), write(' '), write(A), write('^'), write(B), write(' = '), output_text(R, RES).
-
-deb_arithm(_, E, RES):- arithmetic_eval(E, RES), !.
-deb_arithm(I, E, RES):- arithmetic_eval(E, R), write(I), write(' '), write(E), write(' = '), output_text(R, RES).
-
-deb_abs(_, E, RES):- abs_real(E, RES), !.
-deb_abs(I, E, RES):- abs_real(E, R), write(I), write(' |'), write(E), write('| = '), output_text(R, RES), !.
-
-debug_arithmetic_evaluation:-
-	write('-- ARITHMETIC EVALUATION DEBUG --'), nl,
->>>>>>> dc01834... sycalc - Updated lists and polynomial
-||||||| parent of db6ac39... sycalc - Fixed rational-gcd. More debug coming...
-=======
-	nl, true.
-
-/*
------------------------------
-DEBUG - ARITHMETIC EVALUATION
-*/
-
-deb_sum(_, A, B, RES):- eval_sum(A, B, RES), !.
-deb_sum(I, A, B, RES):- eval_sum(A, B, R), write(I), write(' '), write(A), write(' + '), write(B), write(' = '), output_text(R, RES).
-
-deb_sub(_, A, B, RES):- eval_sub(A, B, RES), !.
-deb_sub(I, A, B, RES):- eval_sub(A, B, R), write(I), write(' '), write(A), write(' - '), write(B), write(' = '), output_text(R, RES).
-
-deb_prod(_, A, B, RES):- eval_prod(A, B, RES), !.
-deb_prod(I, A, B, RES):- eval_sub(A, B, R), write(I), write(' '), write(A), write(' * '), write(B), write(' = '), output_text(R, RES).
-
-deb_power(_, A, B, RES):- eval_pow(A, B, RES), !.
-deb_power(I, A, B, RES):- eval_pow(A, B, R), write(I), write(' '), write(A), write('^'), write(B), write(' = '), output_text(R, RES).
-
-deb_arithm(_, E, RES):- arithmetic_eval(E, RES), !.
-deb_arithm(I, E, RES):- arithmetic_eval(E, R), write(I), write(' '), write(E), write(' = '), output_text(R, RES).
-
-deb_abs(_, E, RES):- abs_real(E, RES), !.
-deb_abs(I, E, RES):- abs_real(E, R), write(I), write(' |'), write(E), write('| = '), output_text(R, RES), !.
-
-debug_arithmetic_evaluation:-
-	write('-- ARITHMETIC EVALUATION DEBUG --'), nl,
->>>>>>> db6ac39... sycalc - Fixed rational-gcd. More debug coming...
 	write('* SUMS'),
 
 	deb_sum(' 1)', 0, 0, 0),
@@ -424,7 +245,7 @@ debug_arithmetic_evaluation:-
 	deb_arithm(' 12)', 1/2, 1/2),
 	
 	write(' - OK'), nl,
-	write('* ABSOLUTE VALUES'),
+	write('* ARITHMETIC EXPRESSIONS'),
 
 	deb_abs(' 1)', 3, 3),
 	deb_abs(' 2)', -3, 3),
@@ -452,16 +273,16 @@ deb_mon_comp(I, M, RC, RV, RE):-
 	write(' are ('), write(C), write(','), write(V), write(','), write(E), write(') but were expected to be '),
 	write('('), write(RC), write(','), write(RV), write(','), write(RE), write(')'), false.
 
-deb_red_mon(_, M, RES):- red_monomial(M, RES), !.
+deb_red_mon(_, M, RES):- red_monomial(M, R), R == RES, !.
 deb_red_mon(I, M, RES):- red_monomial(M, R), write(I), write(' '), write(M), write(' = '), output_text(R, RES).
 
-deb_mon_sum(_, M1, M2, RES):- mon_sum(M1, M2, RES), !.
+deb_mon_sum(_, M1, M2, RES):- mon_sum(M1, M2, S), S == RES, !.
 deb_mon_sum(I, M1, M2, RES):- mon_sum(M1, M2, S), write(I), write(' '), write(M1), write(' + '), write(M2), write(' = '), output_text(S, RES).
 
-deb_mon_sub(_, M1, M2, RES):- mon_sub(M1, M2, RES), !.
+deb_mon_sub(_, M1, M2, RES):- mon_sub(M1, M2, S), S == RES, !.
 deb_mon_sub(I, M1, M2, RES):- mon_sub(M1, M2, S), write(I), write(' '), write(M1), write(' - '), write(M2), write(' = '), output_text(S, RES).
 
-deb_mon_prod(_, M1, M2, RES):- mon_prod(M1, M2, RES), !.
+deb_mon_prod(_, M1, M2, RES):- mon_prod(M1, M2, S), S == RES, !.
 deb_mon_prod(I, M1, M2, RES):- mon_prod(M1, M2, S), write(I), write(' ('), write(M1), write(')'), write('*'), write('('), write(M2), write(')'), write(' = '), output_text(S, RES).
 
 deb_mon_pos_coef(_, M1, RES):- monomial_positive_coefficient(M1), RES == 'YES', !.
@@ -639,23 +460,8 @@ deb_poly_last_mon(I, E, RES1, RES2):- polynomial_last_monomial(E, R1, R2), write
 deb_poly_pad(_, L, RES):- padded_poly_mons_incr(L, R), R == RES, !.
 deb_poly_pad(I, L, RES):- padded_poly_mons_incr(L, R), write(I), write(' '), write(L), write(' -> '), output_text(R, RES).
 
-deb_pretty_polynomial_roots(_, R, RES):- pretty_polynomial_roots(R, P), polynomial_eval_eq(RES, P), !.
-deb_pretty_polynomial_roots(I, R, RES):- pretty_polynomial_roots(R, P), write(I), write(' Using roots '), write(R), write(' -> '), output_text(P, RES).
-
 deb_poly_roots(_, P, RES):- polynomial_evaluation(P, E), integer_roots_polynomial(E, R), msort(R, RS), msort(RES, RESS), RS == RESS, !.
 deb_poly_roots(I, P, RES):- polynomial_evaluation(P, E), integer_roots_polynomial(E, R), write(I), write(' '), write(P), write(' -> '), output_text(R, RES).
-
-deb_poly_roots_eval_roots(_, R):- pretty_polynomial_roots(R, P), polynomial_evaluation(P, Q), integer_roots_polynomial(Q, RES), sort(R, RS), sort(RES, RESS), RS == [1], !.
-deb_poly_roots_eval_roots(I, R):-
-	write(I), write(' '),
-
-	pretty_polynomial_roots(R, P),
-	polynomial_evaluation(P, Q),
-	integer_roots_polynomial(Q, L),
-
-	all_to_string([R, spc, ->, spc, P, spc, ->, spc, Q, spc, ->, spc, L], S1),
-	all_to_string([R, spc, ->, spc, P, spc, ->, spc, Q, spc, ->, spc, R], S2),
-	output_text(S1, S2), nl.
 
 debug_polynomials:-
 	write('-- POLYNOMIAL EVALUATION DEBUG --'), nl,
@@ -750,19 +556,6 @@ debug_polynomials:-
 	deb_poly_pad(' 11)', [x^6, x^4], [x^6, 0, x^4, 0, 0, 0, 0]),
 
 	write(' - OK'), nl,
-	write('* PRETTY POLYNOMIAL ROOTS'),
-
-	deb_pretty_polynomial_roots(' 1)', [2], (x - 2)),
-	deb_pretty_polynomial_roots(' 2)', [2,3], (x - 2)*(x - 3)),
-	deb_pretty_polynomial_roots(' 3)', [2,3,4], (x - 2)*(x - 3)*(x - 4)),
-	deb_pretty_polynomial_roots(' 4)', [2,3,4,5], (x - 2)*(x - 3)*(x - 4)*(x - 5)),
-	deb_pretty_polynomial_roots(' 5)', [2,2], (x - 2)^2),
-	deb_pretty_polynomial_roots(' 6)', [2,2,3], ((x - 2)^2)*(x - 3)),
-	deb_pretty_polynomial_roots(' 7)', [2,3,2], ((x - 2)^2)*(x - 3)),
-	deb_pretty_polynomial_roots(' 8)', [2,3,2], ((x - 2)^2)*(x - 3)),
-	deb_pretty_polynomial_roots(' 9)', [3,2,2], ((x - 2)^2)*(x - 3)),
-
-	write(' - OK'), nl,
 	write('* POLYNOMIAL ROOTS'),
 
 	deb_poly_roots(' 1)', (x + 1)^2, [-1, -1]),
@@ -770,18 +563,6 @@ debug_polynomials:-
 	deb_poly_roots(' 3)', ((x + 1)^2)*(x - 3)^2, [-1, -1, 3, 3]),
 	deb_poly_roots(' 4)', ((x + 1)^2)*(x - 3)*(x + 3), [-1, -1, -3, 3]),
 	deb_poly_roots(' 5)', (x + 1)*(x - 1)*(x - 3)*(x + 3), [-1, 1, -3, 3]),
-
-	write(' - OK'), nl,
-	write('* POLYNOMIAL ROOTS -> PRETTY -> EVAL -> ROOTS'),
-
-	deb_poly_roots_eval_roots(' 1)', [1]),
-	deb_poly_roots_eval_roots(' 2)', [1,1]),
-	deb_poly_roots_eval_roots(' 3)', [2,1]),
-	deb_poly_roots_eval_roots(' 4)', [2,1,3]),
-	deb_poly_roots_eval_roots(' 5)', [2,-1,3]),
-	deb_poly_roots_eval_roots(' 6)', [2,-1,-3]),
-	deb_poly_roots_eval_roots(' 7)', [-2,1]),
-	deb_poly_roots_eval_roots(' 8)', [-2,1,4]),
 
 	write(' - OK'), nl,
 	nl, true.

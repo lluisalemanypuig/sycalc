@@ -1,13 +1,12 @@
 
 EXE_FILES = sycalc.pl debug_sycalc.pl
 
-ALL_FILES = lists.pl integer_algorithms.pl numbers.pl arithmetic_evaluation.pl \
-			polynomials.pl polynomial_evaluation.pl \
-			monomials.pl monomial_evaluation.pl
-
-OBJECTS = lists.o integer_algorithms.o numbers.o arithmetic_evaluation.o \
-		  polynomials.o polynomial_evaluation.o \
-		  monomials.o monomial_evaluation.o
+ALL_FILES = lists.pl \
+			number/natural.pl number/integer.pl number/fraction.pl number/irrational.pl \
+			number/rational.pl number/real.pl number.pl \
+			arithmetic_evaluation.pl \
+			monomial.pl monomial_evaluation.pl \
+			polynomial.pl polynomial_evaluation.pl
 
 ALL_FILES = lists.pl \
 			number/natural.pl number/integer.pl number/fraction.pl number/irrational.pl \

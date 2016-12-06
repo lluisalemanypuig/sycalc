@@ -1,19 +1,10 @@
-:-ensure_loaded(integer_algorithms).
-
-% NATURALS
-
-zero(0).
-one(1).
-
-natural(N):- integer(N), N >= 0.
-
-% RATIONALS
+:-ensure_loaded(integer).
 
 % A fraction is the quotient of two ¡integer! numbers
 
-numerator(A/_, A).
-denominator(_/B, B).
-fraction_comp(A, N, D):- numerator(A, N), denominator(A, D).
+numerator(N/_, N).
+denominator(_/D, D).
+fraction_comp(F, N, D):- numerator(F, N), denominator(F, D).
 
 irred_frac(-(A/B)):- gcd(A, B, G), G is 1, !.
 irred_frac(A/B):- A < 0, AA is -A, gcd(AA, B, G), G is 1, !.
@@ -45,39 +36,25 @@ neg_frac(A/B, A/D):- D is -B.
 
 fraction_eval(A/B, C):- B \= 0, C is A/B.
 
+% A/B, C/D, FF/GG : irreducible fractions
+% A/B + C/D = (FF/GG)*(AA/BB + CC/DD)
+% A/B - C/D = (FF/GG)*(AA/BB - CC/DD)
+% A/B * C/D = (FF/GG)*(AA/BB * CC/DD)
+% A/B / C/D = (FF/GG)*(AA/BB / CC/DD)
+% for some AA/BB AND CC/DD irreducible fractions
+frac_gcd(A/B, C/D, FF/GG):- gcd(A, C, FF), gcd(B, D, GG).
+
+% A/B, C/D, FF/GG, AA/BB, CC/DD : irreducible fractions
+% A/B + C/D = (FF/GG)*(AA/BB + CC/DD)
+% A/B - C/D = (FF/GG)*(AA/BB - CC/DD)
+% A/B * C/D = (FF/GG)*(AA/BB * CC/DD)
+% A/B / C/D = (FF/GG)*(AA/BB / CC/DD)
+frac_gcd_rel(A/B, C/D, FF/GG, AA/BB, CC/DD):-
+	frac_gcd(A/B, C/D, FF/GG),
+	AA is A/FF, CC is C/FF, BB is B/GG, DD is D/GG.
+
 % A fraction is a numerator divided by a denominator. It does not
 % matter whether the numerator and/or denominator are not numbers
 %*-- An integer x, although equal to x/1, is not a fraction --*
 fraction(_/_).
-
-% RATIONALS
-
-rational(R):- integer(R), !.
-rational(R):- fraction(R).
-
-rational_neg(I, N):- integer(I), N is -I, !.
-rational_neg(F, N):- neg_frac(F, N).
-
-% IRRATIONALS
-
-irrational(A):- not(fraction(A)), number(A).
-
-% REALS
-
-% Is A a real number?
-real(A):- rational(A), !.
-real(A):- irrational(A).
-
-% Compute the absolute value of a real number
-abs_real(X, AX):- fraction(X), X < 0, neg_frac(X, AX), !.
-abs_real(X, X):- fraction(X), X > 0, !.
-abs_real(X, AX):- abs(X, AX).
-
-% UTILS
-
-max_num(X, Y, X):- X >= Y, !.
-max_num(_, Y, Y).
-
-min_num(X, Y, X):- X =< Y, !.
-min_num(_, Y, Y).
 
