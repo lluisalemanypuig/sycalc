@@ -9,6 +9,27 @@ OBJECTS = lists.o integer_algorithms.o numbers.o arithmetic_evaluation.o \
 		  polynomials.o polynomial_evaluation.o \
 		  monomials.o monomial_evaluation.o
 
+ALL_FILES = lists.pl \
+			number/natural.pl number/integer.pl number/fraction.pl number/irrational.pl \
+			number/rational.pl number/real.pl number.pl \
+			arithmetic_evaluation.pl \
+			monomial.pl monomial_evaluation.pl \
+			polynomial.pl polynomial_evaluation.pl
+
+NUMBER = number/natural.pl number/integer.pl number/fraction.pl \
+		 number/rational.pl number/irrational.pl \
+		 number/real.pl \
+		 number.pl
+
+LISTS = lists/lists.pl \
+		lists.pl
+
+ALL_FILES = $(LISTS) \
+			$(NUMBER) \
+			arithmetic_evaluation.pl \
+			monomial.pl monomial_evaluation.pl \
+			polynomial.pl polynomial_evaluation.pl
+
 OPT = -O0
 FLAGS = $(OPT)
 

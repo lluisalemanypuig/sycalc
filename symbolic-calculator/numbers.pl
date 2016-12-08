@@ -48,7 +48,6 @@ fraction_eval(A/B, C):- B \= 0, C is A/B.
 % A fraction is a numerator divided by a denominator. It does not
 % matter whether the numerator and/or denominator are not numbers
 %*-- An integer x, although equal to x/1, is not a fraction --*
-%*-- but it IS a rational --*
 fraction(_/_).
 
 % RATIONALS

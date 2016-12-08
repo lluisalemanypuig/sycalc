@@ -1,7 +1,6 @@
-:-ensure_loaded(integer_algorithms).
-:-ensure_loaded(monomials).
-:-ensure_loaded(numbers).
 :-ensure_loaded(lists).
+:-ensure_loaded(number).
+:-ensure_loaded(monomial).
 
 % POLYNOMIALS
 % A polynomial is a sum of monomials.
@@ -48,6 +47,7 @@ list_polynomial([M|L], S - N):- monomial_neg(M, N), list_polynomial(L, S), !.
 
 % Compares two polynomials and fails if they are not equal
 polynomial_eq(P1, P2):- polynomial_monomials(P1, M1), monomial_sort(M1, S1), polynomial_monomials(P2, M2), monomial_sort(M2, S1).
+polynomial_eq(P1, P2):- polynomial_monomials(P1, M1), monomial_sort(M1, S1), polynomial_monomials(P2, M2), monomial_sort(M2, S1).
 
 % Checks if P is a polynomial
 polynomial(P):- polynomial_monomials(P, _).
@@ -58,21 +58,29 @@ polynomial_neg(P, N):- polynomial_monomials(P, L1), map(monomial_neg, L1, L2), p
 % P is a polynomial. D is the maximum degree of its monomials
 polynomial_degree(P, D):- polynomial_monomials(P, MS), map(monomial_degree, MS, DS), max(DS, D).
 
-% Given a list of rationals, buils a polynomial with these numbers as its roots.
-pretty_polynomial_roots([X], (x + XX)):- X < 0, rational_neg(X, XX).
-pretty_polynomial_roots([X], (x - X)).
-pretty_polynomial_roots([X|L], P*(x + XX)):- X < 0, rational_neg(X, XX), pretty_polynomial_roots(L, P), !.
-pretty_polynomial_roots([X|L], P*(x - X)):- pretty_polynomial_roots(L, P), !.
+% pretty_polynomial_roots(L, P):
+% Given a list of rationals L, buils a polynomial P with these numbers as its roots.
+pretty_polynomial_roots_([[X,1]], (x + XX)):- X < 0, rational_neg(X, XX).
+pretty_polynomial_roots_([[X,Po]], (x + XX)^Po):- X < 0, rational_neg(X, XX).
+pretty_polynomial_roots_([[X,1]], (x - X)):- !.
+pretty_polynomial_roots_([[X,Po]], (x - X)^Po):- !.
+pretty_polynomial_roots_([[X,1]|L], P*(x + XX)):- X < 0, rational_neg(X, XX), pretty_polynomial_roots_(L, P), !.
+pretty_polynomial_roots_([[X,Po]|L], P*((x + XX)^Po)):- X < 0, rational_neg(X, XX), pretty_polynomial_roots_(L, P), !.
+pretty_polynomial_roots_([[X,1]|L], P*(x - X)):- pretty_polynomial_roots_(L, P), !.
+pretty_polynomial_roots_([[X,Po]|L], P*((x - X)^Po)):- pretty_polynomial_roots_(L, P), !.
 
-% Given the list of integers (coefficients of the monomials sorten DECREASINGLY),
-% the list of divisors of the last coefficient (that is a free term)
-% applies Ruffini's method for polynomial factorization.
+pretty_polynomial_roots(R, P):- how_many(R, C), pretty_polynomial_roots_(C, P).
+
+% ruffini(C, D, R)
+% Given the list of integers C (coefficients of the monomials sorten DECREASINGLY),
+% the list of divisors D of the last coefficient (that is a free term)
+% applies Ruffini's method for polynomial factorization and obtains the list of roots R.
 %
 % The list of integers (coefficients of the monomials sorten DECREASINGLY) must be from
 % a polynomial with ONLY integer roots.
 ruffini([_], _, []):- !.
 ruffini(CS, [D|_], [D|L]):- ladder_prod(D, 0, CS, RS, 0), last(RS, _, NC), divisors(NC, ND), ruffini(RS, ND, L), !.
-ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L).
+ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L), !.
 
 % Finds all the integer roots of the polynomial P.
 % This predicate is simply a wrapper that calls 'ruffini/3' predicate.
