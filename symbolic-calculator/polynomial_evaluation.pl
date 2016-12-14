@@ -2,7 +2,7 @@
 :-ensure_loaded(lists).
 
 % Takes a polynomial as a list of monomials and reduces it
-list_red_monomials([], []).
+list_red_monomials([], []):- !.
 list_red_monomials([M], [RM]):- red_monomial(M, RM), !.
 list_red_monomials([M1,M2], [S]):- mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)), !.
 list_red_monomials([M1,M2], [M1,M2]):- !.
@@ -13,7 +13,7 @@ list_red_monomials(X, X).
 % Takes a polynomial as a list and returns it as a reduced list of monomials
 list_red_list_polynomial(L, LR):- monomial_sort(L, R), list_red_monomials(R, LR).
 
-% Takes a polynomial and reduces it
+% Takes an expanded polynomial and reduces it: x + x + 2 -> 2*x + 2
 polynomial_sum(P, PR):-
 	polynomial_monomials(P, M), list_red_list_polynomial(M, LR),
 	list_polynomial(LR, PR).
@@ -24,7 +24,7 @@ list_polynomial_prod_list(L1, L2, L):-
 	cartesian_product(L1, L2, CP), map(mon_prod, CP, MON_PROD),
 	list_red_list_polynomial(MON_PROD, L).
 
-% Takes two polynomials and multiplies them
+% Takes two expanded polynomials and multiplies them
 % polynomial_prod(P, Q, R), where R = P*Q
 polynomial_prod(P1, P2, P):-
 	polynomial_monomials(P1, L1), polynomial_monomials(P2, L2),
@@ -37,7 +37,7 @@ list_polynomial_power_list(LP, N, LN):-
 	natural(N), N1 is N - 1, list_polynomial_power_list(LP, N1, L),
 	list_polynomial_prod_list(LP, L, LN).
 
-% Takes a polynomial, an integer number and performs the power P^N
+% Takes an expanded polynomial, an integer number and performs the power P^N
 % polynomial_prod(P, N, Q), where Q = P^N
 polynomial_power(_, 0, 1):- !.
 polynomial_power(P, 1, P):- !.
@@ -61,7 +61,9 @@ polynomial_evaluation_list(Q1 ^ N, R):-
 	polynomial_evaluation_list(Q1, L1), list_polynomial_power_list(L1, N, R), !.
 polynomial_evaluation_list(P, [R]):- red_monomial(P, R), !.
 
+% Takes a sequence of sums and substractions P of polynomials, contracted or expanded,
+% and operates it.
 polynomial_evaluation(P, R):- polynomial_evaluation_list(P, L), list_polynomial(L, R).
 
-% Takes two polynomials, evaluates them, and fails if they are not equal
+% Takes two polynomials, expanded or contracted, evaluates them, and fails if they are not equal
 polynomial_eval_eq(P1, P2):- polynomial_evaluation(P1, EP1), polynomial_evaluation(P2, EP2), polynomial_eq(EP1, EP2).
