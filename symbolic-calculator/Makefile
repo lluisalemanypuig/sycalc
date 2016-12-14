@@ -1,4 +1,3 @@
-
 EXE_FILES = sycalc.pl debug_sycalc.pl
 
 ALL_FILES = lists.pl \
@@ -16,8 +15,8 @@ ALL_FILES = lists.pl \
 			polynomial.pl polynomial_evaluation.pl
 
 NUMBER = number/natural.pl number/integer.pl number/fraction.pl \
-		 number/rational.pl number/irrational.pl \
-		 number/real.pl \
+		 number/rational.pl number/irrational.pl number/real.pl \
+		 number/arithmetic_evaluation.pl \
 		 number.pl
 
 LISTS = lists/lists.pl \
@@ -25,7 +24,6 @@ LISTS = lists/lists.pl \
 
 ALL_FILES = $(LISTS) \
 			$(NUMBER) \
-			arithmetic_evaluation.pl \
 			monomial.pl monomial_evaluation.pl \
 			polynomial.pl polynomial_evaluation.pl
 
