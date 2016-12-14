@@ -1,4 +1,4 @@
-:-ensure_loaded(lists).
+:-ensure_loaded(list).
 :-ensure_loaded(number).
 :-ensure_loaded(monomial).
 

@@ -1,4 +1,9 @@
-:-ensure_loaded(number).
+:-ensure_loaded(natural).
+:-ensure_loaded(integer).
+:-ensure_loaded(fraction).
+:-ensure_loaded(rational).
+:-ensure_loaded(irrational).
+:-ensure_loaded(real).
 
 % ARITHMETIC EXPRESSIONS' EVALUATION
 

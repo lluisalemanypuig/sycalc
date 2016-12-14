@@ -1,5 +1,4 @@
 :-ensure_loaded(number).
-:-ensure_loaded(arithmetic_evaluation).
 
 % MONOMIALS
 

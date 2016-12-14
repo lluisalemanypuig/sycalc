@@ -1,5 +1,5 @@
 :-ensure_loaded(polynomial).
-:-ensure_loaded(lists).
+:-ensure_loaded(list).
 
 % Takes a polynomial as a list of monomials and reduces it
 list_red_monomials([], []):- !.

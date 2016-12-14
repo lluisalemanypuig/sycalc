@@ -1,31 +1,23 @@
 EXE_FILES = sycalc.pl debug_sycalc.pl
 
-ALL_FILES = lists.pl \
-			number/natural.pl number/integer.pl number/fraction.pl number/irrational.pl \
-			number/rational.pl number/real.pl number.pl \
-			arithmetic_evaluation.pl \
-			monomial.pl monomial_evaluation.pl \
-			polynomial.pl polynomial_evaluation.pl
+NUMBER = core/number/natural.pl core/number/integer.pl core/number/fraction.pl \
+		 core/number/rational.pl core/number/irrational.pl core/number/real.pl \
+		 core/number/arithmetic_evaluation.pl \
+		 core/number.pl
 
-ALL_FILES = lists.pl \
-			number/natural.pl number/integer.pl number/fraction.pl number/irrational.pl \
-			number/rational.pl number/real.pl number.pl \
-			arithmetic_evaluation.pl \
-			monomial.pl monomial_evaluation.pl \
-			polynomial.pl polynomial_evaluation.pl
+LISTS = core/list/list.pl \
+		core/list.pl
 
-NUMBER = number/natural.pl number/integer.pl number/fraction.pl \
-		 number/rational.pl number/irrational.pl number/real.pl \
-		 number/arithmetic_evaluation.pl \
-		 number.pl
+POLYNOMIALS	= core/monomial.pl core/monomial_evaluation.pl \
+			  core/polynomial.pl core/polynomial_evaluation.pl \
+			  core/polynomials.pl
 
-LISTS = lists/lists.pl \
-		lists.pl
+CORE = core.pl
 
 ALL_FILES = $(LISTS) \
 			$(NUMBER) \
-			monomial.pl monomial_evaluation.pl \
-			polynomial.pl polynomial_evaluation.pl
+			$(POLYNOMIALS) \
+			$(CORE)
 
 OPT = -O0
 FLAGS = $(OPT)
