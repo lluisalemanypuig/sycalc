@@ -20,7 +20,7 @@ CORE = $(LISTS) \
 ALL_FILES = $(CORE) \
 			power_sums.pl
 
-OPT = -O0
+OPT = -O7
 FLAGS = $(OPT)
 
 all: release debug
