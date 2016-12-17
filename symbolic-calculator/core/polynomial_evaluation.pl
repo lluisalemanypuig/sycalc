@@ -67,3 +67,17 @@ polynomial_evaluation(P, R):- polynomial_evaluation_list(P, L), list_polynomial(
 
 % Takes two polynomials, expanded or contracted, evaluates them, and fails if they are not equal
 polynomial_eval_eq(P1, P2):- polynomial_evaluation(P1, EP1), polynomial_evaluation(P2, EP2), polynomial_eq(EP1, EP2).
+
+% POLYNOMIAL EVALUATION
+
+% Takes an expanded polynomial and evaluates it with the value VAL
+% VAL: real value
+% P(x): expanded polynomial
+% E: P(VAL)
+expanded_polynomial_evaluation(VAL, P, E):-
+	polynomial_monomials(P, MS), map(monomial_evaluation(VAL), MS, R), foldl(eval_sum, 0, R, E).
+
+% Takes a contracted polynomial and evaluates it with the value VAL
+contracted_polynomial_evaluation(VAL, P, E):-
+	polynomial_evaluation(P, EXP), expanded_polynomial_evaluation(VAL, EXP, E).
+

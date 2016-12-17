@@ -100,3 +100,11 @@ mon_prod(M1, M2, M3):-
 	arithmetic_eval(C1*C2, C), arithmetic_eval(E1 + E2, E), red_monomial_comps(C, V1, E, M3).
 
 mon_prod([M1,M2], S):- mon_prod(M1, M2, S).
+
+% MONOMIAL EVALUATION
+
+% Takes a reduced monomial and evaluates it with the value VAL
+% VAL: real value
+% M: reduced monomial
+% E: M(VAL)
+monomial_evaluation(VAL, M, E):- monomial_comps(M, C, _, EXP), arithmetic_eval(C*VAL^EXP, E).

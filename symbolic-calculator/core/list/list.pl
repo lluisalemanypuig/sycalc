@@ -27,43 +27,54 @@ member(X, [_|L]):- member(X, L), !.
 
 % High order functions
 
-map(_, [], []).
+% F :: a -> b
+map(_, [], []):- !.
 map(F, [X|L], [E|R]):- call(F, X, E), map(F, L, R), !.
 
-zip([A], [B], [(A, B)]).
+zip([A], [B], [(A, B)]):- !.
 zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S), !.
 
+% F :: a -> b -> a
 zipWith(F, [], [], X):- call(F, [], [], X), !.
 zipWith(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zipWith(L, R, S), !.
 
 concat([], L, L).
 concat([A|L], R, [A|C]):- concat(L, R, C).
 
-padding(0, _, []).
+% F :: a -> b -> a
+% foldl F x (y:ys) = foldl F (F x y) ys
+foldl(_, X, [], X):- !.
+foldl(F, X, [Y|L], R):- call(F, X, Y, S), foldl(F, S, L, R).
+
+% F :: a -> b -> b
+% foldr f x (y:ys) = f y (foldr f x ys)
+foldr(_, X, [], X):- !.
+foldr(F, X, [Y|L], R):- foldr(F, X, L, S), call(F, Y, S, R).
+
+padding(0, _, []):- !.
 padding(K, S, [S|R]):- K1 is K - 1, padding(K1, S, R), !.
 
-padded_list(L, 0, _, L).
+padded_list(L, 0, _, L):- !.
 padded_list(L, K, S, R):- padding(K, S, P), !, concat(L, P, R).
 
-cartesian_product([], _, []).
-cartesian_product(_, [], []).
+cartesian_product([], _, []):- !.
+cartesian_product(_, [], []):- !.
 cartesian_product([X], [Y|R], [[X,Y]|S]):- cartesian_product([X], R, S), !.
 cartesian_product([X|L], R, S):- cartesian_product([X], R, S1), cartesian_product(L, R, S2), concat(S1, S2, S), !.
 
 % SORTING ALGORITHMS
 
-lt__(X, Y):- X < Y.
-
-insert_by(_, X, [], [X]).
+insert_by(_, X, [], [X]):- !.
 insert_by(F, X, [Y|L], [Y|R]):- not(call(F, X, Y)), insert_by(F, X, L, R), !.
 insert_by(_, X, [Y|L], [X,Y|L]).
 
 % insertion sort
 
-isort_by(_, [], []).
+isort_by(_, [], []):- !.
 isort_by(_, [X], [X]):- !.
 isort_by(F, [X|L], R):- isort_by(F, L, S), !, insert_by(F, X, S, R).
 
+lt__(X, Y):- X < Y.
 insert(X, L, R):- insert_by(lt__, X, L, R).
 isort(L, R):- isort_by(lt__, L, R).
 
@@ -74,8 +85,6 @@ how_many_([X|L], [[X, C] | RR]):- how_many_(L, R), first(R, [X, N], RR), !, C is
 how_many_([X|L], [[X, 1] | R]):- how_many_(L, R).
 
 how_many(L, R):- isort(L, S), how_many_(S, R).
-
-%how_many([1,2], R).
 
 % MATHEMATICAL OPERATIONS
 

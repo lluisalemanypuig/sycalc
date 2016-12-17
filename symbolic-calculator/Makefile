@@ -12,12 +12,13 @@ POLYNOMIALS	= core/monomial.pl core/monomial_evaluation.pl \
 			  core/polynomial.pl core/polynomial_evaluation.pl \
 			  core/polynomials.pl
 
-CORE = core.pl
+CORE = $(LISTS) \
+	   $(NUMBER) \
+	   $(POLYNOMIALS) \
+	   core.pl
 
-ALL_FILES = $(LISTS) \
-			$(NUMBER) \
-			$(POLYNOMIALS) \
-			$(CORE)
+ALL_FILES = $(CORE) \
+			power_sums.pl
 
 OPT = -O0
 FLAGS = $(OPT)

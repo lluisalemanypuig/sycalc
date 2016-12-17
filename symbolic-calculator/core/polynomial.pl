@@ -18,9 +18,9 @@
 %   x + 3, -x^2, -9
 
 % Returns the polynomials' monomials as a list of reduced monomials
-polynomial_monomials(M, [R]):- red_monomial(M, R), !.
 polynomial_monomials(A + B, S):- polynomial_monomials(A, L), polynomial_monomials(B, R), concat(L, R, S), !.
 polynomial_monomials(A - B, S):- polynomial_monomials(A, L), polynomial_monomials(-B, R), concat(L, R, S), !.
+polynomial_monomials(M, [R]):- red_monomial(M, R), !.
 
 % Pads a list of monomials DECREASINGLY sorted.
 % If [m1, m2, ..., mN] is the list of monomials, this predicate will add 0s between
@@ -48,13 +48,13 @@ polynomial_first_monomial(F, F, _).
 polynomial_last_monomial(A + B, A, B):- monomial(B), !.
 polynomial_last_monomial(A - B, A, N):- monomial(B), monomial_neg(B, N), !.
 
-% Builds an expanded polynomial from a list of monomials
+% Builds an expanded polynomial from a list of reduced monomials.
+% The last monomial will be the first in the polynomial
 list_polynomial([M], M):- !.
 list_polynomial([M|L], S + M):- monomial_positive_coefficient(M), list_polynomial(L, S), !.
 list_polynomial([M|L], S - N):- monomial_neg(M, N), list_polynomial(L, S), !.
 
 % Compares two expanded polynomials and fails if they are not equal
-polynomial_eq(P1, P2):- polynomial_monomials(P1, M1), monomial_sort(M1, S1), polynomial_monomials(P2, M2), monomial_sort(M2, S1).
 polynomial_eq(P1, P2):- polynomial_monomials(P1, M1), monomial_sort(M1, S1), polynomial_monomials(P2, M2), monomial_sort(M2, S1).
 
 % Checks if P is an expanded polynomial

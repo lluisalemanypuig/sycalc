@@ -13,9 +13,9 @@ main:- nl, write('ERROR'), nl, halt.
 
 output_text(OBT, EXP):- write(OBT), write(' | Not correct - Expected to see: '), write(EXP), nl, false.
 
-all_to_string([spc], ' '):- !.
+all_to_string([space], ' '):- !.
 all_to_string([X], S):- term_to_atom(X, S), !.
-all_to_string([spc|L], S):- all_to_string(L, LS), atom_concat(' ', LS, S), !.
+all_to_string([space|L], S):- all_to_string(L, LS), atom_concat(' ', LS, S), !.
 all_to_string([X|L], S):- term_to_atom(X, AX), all_to_string(L, LS), atom_concat(AX, LS, S), !.
 
 /*
@@ -327,6 +327,11 @@ deb_mon_pos_coef(_, _, RES):- RES == 'NO', !.
 deb_mon_pos_coef(I, M1, RES):- monomial_positive_coefficient(M1), write(I), write(M1), write(' '), output_text('YES', RES).
 deb_mon_pos_coef(I, M1, RES):- write(I), write(' '), write(M1), write(' -> '), output_text('NO', RES).
 
+deb_mon_eval(_, M, VAL, RES):- monomial_evaluation(VAL, M, RES), !.
+deb_mon_eval(I, M, VAL, RES):-
+	monomial_evaluation(VAL, M, R),
+	write(I), write(' M(x)='), write(M), write('('), write(VAL), write(') = '), output_text(R, RES).
+
 debug_monomials:-
 	write('-- MONOMIAL EVALUATION DEBUG --'), nl,
 	write('* COMPONENT EXTRACTION'),
@@ -469,6 +474,25 @@ debug_monomials:-
 	deb_mon_pos_coef(' 4)', x, 'YES'),
 
 	write(' - OK'), nl,
+	write('* MONOMIAL EVALUATION'),
+
+	deb_mon_eval(' 1)', 1, 0, 1),
+	deb_mon_eval(' 2)', 1, 1, 1),
+	deb_mon_eval(' 3)', 1, 100, 1),
+	deb_mon_eval(' 4)', -1, 100, -1),
+	deb_mon_eval(' 5)', -1, -2, -1),
+	deb_mon_eval(' 6)', -x, -2, 2),
+	deb_mon_eval(' 7)', x, 2, 2),
+	deb_mon_eval(' 8)', x^2, 2, 4),
+	deb_mon_eval(' 9)', 3*x, 2, 6),
+	deb_mon_eval(' 10)', 3*x^2, 2, 12),
+	deb_mon_eval(' 11)', 9*x^2, 2, 36),
+	deb_mon_eval(' 12)', -9*x, 2, -18),
+	deb_mon_eval(' 13)', -10*x^3, 0, 0),
+	deb_mon_eval(' 14)', x^3, 0, 0),
+	deb_mon_eval(' 15)', 0, 11, 0),
+
+	write(' - OK'), nl,
 	nl, true.
 
 /*
@@ -509,9 +533,14 @@ deb_poly_roots_eval_roots(I, R):-
 	pretty_polynomial_roots(R, P),
 	polynomial_evaluation(P, Q),
 	integer_roots_polynomial(Q, L),
-	all_to_string([R, spc, ->, spc, P, spc, ->, spc, Q, spc, ->, spc, L], S1),
-	all_to_string([R, spc, ->, spc, P, spc, ->, spc, Q, spc, ->, spc, R], S2),
+	all_to_string([R, space, ->, space, P, space, ->, space, Q, space, ->, space, L], S1),
+	all_to_string([R, space, ->, space, P, space, ->, space, Q, space, ->, space, R], S2),
 	output_text(S1, S2), nl.
+
+deb_exp_poly_eval(_, P, VAL, RES):- expanded_polynomial_evaluation(VAL, P, RES), !.
+deb_exp_poly_eval(I, P, VAL, RES):-
+	expanded_polynomial_evaluation(VAL, P, R),
+	write(I), write(' P(x)='), write(P), write(' -> P('), write(VAL), write(')= '), output_text(R, RES).
 
 debug_polynomials:-
 	write('-- POLYNOMIAL EVALUATION DEBUG --'), nl,
@@ -643,4 +672,19 @@ debug_polynomials:-
 	deb_poly_roots_eval_roots(' 8)', [-2,1,4]),
 
 	write(' - OK'), nl,
+	write('* POLYNOMIAL EVALUATION'),
+
+	deb_exp_poly_eval(' 1)', 3*x, 1, 3),
+	deb_exp_poly_eval(' 2)', x, 1, 1),
+	deb_exp_poly_eval(' 3)', x^2, 1, 1),
+	deb_exp_poly_eval(' 4)', x^2 + x, 1, 2),
+	deb_exp_poly_eval(' 5)', x^2 + 3, 1, 4),
+	deb_exp_poly_eval(' 6)', 4*x^2 + 3, -8, 259),
+	deb_exp_poly_eval(' 7)', 4*x^2 + 3, 7/8, 97/16),
+	deb_exp_poly_eval(' 8)', -4*x^3 + 3*x, 0, 0),
+	deb_exp_poly_eval(' 9)', -4*x^3 + 3*x, 9/5, -2241/125),
+	deb_exp_poly_eval(' 10)', -4*x^3 - 3*x, -9/5, 3591/125),
+
+	write(' - OK'), nl,
 	nl, true.
+
