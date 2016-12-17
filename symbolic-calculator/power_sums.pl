@@ -17,7 +17,8 @@ reminder(F, P, R):- polynomial_monomials(P, MS), reminder_(F, MS, R).
 
 power_sums_(1, (1/2)*n^2 + (1/2)*n, [[1, (1/2)*n^2 + (1/2)*n]]):- !.
 power_sums_(D, S, L):- 
-	D1 is D - 1, power_sums_(D1, S1, L1),
+	D1 is D - 1,
+	power_sums_(D1, S1, L1),
 	polynomial_evaluation((n + 1)*S1, SKY),
 	polynomial_first_monomial(S1, F, R),
 	monomial_coefficient(F, HH),
