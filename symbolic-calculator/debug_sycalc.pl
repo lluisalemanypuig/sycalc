@@ -528,6 +528,21 @@ debug_monomials:-
 DEBUG - POLYNOMIAL EVALUATION
 */
 
+deb_poly_list_sum(_, P1, P2, RES):- list_polynomial_sum_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_list_sum(I, P1, P2, RES):-
+	list_polynomial_sum_list(P1, P2, R),
+	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '), output_text(R, RES).
+
+deb_poly_list_sub(_, P1, P2, RES):- list_polynomial_sub_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_list_sub(I, P1, P2, RES):-
+	list_polynomial_sub_list(P1, P2, R),
+	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '), output_text(R, RES).
+
+deb_poly_list_prod(_, P1, P2, RES):- list_polynomial_prod_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_list_prod(I, P1, P2, RES):-
+	list_polynomial_prod_list(P1, P2, R),
+	write(I), write(' '), write(P1), write(' * '), write(P2), write(' = '), output_text(R, RES).
+
 deb_poly_sum(_, P, RES):- polynomial_sum(P, R), polynomial_eq(R, RES), !.
 deb_poly_sum(I, P, RES):-
 	polynomial_sum(P, R),
@@ -568,7 +583,7 @@ deb_pretty_polynomial_roots(I, R, RES):-
 	pretty_polynomial_roots(R, P),
 	write(I), write(' Using roots '), write(R), write(' -> '), output_text(P, RES).
 
-deb_poly_roots(_, P, RES):- polynomial_evaluation(P, E), integer_roots_polynomial(E, R), msort(R, RS), msort(RES, RESS), RS == RESS, !.
+deb_poly_roots(_, P, RES):- polynomial_evaluation(P, E), integer_roots_polynomial(E, R), msort(R, SR), msort(RES, SRES), SR == SRES, !.
 deb_poly_roots(I, P, RES):-
 	polynomial_evaluation(P, E), integer_roots_polynomial(E, R),
 	write(I), write(' '), write(P), write(' -> '), output_text(R, RES).
@@ -592,6 +607,78 @@ deb_exp_poly_eval(I, P, VAL, RES):-
 
 debug_polynomials:-
 	write('-- POLYNOMIAL EVALUATION DEBUG --'), nl,
+	write('* POLYNOMIAL LIST SUM'),
+
+	deb_poly_list_sum(' 1)', [], [], []),
+	deb_poly_list_sum(' 2)', [], [0], []),
+	deb_poly_list_sum(' 3)', [0], [], []),
+	deb_poly_list_sum(' 4)', [0], [0], []),
+	deb_poly_list_sum(' 5)', [1], [0], [1]),
+	deb_poly_list_sum(' 6)', [0], [1], [1]),
+	deb_poly_list_sum(' 7)', [1], [1], [2]),
+	deb_poly_list_sum(' 8)', [x], [0], [x]),
+	deb_poly_list_sum(' 9)', [x], [x], [2*x]),
+	deb_poly_list_sum(' 10)', [x], [-x], []),
+	deb_poly_list_sum(' 11)', [2*x], [-x], [x]),
+	deb_poly_list_sum(' 12)', [-2*x], [-x], [-3*x]),
+	deb_poly_list_sum(' 13)', [3*x], [-4*x], [-x]),
+	deb_poly_list_sum(' 14)', [x^2], [-x], [x^2, -x]),
+	deb_poly_list_sum(' 15)', [4*x^3], [-x], [4*x^3, -x]),
+	deb_poly_list_sum(' 16)', [x, x, x, x], [-x], [3*x]),
+	deb_poly_list_sum(' 17)', [x, x, x, x], [-x, x, -x], [3*x]),
+	deb_poly_list_sum(' 18)', [2*x, x, x, x], [-x, x, -x], [4*x]),
+	deb_poly_list_sum(' 19)', [x, x, 2*x, x], [-x, x, -x], [4*x]),
+	deb_poly_list_sum(' 20)', [x, x, x, x^2], [-x, x, -x], [x^2, 2*x]),
+
+	write(' - OK'), nl,
+	write('* POLYNOMIAL LIST SUB'),
+
+	deb_poly_list_sub(' 1)', [], [], []),
+	deb_poly_list_sub(' 2)', [], [0], []),
+	deb_poly_list_sub(' 3)', [0], [], []),
+	deb_poly_list_sub(' 4)', [0], [0], []),
+	deb_poly_list_sub(' 5)', [1], [0], [1]),
+	deb_poly_list_sub(' 6)', [0], [1], [-1]),
+	deb_poly_list_sub(' 7)', [1], [1], []),
+	deb_poly_list_sub(' 8)', [x], [0], [x]),
+	deb_poly_list_sub(' 9)', [x], [x], []),
+	deb_poly_list_sub(' 10)', [x], [-x], [2*x]),
+	deb_poly_list_sub(' 11)', [2*x], [-x], [3*x]),
+	deb_poly_list_sub(' 12)', [-2*x], [-x], [-x]),
+	deb_poly_list_sub(' 13)', [3*x], [-4*x], [7*x]),
+	deb_poly_list_sub(' 14)', [x^2], [-x], [x^2, x]),
+	deb_poly_list_sub(' 15)', [4*x^3], [-x], [4*x^3, x]),
+	deb_poly_list_sub(' 16)', [x, x, x, x], [-x], [5*x]),
+	deb_poly_list_sub(' 17)', [x, x, x, x], [-x, x, -x], [5*x]),
+	deb_poly_list_sub(' 18)', [2*x, x, x, x], [-x, x, -x], [6*x]),
+	deb_poly_list_sub(' 19)', [x, x, 2*x, x], [-x, x, -x], [6*x]),
+	deb_poly_list_sub(' 20)', [x, x, x, x^2], [-x, x, -x], [x^2, 4*x]),
+
+	write(' - OK'), nl,
+	write('* POLYNOMIAL LIST PROD'),
+
+	deb_poly_list_prod(' 1)', [], [], []),
+	deb_poly_list_prod(' 2)', [], [0], []),
+	deb_poly_list_prod(' 3)', [0], [], []),
+	deb_poly_list_prod(' 4)', [0], [0], []),
+	deb_poly_list_prod(' 5)', [1], [0], []),
+	deb_poly_list_prod(' 6)', [0], [1], []),
+	deb_poly_list_prod(' 7)', [1], [1], [1]),
+	deb_poly_list_prod(' 8)', [x], [0], []),
+	deb_poly_list_prod(' 9)', [x], [x], [x^2]),
+	deb_poly_list_prod(' 10)', [x], [-x], [-x^2]),
+	deb_poly_list_prod(' 11)', [2*x], [-x], [-2*x^2]),
+	deb_poly_list_prod(' 12)', [-2*x], [-x], [2*x^2]),
+	deb_poly_list_prod(' 13)', [3*x], [-4*x], [-12*x^2]),
+	deb_poly_list_prod(' 14)', [x^2], [-x], [-x^3]),
+	deb_poly_list_prod(' 15)', [4*x^3], [-x], [-4*x^4]),
+	deb_poly_list_prod(' 16)', [x, x, x, x], [-x], [-4*x^2]),
+	deb_poly_list_prod(' 17)', [x, x, x, x], [-x, x, -x], [-4*x^2]),
+	deb_poly_list_prod(' 18)', [2*x, x, x, x], [-x, x, -x], [-5*x^2]),
+	deb_poly_list_prod(' 19)', [x, x, 2*x, x], [-x, x, -x], [-5*x^2]),
+	deb_poly_list_prod(' 20)', [x, x, x, x^2], [-x, x, -x], [-3*x^2, -x^3]),
+
+	write(' - OK'), nl,
 	write('* POLYNOMIAL REDUCTION'),
 
 	deb_poly_sum(' 1)', 0*x^0, 0),
@@ -623,6 +710,7 @@ debug_polynomials:-
 	deb_poly_prod(' 9)', -1 + x^2 + 1, -6*x + 1, -6*x^3 + x^2),
 	deb_poly_prod(' 10)', -1 + x^2 + 1, -1 + x^2 + 1, x^4),
 	deb_poly_prod(' 11)', 2*x^2 - 3*x^3 + 30, 2*x^2 - 3*x^3 + 30, 9*x^6 - 12*x^5 + 4*x^4 - 180*x^3 + 120*x^2 + 900),
+	deb_poly_prod(' 12)', 0, x, 0),
 
 	write(' - OK'), nl,
 	write('* POLYNOMIAL POWER'),
@@ -642,6 +730,8 @@ debug_polynomials:-
 	deb_poly_pow(' 13)', 2*x^2 - 3*x^3 + 30, 3, -27*x^9 + 54*x^8 - 36*x^7 + 818*x^6 - 1080*x^5 + 360*x^4 - 8100*x^3 + 5400*x^2 + 27000),
 	deb_poly_pow(' 14)', 2*x^2 - 3*x^3 + 30, 4, 81*x^12 - 216*x^11 + 216*x^10 - 3336*x^9 + 6496*x^8 - 4320*x^7 + 49560*x^6 - 64800*x^5 + 21600*x^4 - 324000*x^3 + 216000*x^2 + 810000),
 	deb_poly_pow(' 15)', 2*x^2 - 3*x^3 + 30, 5, -243*x^15 + 810*x^14 - 1080*x^13 + 12870*x^12 - 32640*x^11 + 32432*x^10 - 257400*x^9 + 488400*x^8 - 324000*x^7 + 2502000*x^6 - 3240000*x^5 + 1080000*x^4 - 12150000*x^3 + 8100000*x^2 + 24300000),
+	deb_poly_pow(' 16)', 2 + 2, 2, 16),
+	deb_poly_pow(' 17)', 0, 2, 0),
 
 	write(' - OK'), nl,
 	write('* POLYNOMIAL EVALUATION'),
