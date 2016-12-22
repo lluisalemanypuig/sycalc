@@ -23,7 +23,6 @@ ALL_FILES = $(CORE) \
 OPT = -O7
 FLAGS = $(OPT)
 
-all: release debug
 release: sycalc
 debug: debug_sycalc
 
