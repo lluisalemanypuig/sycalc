@@ -50,12 +50,17 @@ polynomial_last_monomial(A - B, A, N):- monomial(B), monomial_neg(B, N), !.
 
 % Builds an expanded polynomial from a list of reduced monomials.
 % The last monomial will be the first in the polynomial
-list_polynomial([M], M):- !.
-list_polynomial([M|L], S + M):- monomial_positive_coefficient(M), list_polynomial(L, S), !.
-list_polynomial([M|L], S - N):- monomial_neg(M, N), list_polynomial(L, S), !.
+list_polynomial_([], 0):- !.
+list_polynomial_([M], M):- !.
+list_polynomial_([M|L], S + M):- monomial_positive_coefficient(M), list_polynomial_(L, S), !.
+list_polynomial_([M|L], S - N):- monomial_neg(M, N), list_polynomial_(L, S), !.
+list_polynomial(M, P):- monomial_inv_sort(M, MS), list_polynomial_(MS, P).
+
+% Compares two polynomials as list of monomials and fails if they are not equal
+polynomial_list_eq(M1, M2):- monomial_sort(M1, S1), monomial_sort(M2, S1).
 
 % Compares two expanded polynomials and fails if they are not equal
-polynomial_eq(P1, P2):- polynomial_monomials(P1, M1), monomial_sort(M1, S1), polynomial_monomials(P2, M2), monomial_sort(M2, S1).
+polynomial_eq(P1, P2):- polynomial_monomials(P1, M1), polynomial_monomials(P2, M2), polynomial_list_eq(M1, M2).
 
 % Checks if P is an expanded polynomial
 polynomial(P):- polynomial_monomials(P, _).
@@ -95,6 +100,6 @@ ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L), !.
 % This polynomial should have one free term (a constant multiplied by x^0)
 % and the first monomial be multiplied by 1 or -1.
 integer_roots_polynomial(P, R):-
-	polynomial_monomials(P, M), monomial_inv_sort(M, MIS), padded_poly_mons_incr(MIS, PAD_MIS),	% extract the padded monomial list of P
-	last(PAD_MIS, _, L), monomial_coefficient(L, CF), divisors(CF, DVS), 						% obtain all the divisors of the free term
-	map(monomial_coefficient, PAD_MIS, MCFS), ruffini(MCFS, DVS, R).
+	polynomial_monomials(P, M), monomial_sort(M, SM), padded_poly_mons_incr(SM, PAD_SM),	% extract the padded monomial list of P
+	last(PAD_SM, _, L), monomial_coefficient(L, CF), divisors(CF, DVS), 					% obtain all the divisors of the free term
+	map(monomial_coefficient, PAD_SM, MCFS), ruffini(MCFS, DVS, R).

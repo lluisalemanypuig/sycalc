@@ -3,7 +3,9 @@
 
 % Takes a polynomial as a list of monomials and reduces it
 list_red_monomials([], []):- !.
+list_red_monomials([0], []):- !.
 list_red_monomials([M], [RM]):- red_monomial(M, RM), !.
+list_red_monomials([M1,M2], []):- mon_sum(M1, M2, 0), !.
 list_red_monomials([M1,M2], [S]):- mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)), !.
 list_red_monomials([M1,M2], [M1,M2]):- !.
 list_red_monomials([M1,M2|L], R):- mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)), list_red_monomials([S|L], R), !.
@@ -14,9 +16,19 @@ list_red_monomials(X, X).
 list_red_list_polynomial(L, LR):- monomial_sort(L, R), list_red_monomials(R, LR).
 
 % Takes an expanded polynomial and reduces it: x + x + 2 -> 2*x + 2
-polynomial_sum(P, PR):-
-	polynomial_monomials(P, M), list_red_list_polynomial(M, LR),
-	list_polynomial(LR, PR).
+polynomial_sum(P, R):-
+	polynomial_monomials(P, M), list_red_list_polynomial(M, L),
+	list_polynomial(L, R).
+
+% Takes two polynomials each of them as a list, adds the second from the first
+% and returns it as a reduced list of monomials
+list_polynomial_sum_list(P1, P2, R):- concat(P1, P2, P), list_red_list_polynomial(P, R).
+
+% Takes two polynomials each of them as a list, substracts the second from the first
+% and returns it as a reduced list of monomials
+list_polynomial_sub_list(P1, P2, R):-
+	map(monomial_neg, P2, NP2), concat(P1, NP2, P),
+	list_red_list_polynomial(P, R).
 
 % Takes two polynomials each of them as a list, multiplies them and returns it as
 % a reduced list of monomials

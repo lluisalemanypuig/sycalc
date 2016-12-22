@@ -51,15 +51,15 @@ red_monomial(M, R):- monomial_comps(M, C, V, E), red_monomial_comps(C, V, E, R).
 
 % Monomial comparison (1/2).
 % if the exponents are equal : M1 < M2 iff C1 < C2 - where Ci is the coefficient of monomial Mi
-% if the exponents are different : M1 < M2 iff E1 < E2 - where Ci is the exponent of monomial Mi
-monomial_comp(M1, M2):- monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2), E1 == E2, C1 < C2, !.
-monomial_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 < E2.
+% if the exponents are different : M1 < M2 iff E1 > E2 - where Ci is the exponent of monomial Mi
+monomial_comp(M1, M2):- monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2), E1 is E2, C1 < C2, !.
+monomial_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 > E2.
 
 % Monomial comparison (2/2).
 % - If the exponents are equal : M1 < M2 iff C1 > C2 - where Ci is the coefficient of monomial Mi
-% - If the exponents are different : M1 < M2 iff E1 > E2 - where Ci is the exponent of monomial Mi
-monomial_inv_comp(M1, M2):- monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2), E1 == E2, C1 > C2, !.
-monomial_inv_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 > E2.
+% - If the exponents are different : M1 < M2 iff E1 < E2 - where Ci is the exponent of monomial Mi
+monomial_inv_comp(M1, M2):- monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2), E1 is E2, C1 > C2, !.
+monomial_inv_comp(M1, M2):- monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 < E2.
 
 % Sort a list of monomials L into R using different comparisons
 monomial_sort(L, R):- isort_by(monomial_comp, L, R).
