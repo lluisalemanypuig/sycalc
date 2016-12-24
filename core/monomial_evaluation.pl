@@ -27,12 +27,12 @@ mon_sum(0, M2, M3):- red_monomial(M2, M3), !.
 mon_sum(M1, 0, M3):- red_monomial(M1, M3), !.
 mon_sum(M1, -(M2), R):- mon_sub(M1, M2, R), !.
 mon_sum(M1, M2, M3 + M4):-
-	monomial_comps(M1, C1, V1, E1), monomial_comps(M2, C2, V2, E2),
+	monomial_comps(M1, _, V1, _), monomial_comps(M2, _, V2, _),
 	V1 \= V2,
 	write('Warning (mon_sum): variables of monomials are not equal: '), nl,
 	write('    Monomial 1: '), write(M1), write(', variable: '), write(V1), nl,
 	write('    Monomial 2: '), write(M2), write(', variable: '), write(V2), nl,
-	red_monomial_comps(C1, V1, E1, M3), red_monomial_comps(C2, V2, E2, M4), !.
+	red_monomial(M1, M3), red_monomial(M2, M4), !.
 
 mon_sum(M1, M2, M3):-
 	monomial_comps(M1, C1, V1, E1), monomial_comps(M2, C2, _, E2),
@@ -42,26 +42,26 @@ mon_sum(M1, M2, M3):-
 mon_sum(M1, M2, R):-
 	red_monomial(M1, M3), red_monomial(M2, M4),
 	monomial_comps(M3, _, V, E3), monomial_comps(M4, _, V, E4),
-	E3 == E4, !,
-	mon_sum(M3, M4, R).
+	E3 == E4,
+	mon_sum(M3, M4, R), !.
 
 mon_sum(M1, M2, M3 + M4):-
 	monomial_comps(M1, C1, V, E1), monomial_comps(M2, C2, V, E2),
-	red_monomial_comps(C1, V, E1, M3), red_monomial_comps(C2, V, E2, M4).
+	red_monomial_comps(C1, V, E1, M3), red_monomial_comps(C2, V, E2, M4), !.
 
-mon_sum([M1,M2], S):- mon_sum(M1, M2, S).
+mon_sum([M1,M2], S):- mon_sum(M1, M2, S), !.
 
 % SUBSTRACTION
 
 mon_sub(0, M2, M3):- monomial_comps(M2, C, V, E), K is -C, red_monomial_comps(K, V, E, M3), !.
 mon_sub(M1, 0, M3):- red_monomial(M1, M3), !.
 mon_sub(M1, M2, M3 - M4):-
-	monomial_comps(M1, C1, V1, E1), monomial_comps(M2, C2, V2, E2),
+	monomial_comps(M1, _, V1, _), monomial_comps(M2, _, V2, _),
 	V1 \= V2,
 	write('Warning (mon_sum): variables of monomials are not equal: '), nl,
 	write('    Monomial 1: '), write(M1), write(', variable: '), write(V1), nl,
 	write('    Monomial 2: '), write(M2), write(', variable: '), write(V2), nl,
-	red_monomial_comps(C1, V1, E1, M3), red_monomial_comps(C2, V2, E2, M4), !.
+	red_monomial(M1, M3), red_monomial(M2, M4), !.
 
 mon_sub(M1, M2, M3):-
 	monomial_comps(M1, C1, V1, E1), monomial_comps(M2, C2, _, E2),
@@ -71,14 +71,14 @@ mon_sub(M1, M2, M3):-
 mon_sub(M1, M2, R):-
 	red_monomial(M1, M3), red_monomial(M2, M4),
 	monomial_comps(M3, _, V, E3), monomial_comps(M4, _, V, E4),
-	E3 == E4, !,
-	mon_sub(M3, M4, R).
+	E3 == E4,
+	mon_sub(M3, M4, R), !.
 
 mon_sub(M1, M2, M3 - M4):-
 	monomial_comps(M1, C1, V, E1), monomial_comps(M2, C2, V, E2),
-	red_monomial_comps(C1, V, E1, M3), red_monomial_comps(C2, V, E2, M4).
+	red_monomial_comps(C1, V, E1, M3), red_monomial_comps(C2, V, E2, M4), !.
 
-mon_sub([M1,M2], S):- mon_sub(M1, M2, S).
+mon_sub([M1,M2], S):- mon_sub(M1, M2, S), !.
 
 % PRODUCT
 
@@ -97,9 +97,9 @@ mon_prod(M1, M2, M3):-
 
 mon_prod(M1, M2, M3):-
 	monomial_comps(M1, C1, V1, E1), monomial_comps(M2, C2, V1, E2),
-	arithmetic_eval(C1*C2, C), arithmetic_eval(E1 + E2, E), red_monomial_comps(C, V1, E, M3).
+	arithmetic_eval(C1*C2, C), arithmetic_eval(E1 + E2, E), red_monomial_comps(C, V1, E, M3), !.
 
-mon_prod([M1,M2], S):- mon_prod(M1, M2, S).
+mon_prod([M1,M2], S):- mon_prod(M1, M2, S), !.
 
 % MONOMIAL EVALUATION
 
