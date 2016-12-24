@@ -2,13 +2,13 @@
 :-ensure_loaded(power_sums).
 
 debug:-
-	debug_integer_algs,
-	debug_lists,
-	debug_numbers,
-	debug_arithmetic_evaluation,
-	debug_monomials,
-	debug_polynomials,
-	debug_power_sums.
+	%debug_integer_algs,
+	%debug_lists,
+	%debug_numbers,
+	%debug_arithmetic_evaluation,
+	%debug_monomials,
+	debug_polynomials.
+	%debug_power_sums.
 
 main:- debug, halt.
 main:- nl, write('ERROR'), nl, halt.
@@ -34,11 +34,6 @@ deb_gcd(_, A, B, RES):- gcd(A, B, R), R == RES, !.
 deb_gcd(I, A, B, RES):-
 	gcd(A, B, R),
 	write(I), write(' gcd('), write(A), write(','), write(B), write(')= '), output_text(R, RES).
-
-deb_how_many(_, L, RES):- how_many(L, RES), !.
-deb_how_many(I, L, RES):-
-	how_many(L, R),
-	write(I), write(' Count of '), write(L), write(': '), output_text(R, RES).
 
 debug_integer_algs:-
 	write('-- INTEGER ALGORITHMS DEBUG --'), nl,
@@ -98,6 +93,23 @@ DEBUG - LIST OPERATIONS
 deb_insertion_sort(_, L):- isort(L, R), msort(L, RES), R == RES, !.
 deb_insertion_sort(I, L):- isort(L, R), msort(L, RES), write(I), write(L), write(' -> '), output_text(R, RES).
 
+deb_how_many(_, L, RES):- how_many(L, RES), !.
+deb_how_many(I, L, RES):-
+	how_many(L, R),
+	write(I), write(' Count of '), write(L), write(': '), output_text(R, RES).
+
+deb_cart_prod(_, A, B, RES):- cartesian_product(A, B, RES), !.
+deb_cart_prod(I, A, B, RES):-
+	cartesian_product(A, B, R),
+	write(I), write(' '), write(A), write(' x '), write(B), write(' = '), output_text(R, RES).
+
+dumb_sum__(A, B, E):- E is A + B.
+
+deb_cart_prod_by(_, A, B, RES):- cartesian_product_by(dumb_sum__, A, B, RES), !.
+deb_cart_prod_by(I, A, B, RES):-
+	cartesian_product_by(dumb_sum__, A, B, R),
+	write(I), write(' '), write(A), write(' (x) '), write(B), write(' = '), output_text(R, RES).
+
 debug_lists:-
 	write('-- LISTS OPERATIONS DEBUG --'), nl,
 	write('* SORTING ALGORITHMS - INSERTION SORT'),
@@ -119,6 +131,34 @@ debug_lists:-
 	deb_how_many(' 8)', [3,1,1,2,1], [[1,3],[2,1],[3,1]]),
 	deb_how_many(' 9)', [3,1,3,2,1], [[1,2],[2,1],[3,2]]),
 	deb_how_many(' 10)', [4,1,3,2,1], [[1,2],[2,1],[3,1],[4,1]]),
+
+	write(' - OK'), nl,
+	write('* CARTESIAN PRODUCT'),
+
+	deb_cart_prod(' 1)', [], [], []),
+	deb_cart_prod(' 2)', [1], [], []),
+	deb_cart_prod(' 3)', [1,2], [], []),
+	deb_cart_prod(' 4)', [], [1], []),
+	deb_cart_prod(' 5)', [], [1,2], []),
+	deb_cart_prod(' 6)', [1], [1], [[1,1]]),
+	deb_cart_prod(' 7)', [1,2], [1], [[1,1],[2,1]]),
+	deb_cart_prod(' 8)', [1], [1,2], [[1,1],[1,2]]),
+	deb_cart_prod(' 9)', [1,3], [1,2], [[1,1],[1,2],[3,1],[3,2]]),
+	deb_cart_prod(' 10)', [1,2], [1,3], [[1,1],[1,3],[2,1],[2,3]]),
+
+	write(' - OK'), nl,
+	write('* CARTESIAN PRODUCT BY'),
+
+	deb_cart_prod_by(' 1)', [], [], []),
+	deb_cart_prod_by(' 2)', [1], [], []),
+	deb_cart_prod_by(' 3)', [1,2], [], []),
+	deb_cart_prod_by(' 4)', [], [1], []),
+	deb_cart_prod_by(' 5)', [], [1,2], []),
+	deb_cart_prod_by(' 6)', [1], [1], [2]),
+	deb_cart_prod_by(' 7)', [1,2], [1], [2,3]),
+	deb_cart_prod_by(' 8)', [1], [1,2], [2,3]),
+	deb_cart_prod_by(' 9)', [1,3], [1,2], [2,3,4,5]),
+	deb_cart_prod_by(' 10)', [1,2], [1,3], [2,4,3,5]),
 
 	write(' - OK'), nl,
 	nl, true.
@@ -533,9 +573,19 @@ deb_poly_list_sum(I, P1, P2, RES):-
 	list_polynomial_sum_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '), output_text(R, RES).
 
+deb_poly_sorted_list_sum(_, P1, P2, RES):- list_polynomial_sum_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_sorted_list_sum(I, P1, P2, RES):-
+	list_polynomial_sum_sorted_list(P1, P2, R),
+	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '), output_text(R, RES).
+
 deb_poly_list_sub(_, P1, P2, RES):- list_polynomial_sub_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_list_sub(I, P1, P2, RES):-
 	list_polynomial_sub_list(P1, P2, R),
+	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '), output_text(R, RES).
+
+deb_poly_sorted_list_sub(_, P1, P2, RES):- list_polynomial_sub_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_sorted_list_sub(I, P1, P2, RES):-
+	list_polynomial_sub_sorted_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '), output_text(R, RES).
 
 deb_poly_list_prod(_, P1, P2, RES):- list_polynomial_prod_list(P1, P2, R), polynomial_list_eq(RES, R), !.
@@ -573,9 +623,9 @@ deb_poly_last_mon(I, E, RES1, RES2):-
 	polynomial_last_monomial(E, R1, R2),
 	write(I), write('' ), write(E), write(' -> '), output_text( (R1, R2), (RES1, RES2)).
 
-deb_poly_pad(_, L, RES):- padded_poly_mons_incr(L, R), R == RES, !.
+deb_poly_pad(_, L, RES):- padded_poly_mons_decr(L, R), R == RES, !.
 deb_poly_pad(I, L, RES):-
-	padded_poly_mons_incr(L, R),
+	padded_poly_mons_decr(L, R),
 	write(I), write(' '), write(L), write(' -> '), output_text(R, RES).
 
 deb_pretty_polynomial_roots(_, R, RES):- pretty_polynomial_roots(R, P), polynomial_eval_eq(RES, P), !.
@@ -631,6 +681,25 @@ debug_polynomials:-
 	deb_poly_list_sum(' 20)', [x, x, x, x^2], [-x, x, -x], [x^2, 2*x]),
 
 	write(' - OK'), nl,
+	write('* POLYNOMIAL SORTED LIST SUM'),
+
+	deb_poly_sorted_list_sum(' 1)', [], [], []),
+	deb_poly_sorted_list_sum(' 2)', [0], [0], []),
+	deb_poly_sorted_list_sum(' 5)', [1], [0], [1]),
+	deb_poly_sorted_list_sum(' 6)', [0], [1], [1]),
+	deb_poly_sorted_list_sum(' 7)', [1], [1], [2]),
+	deb_poly_sorted_list_sum(' 8)', [x], [0], [x]),
+	deb_poly_sorted_list_sum(' 9)', [x], [x], [2*x]),
+	deb_poly_sorted_list_sum(' 10)', [x], [-x], []),
+	deb_poly_sorted_list_sum(' 11)', [2*x], [-x], [x]),
+	deb_poly_sorted_list_sum(' 12)', [-2*x], [-x], [-3*x]),
+	deb_poly_sorted_list_sum(' 13)', [3*x], [-4*x], [-x]),
+	deb_poly_sorted_list_sum(' 14)', [x^2], [-x], [x^2, -x]),
+	deb_poly_sorted_list_sum(' 15)', [4*x^3], [-x], [4*x^3, -x]),
+	deb_poly_sorted_list_sum(' 16)', [x^3, x^2, x, 1], [-x], [x^3, x^2, 1]),
+	deb_poly_sorted_list_sum(' 17)', [x^3, x^2, x, -1], [x], [x^3, x^2, 2*x, -1]),
+
+	write(' - OK'), nl,
 	write('* POLYNOMIAL LIST SUB'),
 
 	deb_poly_list_sub(' 1)', [], [], []),
@@ -653,6 +722,25 @@ debug_polynomials:-
 	deb_poly_list_sub(' 18)', [2*x, x, x, x], [-x, x, -x], [6*x]),
 	deb_poly_list_sub(' 19)', [x, x, 2*x, x], [-x, x, -x], [6*x]),
 	deb_poly_list_sub(' 20)', [x, x, x, x^2], [-x, x, -x], [x^2, 4*x]),
+
+	write(' - OK'), nl,
+	write('* POLYNOMIAL SORTED LIST SUB'),
+
+	deb_poly_sorted_list_sub(' 1)', [], [], []),
+	deb_poly_sorted_list_sub(' 2)', [0], [0], []),
+	deb_poly_sorted_list_sub(' 5)', [1], [0], [1]),
+	deb_poly_sorted_list_sub(' 6)', [0], [1], [-1]),
+	deb_poly_sorted_list_sub(' 7)', [1], [1], []),
+	deb_poly_sorted_list_sub(' 8)', [x], [0], [x]),
+	deb_poly_sorted_list_sub(' 9)', [x], [x], []),
+	deb_poly_sorted_list_sub(' 10)', [x], [-x], [2*x]),
+	deb_poly_sorted_list_sub(' 11)', [2*x], [-x], [3*x]),
+	deb_poly_sorted_list_sub(' 12)', [-2*x], [-x], [-x]),
+	deb_poly_sorted_list_sub(' 13)', [3*x], [-4*x], [7*x]),
+	deb_poly_sorted_list_sub(' 14)', [x^2], [-x], [x^2, x]),
+	deb_poly_sorted_list_sub(' 15)', [4*x^3], [-x], [4*x^3, x]),
+	deb_poly_sorted_list_sub(' 16)', [x^3, x^2, x, 1], [-x], [x^3, x^2, 2*x, 1]),
+	deb_poly_sorted_list_sub(' 17)', [x^3, x^2, x, -1], [x], [x^3, x^2, -1]),
 
 	write(' - OK'), nl,
 	write('* POLYNOMIAL LIST PROD'),
