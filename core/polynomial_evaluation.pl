@@ -15,25 +15,75 @@ list_red_monomials(X, X).
 % Takes a polynomial as a list and returns it as a reduced list of monomials
 list_red_list_polynomial(L, LR):- monomial_sort(L, R), list_red_monomials(R, LR).
 
+%%%%%%%%%%%%%
+%%%% SUM %%%%
+
 % Takes an expanded polynomial and reduces it: x + x + 2 -> 2*x + 2
 polynomial_sum(P, R):-
 	polynomial_monomials(P, M), list_red_list_polynomial(M, L),
 	list_polynomial(L, R).
 
 % Takes two polynomials each of them as a list, adds the second from the first
+% and returns it as a reduced list of monomials: assuming the lists P1 and P2
+% are sorted DECREASINGLY and all monomials have unique degree.
+% This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
+% This list has monomials with unique degree: [3*x^2, x, 1]
+list_polynomial_sum_sorted_list_(P1, D1, P2, D2, R):- D1 < D2,
+	NZEROES is D2 - D1, padded_list_begin(P1, NZEROES, 0, PP1),
+	zipWith(mon_sum, PP1, P2, R).
+list_polynomial_sum_sorted_list_(P1, D1, P2, D2, R):-
+	NZEROES is D1 - D2, padded_list_begin(P2, NZEROES, 0, PP2),
+	zipWith(mon_sum, P1, PP2, R).
+
+list_polynomial_sum_sorted_list(P1, [], P1):- !.
+list_polynomial_sum_sorted_list([], P2, P2):- !.
+list_polynomial_sum_sorted_list(P1, P2, R):-
+	padded_poly_mons_decr(P1, PP1), padded_poly_mons_decr(P2, PP2),
+	first(PP1, FMON1, _), first(PP2, FMON2, _),
+	monomial_degree(FMON1, D1), monomial_degree(FMON2, D2),
+	list_polynomial_sum_sorted_list_(PP1, D1, PP2, D2, LR),
+	list_red_monomials(LR, R), !.
+
+% Takes two polynomials each of them as a list, adds the second from the first
 % and returns it as a reduced list of monomials
 list_polynomial_sum_list(P1, P2, R):- concat(P1, P2, P), list_red_list_polynomial(P, R).
+
+%%%%%%%%%%%%%
+%%%% SUB %%%%
+
+% Takes two polynomials each of them as a list, adds the second from the first
+% and returns it as a reduced list of monomials: assuming the lists P1 and P2
+% are sorted DECREASINGLY and all monomials have unique degree.
+% This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
+% This list has monomials with unique degree: [3*x^2, x, 1]
+list_polynomial_sub_sorted_list_(P1, D1, P2, D2, R):- D1 < D2,
+	NZEROES is D2 - D1, padded_list_begin(P1, NZEROES, 0, PP1),
+	zipWith(mon_sub, PP1, P2, R).
+list_polynomial_sub_sorted_list_(P1, D1, P2, D2, R):-
+	NZEROES is D1 - D2, padded_list_begin(P2, NZEROES, 0, PP2),
+	zipWith(mon_sub, P1, PP2, R).
+
+list_polynomial_sub_sorted_list(P1, [], P1):- !.
+list_polynomial_sub_sorted_list([], P2, R):- map(monomial_neg, P2, R), !.
+list_polynomial_sub_sorted_list(P1, P2, R):-
+	padded_poly_mons_decr(P1, PP1), padded_poly_mons_decr(P2, PP2),
+	first(PP1, FMON1, _), first(PP2, FMON2, _),
+	monomial_degree(FMON1, D1), monomial_degree(FMON2, D2),
+	list_polynomial_sub_sorted_list_(PP1, D1, PP2, D2, LR),
+	list_red_monomials(LR, R), !.
 
 % Takes two polynomials each of them as a list, substracts the second from the first
 % and returns it as a reduced list of monomials
 list_polynomial_sub_list(P1, P2, R):-
-	map(monomial_neg, P2, NP2), concat(P1, NP2, P),
-	list_red_list_polynomial(P, R).
+	map(monomial_neg, P2, NP2), list_polynomial_sum_list(P1, NP2, R).
+
+%%%%%%%%%%%%%%
+%%%% PROD %%%%
 
 % Takes two polynomials each of them as a list, multiplies them and returns it as
 % a reduced list of monomials
 list_polynomial_prod_list(L1, L2, L):-
-	cartesian_product(L1, L2, CP), map(mon_prod, CP, MON_PROD),
+	cartesian_product_by(mon_prod, L1, L2, MON_PROD),
 	list_red_list_polynomial(MON_PROD, L).
 
 % Takes two expanded polynomials and multiplies them
@@ -41,6 +91,9 @@ list_polynomial_prod_list(L1, L2, L):-
 polynomial_prod(P1, P2, P):-
 	polynomial_monomials(P1, L1), polynomial_monomials(P2, L2),
 	list_polynomial_prod_list(L1, L2, MON_PROD), list_polynomial(MON_PROD, P).
+
+%%%%%%%%%%%%%%%
+%%%% POWER %%%%
 
 % Takes a polynomial as a list, an integer number and performs the power P^N
 list_polynomial_power_list(_, 0, [1]):- !.
@@ -57,7 +110,8 @@ polynomial_power(P, N, PN):-
 	polynomial_monomials(P, M), list_polynomial_power_list(M, N, L),
 	list_polynomial(L, PN).
 
-% POLYNOMIAL EXPRESSIONS' EVALUATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% POLYNOMIAL EXPRESSIONS' EVALUATION %%%%
 
 polynomial_evaluation_list(Q1 + Q2, R):-
 	polynomial_evaluation_list(Q1, L1), polynomial_evaluation_list(Q2, L2),
