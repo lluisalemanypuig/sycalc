@@ -716,7 +716,7 @@ debug_polynomials:-
 	deb_poly_list_sub(' 12)', [-2*x], [-x], [-x]),
 	deb_poly_list_sub(' 13)', [3*x], [-4*x], [7*x]),
 	deb_poly_list_sub(' 14)', [x^2], [-x], [x^2, x]),
-	deb_poly_list_sub(' 15)', [4*x^3], [-x], [4*x^3, x]),
+	deb_poly_list_sub(' 15)', [(4/3)*x^3], [-x], [(4/3)*x^3, x]),
 	deb_poly_list_sub(' 16)', [x, x, x, x], [-x], [5*x]),
 	deb_poly_list_sub(' 17)', [x, x, x, x], [-x, x, -x], [5*x]),
 	deb_poly_list_sub(' 18)', [2*x, x, x, x], [-x, x, -x], [6*x]),
@@ -741,6 +741,7 @@ debug_polynomials:-
 	deb_poly_sorted_list_sub(' 15)', [4*x^3], [-x], [4*x^3, x]),
 	deb_poly_sorted_list_sub(' 16)', [x^3, x^2, x, 1], [-x], [x^3, x^2, 2*x, 1]),
 	deb_poly_sorted_list_sub(' 17)', [x^3, x^2, x, -1], [x], [x^3, x^2, -1]),
+	deb_poly_sorted_list_sub(' 18)', [x^3, x^2, x, -1], [(1/2)*x^3, x], [(1/2)*x^3, x^2, -1]),
 
 	write(' - OK'), nl,
 	write('* POLYNOMIAL LIST PROD'),
