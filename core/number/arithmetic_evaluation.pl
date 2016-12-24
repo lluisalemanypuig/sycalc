@@ -49,12 +49,12 @@ arithmetic_eval(A^B, C):- arithmetic_eval_pow(A^B, C), !.
 arithmetic_eval(A^B, C):- arithmetic_eval(A, AA), arithmetic_eval(B, BB), eval_pow(AA, BB, C), !.
 arithmetic_eval(A, A):- real(A).
 
-arithmetic_eval_pow(A^B^C, R):- arithmetic_eval(A^B, R1), arithmetic_eval(R1^C, R).
+arithmetic_eval_pow(A^B^C, R):- arithmetic_eval(A^B, R1), arithmetic_eval(R1^C, R), !.
 
 % EXPRESSIONS
 
-expr(_ + _).
-expr(_ - _).
-expr(_*_).
-expr(_/_).
-expr(_^_).
+expr(_ + _):- !.
+expr(_ - _):- !.
+expr(_*_):- !.
+expr(_/_):- !.
+expr(_^_):- !.
