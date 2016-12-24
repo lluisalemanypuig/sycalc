@@ -25,13 +25,18 @@ polynomial_monomials(M, [R]):- red_monomial(M, R), !.
 % Pads a list of monomials DECREASINGLY sorted.
 % If [m1, m2, ..., mN] is the list of monomials, this predicate will add 0s between
 % those monomials with degrees di, dj such that |di - dj| > 1
-padded_poly_mons_incr([], []).
-padded_poly_mons_incr([M], R):- monomial_degree(M, D), D > 0, padded_list([M], D, 0, R), !.
-padded_poly_mons_incr([M], [M]):- !.
-padded_poly_mons_incr([M|MS], [M|P]):- first(MS, F, _), monomial_degree(M, D1), monomial_degree(F, D2), 1 is D1 - D2, padded_poly_mons_incr(MS, P), !.
-padded_poly_mons_incr([M|MS], P):-
-	first(MS, F, _), monomial_degree(M, D1), monomial_degree(F, D2), K is D1 - D2 - 1,
-	padded_list([M], K, 0, R), padded_poly_mons_incr(MS, Q), concat(R, Q, P), !.
+padded_poly_mons_decr([], []).
+padded_poly_mons_decr([M], R):- monomial_degree(M, D), D > 0, padded_list_end([M], D, 0, R), !.
+padded_poly_mons_decr([M], [M]):- !.
+padded_poly_mons_decr([M|MS], [M|P]):-
+	first(MS, F, _),
+	monomial_degree(M, D1), monomial_degree(F, D2), 1 is D1 - D2,
+	padded_poly_mons_decr(MS, P), !.
+padded_poly_mons_decr([M|MS], P):-
+	first(MS, F, _),
+	monomial_degree(M, D1), monomial_degree(F, D2), K is D1 - D2 - 1,
+	padded_list_end([M], K, 0, R), padded_poly_mons_decr(MS, Q),
+	concat(R, Q, P), !.
 
 % A + B is an expanded polynomial.
 % A is its first monomial
@@ -100,6 +105,6 @@ ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L), !.
 % This polynomial should have one free term (a constant multiplied by x^0)
 % and the first monomial be multiplied by 1 or -1.
 integer_roots_polynomial(P, R):-
-	polynomial_monomials(P, M), monomial_sort(M, SM), padded_poly_mons_incr(SM, PAD_SM),	% extract the padded monomial list of P
+	polynomial_monomials(P, M), monomial_sort(M, SM), padded_poly_mons_decr(SM, PAD_SM),	% extract the padded monomial list of P
 	last(PAD_SM, _, L), monomial_coefficient(L, CF), divisors(CF, DVS), 					% obtain all the divisors of the free term
 	map(monomial_coefficient, PAD_SM, MCFS), ruffini(MCFS, DVS, R).
