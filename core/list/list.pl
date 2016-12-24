@@ -8,8 +8,8 @@ max([X], X).
 max([X|L], M):- max(L, N), X < N, !, M is N.
 max([X|_], X).
 
-first([X], X, []).
-first([X|L], X, L).
+first([X], X, []):- !.
+first([X|L], X, L):- !.
 
 last([X], [], X):- !.
 last([X|R], [X|K], L):- last(R, K, L), !.
@@ -35,8 +35,8 @@ zip([A], [B], [(A, B)]):- !.
 zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S), !.
 
 % F :: a -> b -> a
-zipWith(F, [], [], X):- call(F, [], [], X), !.
-zipWith(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zipWith(L, R, S), !.
+zipWith(F, [A], [B], [X]):- call(F, A, B, X), !.
+zipWith(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zipWith(F, L, R, S), !.
 
 concat([], L, L).
 concat([A|L], R, [A|C]):- concat(L, R, C).
@@ -51,16 +51,28 @@ foldl(F, X, [Y|L], R):- call(F, X, Y, S), foldl(F, S, L, R).
 foldr(_, X, [], X):- !.
 foldr(F, X, [Y|L], R):- foldr(F, X, L, S), call(F, Y, S, R).
 
+% creates a list with K elements equal to S
 padding(0, _, []):- !.
 padding(K, S, [S|R]):- K1 is K - 1, padding(K1, S, R), !.
 
-padded_list(L, 0, _, L):- !.
-padded_list(L, K, S, R):- padding(K, S, P), !, concat(L, P, R).
+% adds at the beggining/ending of the list L K elements equal to S
+padded_list_begin(L, K, S, R):- padding(K, S, P), concat(P, L, R).
+padded_list_end(L, K, S, R):- padding(K, S, P), concat(L, P, R).
 
+% cartesian_product(A, B, C): C is the cartesian product of A and B.
+% C = A x B
 cartesian_product([], _, []):- !.
 cartesian_product(_, [], []):- !.
 cartesian_product([X], [Y|R], [[X,Y]|S]):- cartesian_product([X], R, S), !.
 cartesian_product([X|L], R, S):- cartesian_product([X], R, S1), cartesian_product(L, R, S2), concat(S1, S2, S), !.
+
+% cartesian_product_by(F, A, B, C): C is the result of applying the function
+% F to every element of (A x B).
+% C = map(F, A x B)
+cartesian_product_by(_, [], _, []):- !.
+cartesian_product_by(_, _, [], []):- !.
+cartesian_product_by(F, [X], [Y|R], [E|S]):- call(F, X, Y, E), cartesian_product_by(F, [X], R, S), !.
+cartesian_product_by(F, [X|L], R, S):- cartesian_product_by(F, [X], R, S1), cartesian_product_by(F, L, R, S2), concat(S1, S2, S), !.
 
 % SORTING ALGORITHMS
 
