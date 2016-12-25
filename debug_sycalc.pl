@@ -2,13 +2,13 @@
 :-ensure_loaded(power_sums).
 
 debug:-
-	%debug_integer_algs,
-	%debug_lists,
-	%debug_numbers,
-	%debug_arithmetic_evaluation,
-	%debug_monomials,
-	debug_polynomials.
-	%debug_power_sums.
+	debug_integer_algs,
+	debug_lists,
+	debug_numbers,
+	debug_arithmetic_evaluation,
+	debug_monomials,
+	debug_polynomials,
+	debug_power_sums.
 
 main:- debug, halt.
 main:- nl, write('ERROR'), nl, halt.
