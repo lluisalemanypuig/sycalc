@@ -23,13 +23,16 @@ ALL_FILES = $(CORE) \
 OPT = -O7
 FLAGS = $(OPT) --goal=main --stand_alone=true
 
-debug: isycalc idebug_sycalc
+all: release debug
+release: sycalc
+debug: debug_sycalc
 
-isycalc: $(ALL_FILES) sycalc.pl
-	swipl $(FLAGS) -o isycalc -c sycalc.pl
+sycalc: $(ALL_FILES) sycalc.pl
+	swipl $(FLAGS) -o sycalc -c sycalc.pl
 
-idebug_sycalc: $(ALL_FILES) debug_sycalc.pl
-	swipl $(FLAGS) -o idebug_sycalc -c debug_sycalc.pl
+debug_sycalc: $(ALL_FILES) debug_sycalc.pl
+	swipl $(FLAGS) -o debug_sycalc -c debug_sycalc.pl
 
 clean:
-	rm -f isycalc idebug_sycalc
+	rm -f sycalc
+	rm -f debug_sycalc
