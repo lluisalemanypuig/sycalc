@@ -13,6 +13,12 @@ list_red_monomials([M1,M2|L], [M1|R]):- list_red_monomials([M2|L], R), !.
 list_red_monomials(X, X).
 
 % Takes a polynomial as a list and returns it as a reduced list of monomials
+% These are not reduced lists of polynomials:
+% - [x^2, -2*x^2, x]
+% - [x^3, 0, 1]
+% These are reduced lists of polynomials:
+% - [x^3, 1]
+% - [x^3, 4*x^2, 1]
 list_red_list_polynomial(L, LR):- monomial_sort(L, R), list_red_monomials(R, LR).
 
 %%%%%%%%%%%%%
@@ -23,25 +29,30 @@ polynomial_sum(P, R):-
 	polynomial_monomials(P, M), list_red_list_polynomial(M, L),
 	list_polynomial(L, R).
 
-% Takes two polynomials each of them as a list, adds the second from the first
-% and returns it as a reduced list of monomials: assuming the lists P1 and P2
-% are sorted DECREASINGLY and all monomials have unique degree.
+% Takes two polynomials each of them as reduced and decreasingly sorted lists of
+% monomials of unique degree and adds the second from to first and returns it as
+% a reduced list of monomials.
 % This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
 % This list has monomials with unique degree: [3*x^2, x, 1]
-list_polynomial_sum_sorted_list_(P1, D1, P2, D2, R):- D1 < D2,
+list_polynomial_sum_sorted_list__(P1, D1, P2, D2, R):- D1 < D2,
 	NZEROES is D2 - D1, padded_list_begin(P1, NZEROES, 0, PP1),
 	zipWith(mon_sum, PP1, P2, R).
-list_polynomial_sum_sorted_list_(P1, D1, P2, D2, R):-
+list_polynomial_sum_sorted_list__(P1, D1, P2, D2, R):-
 	NZEROES is D1 - D2, padded_list_begin(P2, NZEROES, 0, PP2),
 	zipWith(mon_sum, P1, PP2, R).
 
-list_polynomial_sum_sorted_list(P1, [], P1):- !.
-list_polynomial_sum_sorted_list([], P2, P2):- !.
-list_polynomial_sum_sorted_list(P1, P2, R):-
-	padded_poly_mons_decr(P1, PP1), padded_poly_mons_decr(P2, PP2),
+list_polynomial_sum_sorted_list_(P, [], P):- !.
+list_polynomial_sum_sorted_list_([], P, P):- !.
+list_polynomial_sum_sorted_list_(PP1, PP2, R):-
 	first(PP1, FMON1, _), first(PP2, FMON2, _),
 	monomial_degree(FMON1, D1), monomial_degree(FMON2, D2),
-	list_polynomial_sum_sorted_list_(PP1, D1, PP2, D2, LR),
+	list_polynomial_sum_sorted_list__(PP1, D1, PP2, D2, R).
+
+list_polynomial_sum_sorted_list(P, [], P):- !.
+list_polynomial_sum_sorted_list([], P, P):- !.
+list_polynomial_sum_sorted_list(P1, P2, R):-
+	padded_poly_mons_decr(P1, PP1), padded_poly_mons_decr(P2, PP2),
+	list_polynomial_sum_sorted_list_(PP1, PP2, LR),
 	list_red_monomials(LR, R), !.
 
 % Takes two polynomials each of them as a list, adds the second from the first
@@ -51,9 +62,9 @@ list_polynomial_sum_list(P1, P2, R):- concat(P1, P2, P), list_red_list_polynomia
 %%%%%%%%%%%%%
 %%%% SUB %%%%
 
-% Takes two polynomials each of them as a list, adds the second from the first
-% and returns it as a reduced list of monomials: assuming the lists P1 and P2
-% are sorted DECREASINGLY and all monomials have unique degree.
+% Takes two polynomials each of them as reduced and DECREASINGLY sorted lists of
+% monomials of unique degree and substracts the second from the first and returns
+% it as a reduced list of monomials.
 % This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
 % This list has monomials with unique degree: [3*x^2, x, 1]
 list_polynomial_sub_sorted_list_(P1, D1, P2, D2, R):- D1 < D2,
@@ -62,6 +73,8 @@ list_polynomial_sub_sorted_list_(P1, D1, P2, D2, R):- D1 < D2,
 list_polynomial_sub_sorted_list_(P1, D1, P2, D2, R):-
 	NZEROES is D1 - D2, padded_list_begin(P2, NZEROES, 0, PP2),
 	zipWith(mon_sub, P1, PP2, R).
+
+%list_polynomial_sub_sorted_list([1/4*n^5,5/8*n^4,1/2*n^3,1/8*n^2], [1/12*n^3,1/8*n^2,1/24*n], R).
 
 list_polynomial_sub_sorted_list(P1, [], P1):- !.
 list_polynomial_sub_sorted_list([], P2, R):- map(monomial_neg, P2, R), !.
@@ -72,13 +85,35 @@ list_polynomial_sub_sorted_list(P1, P2, R):-
 	list_polynomial_sub_sorted_list_(PP1, D1, PP2, D2, LR),
 	list_red_monomials(LR, R), !.
 
-% Takes two polynomials each of them as a list, substracts the second from the first
-% and returns it as a reduced list of monomials
+% Takes two polynomials each of them as reduced and DECREASINGLY sorted lists of
+% monomials of unique degree and multiplies the second and the first and returns
+% it as a reduced list of monomials.
+% This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
+% This list has monomials with unique degree: [3*x^2, x, 1]
 list_polynomial_sub_list(P1, P2, R):-
 	map(monomial_neg, P2, NP2), list_polynomial_sum_list(P1, NP2, R).
 
 %%%%%%%%%%%%%%
 %%%% PROD %%%%
+
+% Takes two polynomials each of them as reduced and DECREASINGLY sorted lists of
+% monomials of unique degree and multiplies them. The result is a list of reduced
+% monomials.
+% This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
+% This list has monomials with unique degree: [3*x^2, x, 1]
+list_polynomial_prod_sorted_list_([], _, [[]]):- !.
+list_polynomial_prod_sorted_list_(_, [], [[]]):- !.
+list_polynomial_prod_sorted_list_([M], L2, [P]):-
+	cartesian_product_by(mon_prod, [M], L2, P2),
+	padded_poly_mons_decr(P2, P), !.
+list_polynomial_prod_sorted_list_([M|L], L2, [P|Q]):-
+	cartesian_product_by(mon_prod, [M], L2, P2), padded_poly_mons_decr(P2, P),
+	list_polynomial_prod_sorted_list_(L, L2, Q), !.
+
+list_polynomial_prod_sorted_list(L1, L2, L):-
+	list_polynomial_prod_sorted_list_(L1, L2, ML),
+	foldl(list_polynomial_sum_sorted_list_, [], ML, LR),
+	list_red_monomials(LR, L), !.
 
 % Takes two polynomials each of them as a list, multiplies them and returns it as
 % a reduced list of monomials
