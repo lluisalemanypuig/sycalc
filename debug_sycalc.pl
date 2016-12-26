@@ -292,6 +292,7 @@ debug_arithmetic_evaluation:-
 	deb_sub(' 10)', 2/2, 2/2, 0),
 	deb_sub(' 11)', 2/2, 3/2, -1/2),
 	deb_sub(' 12)', 3/2, 1, 1/2),
+	deb_sub(' 13)', 0, 1/25, -1/25),
 	
 	write(' - OK'), nl,
 	write('* PRODS'),
@@ -516,6 +517,7 @@ debug_monomials:-
 	deb_mon_sub(' 11)', 0*x^1, 0*x^2, 0),
 	deb_mon_sub(' 12)', 0, 0*x^2, 0),
 	deb_mon_sub(' 13)', 0, 0, 0),
+	deb_mon_sub(' 14)', 0, 1/24, -1/24),
 
 	write(' - OK'), nl,
 	write('* MONOMIAL PROD'),
@@ -592,6 +594,13 @@ deb_poly_list_prod(_, P1, P2, RES):- list_polynomial_prod_list(P1, P2, R), polyn
 deb_poly_list_prod(I, P1, P2, RES):-
 	list_polynomial_prod_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' * '), write(P2), write(' = '), output_text(R, RES).
+
+deb_poly_sorted_list_prod(_, P1, P2):-
+	list_polynomial_prod_sorted_list(P1, P2, R1), list_polynomial_prod_list(P1, P2, R2),
+	polynomial_list_eq(R1, R2), !.
+deb_poly_sorted_list_prod(I, P1, P2):-
+	list_polynomial_prod_sorted_list(P1, P2, R1), list_polynomial_prod_list(P1, P2, R2),
+	write(I), write(' '), write(P1), write(' * '), write(P2), write(' = '), output_text(R1, R2).
 
 deb_poly_sum(_, P, RES):- polynomial_sum(P, R), polynomial_eq(R, RES), !.
 deb_poly_sum(I, P, RES):-
@@ -768,6 +777,20 @@ debug_polynomials:-
 	deb_poly_list_prod(' 20)', [x, x, x, x^2], [-x, x, -x], [-3*x^2, -x^3]),
 
 	write(' - OK'), nl,
+	write('* POLYNOMIAL SORTED LIST PROD'),
+
+	deb_poly_sorted_list_prod(' 1)', [], []),
+	deb_poly_sorted_list_prod(' 2)', [x], []),
+	deb_poly_sorted_list_prod(' 3)', [x], [x]),
+	deb_poly_sorted_list_prod(' 4)', [x^2], [x]),
+	deb_poly_sorted_list_prod(' 5)', [x], [x, 1]),
+	deb_poly_sorted_list_prod(' 6)', [x^3, x], [x^2, 1]),
+	deb_poly_sorted_list_prod(' 7)', [x^3, x^2, x, 1], [x, -3]),
+	deb_poly_sorted_list_prod(' 8)', [4*x^4, x^2, -34], [x^3, -2*x^2]),
+	deb_poly_sorted_list_prod(' 9)', [4*x^3, x^2, -34], [x^3, -2*x^2]),
+	deb_poly_sorted_list_prod(' 10)', [x^20, -x^15, 6*x^12, -24*x^8, 4*x^3, x^2, -34], [x^10, x^5, x^3, -2*x^2]),
+
+	write(' - OK'), nl,
 	write('* POLYNOMIAL REDUCTION'),
 
 	deb_poly_sum(' 1)', 0*x^0, 0),
@@ -926,9 +949,10 @@ deb_power_sum_D(I, N, F, D):-
 	write(I), write(' Sum from 1 to '), write(N), write(' = '), output_text(R, RES).
 
 debug_power_sums:- 
+	F = power_sums,
 	write('-- POWER SUMS --'), nl,
 	write('* D = 1'),
-	power_sums(1, D1),
+	call(F, 1, D1),
 	deb_power_sum_D(' 1.1)', 1, D1, 1),
 	deb_power_sum_D(' 1.2)', 5, D1, 1),
 	deb_power_sum_D(' 1.3)', 10, D1, 1),
@@ -941,7 +965,7 @@ debug_power_sums:-
 	write(' - OK'), nl,
 	write('* D = 2'),
 
-	power_sums(2, D2),
+	call(F, 2, D2),
 	deb_power_sum_D(' 2.1)', 1, D2, 2),
 	deb_power_sum_D(' 2.2)', 5, D2, 2),
 	deb_power_sum_D(' 2.3)', 10, D2, 2),
@@ -954,7 +978,7 @@ debug_power_sums:-
 	write(' - OK'), nl,
 	write('* D = 3'),
 
-	power_sums(3, D3),
+	call(F, 3, D3),
 	deb_power_sum_D(' 3.1)', 1, D3, 3),
 	deb_power_sum_D(' 3.2)', 5, D3, 3),
 	deb_power_sum_D(' 3.3)', 10, D3, 3),
@@ -967,7 +991,7 @@ debug_power_sums:-
 	write(' - OK'), nl,
 	write('* D = 5'),
 
-	power_sums(5, D5),
+	call(F, 5, D5),
 	deb_power_sum_D(' 5.1)', 1, D5, 5),
 	deb_power_sum_D(' 5.2)', 5, D5, 5),
 	deb_power_sum_D(' 5.3)', 10, D5, 5),
@@ -980,7 +1004,7 @@ debug_power_sums:-
 	write(' - OK'), nl,
 	write('* D = 7'),
 
-	power_sums(7, D7),
+	call(F, 7, D7),
 	deb_power_sum_D(' 7.1)', 1, D7, 7),
 	deb_power_sum_D(' 7.2)', 5, D7, 7),
 	deb_power_sum_D(' 7.3)', 10, D7, 7),
@@ -993,7 +1017,7 @@ debug_power_sums:-
 	write(' - OK'), nl,
 	write('* D = 10'),
 
-	power_sums(10, D10),
+	call(F, 10, D10),
 	deb_power_sum_D(' 10.1)', 1, D10, 10),
 	deb_power_sum_D(' 10.2)', 5, D10, 10),
 	deb_power_sum_D(' 10.3)', 10, D10, 10),
@@ -1006,7 +1030,7 @@ debug_power_sums:-
 	write(' - OK'), nl,
 	write('* D = 15'),
 
-	power_sums(15, D15),
+	call(F, 15, D15),
 	deb_power_sum_D(' 15.1)', 1, D15, 15),
 	deb_power_sum_D(' 15.2)', 5, D15, 15),
 	deb_power_sum_D(' 15.3)', 10, D15, 15),
@@ -1019,7 +1043,7 @@ debug_power_sums:-
 	write(' - OK'), nl,
 	write('* D = 20'),
 
-	power_sums(20, D20),
+	call(F, 20, D20),
 	deb_power_sum_D(' 20.1)', 1, D20, 20),
 	deb_power_sum_D(' 20.2)', 5, D20, 20),
 	deb_power_sum_D(' 20.3)', 10, D20, 20),
