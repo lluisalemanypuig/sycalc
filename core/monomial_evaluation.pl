@@ -53,7 +53,7 @@ mon_sum([M1,M2], S):- mon_sum(M1, M2, S), !.
 
 % SUBSTRACTION
 
-mon_sub(0, M2, M3):- monomial_comps(M2, C, V, E), K is -C, red_monomial_comps(K, V, E, M3), !.
+mon_sub(0, M2, M3):- monomial_comps(M2, C, V, E), rational_neg(C, K), red_monomial_comps(K, V, E, M3), !.
 mon_sub(M1, 0, M3):- red_monomial(M1, M3), !.
 mon_sub(M1, M2, M3 - M4):-
 	monomial_comps(M1, _, V1, _), monomial_comps(M2, _, V2, _),
