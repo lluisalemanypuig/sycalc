@@ -25,18 +25,18 @@ polynomial_monomials(M, [R]):- red_monomial(M, R), !.
 % Pads a list of monomials DECREASINGLY sorted.
 % If [m1, m2, ..., mN] is the list of monomials, this predicate will add 0s between
 % those monomials with degrees di, dj such that |di - dj| > 1
+padded_poly_mons_decr_(0, M, MS, [M|P]):- padded_poly_mons_decr(MS, P), !.
+padded_poly_mons_decr_(K, M, MS, P):-
+	padded_list_end([M], K, 0, R), padded_poly_mons_decr(MS, Q),
+	concat(R, Q, P), !.
+
 padded_poly_mons_decr([], []).
 padded_poly_mons_decr([M], R):- monomial_degree(M, D), D > 0, padded_list_end([M], D, 0, R), !.
 padded_poly_mons_decr([M], [M]):- !.
-padded_poly_mons_decr([M|MS], [M|P]):-
-	first(MS, F, _),
-	monomial_degree(M, D1), monomial_degree(F, D2), 1 is D1 - D2,
-	padded_poly_mons_decr(MS, P), !.
 padded_poly_mons_decr([M|MS], P):-
 	first(MS, F, _),
 	monomial_degree(M, D1), monomial_degree(F, D2), K is D1 - D2 - 1,
-	padded_list_end([M], K, 0, R), padded_poly_mons_decr(MS, Q),
-	concat(R, Q, P), !.
+	padded_poly_mons_decr_(K, M, MS, P), !.
 
 % A + B is an expanded polynomial.
 % A is its first monomial
