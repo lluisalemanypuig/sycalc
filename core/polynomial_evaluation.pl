@@ -25,9 +25,7 @@ list_red_list_polynomial(L, LR):- monomial_sort(L, R), list_red_monomials(R, LR)
 %%%% SUM %%%%
 
 % Takes an expanded polynomial and reduces it: x + x + 2 -> 2*x + 2
-polynomial_sum(P, R):-
-	polynomial_monomials(P, M), list_red_list_polynomial(M, L),
-	list_polynomial(L, R).
+polynomial_sum(P, R):- polynomial_monomials(P, M), list_red_list_polynomial(M, L), list_polynomial(L, R).
 
 % Takes two polynomials each of them as reduced and decreasingly sorted lists of
 % monomials of unique degree and adds the second from to first and returns it as
@@ -36,10 +34,10 @@ polynomial_sum(P, R):-
 % This list has monomials with unique degree: [3*x^2, x, 1]
 list_polynomial_sum_sorted_list__(P1, D1, P2, D2, R):- D1 < D2,
 	NZEROES is D2 - D1, padded_list_begin(P1, NZEROES, 0, PP1),
-	zipWith(mon_sum, PP1, P2, R).
+	zip_with(mon_sum, PP1, P2, R).
 list_polynomial_sum_sorted_list__(P1, D1, P2, D2, R):-
 	NZEROES is D1 - D2, padded_list_begin(P2, NZEROES, 0, PP2),
-	zipWith(mon_sum, P1, PP2, R).
+	zip_with(mon_sum, P1, PP2, R).
 
 list_polynomial_sum_sorted_list_(P, [], P):- !.
 list_polynomial_sum_sorted_list_([], P, P):- !.
@@ -69,10 +67,10 @@ list_polynomial_sum_list(P1, P2, R):- concat(P1, P2, P), list_red_list_polynomia
 % This list has monomials with unique degree: [3*x^2, x, 1]
 list_polynomial_sub_sorted_list_(P1, D1, P2, D2, R):- D1 < D2,
 	NZEROES is D2 - D1, padded_list_begin(P1, NZEROES, 0, PP1),
-	zipWith(mon_sub, PP1, P2, R).
+	zip_with(mon_sub, PP1, P2, R).
 list_polynomial_sub_sorted_list_(P1, D1, P2, D2, R):-
 	NZEROES is D1 - D2, padded_list_begin(P2, NZEROES, 0, PP2),
-	zipWith(mon_sub, P1, PP2, R).
+	zip_with(mon_sub, P1, PP2, R).
 
 %list_polynomial_sub_sorted_list([1/4*n^5,5/8*n^4,1/2*n^3,1/8*n^2], [1/12*n^3,1/8*n^2,1/24*n], R).
 
@@ -104,10 +102,10 @@ list_polynomial_sub_list(P1, P2, R):-
 list_polynomial_prod_sorted_list_([], _, [[]]):- !.
 list_polynomial_prod_sorted_list_(_, [], [[]]):- !.
 list_polynomial_prod_sorted_list_([M], L2, [P]):-
-	cartesian_product_by(mon_prod, [M], L2, P2),
+	map(mon_prod(M), L2, P2),
 	padded_poly_mons_decr(P2, P), !.
 list_polynomial_prod_sorted_list_([M|L], L2, [P|Q]):-
-	cartesian_product_by(mon_prod, [M], L2, P2), padded_poly_mons_decr(P2, P),
+	map(mon_prod(M), L2, P2), padded_poly_mons_decr(P2, P),
 	list_polynomial_prod_sorted_list_(L, L2, Q), !.
 
 list_polynomial_prod_sorted_list(L1, L2, L):-

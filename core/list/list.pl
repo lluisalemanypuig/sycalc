@@ -34,9 +34,9 @@ map(F, [X|L], [E|R]):- call(F, X, E), map(F, L, R), !.
 zip([A], [B], [(A, B)]):- !.
 zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S), !.
 
-% F :: a -> b -> a
-zipWith(F, [A], [B], [X]):- call(F, A, B, X), !.
-zipWith(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zipWith(F, L, R, S), !.
+% F :: a -> a -> a
+zip_with(F, [A], [B], [X]):- call(F, A, B, X), !.
+zip_with(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zip_with(F, L, R, S), !.
 
 concat([], L, L).
 concat([A|L], R, [A|C]):- concat(L, R, C).
