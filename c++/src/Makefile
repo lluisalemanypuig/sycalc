@@ -10,14 +10,19 @@ FLAGS = $(OPT)
 
 LINKERS = -lgmp
 
-OBJECTS = $(BIN_DIR)/main.o \
-		  $(BIN_DIR)/integer.o $(BIN_DIR)/rational.o \
-		  $(BIN_DIR)/nested_sums.o \
-		  $(BIN_DIR)/sparse_pascal_triangle.o \
-		  $(BIN_DIR)/dense_pascal_triangle.o
+NUMERIC			= $(BIN_DIR)/integer.o \
+				  $(BIN_DIR)/rational.o
+ALGORITHMS		= $(BIN_DIR)/nested_sums.o
+DATA_STRUCTURES = $(BIN_DIR)/sparse_pascal_triangle.o \
+				  $(BIN_DIR)/dense_pascal_triangle.o
 
-main: $(OBJECTS)
-	g++ $(FLAGS) -o main $(OBJECTS) $(LINKERS)
+OBJECTS = $(BIN_DIR)/tests.o \
+		  $(NUMERIC) \
+		  $(NESTED_SUMS) \
+		  $(DATA_STRUCTURES)
+
+tests: $(OBJECTS)
+	g++ $(FLAGS) -o tests $(OBJECTS) $(LINKERS)
 
 include Makefile.rules
 
@@ -26,4 +31,4 @@ clean:
 
 distclean:
 	make clean
-	rm -f main
+	rm -f tests

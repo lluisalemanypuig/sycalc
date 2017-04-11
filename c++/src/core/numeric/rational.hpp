@@ -9,6 +9,9 @@
 #include <string>
 using namespace std;
 
+/// Custom includes
+#include "integer.hpp"
+
 class rational {
 	private:
 		mpq_t val;
@@ -16,7 +19,7 @@ class rational {
 	
 	public:
 		rational();
-		rational(int n, unsigned int d);
+		rational(int n, unsigned int d = 1);
 		rational(const char *s, int base = 10);
 		rational(const string& s, int base = 10);
 		rational(const rational& v);
@@ -25,8 +28,8 @@ class rational {
 		/* ALLOC AND DEALLOC */
 		
 		void init();
-		void init_si(int n, unsigned int d);
-		void init_ui(unsigned int n, unsigned int d);
+		void init_si(int n, unsigned int d = 1);
+		void init_ui(unsigned int n, unsigned int d = 1);
 		void init(const char *s, int base = 10);
 		void init(const string& s, int base = 10);
 		void init(const rational& v);
@@ -35,8 +38,8 @@ class rational {
 		
 		/* SET VALUE */
 		
-		void set_si(int v, unsigned int d);
-		void set_ui(unsigned int n, unsigned int d);
+		void set_si(int v, unsigned int d = 1);
+		void set_ui(unsigned int n, unsigned int d = 1);
 		void set(const char *s, int base = 10);
 		void set(const string& s, int base = 10);
 		void set(const rational& v);
@@ -96,6 +99,10 @@ class rational {
 		rational& operator*= (const char *s);
 		rational& operator*= (const string& s);
 		rational& operator*= (const rational& v);
+		
+		rational operator^ (unsigned int p) const;
+		//rational operator^ (const integer& p) const;
+		rational& operator^= (unsigned int p);
 		
 		inline friend
 		ostream& operator<< (ostream& os, const rational& v) {

@@ -1,10 +1,14 @@
 include Makefile.dependencies
 
+# NUMERIC
+
 $(BIN_DIR)/integer.o: $(NUM_DIR)/integer.cpp $(INTEGER_DPS)
 	g++ $(FLAGS) -c $< -o $@ 
 
 $(BIN_DIR)/rational.o: $(NUM_DIR)/rational.cpp $(RATIONAL_DPS)
 	g++ $(FLAGS) -c $< -o $@ 
+
+# DATA STRUCTURES
 
 $(BIN_DIR)/dense_pascal_triangle.o: $(COR_DIR)/dense_pascal_triangle.cpp $(DENSE_PAS_TRI_DPS)
 	g++ $(FLAGS) -c $< -o $@ -I $(NUM_DIR)
@@ -12,8 +16,12 @@ $(BIN_DIR)/dense_pascal_triangle.o: $(COR_DIR)/dense_pascal_triangle.cpp $(DENSE
 $(BIN_DIR)/sparse_pascal_triangle.o: $(COR_DIR)/sparse_pascal_triangle.cpp $(SPARSE_PAS_TRI_DPS)
 	g++ $(FLAGS) -c $< -o $@ -I $(NUM_DIR)
 
+# ALGORITHMS
+
 $(BIN_DIR)/nested_sums.o: $(ALG_DIR)/nested_sums.cpp
 	g++ $(FLAGS) -c $< -o $@ -I $(COR_DIR) -I $(NUM_DIR)
 
-$(BIN_DIR)/main.o: $(SRC_DIR)/main.cpp $(MAIN_DPS)
+# TESTS
+
+$(BIN_DIR)/tests.o: $(SRC_DIR)/tests.cpp $(TESTS_DPS)
 	g++ $(FLAGS) -c $< -o $@ -I $(COR_DIR) -I $(NUM_DIR)
