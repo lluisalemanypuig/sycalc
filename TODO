@@ -2,3 +2,4 @@ C++ version:
 
 TODO LIST:
 	- Implement 'polynomial' class.
+	- Make the sparse Pascal's triangle actually sparse!
