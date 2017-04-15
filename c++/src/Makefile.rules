@@ -32,4 +32,4 @@ $(BIN_DIR)/nested_sums.o: $(ALG_DIR)/nested_sums.cpp
 # TESTS
 
 $(BIN_DIR)/tests.o: $(SRC_DIR)/tests.cpp $(TESTS_DPS)
-	g++ $(FLAGS) -c $< -o $@ -I $(COR_DIR) -I $(NUM_DIR)
+	g++ $(FLAGS) -c $< -o $@ -I $(COR_DIR) -I $(NUM_DIR) -I $(MSC_DIR)

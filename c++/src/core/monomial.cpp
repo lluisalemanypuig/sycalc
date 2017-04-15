@@ -16,7 +16,7 @@ monomial::monomial() {
 	var = "anon";
 }
 
-monomial::monomial(const rational& coef, const integer& exp, const string& var_name) {
+monomial::monomial(const rational& coef, const string& var_name, const integer& exp) {
 	c = coef;
 	var = var_name;
 	e = exp;
@@ -52,29 +52,102 @@ bool monomial::operator!= (const monomial& m) const {
 monomial monomial::operator+ (const monomial& m) const {
 	if (e != m.e) {
 		STD_ERR << "Error: cannot operate '" << *this << " + " << m << "'." << endl;
-		return monomial(0, 1, "anon");
+		return monomial(0, "anon", 1);
 	}
 	
-	return monomial(c + m.c, e, var);
+	return monomial(c + m.c, var, e);
+}
+
+monomial& monomial::operator+= (const monomial& m) {
+	if (e != m.e) {
+		STD_ERR << "Error: cannot operate '" << *this << " + " << m << "'." << endl;
+		return *this;
+	}
+	
+	c += m.c;
+	return *this;
 }
 
 monomial monomial::operator- (const monomial& m) const {
 	if (e != m.e) {
 		STD_ERR << "Error: cannot operate '" << *this << " - " << m << "'." << endl;
-		return monomial(0, 1, "anon");
+		return monomial(0, "anon", 1);
 	}
 	
-	return monomial(c - m.c, e, var);
+	return monomial(c - m.c, var, e);
+}
+
+monomial& monomial::operator-= (const monomial& m) {
+	if (e != m.e) {
+		STD_ERR << "Error: cannot operate '" << *this << " - " << m << "'." << endl;
+		return *this;
+	}
+	
+	c -= m.c;
+	return *this;
 }
 
 monomial monomial::operator* (const monomial& m) const {
-	return monomial(c*m.c, e + m.e, var);
+	return monomial(c*m.c, var, e + m.e);
+}
+
+monomial& monomial::operator*= (const monomial& m) {
+	c *= m.c;
+	e += m.e;
+	return *this;
+}
+
+/* SETTERS */
+
+void monomial::set_var_name(const string& n) {
+	var = n;
+}
+
+void monomial::set_coefficient(const rational& r) {
+	c = r;
+}
+
+void monomial::set_exponent(const integer& i) {
+	e = i;
 }
 
 /* GETTERS */
 
 const string& monomial::get_var_name() const {
 	return var;
+}
+
+const rational& monomial::get_coefficient() const {
+	return c;
+}
+
+const integer& monomial::get_exponent() const {
+	return e;
+}
+
+string monomial::get_raw_string() const {
+	return c.to_string() + "*" + var + "^" + e.to_string();
+}
+
+string monomial::get_pretty_string() const {
+	string p = "";
+	if (e == 0) {
+		p += "1";
+	}
+	else if (c != 0) {
+		if (c != 1) {
+			p += c.to_string() + "*";
+		}
+		p += var;
+		
+		if (e != 1) {
+			p += "^" + e.to_string();
+		}
+	}
+	else {
+		p += "0";
+	}
+	return p;
 }
 
 }

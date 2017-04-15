@@ -22,7 +22,7 @@ class monomial {
 	
 	public:
 		monomial();
-		monomial(const rational& coef, const integer& exp, const string& var_name = "x");
+		monomial(const rational& coef, const string& var_name, const integer& exp);
 		~monomial();
 		
 		rational eval(const rational& r) const;
@@ -37,31 +37,34 @@ class monomial {
 		bool operator!= (const monomial& m) const;
 		
 		monomial operator+ (const monomial& m) const;
+		monomial& operator+= (const monomial& m);
+		
 		monomial operator- (const monomial& m) const;
+		monomial& operator-= (const monomial& m);
+		
 		monomial operator* (const monomial& m) const;
+		monomial& operator*= (const monomial& m);
 		
 		inline friend
 		ostream& operator<< (ostream& os, const monomial& m) {
-			if (m.e == 0) {
-				os << "1";
-			}
-			else {
-				if (m.c != 1) {
-					os << m.c;
-				}
-				os << m.var;
-				
-				if (m.e != 1) {
-					os << "^" << m.e;
-				}
-			}
+			os << m.get_pretty_string();
 			return os;
 		}
+		
+		/* SETTERS */
+		
+		void set_var_name(const string& n);
+		void set_coefficient(const rational& r);
+		void set_exponent(const integer& i);
 		
 		/* GETTERS */
 		
 		const string& get_var_name() const;
+		const rational& get_coefficient() const;
+		const integer& get_exponent() const;
 		
+		string get_raw_string() const;
+		string get_pretty_string() const;
 };
 
 }
