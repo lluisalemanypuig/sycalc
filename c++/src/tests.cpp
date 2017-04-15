@@ -65,14 +65,6 @@ void integer_test() {
 	cout << "    one == 1 ? " << fbts(one == "1") << endl;
 	
 	cout << endl;
-	
-	integer read_from_stdin;
-	
-	cout << "Enter integer value: "; cin >> read_from_stdin;
-	cout << "    Integer value read: " << read_from_stdin << endl;
-	
-	cout << "Enter integer value: "; cin >> read_from_stdin;
-	cout << "    Integer value read: " << read_from_stdin << endl;
 }
 
 void rational_test() {
@@ -96,6 +88,9 @@ void rational_test() {
 	one_eigth ^= four;
 	cout << "    (1/8)^4 = " << (one_eigth) << endl;
 	
+	cout << "    rational 4/1: " << rational("4/1") << endl;
+	cout << "    rational from integer 4: " << rational(integer(4)) << endl;
+	
 	cout << endl;
 }
 
@@ -109,14 +104,10 @@ void triangle_test() {
 	cout << ptri << endl;
 	
 	ptri.fill_rows(15);
-	ptri.fill();
 	cout << ptri << endl;
 	
 	cout << ptri.get_binomial(15, 3) << endl;
 	cout << ptri.get_binomial(16, 3) << endl;
-	cout << ptri << endl;
-	
-	cout << ptri.get_binomial(200, 3) << endl;
 	cout << ptri << endl;
 	
 	cout << endl;
@@ -125,5 +116,6 @@ void triangle_test() {
 int main(int argc, char *argv[]) {
 	integer_test();
 	rational_test();
+	triangle_test();
 }
 

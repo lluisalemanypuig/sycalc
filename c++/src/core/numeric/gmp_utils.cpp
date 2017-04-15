@@ -34,6 +34,14 @@ namespace gmp_utils {
 			mpz_clear(e_minus_one);
 		}
 	}
+	
+	void zero(mpz_t& z) {
+		mpz_init_set_ui(z, 0);
+	}
+	
+	void one(mpz_t& o) {
+		mpz_init_set_ui(o, 1);
+	}
 
 }
 }

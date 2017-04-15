@@ -26,6 +26,7 @@ class rational {
 		rational(int n, unsigned int d = 1);
 		rational(const char *s, int base = 10);
 		rational(const string& s, int base = 10);
+		rational(const integer& v);
 		rational(const rational& v);
 		~rational();
 		
@@ -36,6 +37,7 @@ class rational {
 		void init_ui(unsigned int n, unsigned int d = 1);
 		void init(const char *s, int base = 10);
 		void init(const string& s, int base = 10);
+		void init(const integer& v);
 		void init(const rational& v);
 		
 		void clear();
@@ -46,62 +48,89 @@ class rational {
 		void set_ui(unsigned int n, unsigned int d = 1);
 		void set(const char *s, int base = 10);
 		void set(const string& s, int base = 10);
+		void set(const integer& v);
 		void set(const rational& v);
 		
 		/* OPERATORS */
 		
+		rational& operator= (int i);
 		rational& operator= (const char *s);
 		rational& operator= (const string& s);
+		rational& operator= (const integer& v);
 		rational& operator= (const rational& v);
 		
+		bool operator== (int i) const;
 		bool operator== (const char *s) const;
 		bool operator== (const string& s) const;
+		bool operator== (const integer& v) const;
 		bool operator== (const rational& v) const;
 		
+		bool operator!= (int i) const;
 		bool operator!= (const char *s) const;
 		bool operator!= (const string& s) const;
+		bool operator!= (const integer& v) const;
 		bool operator!= (const rational& v) const;
 		
+		bool operator< (int i) const;
 		bool operator< (const char *s) const;
 		bool operator< (const string& s) const;
+		bool operator< (const integer& v) const;
 		bool operator< (const rational& v) const;
 		
+		bool operator<= (int i) const;
 		bool operator<= (const char *s) const;
 		bool operator<= (const string& s) const;
+		bool operator<= (const integer& v) const;
 		bool operator<= (const rational& v) const;
 		
+		bool operator> (int i) const;
 		bool operator> (const char *s) const;
 		bool operator> (const string& s) const;
+		bool operator> (const integer& v) const;
 		bool operator> (const rational& v) const;
 		
+		bool operator>= (int i) const;
 		bool operator>= (const char *s) const;
 		bool operator>= (const string& s) const;
+		bool operator>= (const integer& v) const;
 		bool operator>= (const rational& v) const;
 		
+		rational operator+ (int i) const;
 		rational operator+ (const char *s) const;
 		rational operator+ (const string& s) const;
+		rational operator+ (const integer& v) const;
 		rational operator+ (const rational& v) const;
 		
+		rational& operator+= (int i);
 		rational& operator+= (const char *s);
 		rational& operator+= (const string& s);
+		rational& operator+= (const integer& v);
 		rational& operator+= (const rational& v);
 		
 		rational operator- () const;
+		rational operator- (int i) const;
 		rational operator- (const char *s) const;
 		rational operator- (const string& s) const;
+		rational operator- (const integer& v) const;
 		rational operator- (const rational& v) const;
 		
 		rational& operator- ();
+		rational& operator-= (int i);
 		rational& operator-= (const char *s);
 		rational& operator-= (const string& s);
+		rational& operator-= (const integer& v);
 		rational& operator-= (const rational& v);
 		
+		rational operator* (int i) const;
 		rational operator* (const char *s) const;
 		rational operator* (const string& s) const;
+		rational operator* (const integer& v) const;
 		rational operator* (const rational& v) const;
 		
+		rational& operator*= (int i);
 		rational& operator*= (const char *s);
 		rational& operator*= (const string& s);
+		rational& operator*= (const integer& v);
 		rational& operator*= (const rational& v);
 		
 		rational operator^ (unsigned int p) const;
@@ -133,6 +162,19 @@ class rational {
 		
 		string to_string() const;
 		void to_string(string& s) const;
+		
+		static inline
+		rational from_int_to_rat(const integer& i) {
+			rational r;
+			r.init();
+			mpq_set_num(r.val, i.get_raw_value());
+			
+			mpz_t one;
+			gmp_utils::one(one);
+			
+			mpq_set_den(r.val, one);
+			return r;
+		}
 };
 
 }

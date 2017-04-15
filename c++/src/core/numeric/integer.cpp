@@ -120,10 +120,10 @@ bool integer::operator== (const char *s) const		{ integer k(s);	return mpz_cmp(v
 bool integer::operator== (const string& s) const	{ integer k(s);	return mpz_cmp(val, k.val) == 0; }
 bool integer::operator== (const integer& v) const 	{ 				return mpz_cmp(val, v.val) == 0; }
 
-bool integer::operator!= (int v) const				{ 				return mpz_cmp_si(val, v) != 0; }
-bool integer::operator!= (const char *s) const		{ integer k(s); return mpz_cmp(val, k.val) != 0; }
-bool integer::operator!= (const string& s) const	{ integer k(s); return mpz_cmp(val, k.val) != 0; }
-bool integer::operator!= (const integer& v) const	{ 				return mpz_cmp(val, v.val) != 0; }
+bool integer::operator!= (int v) const				{ return not (*this == v); }
+bool integer::operator!= (const char *s) const		{ return not (*this == s); }
+bool integer::operator!= (const string& s) const	{ return not (*this == s); }
+bool integer::operator!= (const integer& v) const	{ return not (*this == v); }
 
 bool integer::operator< (int v) const 				{ 				return mpz_cmp_si(val, v) < 0; }
 bool integer::operator< (const char *s) const		{ integer k(s);	return mpz_cmp(val, k.val) < 0; }
@@ -181,7 +181,7 @@ integer integer::operator^ (unsigned int v)	 const	{ integer a(*this); mpz_pow_u
 integer integer::operator^ (const integer& i) const {
 	integer r;
 	r.init();
-	sycalc::core::numeric::gmp_utils::mpz_pow_mpz(r.val, val, i.val);
+	gmp_utils::mpz_pow_mpz(r.val, val, i.val);
 	return r;
 }
 
@@ -190,7 +190,7 @@ integer& integer::operator^= (unsigned int i) {
 }
 
 integer& integer::operator^= (const integer& i) {
-	sycalc::core::numeric::gmp_utils::mpz_pow_mpz(val, val, i.val);
+	gmp_utils::mpz_pow_mpz(val, val, i.val);
 	return *this;
 }
 
@@ -204,7 +204,9 @@ int integer::get_sign() const {
 	return mpz_sgn(val);
 }
 
-const mpz_t& integer::get_raw_value() const	{ return val; }
+const mpz_t& integer::get_raw_value() const	{
+	return val;
+}
 
 /* CONVERTERS */
 

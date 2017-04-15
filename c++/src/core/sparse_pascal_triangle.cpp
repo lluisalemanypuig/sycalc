@@ -5,8 +5,6 @@ namespace core {
 
 /// PRIVATE
 
-/// PROTECTED
-
 void sparse_pascal_triangle::compute_binom(size_t n, size_t k) {
 	iter it = find(binom[n], k);
 	if (it != binom[n].end() && it->second != -1) return;

@@ -5,8 +5,6 @@ namespace core {
 
 /// PRIVATE
 
-/// PROTECTED
-
 void dense_pascal_triangle::compute_binom(size_t n, size_t k) {
 	if (binom[n][k] != -1) return;
 	
