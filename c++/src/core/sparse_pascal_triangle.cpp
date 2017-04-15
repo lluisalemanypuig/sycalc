@@ -1,9 +1,9 @@
 #include "sparse_pascal_triangle.hpp"
 
-/// PRIVATE
+namespace sycalc {
+namespace core {
 
-#include <iostream>
-using namespace std;
+/// PRIVATE
 
 /// PROTECTED
 
@@ -78,5 +78,8 @@ const integer& sparse_pascal_triangle::get_binomial(size_t n, size_t k) const {
 
 bool sparse_pascal_triangle::exists(size_t n, size_t k) const {
 	return cfind(binom[n], k) != binom[n].end();
+}
+
+}
 }
 

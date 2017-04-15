@@ -13,6 +13,10 @@ using namespace std;
 #include "core/sparse_pascal_triangle.hpp"
 #include "algorithms.hpp"
 
+using namespace sycalc;
+using namespace core;
+using namespace numeric;
+
 size_t partial_sum(size_t a, size_t b, size_t k) {
 	size_t s = 0;
 	if (k == 1) {
@@ -39,6 +43,7 @@ void integer_test() {
 	
 	integer two(2);
 	cout << "    2^2 = " << (two^2) << endl;
+	cout << "    2^2 = " << (two^two) << endl;
 	
 	integer three(3), five(5);
 	cout << "    3 + 5= " << three + five << endl;
@@ -60,6 +65,14 @@ void integer_test() {
 	cout << "    one == 1 ? " << fbts(one == "1") << endl;
 	
 	cout << endl;
+	
+	integer read_from_stdin;
+	
+	cout << "Enter integer value: "; cin >> read_from_stdin;
+	cout << "    Integer value read: " << read_from_stdin << endl;
+	
+	cout << "Enter integer value: "; cin >> read_from_stdin;
+	cout << "    Integer value read: " << read_from_stdin << endl;
 }
 
 void rational_test() {
@@ -75,6 +88,13 @@ void rational_test() {
 	r1 ^= 4;
 	cout << "    (1/3)^4 ^= " << r1 << endl;
 	cout << "    (1/3)^4^4 = " << (r1^4) << endl;
+	
+	rational one_eigth("1/8");
+	integer four(4);
+	cout << "    (1/8)^4 = " << (one_eigth^four) << endl;
+	
+	one_eigth ^= four;
+	cout << "    (1/8)^4 = " << (one_eigth) << endl;
 	
 	cout << endl;
 }

@@ -1,9 +1,9 @@
 #include "dense_pascal_triangle.hpp"
 
-/// PRIVATE
+namespace sycalc {
+namespace core {
 
-#include <iostream>
-using namespace std;
+/// PRIVATE
 
 /// PROTECTED
 
@@ -68,5 +68,8 @@ integer& dense_pascal_triangle::get_binomial(size_t n, size_t k) {
 
 const integer& dense_pascal_triangle::get_binomial(size_t n, size_t k) const {
 	return binom[n][k];
+}
+
+}
 }
 

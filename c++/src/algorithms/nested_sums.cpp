@@ -4,6 +4,7 @@
 
 /// PUBLIC
 
+namespace sycalc {
 namespace algorithms {
 	
 	void recursive_nested_sums(size_t a, size_t b, size_t k, integer& s) {
@@ -17,5 +18,6 @@ namespace algorithms {
 		}
 	}
 	
+}
 }
 

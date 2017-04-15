@@ -8,6 +8,9 @@ $(BIN_DIR)/integer.o: $(NUM_DIR)/integer.cpp $(INTEGER_DPS)
 $(BIN_DIR)/rational.o: $(NUM_DIR)/rational.cpp $(RATIONAL_DPS)
 	g++ $(FLAGS) -c $< -o $@ 
 
+$(BIN_DIR)/gmp_utils.o: $(NUM_DIR)/gmp_utils.cpp $(RATIONAL_DPS)
+	g++ $(FLAGS) -c $< -o $@ 
+
 # DATA STRUCTURES
 
 $(BIN_DIR)/dense_pascal_triangle.o: $(COR_DIR)/dense_pascal_triangle.cpp $(DENSE_PAS_TRI_DPS)

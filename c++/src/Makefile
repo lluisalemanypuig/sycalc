@@ -11,7 +11,8 @@ FLAGS = $(OPT)
 LINKERS = -lgmp
 
 NUMERIC			= $(BIN_DIR)/integer.o \
-				  $(BIN_DIR)/rational.o
+				  $(BIN_DIR)/rational.o \
+				  $(BIN_DIR)/gmp_utils.o
 ALGORITHMS		= $(BIN_DIR)/nested_sums.o
 DATA_STRUCTURES = $(BIN_DIR)/sparse_pascal_triangle.o \
 				  $(BIN_DIR)/dense_pascal_triangle.o

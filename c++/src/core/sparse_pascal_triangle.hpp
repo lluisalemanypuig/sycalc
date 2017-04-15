@@ -13,6 +13,11 @@ using namespace std;
 /// Custom includes
 #include "integer.hpp"
 
+namespace sycalc {
+namespace core {
+
+using namespace numeric;
+
 class sparse_pascal_triangle {
 	private:
 		typedef pair<int, integer> atom;
@@ -101,5 +106,6 @@ class sparse_pascal_triangle {
 		bool exists(size_t n, size_t k) const;
 };
 
-
+}
+}
 

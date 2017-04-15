@@ -12,6 +12,10 @@ using namespace std;
 /// Custom includes
 #include "integer.hpp"
 
+namespace sycalc {
+namespace core {
+namespace numeric {
+
 class rational {
 	private:
 		mpq_t val;
@@ -101,8 +105,18 @@ class rational {
 		rational& operator*= (const rational& v);
 		
 		rational operator^ (unsigned int p) const;
-		//rational operator^ (const integer& p) const;
+		rational operator^ (const integer& p) const;
+		
 		rational& operator^= (unsigned int p);
+		rational& operator^= (const integer& p);
+		
+		inline friend
+		istream& operator>> (istream& is, rational& r) {
+			string s;
+			is >> s;
+			r.set(s, 10);
+			return is;
+		}
 		
 		inline friend
 		ostream& operator<< (ostream& os, const rational& v) {
@@ -121,4 +135,7 @@ class rational {
 		void to_string(string& s) const;
 };
 
+}
+}
+}
 

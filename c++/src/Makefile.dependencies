@@ -1,10 +1,10 @@
-
 #########
 # HEADERS
 
 # NUMERIC
 INTEGER_HPP			= $(NUM_DIR)/integer.hpp
 RATIONAL_HPP		= $(NUM_DIR)/rational.hpp
+GMP_UTILS_HPP		= $(NUM_DIR)/gmp_utils.hpp
 
 # DATA STRUCTURES
 DENSE_PAS_TRI_HPP	= $(COR_DIR)/dense_pascal_triangle.hpp
@@ -19,6 +19,7 @@ ALGORITHMS_HPP		= algorithms.hpp
 # NUMERIC
 INTEGER_DPS			= $(INTEGER_HPP)
 RATIONAL_DPS		= $(RATIONAL_HPP) $(INTEGER_DPS)
+GMP_UTILS_DPS		= $(GMP_UTILS_HPP)
 
 # DATA STRUCTURES
 DENSE_PAS_TRI_DPS	= $(DENSE_PAS_TRI_HPP) $(INTEGER_DPS)

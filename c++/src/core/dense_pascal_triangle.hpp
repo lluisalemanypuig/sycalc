@@ -12,6 +12,11 @@ using namespace std;
 /// Custom includes
 #include "integer.hpp"
 
+namespace sycalc {
+namespace core {
+	
+using namespace numeric;
+
 class dense_pascal_triangle {
 	private:
 		vector<vector<integer> > binom;
@@ -63,4 +68,7 @@ class dense_pascal_triangle {
 		integer& get_binomial(size_t n, size_t k);
 		const integer& get_binomial(size_t n, size_t k) const;
 };
+
+}
+}
 
