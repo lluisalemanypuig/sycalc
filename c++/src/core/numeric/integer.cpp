@@ -12,9 +12,9 @@ integer::integer() {
 	initialized = false;
 }
 
-integer::integer(int v) {
+integer::integer(int i) {
 	initialized = false;
-	init_si(v);
+	init_si(i);
 }
 
 integer::integer(const char *s, int base) {
@@ -27,9 +27,9 @@ integer::integer(const string& s, int base) {
 	init(s, base);
 }
 
-integer::integer(const integer& v) {
+integer::integer(const integer& i) {
 	initialized = false;
-	init(v);
+	init(i);
 }
 
 integer::~integer() {
@@ -45,14 +45,14 @@ void integer::init() {
 	}
 }
 
-void integer::init_si(int v) {
+void integer::init_si(int i) {
 	init();
-	set_si(v);
+	set_si(i);
 }
 
-void integer::init_ui(unsigned int v) {
+void integer::init_ui(unsigned int i) {
 	init();
-	set_ui(v);
+	set_ui(i);
 }
 
 void integer::init(const char *s, int base) {
@@ -65,10 +65,10 @@ void integer::init(const string& s, int base) {
 	set(s, base);
 }
 
-void integer::init(const integer& v) {
-	if (v.is_initialized()) {
+void integer::init(const integer& i) {
+	if (i.is_initialized()) {
 		init();
-		set(v);
+		set(i);
 	}
 }
 
@@ -81,17 +81,17 @@ void integer::clear() {
 
 /* SET VALUE */
 
-void integer::set_si(int v)					{ mpz_set_si(val, v); }
-void integer::set_ui(unsigned int v)		{ mpz_set_ui(val, v); }
+void integer::set_si(int i)					{ mpz_set_si(val, i); }
+void integer::set_ui(unsigned int i)		{ mpz_set_ui(val, i); }
 void integer::set(const char *s, int b)		{ mpz_set_str(val, s, b); }
 void integer::set(const string& s, int b)	{ mpz_set_str(val, s.c_str(), b); }
-void integer::set(const integer& v)			{ mpz_set(val, v.val); }
+void integer::set(const integer& i)			{ mpz_set(val, i.val); }
 
 /* OPERATORS */
 
-integer& integer::operator= (int v) {
-	if (is_initialized()) set_si(v);
-	else init(v);
+integer& integer::operator= (int i) {
+	if (is_initialized()) set_si(i);
+	else init(i);
 	return *this;
 }
 
@@ -107,77 +107,77 @@ integer& integer::operator= (const string& s) {
 	return *this;
 }
 
-integer& integer::operator= (const integer& v) {
-	if (v.is_initialized()) {
-		if (is_initialized()) set(v);
-		else init(v);
+integer& integer::operator= (const integer& i) {
+	if (i.is_initialized()) {
+		if (is_initialized()) set(i);
+		else init(i);
 	}
 	return *this;
 }
 
-bool integer::operator== (int v) const 				{ 				return mpz_cmp_si(val, v) == 0; }
+bool integer::operator== (int i) const 				{ 				return mpz_cmp_si(val, i) == 0; }
 bool integer::operator== (const char *s) const		{ integer k(s);	return mpz_cmp(val, k.val) == 0; }
 bool integer::operator== (const string& s) const	{ integer k(s);	return mpz_cmp(val, k.val) == 0; }
-bool integer::operator== (const integer& v) const 	{ 				return mpz_cmp(val, v.val) == 0; }
+bool integer::operator== (const integer& i) const 	{ 				return mpz_cmp(val, i.val) == 0; }
 
-bool integer::operator!= (int v) const				{ return not (*this == v); }
+bool integer::operator!= (int i) const				{ return not (*this == i); }
 bool integer::operator!= (const char *s) const		{ return not (*this == s); }
 bool integer::operator!= (const string& s) const	{ return not (*this == s); }
-bool integer::operator!= (const integer& v) const	{ return not (*this == v); }
+bool integer::operator!= (const integer& i) const	{ return not (*this == i); }
 
-bool integer::operator< (int v) const 				{ 				return mpz_cmp_si(val, v) < 0; }
+bool integer::operator< (int i) const 				{ 				return mpz_cmp_si(val, i) < 0; }
 bool integer::operator< (const char *s) const		{ integer k(s);	return mpz_cmp(val, k.val) < 0; }
 bool integer::operator< (const string& s) const		{ integer k(s); return mpz_cmp(val, k.val) < 0; }
-bool integer::operator< (const integer& v) const 	{ 				return mpz_cmp(val, v.val) < 0; }
+bool integer::operator< (const integer& i) const 	{ 				return mpz_cmp(val, i.val) < 0; }
 
-bool integer::operator<= (int v) const 				{ 				return mpz_cmp_si(val, v) <= 0; }
+bool integer::operator<= (int i) const 				{ 				return mpz_cmp_si(val, i) <= 0; }
 bool integer::operator<= (const char *s) const		{ integer k(s); return mpz_cmp(val, k.val) <= 0; }
 bool integer::operator<= (const string& s) const	{ integer k(s); return mpz_cmp(val, k.val) <= 0; }
-bool integer::operator<= (const integer& v) const 	{ 				return mpz_cmp(val, v.val) <= 0; }
+bool integer::operator<= (const integer& i) const 	{ 				return mpz_cmp(val, i.val) <= 0; }
 
-bool integer::operator> (int v) const 				{ 				return mpz_cmp_si(val, v) > 0; }
+bool integer::operator> (int i) const 				{ 				return mpz_cmp_si(val, i) > 0; }
 bool integer::operator> (const char *s) const		{ integer k(s); return mpz_cmp(val, k.val) > 0; }
 bool integer::operator> (const string& s) const		{ integer k(s); return mpz_cmp(val, k.val) > 0; }
-bool integer::operator> (const integer& v) const 	{ 				return mpz_cmp(val, v.val) > 0; }
+bool integer::operator> (const integer& i) const 	{ 				return mpz_cmp(val, i.val) > 0; }
 
-bool integer::operator>= (int v) const 				{ 				return mpz_cmp_si(val, v) >= 0; }
+bool integer::operator>= (int i) const 				{ 				return mpz_cmp_si(val, i) >= 0; }
 bool integer::operator>= (const char *s) const		{ integer k(s); return mpz_cmp(val, k.val) >= 0; }
 bool integer::operator>= (const string& s) const	{ integer k(s); return mpz_cmp(val, k.val) >= 0; }
-bool integer::operator>= (const integer& v) const 	{ 				return mpz_cmp(val, v.val) >= 0; }
+bool integer::operator>= (const integer& i) const 	{ 				return mpz_cmp(val, i.val) >= 0; }
 
-integer integer::operator+ (unsigned int v) const	{ integer a(*this); 		mpz_add_ui(a.val, a.val, v); return a; }
+integer integer::operator+ (unsigned int i) const	{ integer a(*this); 		mpz_add_ui(a.val, a.val, i); return a; }
 integer integer::operator+ (const char *s) const	{ integer a(*this), k(s); 	mpz_add(a.val, a.val, k.val); return a; }
 integer integer::operator+ (const string& s) const	{ integer a(*this), k(s); 	mpz_add(a.val, a.val, k.val); return a; }
-integer integer::operator+ (const integer& v) const	{ integer a(*this); 		mpz_add(a.val, a.val, v.val); return a; }
+integer integer::operator+ (const integer& i) const	{ integer a(*this); 		mpz_add(a.val, a.val, i.val); return a; }
 
-integer& integer::operator+= (unsigned int v) 	{ 				mpz_add_ui(val, val, v); return *this; }
+integer& integer::operator+= (unsigned int i) 	{ 				mpz_add_ui(val, val, i); return *this; }
 integer& integer::operator+= (const char *s)	{ integer k(s); mpz_add(val, val, k.val); return *this; }
 integer& integer::operator+= (const string& s)	{ integer k(s); mpz_add(val, val, k.val); return *this; }
-integer& integer::operator+= (const integer& v)	{ 				mpz_add(val, val, v.val); return *this; }
+integer& integer::operator+= (const integer& i)	{ 				mpz_add(val, val, i.val); return *this; }
 
 integer integer::operator- () const					{ integer a(*this);			mpz_neg(a.val, a.val); return a; }
-integer integer::operator- (unsigned int v) const	{ integer a(*this); 		mpz_sub_ui(a.val, a.val, v); return a; }
+integer integer::operator- (unsigned int i) const	{ integer a(*this); 		mpz_sub_ui(a.val, a.val, i); return a; }
 integer integer::operator- (const char *s) const	{ integer a(*this), k(s); 	mpz_sub(a.val, a.val, k.val); return a; }
 integer integer::operator- (const string& s) const	{ integer a(*this), k(s); 	mpz_sub(a.val, a.val, k.val); return a; }
-integer integer::operator- (const integer& v) const	{ integer a(*this); 		mpz_sub(a.val, a.val, v.val); return a; }
+integer integer::operator- (const integer& i) const	{ integer a(*this); 		mpz_sub(a.val, a.val, i.val); return a; }
 
 integer& integer::operator- ()					{ 				mpz_neg(val, val); return *this; }
-integer& integer::operator-= (unsigned int v)	{ 				mpz_sub_ui(val, val, v); return *this; }
+integer& integer::operator-= (unsigned int i)	{ 				mpz_sub_ui(val, val, i); return *this; }
 integer& integer::operator-= (const char *s)	{ integer k(s);	mpz_sub(val, val, k.val); return *this; }
 integer& integer::operator-= (const string& s)	{ integer k(s); mpz_sub(val, val, k.val); return *this; }
-integer& integer::operator-= (const integer& v)	{ 				mpz_sub(val, val, v.val); return *this; }
+integer& integer::operator-= (const integer& i)	{ 				mpz_sub(val, val, i.val); return *this; }
 
-integer integer::operator* (int v) const			{ integer a(*this);			mpz_mul_ui(a.val, a.val, v); return a; }
+integer integer::operator* (int i) const			{ integer a(*this);			mpz_mul_ui(a.val, a.val, i); return a; }
 integer integer::operator* (const char *s) const	{ integer a(*this), k(s);	mpz_mul(a.val, a.val, k.val); return a; }
 integer integer::operator* (const string& s) const	{ integer a(*this), k(s); 	mpz_mul(a.val, a.val, k.val); return a; }
-integer integer::operator* (const integer& v) const	{ integer a(*this);			mpz_mul(a.val, a.val, v.val); return a; }
+integer integer::operator* (const integer& i) const	{ integer a(*this);			mpz_mul(a.val, a.val, i.val); return a; }
 
-integer& integer::operator*= (int v)				{ 				mpz_mul_ui(val, val, v); return *this; }
+integer& integer::operator*= (int i)				{ 				mpz_mul_ui(val, val, i); return *this; }
 integer& integer::operator*= (const char *s)		{ integer k(s); mpz_mul(val, val, k.val); return *this; }
 integer& integer::operator*= (const string& s)		{ integer k(s);	mpz_mul(val, val, k.val); return *this; }
-integer& integer::operator*= (const integer& v)		{ 				mpz_mul(val, val, v.val); return *this; }
+integer& integer::operator*= (const integer& i)		{ 				mpz_mul(val, val, i.val); return *this; }
 
-integer integer::operator^ (unsigned int v)	 const	{ integer a(*this); mpz_pow_ui(a.val, a.val, v); return a; }
+integer integer::operator^ (unsigned int i)	 const	{ integer a(*this); mpz_pow_ui(a.val, a.val, i); return a; }
 integer integer::operator^ (const integer& i) const {
 	integer r;
 	r.init();

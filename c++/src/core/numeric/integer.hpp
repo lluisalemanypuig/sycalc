@@ -150,6 +150,13 @@ class integer {
 		void to_string(string& s) const;
 };
 
+static inline
+void swap(integer& a, integer& b) {
+	integer copy = a;
+	a = b;
+	b = copy;
+}
+
 }
 }
 }
