@@ -23,6 +23,7 @@ class monomial {
 	public:
 		monomial();
 		monomial(const rational& coef, const string& var_name, const integer& exp);
+		monomial(const monomial& m);
 		~monomial();
 		
 		rational eval(const rational& r) const;
@@ -39,6 +40,7 @@ class monomial {
 		monomial operator+ (const monomial& m) const;
 		monomial& operator+= (const monomial& m);
 		
+		monomial operator- () const;
 		monomial operator- (const monomial& m) const;
 		monomial& operator-= (const monomial& m);
 		
@@ -59,13 +61,20 @@ class monomial {
 		
 		/* GETTERS */
 		
-		const string& get_var_name() const;
 		const rational& get_coefficient() const;
+		const string& get_var_name() const;
 		const integer& get_exponent() const;
 		
 		string get_raw_string() const;
 		string get_pretty_string() const;
 };
+
+static inline
+void swap(monomial& a, monomial& b) {
+	monomial copy = a;
+	a = b;
+	b = copy;
+}
 
 }
 }

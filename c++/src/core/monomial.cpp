@@ -13,13 +13,17 @@ namespace core {
 /// PUBLIC
 
 monomial::monomial() {
-	var = "anon";
+	var = "l";
 }
 
 monomial::monomial(const rational& coef, const string& var_name, const integer& exp) {
 	c = coef;
 	var = var_name;
 	e = exp;
+}
+
+monomial::monomial(const monomial& m) {
+	*this = m;
 }
 
 monomial::~monomial() { }
@@ -68,6 +72,10 @@ monomial& monomial::operator+= (const monomial& m) {
 	return *this;
 }
 
+monomial monomial::operator- () const {
+	return monomial(-c, var, e);
+}
+
 monomial monomial::operator- (const monomial& m) const {
 	if (e != m.e) {
 		STD_ERR << "Error: cannot operate '" << *this << " - " << m << "'." << endl;
@@ -113,12 +121,12 @@ void monomial::set_exponent(const integer& i) {
 
 /* GETTERS */
 
-const string& monomial::get_var_name() const {
-	return var;
-}
-
 const rational& monomial::get_coefficient() const {
 	return c;
+}
+
+const string& monomial::get_var_name() const {
+	return var;
 }
 
 const integer& monomial::get_exponent() const {
