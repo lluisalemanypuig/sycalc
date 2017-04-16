@@ -28,21 +28,33 @@ polynomial::polynomial(const polynomial& p) {
 
 polynomial::~polynomial() { }
 
+rational polynomial::evaluate(const rational& r, const string& var_name) const {
+	rational e = 0;
+	for (size_t i = 0; i < ms.size(); ++i) {
+		if (ms[i].get_var_name() == var_name) {
+			e += ms[i].evaluate(r);
+		}
+	}
+	return e;
+}
+
 /* OPERATORS */
 
 polynomial& polynomial::operator= (const monomial& m) {
 	ms = vector<monomial>();
 	ms.push_back(m);
+	return *this;
 }
 
 polynomial& polynomial::operator= (const polynomial& p) {
 	ms = p.ms;
+	return *this;
 }
 
 bool polynomial::operator== (const polynomial& p) const {
 	bool eq = true;
-	size_t m = 0;
 	
+	size_t m = 0;
 	while (m < ms.size() and eq) {
 		if (ms[m] != p.ms[m]) {
 			eq = false;
@@ -57,29 +69,25 @@ bool polynomial::operator!= (const polynomial& p) const {
 	return not (*this == p);
 }
 
-polynomial polynomial::operator+ (const monomial& m) const {
-	polynomial r = *this;
-	r += m;
-	return r;
-}
-
-polynomial polynomial::operator+ (const polynomial& p) const {
-	polynomial r = *this;
-	r += p;
-	return r;
-}
+polynomial polynomial::operator+ (const monomial& m) const		{ polynomial r(*this); r += m; return r; }
+polynomial polynomial::operator+ (const polynomial& p) const	{ polynomial r(*this); r += p; return r; }
 
 polynomial& polynomial::operator+= (const monomial& m) {
-	size_t idx = 0;
-	while (idx < ms.size() and ms[idx].get_exponent() < m.get_exponent()) {
-		++idx;
-	}
-	
-	if (ms[idx].get_exponent() == m.get_exponent()) {
-		ms[idx] += m;
+	if (ms.size() == 0) {
+		ms.push_back(m);
 	}
 	else {
-		add_monomial(m, idx);
+		size_t idx = 0;
+		while (idx < ms.size() and ms[idx].get_exponent() < m.get_exponent()) {
+			++idx;
+		}
+		
+		if (idx < ms.size() and ms[idx].get_exponent() == m.get_exponent()) {
+			ms[idx] += m;
+		}
+		else {
+			add_monomial(m, idx);
+		}
 	}
 	
 	return *this;
@@ -92,17 +100,8 @@ polynomial& polynomial::operator+= (const polynomial& p) {
 	return *this;
 }
 
-polynomial polynomial::operator- (const monomial& m) const {
-	polynomial r = *this;
-	r -= m;
-	return r;
-}
-
-polynomial polynomial::operator- (const polynomial& p) const {
-	polynomial r = *this;
-	r -= p;
-	return r;
-}
+polynomial polynomial::operator- (const monomial& m) const		{ polynomial r(*this); r -= m; return r; }
+polynomial polynomial::operator- (const polynomial& p) const	{ polynomial r(*this); r -= p; return r; }
 
 polynomial& polynomial::operator-= (const monomial& m) {
 	size_t idx = 0;
@@ -127,21 +126,12 @@ polynomial& polynomial::operator-= (const polynomial& p) {
 	return *this;
 }
 
-polynomial polynomial::operator* (const monomial& m) const {
-	polynomial r = *this;
-	r *= m;
-	return r;
-}
-
-polynomial polynomial::operator* (const polynomial& p) const {
-	polynomial r = *this;
-	r *= p;
-	return r;
-}
+polynomial polynomial::operator* (const monomial& m) const		{ polynomial r(*this); r *= m; return r; }
+polynomial polynomial::operator* (const polynomial& p) const	{ polynomial r(*this); r *= p; return r; }
 
 polynomial& polynomial::operator*= (const monomial& m) {
 	for (size_t i = 0; i < ms.size(); ++i) {
-		ms[i] += m;
+		ms[i] *= m;
 	}
 	return *this;
 }
@@ -152,7 +142,7 @@ polynomial& polynomial::operator*= (const polynomial& p) {
 		prod[i] *= p.ms[i];
 	}
 	
-	for (size_t i = 1; i < p.ms.size(); ++i) {
+	for (size_t i = 1; i < prod.size(); ++i) {
 		prod[0] += prod[i];
 	}
 	

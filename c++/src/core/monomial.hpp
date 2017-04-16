@@ -22,12 +22,12 @@ class monomial {
 	
 	public:
 		monomial();
-		monomial(const rational& coef, const string& var_name, const integer& exp);
+		monomial(const rational& coef, const integer& exp, const string& var_name = "l");
 		monomial(const monomial& m);
 		~monomial();
 		
-		rational eval(const rational& r) const;
-		rational eval(const integer& i) const;
+		rational evaluate(const rational& r) const;
+		rational evaluate(const integer& i) const;
 		
 		/* OPERATORS */
 		
@@ -49,7 +49,21 @@ class monomial {
 		
 		inline friend
 		ostream& operator<< (ostream& os, const monomial& m) {
-			os << m.get_pretty_string();
+			if (m.e == 0) {
+				if (m.c != 0) {
+					os << m.c;
+				}
+			}
+			else if (m.c != 0) {
+				if (m.c != 1) {
+					os << m.c << "*";
+				}
+				os << m.var;
+				
+				if (m.e != 1) {
+					os << "^" << m.e;
+				}
+			}
 			return os;
 		}
 		
@@ -66,7 +80,6 @@ class monomial {
 		const integer& get_exponent() const;
 		
 		string get_raw_string() const;
-		string get_pretty_string() const;
 };
 
 static inline

@@ -7,7 +7,16 @@ using namespace std;
 namespace sycalc {
 namespace inout {
 
-#define STD_ERR cerr
+#if defined(SYCALC_DEBUG)
+
+#define DISPLAY_ERR(s)		\
+	cerr << s << endl;
+
+#else
+
+#define DISPLAY_ERR(s)
+
+#endif
 
 }
 }

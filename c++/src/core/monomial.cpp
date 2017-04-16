@@ -5,9 +5,13 @@ namespace core {
 
 /// NON-CLASS PRIVATE
 
-#define EQUAL_VARS(m1, m2)						\
-	if (m1->get_var_name() != m2.get_var_name())
-
+#define ERROR_MSG(m_This, m_Other)				\
+	"(monomial) Error: cannot operate '"	+	\
+	m_This->get_raw_string()				+	\
+	" + "									+ 	\
+	m_Other.get_raw_string()				+	\
+	"'."
+	
 /// PRIVATE
 
 /// PUBLIC
@@ -16,7 +20,7 @@ monomial::monomial() {
 	var = "l";
 }
 
-monomial::monomial(const rational& coef, const string& var_name, const integer& exp) {
+monomial::monomial(const rational& coef, const integer& exp, const string& var_name) {
 	c = coef;
 	var = var_name;
 	e = exp;
@@ -28,11 +32,11 @@ monomial::monomial(const monomial& m) {
 
 monomial::~monomial() { }
 
-rational monomial::eval(const rational& r) const {
+rational monomial::evaluate(const rational& r) const {
 	return c*(r^e);
 }
 
-rational monomial::eval(const integer& i) const {
+rational monomial::evaluate(const integer& i) const {
 	return c*(i^e);
 }
 
@@ -54,17 +58,14 @@ bool monomial::operator!= (const monomial& m) const {
 }
 
 monomial monomial::operator+ (const monomial& m) const {
-	if (e != m.e) {
-		STD_ERR << "Error: cannot operate '" << *this << " + " << m << "'." << endl;
-		return monomial(0, "anon", 1);
-	}
-	
-	return monomial(c + m.c, var, e);
+	monomial r(*this);
+	r += m;
+	return r;
 }
 
 monomial& monomial::operator+= (const monomial& m) {
 	if (e != m.e) {
-		STD_ERR << "Error: cannot operate '" << *this << " + " << m << "'." << endl;
+		DISPLAY_ERR(ERROR_MSG(this, m));
 		return *this;
 	}
 	
@@ -73,21 +74,18 @@ monomial& monomial::operator+= (const monomial& m) {
 }
 
 monomial monomial::operator- () const {
-	return monomial(-c, var, e);
+	return monomial(-c, e, var);
 }
 
 monomial monomial::operator- (const monomial& m) const {
-	if (e != m.e) {
-		STD_ERR << "Error: cannot operate '" << *this << " - " << m << "'." << endl;
-		return monomial(0, "anon", 1);
-	}
-	
-	return monomial(c - m.c, var, e);
+	monomial r(*this);
+	r -= m;
+	return r;
 }
 
 monomial& monomial::operator-= (const monomial& m) {
 	if (e != m.e) {
-		STD_ERR << "Error: cannot operate '" << *this << " - " << m << "'." << endl;
+		DISPLAY_ERR(ERROR_MSG(this, m));
 		return *this;
 	}
 	
@@ -96,7 +94,9 @@ monomial& monomial::operator-= (const monomial& m) {
 }
 
 monomial monomial::operator* (const monomial& m) const {
-	return monomial(c*m.c, var, e + m.e);
+	monomial r(*this);
+	r *= m;
+	return r;
 }
 
 monomial& monomial::operator*= (const monomial& m) {
@@ -135,27 +135,6 @@ const integer& monomial::get_exponent() const {
 
 string monomial::get_raw_string() const {
 	return c.to_string() + "*" + var + "^" + e.to_string();
-}
-
-string monomial::get_pretty_string() const {
-	string p = "";
-	if (e == 0) {
-		p += "1";
-	}
-	else if (c != 0) {
-		if (c != 1) {
-			p += c.to_string() + "*";
-		}
-		p += var;
-		
-		if (e != 1) {
-			p += "^" + e.to_string();
-		}
-	}
-	else {
-		p += "0";
-	}
-	return p;
 }
 
 }

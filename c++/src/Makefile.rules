@@ -1,5 +1,7 @@
 include Makefile.dependencies
 
+# -- CORE
+
 # NUMERIC
 
 $(BIN_DIR)/integer.o: $(NUM_DIR)/integer.cpp $(INTEGER_DPS)
@@ -26,6 +28,8 @@ $(BIN_DIR)/monomial.o: $(COR_DIR)/monomial.cpp $(MONOMIAL_DPS)
 
 $(BIN_DIR)/polynomial.o: $(COR_DIR)/polynomial.cpp $(POLYNOMIAL_DPS)
 	g++ $(FLAGS) -c $< -o $@ -I $(NUM_DIR) -I $(MSC_DIR)
+
+# -- ALGORITHMS
 
 # ALGORITHMS
 

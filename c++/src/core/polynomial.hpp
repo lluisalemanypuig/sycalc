@@ -29,6 +29,8 @@ class polynomial {
 		polynomial(const polynomial& p);
 		~polynomial();
 		
+		rational evaluate(const rational& r, const string& var_name = "l") const;
+		
 		/* OPERATORS */
 		
 		polynomial& operator= (const monomial& m);
@@ -63,7 +65,7 @@ class polynomial {
 					os << " + " << p.ms[m];
 				}
 				else {
-					os << " " << p.ms[m];
+					os << " - " << -p.ms[m];
 				}
 			}
 			return os;

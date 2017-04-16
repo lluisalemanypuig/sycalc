@@ -11,6 +11,7 @@ using namespace std;
 
 #include "core/dense_pascal_triangle.hpp"
 #include "core/sparse_pascal_triangle.hpp"
+#include "core/polynomial.hpp"
 #include "core/monomial.hpp"
 
 #include "algorithms.hpp"
@@ -30,6 +31,58 @@ size_t partial_sum(size_t a, size_t b, size_t k) {
 		s += partial_sum(a, i, k - 1);
 	}
 	return s;
+}
+
+void triangle_test() {
+	cout << "Triangles tests" << endl;
+	
+	cout << "-- Dense Pascal Triangle" << endl;
+	
+	dense_pascal_triangle dptri;
+	dptri.init(10);
+	cout << "After init(10)" << endl;
+	cout << dptri << endl;
+	
+	dptri.fill();
+	cout << "After fill()" << endl;
+	cout << dptri << endl;
+	
+	cout << "After fill_rows(15)" << endl;
+	dptri.fill_rows(15);
+	cout << dptri << endl;
+	
+	cout << dptri.get_binomial(15, 3) << endl;
+	cout << dptri.get_binomial(16, 3) << endl;
+	cout << dptri.get_binomial(16, 9) << endl;
+	cout << dptri.get_binomial(16, 14) << endl;
+	
+	cout << "After computing some particular values of the triangle:" << endl;
+	cout << dptri << endl;
+	
+	cout << "-- Sparse Pascal Triangle" << endl;
+	
+	sparse_pascal_triangle ptri;
+	ptri.init(10);
+	cout << "After init(10)" << endl;
+	cout << ptri << endl;
+	
+	ptri.fill();
+	cout << "After fill()" << endl;
+	cout << ptri << endl;
+	
+	cout << "After fill_rows(15)" << endl;
+	ptri.fill_rows(15);
+	cout << ptri << endl;
+	
+	cout << ptri.get_binomial(15, 3) << endl;
+	cout << ptri.get_binomial(16, 3) << endl;
+	cout << ptri.get_binomial(16, 9) << endl;
+	cout << ptri.get_binomial(16, 14) << endl;
+	
+	cout << "After computing some particular values of the triangle:" << endl;
+	cout << ptri << endl;
+	
+	cout << endl;
 }
 
 // from bool to string
@@ -97,76 +150,62 @@ void rational_test() {
 }
 
 void monomial_test() {
-	monomial m1(3, "x", 2);
-	monomial m2(5, "x", 2);
+	monomial m1(3, 2);
+	monomial m2(5, 2);
 	
 	cout << m1 << " + " << m2 << " = " << m1 + m2 << endl;
 	cout << m1 << " - " << m2 << " = " << m1 - m2 << endl;
 	
-	monomial m12(3, "x", 2);
-	monomial m22(5, "x", 3);
+	monomial m12(3, 3);
+	monomial m22("7/2", 3);
 	
 	cout << m12 << " + " << m22 << " = " << m12 + m22 << endl;
 	cout << m12 << " - " << m22 << " = " << m12 - m22 << endl;
 	
-	monomial m3(3, "x", 2);
-	monomial m4(5, "x", 5);
+	monomial m3(3, 2);
+	monomial m4(5, 5);
 	cout << m3 << " * " << m4 << " = " << m3 * m4 << endl;
-}
-
-void triangle_test() {
-	cout << "Triangles tests" << endl;
 	
-	cout << "-- Dense Pascal Triangle" << endl;
+	cout << "- (3*l^234) = " << -monomial(3, "234") << endl;
+	cout << endl;
 	
-	dense_pascal_triangle dptri;
-	dptri.init(10);
-	cout << "After init(10)" << endl;
-	cout << dptri << endl;
-	
-	dptri.fill();
-	cout << "After fill()" << endl;
-	cout << dptri << endl;
-	
-	cout << "After fill_rows(15)" << endl;
-	dptri.fill_rows(15);
-	cout << dptri << endl;
-	
-	cout << dptri.get_binomial(15, 3) << endl;
-	cout << dptri.get_binomial(16, 3) << endl;
-	cout << dptri.get_binomial(16, 9) << endl;
-	cout << dptri.get_binomial(16, 14) << endl;
-	
-	cout << "After computing some particular values of the triangle:" << endl;
-	cout << dptri << endl;
-	
-	cout << "-- Sparse Pascal Triangle" << endl;
-	
-	sparse_pascal_triangle ptri;
-	ptri.init(10);
-	cout << "After init(10)" << endl;
-	cout << ptri << endl;
-	
-	ptri.fill();
-	cout << "After fill()" << endl;
-	cout << ptri << endl;
-	
-	cout << "After fill_rows(15)" << endl;
-	ptri.fill_rows(15);
-	cout << ptri << endl;
-	
-	cout << ptri.get_binomial(15, 3) << endl;
-	cout << ptri.get_binomial(16, 3) << endl;
-	cout << ptri.get_binomial(16, 9) << endl;
-	cout << ptri.get_binomial(16, 14) << endl;
-	
-	cout << "After computing some particular values of the triangle:" << endl;
-	cout << ptri << endl;
-	
+	cout << "Pushing into vector" << endl;
+	vector<monomial> v;
+	v.push_back(m1);
+	v.push_back(m2);
+	v.push_back(monomial(1, 2));
+	v.push_back(monomial("1/3", 2));
 	cout << endl;
 }
 
+void polynomial_test() {
+	polynomial p1;
+	p1 += monomial(-3, 4);
+	p1 += monomial(-3, 2);
+	p1 += monomial(-3, 1);
+	p1 += monomial(-3, 3);
+	
+	cout << "p1(x)= " << p1 << endl;
+	cout << "p1(3)= " << p1.evaluate(3) << endl;
+	cout << endl;
+	
+	polynomial p2;
+	p2 += monomial( 2, 0);
+	p2 += monomial(-1, 4);
+	p2 += monomial( 4, 2);
+	p2 += monomial("-25/3", 1);
+	p2 += monomial( "1/4", 25);
+	cout << "p2(x)= " << p2 << endl;
+	cout << "p2(3)= " << p2.evaluate(3) << endl;
+	cout << endl;
+	
+	cout << "p1(x)*x = " << p1*monomial(1, 1) << endl;
+	cout << "(p1*p2)(x) = " << p1*p2 << endl;
+	cout << "(p1*p2)(3) = " << (p1*p2).evaluate(3) << endl;
+}
+
 int main(int argc, char *argv[]) {
-	triangle_test();
+	//monomial_test();
+	polynomial_test();
 }
 

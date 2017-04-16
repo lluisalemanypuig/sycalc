@@ -11,6 +11,8 @@ FLAGS = $(OPT)
 
 LINKERS = -lgmp
 
+# -- CORE
+
 NUMERIC			= $(BIN_DIR)/integer.o \
 				  $(BIN_DIR)/rational.o \
 				  $(BIN_DIR)/gmp_utils.o
@@ -21,8 +23,11 @@ DATA_STRUCTURES = $(BIN_DIR)/sparse_pascal_triangle.o \
 SYMBOLIC		= $(BIN_DIR)/monomial.o \
 				  $(BIN_DIR)/polynomial.o
 
+# -- ALGORITHMS
+
 ALGORITHMS		= $(BIN_DIR)/nested_sums.o
 
+# EVERYTHING
 OBJECTS 		= $(BIN_DIR)/tests.o \
 				  $(NUMERIC) \
 				  $(DATA_STRUCTURES) \
