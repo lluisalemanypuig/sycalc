@@ -8,6 +8,7 @@
 #include <utility>
 #include <fstream>
 #include <vector>
+#include <list>
 using namespace std;
 
 /// Custom includes
@@ -21,47 +22,71 @@ using namespace numeric;
 class sparse_pascal_triangle {
 	private:
 		typedef pair<int, integer> atom;
-		typedef vector<atom>::const_iterator citer;
-		typedef vector<atom>::iterator iter;
+		typedef list<atom> tri_row;
+		
+		typedef tri_row::const_iterator citer;
+		typedef tri_row::iterator iter;
 		
 		inline static
-		iter find(vector<atom>& v, size_t i) {
-			for (iter it = v.begin(); it != v.end(); ++it) {
-				if (it->first == i) return it;
+		iter find(tri_row& r, size_t i) {
+			iter pos = r.end();
+			iter it = r.begin();
+			
+			while (it != r.end() && pos == r.end()) {
+				if (it->first == i) {
+					pos = it;
+				}
+				++it;
 			}
-			return v.end();
+			
+			return pos;
 		}
 		
 		inline static
-		citer cfind(const vector<atom>& v, size_t i) {
-			for (citer it = v.begin(); it != v.end(); ++it) {
-				if (it->first == i) return it;
+		citer cfind(const tri_row& r, size_t i) {
+			citer pos = r.end();
+			citer it = r.begin();
+			
+			while (it != r.end() && pos == r.end()) {
+				if (it->first == i) {
+					pos = it;
+				}
+				++it;
 			}
-			return v.end();
+			
+			return pos;
 		}
 		
-		// returns the position to the right of the position the
-		// atom should be placed at
+		// Returns the position where the atom should be placed at.
+		// The element should be inserted to the right of this position.
 		inline static
-		iter desired_position(const atom& a, vector<atom>& v) {
-			iter d = v.begin();
-			for (iter it = v.begin(); it != v.end() and d == v.begin(); ++it) {
-				if (it->first >= a.first) d = it;
+		iter desired_position(tri_row& r, size_t i) {
+			iter pos = r.end();
+			iter it = r.begin();
+			
+			while (it != r.end() and pos == r.end()) {
+				if (i <= it->first) {
+					pos = it;
+				}
+				++it;
 			}
-			return d;
+			
+			return pos;
 		}
 		
 		inline static
-		void insert_atom(const atom& a, vector<atom>& v) {
-			iter it = desired_position(a, v);
-			if (it->first == a.first) v[a.first] = a;
+		void insert_atom(const atom& a, tri_row& r) {
+			if (r.size() == 0) {
+				// no elements on the row --> insert at beginning
+				r.insert(r.begin(), a);
+			}
 			else {
-				v.insert(it, a);
-				swap(*it, *(it - 1));
+				iter it = desired_position(r, a.first);
+				r.insert(it, a);
 			}
 		}
 		
-		vector<vector<atom> > binom;
+		vector<tri_row> binom;
 		
 		void compute_binom(size_t n, size_t k);
 		
@@ -70,11 +95,13 @@ class sparse_pascal_triangle {
 		~sparse_pascal_triangle();
 		
 		inline friend
-		ostream& operator<< (ostream& os, const sparse_pascal_triangle& db) {
-			for (size_t n = 0; n < db.binom.size(); ++n) {
-				os << db.binom[n].size() - 1 << ": ";
-				for (size_t k = 0; k < db.binom[n].size(); ++k) {
-					os << "(" << db.binom[n][k].first << " : " << db.binom[n][k].second.to_string() << ") ";
+		ostream& operator<< (ostream& os, const sparse_pascal_triangle& sb) {
+			for (size_t n = 0; n < sb.binom.size(); ++n) {
+				const tri_row& r = sb.binom[n];
+				
+				os << n << ": ";
+				for (citer it = r.begin(); it != r.end(); ++it) {
+					os << "(" << it->first << " : " << it->second << ") ";
 				}
 				os << endl;
 			}
@@ -98,7 +125,7 @@ class sparse_pascal_triangle {
 		// triangle and returns the value in b. If this triangle has 'n'
 		// rows, one can get the binomials (m k) where 0 <= m, k < n
 		void get_binomial(size_t n, size_t k, integer& b);
-		integer& get_binomial(size_t n, size_t k);
+		const integer& get_binomial(size_t n, size_t k);
 		const integer& get_binomial(size_t n, size_t k) const;
 		
 		// Returns whether the binomial value corresponding to (n k)

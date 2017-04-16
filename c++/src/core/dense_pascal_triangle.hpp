@@ -32,7 +32,7 @@ class dense_pascal_triangle {
 			for (size_t n = 0; n < db.binom.size(); ++n) {
 				os << db.binom[n].size() - 1 << ": ";
 				for (size_t k = 0; k < db.binom[n].size(); ++k) {
-					os << db.binom[n][k].to_string() << " ";
+					os << db.binom[n][k] << " ";
 				}
 				os << endl;
 			}
@@ -65,7 +65,7 @@ class dense_pascal_triangle {
 		// Computes the Newton's binomial (n k), stores the value this
 		// triangle and returns the value. If this triangle has 'n'
 		// rows, one can get the binomials (m k) where 0 <= m, k < n
-		integer& get_binomial(size_t n, size_t k);
+		const integer& get_binomial(size_t n, size_t k);
 		const integer& get_binomial(size_t n, size_t k) const;
 };
 

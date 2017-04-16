@@ -218,7 +218,7 @@ string integer::to_string() const {
 
 void integer::to_string(string& s) const {
 	if (!is_initialized()) {
-		s = "uninitialized";
+		s = "integer uninitialized";
 		return;
 	}
 	

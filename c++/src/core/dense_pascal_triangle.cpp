@@ -57,7 +57,7 @@ void dense_pascal_triangle::get_binomial(size_t n, size_t k, integer& b) {
 	b = binom[n][k];
 }
 
-integer& dense_pascal_triangle::get_binomial(size_t n, size_t k) {
+const integer& dense_pascal_triangle::get_binomial(size_t n, size_t k) {
 	if (n >= binom.size()) fill_rows(n);
 	
 	compute_binom(n, k);
