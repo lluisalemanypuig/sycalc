@@ -24,6 +24,9 @@ $(BIN_DIR)/sparse_pascal_triangle.o: $(COR_DIR)/sparse_pascal_triangle.cpp $(SPA
 $(BIN_DIR)/monomial.o: $(COR_DIR)/monomial.cpp $(MONOMIAL_DPS)
 	g++ $(FLAGS) -c $< -o $@ -I $(NUM_DIR) -I $(MSC_DIR)
 
+$(BIN_DIR)/polynomial.o: $(COR_DIR)/polynomial.cpp $(POLYNOMIAL_DPS)
+	g++ $(FLAGS) -c $< -o $@ -I $(NUM_DIR) -I $(MSC_DIR)
+
 # ALGORITHMS
 
 $(BIN_DIR)/nested_sums.o: $(ALG_DIR)/nested_sums.cpp

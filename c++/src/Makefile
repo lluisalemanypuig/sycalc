@@ -18,7 +18,8 @@ NUMERIC			= $(BIN_DIR)/integer.o \
 DATA_STRUCTURES = $(BIN_DIR)/sparse_pascal_triangle.o \
 				  $(BIN_DIR)/dense_pascal_triangle.o
 
-SYMBOLIC		= $(BIN_DIR)/monomial.o
+SYMBOLIC		= $(BIN_DIR)/monomial.o \
+				  $(BIN_DIR)/polynomial.o
 
 ALGORITHMS		= $(BIN_DIR)/nested_sums.o
 
