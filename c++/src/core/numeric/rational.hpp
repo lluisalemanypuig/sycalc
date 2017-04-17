@@ -26,7 +26,7 @@ class rational {
 		rational(int n, unsigned int d = 1);
 		rational(const char *s, int base = 10);
 		rational(const string& s, int base = 10);
-		rational(const integer& i);
+		rational(const integer& n, const integer& d = 1);
 		rational(const rational& r);
 		~rational();
 		
@@ -37,7 +37,7 @@ class rational {
 		void init_ui(unsigned int n, unsigned int d = 1);
 		void init(const char *s, int base = 10);
 		void init(const string& s, int base = 10);
-		void init(const integer& i);
+		void init(const integer& n, const integer& d = 1);
 		void init(const rational& r);
 		
 		void clear();
@@ -48,8 +48,10 @@ class rational {
 		void set_ui(unsigned int n, unsigned int d = 1);
 		void set(const char *s, int base = 10);
 		void set(const string& s, int base = 10);
-		void set(const integer& i);
+		void set(const integer& n, const integer& d = 1);
 		void set(const rational& r);
+		
+		void invert();
 		
 		/* OPERATORS */
 		
@@ -164,17 +166,11 @@ class rational {
 		void to_string(string& s) const;
 		
 		static inline
-		rational from_int_to_rat(const integer& i) {
+		rational from_ints_to_rat(const integer& n, const integer& d) {
 			rational r;
 			r.init();
-			mpq_set_num(r.val, i.get_raw_value());
-			
-			mpz_t one;
-			gmp_utils::one(one);
-			
-			mpq_set_den(r.val, one);
-			mpz_clear(one);
-			
+			mpq_set_num(r.val, n.get_raw_value());
+			mpq_set_den(r.val, d.get_raw_value());
 			return r;
 		}
 };

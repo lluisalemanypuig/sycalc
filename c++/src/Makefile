@@ -25,7 +25,7 @@ SYMBOLIC		= $(BIN_DIR)/monomial.o \
 
 # -- ALGORITHMS
 
-ALGORITHMS		= $(BIN_DIR)/nested_sums.o
+ALGORITHMS		= $(BIN_DIR)/nested_sums.o $(BIN_DIR)/power_sums.o
 
 # EVERYTHING
 OBJECTS 		= $(BIN_DIR)/tests.o \

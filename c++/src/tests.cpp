@@ -20,19 +20,6 @@ using namespace sycalc;
 using namespace core;
 using namespace numeric;
 
-size_t partial_sum(size_t a, size_t b, size_t k) {
-	size_t s = 0;
-	if (k == 1) {
-		for (size_t i = a; i <= b; ++i) s += i;
-		return s;
-	}
-	
-	for (size_t i = a; i <= b; ++i) {
-		s += partial_sum(a, i, k - 1);
-	}
-	return s;
-}
-
 void triangle_test() {
 	cout << "Triangles tests" << endl;
 	
@@ -119,6 +106,8 @@ void integer_test() {
 	cout << "    one == 1 ? " << fbts(one == 1) << endl;
 	cout << "    one == 1 ? " << fbts(one == "1") << endl;
 	
+	cout << "    5/2 = " << integer(5)/2 << endl;
+	
 	cout << endl;
 }
 
@@ -150,6 +139,8 @@ void rational_test() {
 }
 
 void monomial_test() {
+	cout << "Monomial tests" << endl;
+	
 	monomial m1(3, 2);
 	monomial m2(5, 2);
 	
@@ -175,10 +166,16 @@ void monomial_test() {
 	v.push_back(m2);
 	v.push_back(monomial(1, 2));
 	v.push_back(monomial("1/3", 2));
+	
+	cout << "(3*x^2)^5 = " << (monomial(3, 2)^5) << endl;
+	cout << "((1/4)*x^3)^2 = " << (monomial("1/4", 3)^2) << endl;
+	
 	cout << endl;
 }
 
 void polynomial_test() {
+	cout << "Polynomial tests" << endl;
+	
 	polynomial p1;
 	p1 += monomial(-3, 4);
 	p1 += monomial(-3, 2);
@@ -199,13 +196,71 @@ void polynomial_test() {
 	cout << "p2(3)= " << p2.evaluate(3) << endl;
 	cout << endl;
 	
-	cout << "p1(x)*x = " << p1*monomial(1, 1) << endl;
-	cout << "(p1*p2)(x) = " << p1*p2 << endl;
-	cout << "(p1*p2)(3) = " << (p1*p2).evaluate(3) << endl;
+	cout << "(p1 + p2)(x) = " << p1 + p2 << endl;
+	cout << "(p1 + p2)(3) = " << (p1 + p2).evaluate(3) << endl;
+	
+	cout << "(p1 - p2)(x) = " << p1 - p2 << endl;
+	cout << "(p1 - p2)(3) = " << (p1 - p2).evaluate(3) << endl;
+	
+	cout << "(p1 * p2)(x) = " << p1*p2 << endl;
+	cout << "(p1 * p2)(3) = " << (p1*p2).evaluate(3) << endl;
+	
+	polynomial x_plus_one;
+	x_plus_one += monomial(1, 0);
+	x_plus_one += monomial(1, 1);
+	cout << "(x + 1)^2 = " << (x_plus_one^2) << endl;
+	cout << "(x + 1)^3 = " << (x_plus_one^3) << endl;
+	cout << "(x + 1)^4 = " << (x_plus_one^4) << endl;
+	
+	polynomial x_minus_one;
+	x_minus_one += monomial(-1, 0);
+	x_minus_one += monomial(1, 1);
+	cout << "(x - 1)^2 = " << (x_minus_one^2) << endl;
+	cout << "(x - 1)^3 = " << (x_minus_one^3) << endl;
+	cout << "(x - 1)^4 = " << (x_minus_one^4) << endl;
+	cout << "(x - 1)^5 = " << (x_minus_one^5) << endl;
+	
+	cout << (x_minus_one^5).get_monomial_coefficient(5) << endl;
+	cout << (x_minus_one^5).get_monomial_coefficient(4) << endl;
+	cout << (x_minus_one^5).get_monomial_coefficient(3) << endl;
+	cout << (x_minus_one^5).get_monomial_coefficient(2) << endl;
+	cout << (x_minus_one^5).get_monomial_coefficient(1) << endl;
+	cout << (x_minus_one^5).get_monomial_coefficient(0) << endl;
+	
+	cout << endl;
+}
+
+void algorithms_test() {
+	cout << "Algorithms tests" << endl;
+	
+	cout << "-- Nested sums (a -> b)" << endl;
+	cout << "(4, 7, 4)= " << algorithms::nested_sums(4, 7, 4) << endl;
+	cout << "(3, 7, 5)= " << algorithms::nested_sums(3, 7, 5) << endl;
+	cout << "(2, 7, 6)= " << algorithms::nested_sums(2, 7, 6) << endl;
+	
+	/*
+	for (size_t i = 30; i <= 33; ++i) {
+		cout << "(1, 7, " << i << ")= " << algorithms::nested_sums(1, 7, i) << endl;
+	}
+	
+	cout << "-- Nested sums (1 -> n)" << endl;
+	for (size_t i = 30; i <= 33; ++i) {
+		cout << "(1, 7, " << i << ")= " << algorithms::nested_sums(7, i) << endl;
+	}
+	*/
+	
+	cout << "-- Power sums polynomials" << endl;
+	for (size_t p = 1; p <= 100; ++p) {
+		polynomial poly;
+		algorithms::power_sums(p, poly);
+		cout << "p=" << p << " -> " << poly << endl;
+	}
+	
+	cout << endl;
 }
 
 int main(int argc, char *argv[]) {
-	//monomial_test();
 	polynomial_test();
+	algorithms_test();
 }
 

@@ -26,7 +26,7 @@ class integer {
 		integer(int i);
 		integer(const char *s, int base = 10);
 		integer(const string& s, int base = 10);
-		integer(const integer& v);
+		integer(const integer& i);
 		~integer();
 		
 		/* ALLOC AND DEALLOC */
@@ -36,7 +36,7 @@ class integer {
 		void init_ui(unsigned int i);
 		void init(const char *s, int base = 10);
 		void init(const string& s, int base = 10);
-		void init(const integer& v);
+		void init(const integer& i);
 		
 		void clear();
 		
@@ -46,82 +46,98 @@ class integer {
 		void set_ui(unsigned int i);
 		void set(const char *s, int base = 10);
 		void set(const string& v, int base = 10);
-		void set(const integer& v);
+		void set(const integer& i);
 		
 		/* OPERATORS */
 		
 		integer& operator= (int i);
 		integer& operator= (const char *s);
 		integer& operator= (const string& v);
-		integer& operator= (const integer& v);
+		integer& operator= (const integer& i);
 		
 		bool operator== (int i) const;
 		bool operator== (const char *s) const;
 		bool operator== (const string& s) const;
-		bool operator== (const integer& v) const;
+		bool operator== (const integer& i) const;
 		
 		bool operator!= (int i) const;
 		bool operator!= (const char *s) const;
 		bool operator!= (const string& s) const;
-		bool operator!= (const integer& v) const;
+		bool operator!= (const integer& i) const;
 		
 		bool operator< (int i) const;
 		bool operator< (const char *s) const;
 		bool operator< (const string& s) const;
-		bool operator< (const integer& v) const;
+		bool operator< (const integer& i) const;
 		
 		bool operator<= (int i) const;
 		bool operator<= (const char *s) const;
 		bool operator<= (const string& s) const;
-		bool operator<= (const integer& v) const;
+		bool operator<= (const integer& i) const;
 		
 		bool operator> (int i) const;
 		bool operator> (const char *s) const;
 		bool operator> (const string& s) const;
-		bool operator> (const integer& v) const;
+		bool operator> (const integer& i) const;
 		
 		bool operator>= (int i) const;
 		bool operator>= (const char *s) const;
 		bool operator>= (const string& s) const;
-		bool operator>= (const integer& v) const;
+		bool operator>= (const integer& i) const;
 		
 		integer operator+ (unsigned int i) const;
 		integer operator+ (const char *s) const;
 		integer operator+ (const string& s) const;
-		integer operator+ (const integer& v) const;
+		integer operator+ (const integer& i) const;
 		
 		integer& operator+= (unsigned int i);
 		integer& operator+= (const char *s);
 		integer& operator+= (const string& s);
-		integer& operator+= (const integer& v);
+		integer& operator+= (const integer& i);
 		
 		integer operator- () const;
 		integer operator- (unsigned int i) const;
 		integer operator- (const char *s) const;
 		integer operator- (const string& s) const;
-		integer operator- (const integer& v) const;
+		integer operator- (const integer& i) const;
 		
 		integer& operator- ();
 		integer& operator-= (unsigned int i);
 		integer& operator-= (const char *s);
 		integer& operator-= (const string& s);
-		integer& operator-= (const integer& v);
+		integer& operator-= (const integer& i);
 		
 		integer operator* (int i) const;
 		integer operator* (const char *s) const;
 		integer operator* (const string& s) const;
-		integer operator* (const integer& v) const;
+		integer operator* (const integer& i) const;
 		
 		integer& operator*= (int i);
 		integer& operator*= (const char *s);
 		integer& operator*= (const string& s);
-		integer& operator*= (const integer& v);
+		integer& operator*= (const integer& i);
+		
+		integer operator/ (int i) const;
+		integer operator/ (const char *s) const;
+		integer operator/ (const string& s) const;
+		integer operator/ (const integer& i) const;
+		
+		integer& operator/= (int i);
+		integer& operator/= (const char *s);
+		integer& operator/= (const string& s);
+		integer& operator/= (const integer& i);
 		
 		integer operator^ (unsigned int i) const;
 		integer operator^ (const integer& i) const;
 		
 		integer& operator^= (unsigned int i);
 		integer& operator^= (const integer& i);
+		
+		integer operator% (const integer& i) const;
+		unsigned int operator% (unsigned int i) const;
+		
+		integer& operator++ ();		// prefix:	++a
+        integer operator++ (int);	// postfix:	a++
 		
 		inline friend
 		istream& operator>> (istream& is, integer& i) {
@@ -132,8 +148,8 @@ class integer {
 		}
 		
 		inline friend
-		ostream& operator<< (ostream& os, const integer& v) {
-			os << v.to_string();
+		ostream& operator<< (ostream& os, const integer& i) {
+			os << i.to_string();
 			return os;
 		}
 		

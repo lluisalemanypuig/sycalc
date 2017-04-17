@@ -67,9 +67,9 @@ rational::rational(const string& s, int base) {
 	init(s, base);
 }
 
-rational::rational(const integer& i) {
+rational::rational(const integer& n, const integer& d) {
 	initialized = false;
-	init(i);
+	init(n, d);
 }
 
 rational::rational(const rational& r) {
@@ -110,10 +110,10 @@ void rational::init(const string& s, int base) {
 	set(s, base);
 }
 
-void rational::init(const integer& i) {
-	if (i.is_initialized()) {
+void rational::init(const integer& n, const integer& d) {
+	if (n.is_initialized() and d.is_initialized()) {
 		init();
-		set(i);
+		set(n, d);
 	}
 }
 
@@ -137,8 +137,12 @@ void rational::set_si(int n, unsigned int d) 			{ mpq_set_si(val, n, d); }
 void rational::set_ui(unsigned int n, unsigned int d) 	{ mpq_set_si(val, n, d); }
 void rational::set(const char *s, int base) 			{ mpq_set_str(val, s, base); }
 void rational::set(const string& s, int base)			{ mpq_set_str(val, s.c_str(), base); }
-void rational::set(const integer& i)					{ set(from_int_to_rat(i)); }
+void rational::set(const integer& n, const integer& d)	{ set(from_ints_to_rat(n, d)); }
 void rational::set(const rational& r) 					{ mpq_set(val, r.val); }
+
+void rational::invert() {
+	mpq_inv(val, val);
+}
 
 /* OPERATORS */
 
@@ -155,7 +159,7 @@ rational& rational::operator= (const string& s) {
 }
 
 rational& rational::operator= (const integer& i) {
-	init(from_int_to_rat(i));
+	init(from_ints_to_rat(i, 1));
 }
 
 rational& rational::operator= (const rational& r) {

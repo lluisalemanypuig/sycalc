@@ -17,7 +17,7 @@ namespace core {
 /// PUBLIC
 
 monomial::monomial() {
-	var = "l";
+	var = "x";
 }
 
 monomial::monomial(const rational& coef, const integer& exp, const string& var_name) {
@@ -57,11 +57,7 @@ bool monomial::operator!= (const monomial& m) const {
 	return not (*this == m);
 }
 
-monomial monomial::operator+ (const monomial& m) const {
-	monomial r(*this);
-	r += m;
-	return r;
-}
+monomial monomial::operator+ (const monomial& m) const	{ monomial r(*this); r += m; return r; }
 
 monomial& monomial::operator+= (const monomial& m) {
 	if (e != m.e) {
@@ -93,15 +89,38 @@ monomial& monomial::operator-= (const monomial& m) {
 	return *this;
 }
 
-monomial monomial::operator* (const monomial& m) const {
-	monomial r(*this);
-	r *= m;
-	return r;
+monomial monomial::operator* (const integer& i) const	{ monomial r(*this); r *= i; return r; }
+monomial monomial::operator* (const rational& s) const	{ monomial r(*this); r *= s; return r; }
+monomial monomial::operator* (const monomial& m) const	{ monomial r(*this); r *= m; return r; }
+
+monomial& monomial::operator*= (const integer& i) {
+	c *= i;
+	return *this;
+}
+
+monomial& monomial::operator*= (const rational& s) {
+	c *= s;
+	return *this;
 }
 
 monomial& monomial::operator*= (const monomial& m) {
 	c *= m.c;
 	e += m.e;
+	return *this;
+}
+
+monomial monomial::operator^ (unsigned int i) const		{ monomial c = *this; c ^= i; return c; }
+monomial monomial::operator^ (const integer& i) const	{ monomial c = *this; c ^= i; return c; }
+
+monomial& monomial::operator^= (unsigned int i) {
+	c ^= i;
+	e ^= i;
+	return *this;
+}
+
+monomial& monomial::operator^= (const integer& i) {
+	c ^= i;
+	e ^= i;
 	return *this;
 }
 

@@ -6,6 +6,7 @@
 namespace sycalc {
 namespace core {
 namespace numeric {
+
 namespace gmp_utils {
 	
 	/* Other arithmetic operations */
@@ -18,6 +19,7 @@ namespace gmp_utils {
 	void one(mpz_t& o);
 	
 }
+
 }
 }
 }

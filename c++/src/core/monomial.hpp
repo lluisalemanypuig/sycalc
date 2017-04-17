@@ -22,7 +22,7 @@ class monomial {
 	
 	public:
 		monomial();
-		monomial(const rational& coef, const integer& exp, const string& var_name = "l");
+		monomial(const rational& coef, const integer& exp, const string& var_name = "x");
 		monomial(const monomial& m);
 		~monomial();
 		
@@ -44,24 +44,35 @@ class monomial {
 		monomial operator- (const monomial& m) const;
 		monomial& operator-= (const monomial& m);
 		
+		monomial operator* (const integer& i) const;
+		monomial operator* (const rational& r) const;
 		monomial operator* (const monomial& m) const;
+		
+		monomial& operator*= (const integer& i);
+		monomial& operator*= (const rational& r);
 		monomial& operator*= (const monomial& m);
+		
+		monomial operator^ (unsigned int i) const;
+		monomial operator^ (const integer& i) const;
+		
+		monomial& operator^= (unsigned int i);
+		monomial& operator^= (const integer& i);
 		
 		inline friend
 		ostream& operator<< (ostream& os, const monomial& m) {
-			if (m.e == 0) {
-				if (m.c != 0) {
+			if (m.c != 0) {
+				if (m.e == 0) {
 					os << m.c;
 				}
-			}
-			else if (m.c != 0) {
-				if (m.c != 1) {
-					os << m.c << "*";
-				}
-				os << m.var;
-				
-				if (m.e != 1) {
-					os << "^" << m.e;
+				else {
+					if (m.c != 1) {
+						os << m.c << "*";
+					}
+					os << m.var;
+					
+					if (m.e != 1) {
+						os << "^" << m.e;
+					}
 				}
 			}
 			return os;
