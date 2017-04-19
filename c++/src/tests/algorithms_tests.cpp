@@ -30,15 +30,22 @@ namespace tests {
 		timing begin, end;
 		
 		begin = now();
-		for (size_t p = P1; p <= P2; ++p) {
-			algorithms::power_sums(p, polys[p - P1]);
-		}
+		algorithms::power_sums(P2, polys);
 		end = now();
 		cout << "    Time to calculate polynomials: " << elapsed_time(begin, end) << " s" << endl;
 		cout << endl;
 		
 		for (size_t p = P1; p <= P1 + 3; ++p) {
-			cout << "    p=" << p << " -> " << polys[p - P1] << endl;
+			for (size_t n = 50; n <= 100; ++n) {
+				rational poly_eval = polys[p - P1].evaluate(n);
+				integer lin_sum = algorithms::linear_power_sums(1, n, p);
+				
+				if (poly_eval != lin_sum) {
+					cout << "    " << p << " -> p= " << polys[p - P1] << endl;
+					cout << "    " << p << " -> p(" << n << ")= " << poly_eval << endl;
+					cout << "    " << p << " ->     l(" << n << ")= " << lin_sum << endl;
+				}
+			}
 		}
 		
 		cout << endl;
