@@ -37,12 +37,17 @@ TESTS			= $(BIN_DIR)/triangle_tests.o \
 				  $(BIN_DIR)/polynomial_tests.o \
 				  $(BIN_DIR)/algorithms_tests.o
 
+# -- MISC
+
+MISC			= $(BIN_DIR)/timing.o
+
 # EVERYTHING
 OBJECTS 		= $(BIN_DIR)/main.o \
 				  $(NUMERIC) \
 				  $(DATA_STRUCTURES) \
 				  $(SYMBOLIC) \
 				  $(ALGORITHMS) \
+				  $(MISC) \
 				  $(TESTS)
 
 main: $(OBJECTS)
