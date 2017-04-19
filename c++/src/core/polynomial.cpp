@@ -5,6 +5,31 @@ namespace core {
 
 /// PRIVATE
 
+inline
+bool find_mon_degree(const vector<monomial>& ms, const integer& d, size_t& idx) {
+	int l = 0;
+	int r = ms.size() - 1;
+	
+	while (l < r) {
+		int m = (l + r)/2;
+		if (ms[m].get_exponent() < d) {
+			l = m + 1;
+		}
+		else {
+			r = m;
+		}
+	}
+	
+	bool found = false;
+	int m = (l + r)/2;
+	if (ms[m].get_exponent() == d) {
+		idx = m;
+		found = true;
+	}
+	
+	return found;
+}
+
 void polynomial::add_monomial(const monomial& m) {
 	ms.push_back(m);
 	
@@ -79,16 +104,14 @@ polynomial& polynomial::operator+= (const monomial& m) {
 		ms.push_back(m);
 	}
 	else {
-		size_t idx = 0;
-		while (idx < ms.size() and ms[idx].get_exponent() < m.get_exponent()) {
-			++idx;
-		}
+		size_t idx;
+		bool found = find_mon_degree(ms, m.get_exponent(), idx);
 		
-		if (idx < ms.size() and ms[idx].get_exponent() == m.get_exponent()) {
+		if (found) {
 			ms[idx] += m;
 		}
 		else {
-			add_monomial(m, idx);
+			add_monomial(m);
 		}
 	}
 	
@@ -110,16 +133,14 @@ polynomial& polynomial::operator-= (const monomial& m) {
 		ms.push_back(-m);
 	}
 	else {
-		size_t idx = 0;
-		while (idx < ms.size() and ms[idx].get_exponent() < m.get_exponent()) {
-			++idx;
-		}
+		size_t idx;
+		bool found = find_mon_degree(ms, m.get_exponent(), idx);
 		
-		if (idx < ms.size() and ms[idx].get_exponent() == m.get_exponent()) {
+		if (found) {
 			ms[idx] -= m;
 		}
 		else {
-			add_monomial(-m, idx);
+			add_monomial(-m);
 		}
 	}
 	
@@ -216,15 +237,12 @@ integer polynomial::get_degree() const {
 }
 
 rational polynomial::get_monomial_coefficient(const integer& d) const {
+	size_t idx;
+	bool found = find_mon_degree(ms, d, idx);
+	
 	rational r = 0;
-	bool found = false;
-	size_t i = 0;
-	while (i < ms.size() and not found) {
-		if (ms[i].get_exponent() == d) {
-			found = true;
-			r = ms[i].get_coefficient();
-		}
-		++i;
+	if (found) {
+		r = ms[idx].get_coefficient();
 	}
 	return r;
 }

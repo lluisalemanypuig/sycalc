@@ -9,6 +9,6 @@ using namespace std;
 #include "tests.hpp"
 
 int main(int argc, char *argv[]) {
-	sycalc::tests::test_everything();
+	sycalc::tests::polynomial_tests();
 }
 
