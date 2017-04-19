@@ -34,6 +34,8 @@ using namespace numeric;
 	
 	// pre: p > 0
 	void power_sums(size_t p, polynomial& s);
+	void power_sums(size_t d, vector<polynomial>& polys);
+	
 	polynomial power_sums(size_t p);
 	
 }

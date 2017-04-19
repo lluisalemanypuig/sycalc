@@ -4,63 +4,9 @@
 
 namespace sycalc {
 namespace algorithms {
-namespace private_section {
-
-	void power_sums(size_t d, map<size_t, polynomial>& polys) {
-		if (d == 1) {
-			polynomial d1("n");
-			d1 += monomial("1/2", 2, "n");
-			d1 += monomial("1/2", 1, "n");
-			polys.insert(pair<size_t, polynomial>(1, d1));
-		}
-		else {
-			power_sums(d - 1, polys);
-			
-			// Polynomial for power (p - 1) and the coefficient
-			// of highest degree monomial
-			const polynomial& last = polys[d - 1];
-			//cout << "    d-1=" << d - 1 << " -> " << last << endl;
-			
-			const rational& Bcoef = last.get_monomial_coefficient(d);
-			//cout << "    Bcoef= " << Bcoef << endl;
-			
-			// Highest degree monomial's coefficient
-			rational new_Bcoef = Bcoef + 1;
-			new_Bcoef.invert();
-			//cout << "    new_Bcoef= " << new_Bcoef << endl;
-			
-			// Polynomial for power p
-			polynomial S;
-			S += monomial(Bcoef, d + 1, "n");
-			//cout << "    S= " << S << endl;
-			
-			for (size_t j = 0; j <= d - 1; ++j) {
-				//cout << "    +++" << endl;
-				
-				const rational& coef1 = last.get_monomial_coefficient(j);
-				const rational& coef2 = last.get_monomial_coefficient(j + 1);
-				//cout << "    j=" << j << " -> coef1= " << coef1 << endl;
-				//cout << "    j=" << j << " -> coef2= " << coef2 << endl;
-				
-				S += monomial(coef1 + coef2, j + 1, "n");
-				//cout << "    added monomial: " << monomial(coef1 + coef2, j + 1, "n") << endl;
-				
-				if (j > 0) {
-					S -= polys[j]*coef1;
-					//cout << "    substracted polynomial: " << polys[d - j]*coef1 << endl;
-				}
-				
-				//cout << "    ---" << endl;
-			}
-			
-			S += monomial(last.get_monomial_coefficient(0), 0, "n");
-			S *= new_Bcoef;
-			
-			polys.insert(pair<size_t, polynomial>(d, S));
-		}
-	}
-
-}
+	
+	inline size_t poly_idx(size_t p) { return p - 1; }
+	
 }
 }
 
@@ -85,9 +31,46 @@ namespace algorithms {
 	}
 	
 	void power_sums(size_t p, polynomial& s) {
-		map<size_t, polynomial> polys;
-		private_section::power_sums(p, polys);
-		s = polys[p];
+		vector<polynomial> polys(p, polynomial("n"));
+		power_sums(p, polys);
+		s = polys[p - 1];
+	}
+	
+	void power_sums(size_t p, vector<polynomial>& polys) {
+		polys[ poly_idx(1) ] += monomial("1/2", 2, "n");
+		polys[ poly_idx(1) ] += monomial("1/2", 1, "n");
+		
+		for (size_t d = 2; d <= p; ++d) {
+			
+			// Polynomial for power (p - 1)
+			const polynomial& last = polys[ poly_idx(d - 1) ];
+			const rational& Bcoef = last.get_monomial_coefficient(d);
+			
+			rational new_Bcoef = Bcoef + 1;
+			new_Bcoef.invert();
+			
+			// Polynomial for power p
+			polynomial& S = polys[ poly_idx(d) ];
+			S += monomial(Bcoef, d + 1, "n");
+			
+			rational coef1 = last.get_monomial_coefficient(0);
+			rational coef2 = last.get_monomial_coefficient(1);
+			for (size_t j = 0; j <= d - 1; ++j) {
+				//const rational& coef1 = last.get_monomial_coefficient(j);
+				//const rational& coef2 = last.get_monomial_coefficient(j + 1);
+				
+				S += monomial(coef1 + coef2, j + 1, "n");
+				if (j > 0) {
+					S -= polys[ poly_idx(j) ]*coef1;
+				}
+				
+				coef1 = coef2;
+				coef2 = last.get_monomial_coefficient(j + 2);
+			}
+			
+			S += monomial(last.get_monomial_coefficient(0), 0, "n");
+			S *= new_Bcoef;
+		}
 	}
 	
 	polynomial power_sums(size_t p) {

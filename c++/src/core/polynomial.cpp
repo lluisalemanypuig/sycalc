@@ -226,11 +226,8 @@ monomial& polynomial::operator[] (size_t i)			{ return ms[i]; }
 /* GETTERS */
 
 integer polynomial::get_degree() const {
-	integer d;
-	if (ms.size() == 0) {
-		d = 0;
-	}
-	else {
+	integer d = 0;
+	if (ms.size() > 0) {
 		d = ms.back().get_exponent();
 	}
 	return d;

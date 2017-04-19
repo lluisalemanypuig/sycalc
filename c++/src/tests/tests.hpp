@@ -10,13 +10,13 @@ using namespace std;
 /// Custom includes
 #include "rational.hpp"
 #include "integer.hpp"
-
 #include "dense_pascal_triangle.hpp"
 #include "sparse_pascal_triangle.hpp"
 #include "polynomial.hpp"
 #include "monomial.hpp"
-
 #include "algorithms.hpp"
+
+#include "timing.hpp"
 
 namespace sycalc {
 namespace tests {
@@ -24,6 +24,7 @@ namespace tests {
 using namespace sycalc;
 using namespace core;
 using namespace numeric;
+using namespace mtime;
 	
 	void triangle_tests();
 	void integer_tests();
