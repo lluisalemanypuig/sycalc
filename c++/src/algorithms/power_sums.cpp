@@ -1,4 +1,4 @@
-#include "../algorithms.hpp"
+#include "algorithms.hpp"
 
 /// PRIVATE
 

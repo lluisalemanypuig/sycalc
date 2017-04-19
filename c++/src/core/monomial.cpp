@@ -5,7 +5,7 @@ namespace core {
 
 /// NON-CLASS PRIVATE
 
-#define ERROR_MSG(m_This, m_Other)				\
+#define __SYCALC_CORE_MONOMIAL_ERROR_MSG(m_This, m_Other)				\
 	"(monomial) Error: cannot operate '"	+	\
 	m_This->get_raw_string()				+	\
 	" + "									+ 	\
@@ -61,7 +61,7 @@ monomial monomial::operator+ (const monomial& m) const	{ monomial r(*this); r +=
 
 monomial& monomial::operator+= (const monomial& m) {
 	if (e != m.e) {
-		DISPLAY_ERR(ERROR_MSG(this, m));
+		DISPLAY_ERR(__SYCALC_CORE_MONOMIAL_ERROR_MSG(this, m));
 		return *this;
 	}
 	
@@ -81,7 +81,7 @@ monomial monomial::operator- (const monomial& m) const {
 
 monomial& monomial::operator-= (const monomial& m) {
 	if (e != m.e) {
-		DISPLAY_ERR(ERROR_MSG(this, m));
+		DISPLAY_ERR(__SYCALC_CORE_MONOMIAL_ERROR_MSG(this, m));
 		return *this;
 	}
 	

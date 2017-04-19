@@ -106,16 +106,21 @@ polynomial polynomial::operator- (const monomial& m) const		{ polynomial r(*this
 polynomial polynomial::operator- (const polynomial& p) const	{ polynomial r(*this); r -= p; return r; }
 
 polynomial& polynomial::operator-= (const monomial& m) {
-	size_t idx = 0;
-	while (idx < ms.size() and ms[idx].get_exponent() < m.get_exponent()) {
-		++idx;
-	}
-	
-	if (ms[idx].get_exponent() == m.get_exponent()) {
-		ms[idx] -= m;
+	if (ms.size() == 0) {
+		ms.push_back(-m);
 	}
 	else {
-		add_monomial(-m, idx);
+		size_t idx = 0;
+		while (idx < ms.size() and ms[idx].get_exponent() < m.get_exponent()) {
+			++idx;
+		}
+		
+		if (idx < ms.size() and ms[idx].get_exponent() == m.get_exponent()) {
+			ms[idx] -= m;
+		}
+		else {
+			add_monomial(-m, idx);
+		}
 	}
 	
 	return *this;
@@ -184,7 +189,7 @@ polynomial& polynomial::operator^= (const integer& i) {
 	else if (i%2 == 0) {
 		integer h = i/2;
 		*this ^= h;						// q = p^(i/2)
-		*this = (*this)*(*this);		// q = (p^(i/2))^2 = p^i
+		*this *= (*this);		// q = (p^(i/2))^2 = p^i
 	}
 	else {
 		integer e = i - 1;

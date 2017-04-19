@@ -29,7 +29,7 @@ integer::integer(const string& s, int base) {
 
 integer::integer(const integer& i) {
 	initialized = false;
-	init(i);
+	*this = i;
 }
 
 integer::~integer() {

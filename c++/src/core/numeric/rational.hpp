@@ -135,6 +135,18 @@ class rational {
 		rational& operator*= (const integer& i);
 		rational& operator*= (const rational& r);
 		
+		rational operator/ (int i) const;
+		rational operator/ (const char *s) const;
+		rational operator/ (const string& s) const;
+		rational operator/ (const integer& i) const;
+		rational operator/ (const rational& r) const;
+		
+		rational& operator/= (int i);
+		rational& operator/= (const char *s);
+		rational& operator/= (const string& s);
+		rational& operator/= (const integer& i);
+		rational& operator/= (const rational& r);
+		
 		rational operator^ (unsigned int p) const;
 		rational operator^ (const integer& p) const;
 		
