@@ -181,16 +181,12 @@ polynomial& polynomial::operator*= (const monomial& m) {
 }
 
 polynomial& polynomial::operator*= (const polynomial& p) {
-	vector<polynomial> prod(p.ms.size(), *this);
+	polynomial res;
 	for (size_t i = 0; i < p.ms.size(); ++i) {
-		prod[i] *= p.ms[i];
+		res += (*this)*p.ms[i];
 	}
 	
-	for (size_t i = 1; i < prod.size(); ++i) {
-		prod[0] += prod[i];
-	}
-	
-	*this = prod[0];
+	*this = res;
 	return *this;
 }
 
