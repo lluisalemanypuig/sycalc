@@ -35,7 +35,7 @@ namespace tests {
 		cout << "    Time to calculate polynomials: " << elapsed_time(begin, end) << " s" << endl;
 		cout << endl;
 		
-		for (size_t p = P1; p <= P1 + 3; ++p) {
+		for (size_t p = P1; p <= P1 + 5; ++p) {
 			for (size_t n = 50; n <= 100; ++n) {
 				rational poly_eval = polys[p - P1].evaluate(n);
 				integer lin_sum = algorithms::linear_power_sums(1, n, p);
