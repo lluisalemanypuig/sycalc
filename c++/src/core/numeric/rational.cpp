@@ -168,12 +168,12 @@ void rational::clear() {
 
 /* SET VALUE */
 
-void rational::set_si(int n, unsigned int d) 				{ mpq_set_si(val, n, d); }
+void rational::set_si(int n, unsigned int d) 			{ mpq_set_si(val, n, d); }
 void rational::set_ui(unsigned int n, unsigned int d) 	{ mpq_set_si(val, n, d); }
 void rational::set(const char *s, int base) 				{ mpq_set_str(val, s, base); }
 void rational::set(const string& s, int base)				{ mpq_set_str(val, s.c_str(), base); }
 void rational::set(const integer& n, const integer& d)	{ set(from_ints_to_rat(n, d)); }
-void rational::set(const rational& r) 						{ mpq_set(val, r.val); }
+void rational::set(const rational& r) 					{ mpq_set(val, r.val); }
 
 void rational::invert() {
 	mpq_inv(val, val);
@@ -215,17 +215,17 @@ bool rational::operator== (int i) const					{ rational r(i); 	return mpq_cmp(val
 bool rational::operator== (const char *s) const			{ rational r(s); 	return mpq_cmp(val, r.val) == 0; }
 bool rational::operator== (const string& s) const		{ rational r(s); 	return mpq_cmp(val, r.val) == 0; }
 bool rational::operator== (const integer& i) const		{ rational r(i); 	return mpq_cmp(val, r.val) == 0; }
-bool rational::operator== (const rational& r) const		{					return mpq_cmp(val, r.val) == 0; }
+bool rational::operator== (const rational& r) const	{					return mpq_cmp(val, r.val) == 0; }
 
 bool rational::operator!= (int i) const					{ return not (*this == i); }
 bool rational::operator!= (const char *s) const			{ return not (*this == s); }
 bool rational::operator!= (const string& s) const		{ return not (*this == s); }
 bool rational::operator!= (const integer& i) const		{ return not (*this == i); }
-bool rational::operator!= (const rational& r) const		{ return not (*this == r); }
+bool rational::operator!= (const rational& r) const	{ return not (*this == r); }
 
 bool rational::operator< (int i) const					{ rational r(i); 	return mpq_cmp(val, r.val) < 0; }
 bool rational::operator< (const char *s) const			{ rational r(s); 	return mpq_cmp(val, r.val) < 0; }
-bool rational::operator< (const string& s) const			{ rational r(s); 	return mpq_cmp(val, r.val) < 0; }
+bool rational::operator< (const string& s) const		{ rational r(s); 	return mpq_cmp(val, r.val) < 0; }
 bool rational::operator< (const integer& i) const		{ rational r(i); 	return mpq_cmp(val, r.val) < 0; }
 bool rational::operator< (const rational& r) const		{					return mpq_cmp(val, r.val) < 0; }
 
@@ -233,11 +233,11 @@ bool rational::operator<= (int i) const					{ rational r(i); 	return mpq_cmp(val
 bool rational::operator<= (const char *s) const			{ rational r(s); 	return mpq_cmp(val, r.val) <= 0; }
 bool rational::operator<= (const string& s) const		{ rational r(s); 	return mpq_cmp(val, r.val) <= 0; }
 bool rational::operator<= (const integer& i) const		{ rational r(i); 	return mpq_cmp(val, r.val) <= 0; }
-bool rational::operator<= (const rational& r) const		{ 					return mpq_cmp(val, r.val) <= 0; }
+bool rational::operator<= (const rational& r) const	{ 					return mpq_cmp(val, r.val) <= 0; }
 
 bool rational::operator> (int i) const					{ rational r(i); 	return mpq_cmp(val, r.val) > 0; }
 bool rational::operator> (const char *s) const			{ rational r(s); 	return mpq_cmp(val, r.val) > 0; }
-bool rational::operator> (const string& s) const			{ rational r(s); 	return mpq_cmp(val, r.val) > 0; }
+bool rational::operator> (const string& s) const		{ rational r(s); 	return mpq_cmp(val, r.val) > 0; }
 bool rational::operator> (const integer& i) const		{ rational r(i); 	return mpq_cmp(val, r.val) > 0; }
 bool rational::operator> (const rational& r) const		{ 					return mpq_cmp(val, r.val) > 0; }
 
@@ -245,56 +245,56 @@ bool rational::operator>= (int i) const					{ rational r(i); 	return mpq_cmp(val
 bool rational::operator>= (const char *s) const			{ rational r(s); 	return mpq_cmp(val, r.val) >= 0; }
 bool rational::operator>= (const string& s) const		{ rational r(s); 	return mpq_cmp(val, r.val) >= 0; }
 bool rational::operator>= (const integer& i) const		{ rational r(i); 	return mpq_cmp(val, r.val) >= 0; }
-bool rational::operator>= (const rational& r) const		{					return mpq_cmp(val, r.val) >= 0; }
+bool rational::operator>= (const rational& r) const	{					return mpq_cmp(val, r.val) >= 0; }
 
 rational rational::operator+ (int i) const				{ rational r(*this); r += i; return r; }
 rational rational::operator+ (const char *s) const		{ rational r(*this); r += s; return r; }
-rational rational::operator+ (const string& s) const		{ rational r(*this); r += s; return r; }
-rational rational::operator+ (const integer& i) const		{ rational r(*this); r += i; return r; }
-rational rational::operator+ (const rational& r) const	{ rational k(*this); k += r; return k; }
+rational rational::operator+ (const string& s) const	{ rational r(*this); r += s; return r; }
+rational rational::operator+ (const integer& i) const	{ rational r(*this); r += i; return r; }
+rational rational::operator+ (const rational& r) const{ rational k(*this); k += r; return k; }
 
-rational& rational::operator+= (int i)						{ rational r(i); 	mpq_add(val, val, r.val); return *this; }
+rational& rational::operator+= (int i)					{ rational r(i); 	mpq_add(val, val, r.val); return *this; }
 rational& rational::operator+= (const char *s)			{ rational r(s); 	mpq_add(val, val, r.val); return *this; }
-rational& rational::operator+= (const string& s)			{ rational r(s); 	mpq_add(val, val, r.val); return *this; }
-rational& rational::operator+= (const integer& i)			{ rational r(i); 	mpq_add(val, val, r.val); return *this; }
+rational& rational::operator+= (const string& s)		{ rational r(s); 	mpq_add(val, val, r.val); return *this; }
+rational& rational::operator+= (const integer& i)		{ rational r(i); 	mpq_add(val, val, r.val); return *this; }
 rational& rational::operator+= (const rational& r)		{					mpq_add(val, val, r.val); return *this; }
 
 rational rational::operator- () const 					{ rational r(*this); 		mpq_neg(r.val, r.val); return r; }
 rational rational::operator- (int i) const				{ rational r(*this); r -= i; return r; }
 rational rational::operator- (const char *s) const		{ rational r(*this); r -= s; return r; }
-rational rational::operator- (const string& s) const		{ rational r(*this); r -= s; return r; }
-rational rational::operator- (const integer& i) const		{ rational r(*this); r -= i; return r; }
-rational rational::operator- (const rational& r) const	{ rational k(*this); k -= r; return r; }
+rational rational::operator- (const string& s) const	{ rational r(*this); r -= s; return r; }
+rational rational::operator- (const integer& i) const	{ rational r(*this); r -= i; return r; }
+rational rational::operator- (const rational& r) const{ rational k(*this); k -= r; return r; }
 
 rational& rational::operator- ()							{					mpq_neg(val, val); return *this; }
-rational& rational::operator-= (int i)						{ rational r(i);	mpq_sub(val, val, r.val); return *this; }
+rational& rational::operator-= (int i)					{ rational r(i);	mpq_sub(val, val, r.val); return *this; }
 rational& rational::operator-= (const char *s)			{ rational r(s);	mpq_sub(val, val, r.val); return *this; }
-rational& rational::operator-= (const string& s)			{ rational r(s);	mpq_sub(val, val, r.val); return *this; }
-rational& rational::operator-= (const integer& i)			{ rational r(i);	mpq_sub(val, val, r.val); return *this; }
+rational& rational::operator-= (const string& s)		{ rational r(s);	mpq_sub(val, val, r.val); return *this; }
+rational& rational::operator-= (const integer& i)		{ rational r(i);	mpq_sub(val, val, r.val); return *this; }
 rational& rational::operator-= (const rational& r)		{					mpq_sub(val, val, r.val); return *this; }
 
 rational rational::operator* (int i) const				{ rational r(*this); r *= i; return r; }
 rational rational::operator* (const char *s) const		{ rational r(*this); r *= s; return r; }
-rational rational::operator* (const string& s) const		{ rational r(*this); r *= s; return r; }
-rational rational::operator* (const integer& i) const		{ rational r(*this); r *= i; return r; }
-rational rational::operator* (const rational& r) const	{ rational k(*this); k *= r; return k; }
+rational rational::operator* (const string& s) const	{ rational r(*this); r *= s; return r; }
+rational rational::operator* (const integer& i) const	{ rational r(*this); r *= i; return r; }
+rational rational::operator* (const rational& r) const{ rational k(*this); k *= r; return k; }
 
-rational& rational::operator*= (int i)						{ rational r(i);	mpq_mul(val, val, r.val); return *this; }
+rational& rational::operator*= (int i)					{ rational r(i);	mpq_mul(val, val, r.val); return *this; }
 rational& rational::operator*= (const char *s)			{ rational r(s);	mpq_mul(val, val, r.val); return *this; }
-rational& rational::operator*= (const string& s)			{ rational r(s);	mpq_mul(val, val, r.val); return *this; }
-rational& rational::operator*= (const integer& i)			{ rational r(i);	mpq_mul(val, val, r.val); return *this; }
+rational& rational::operator*= (const string& s)		{ rational r(s);	mpq_mul(val, val, r.val); return *this; }
+rational& rational::operator*= (const integer& i)		{ rational r(i);	mpq_mul(val, val, r.val); return *this; }
 rational& rational::operator*= (const rational& r)		{					mpq_mul(val, val, r.val); return *this; }
 
 rational rational::operator/ (int i) const				{ rational r(*this); r /= i; return r; }
 rational rational::operator/ (const char *s) const		{ rational r(*this); r /= s; return r; }
-rational rational::operator/ (const string& s) const		{ rational r(*this); r /= s; return r; }
-rational rational::operator/ (const integer& i) const		{ rational r(*this); r /= i; return r; }
-rational rational::operator/ (const rational& r) const	{ rational k(*this); k /= r; return k; }
+rational rational::operator/ (const string& s) const	{ rational r(*this); r /= s; return r; }
+rational rational::operator/ (const integer& i) const	{ rational r(*this); r /= i; return r; }
+rational rational::operator/ (const rational& r) const{ rational k(*this); k /= r; return k; }
 
-rational& rational::operator/= (int I)						{ integer i(I);		mpz_divide_mpq(val, i.get_raw_value()); return *this; }
+rational& rational::operator/= (int I)					{ integer i(I);		mpz_divide_mpq(val, i.get_raw_value()); return *this; }
 rational& rational::operator/= (const char *s) 			{ rational r(s);	mpq_divide_mpq(val, r.val);				return *this; }
-rational& rational::operator/= (const string& s) 			{ rational r(s);	mpq_divide_mpq(val, r.val);				return *this; }
-rational& rational::operator/= (const integer& i)	 		{ 					mpz_divide_mpq(val, i.get_raw_value()); return *this; }
+rational& rational::operator/= (const string& s) 		{ rational r(s);	mpq_divide_mpq(val, r.val);				return *this; }
+rational& rational::operator/= (const integer& i)	 	{ 					mpz_divide_mpq(val, i.get_raw_value()); return *this; }
 rational& rational::operator/= (const rational& r)		{					mpq_divide_mpq(val, r.val);				return *this; }
 
 rational rational::operator^ (unsigned int p) const {
