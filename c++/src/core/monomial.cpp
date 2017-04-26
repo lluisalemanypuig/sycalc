@@ -89,8 +89,8 @@ monomial& monomial::operator-= (const monomial& m) {
 	return *this;
 }
 
-monomial monomial::operator* (const integer& i) const	{ monomial r(*this); r *= i; return r; }
-monomial monomial::operator* (const rational& s) const	{ monomial r(*this); r *= s; return r; }
+monomial monomial::operator* (const integer& i) const		{ monomial r(*this); r *= i; return r; }
+monomial monomial::operator* (const rational& s) const		{ monomial r(*this); r *= s; return r; }
 monomial monomial::operator* (const monomial& m) const	{ monomial r(*this); r *= m; return r; }
 
 monomial& monomial::operator*= (const integer& i) {
@@ -109,7 +109,7 @@ monomial& monomial::operator*= (const monomial& m) {
 	return *this;
 }
 
-monomial monomial::operator^ (unsigned int i) const		{ monomial c = *this; c ^= i; return c; }
+monomial monomial::operator^ (unsigned int i) const	{ monomial c = *this; c ^= i; return c; }
 monomial monomial::operator^ (const integer& i) const	{ monomial c = *this; c ^= i; return c; }
 
 monomial& monomial::operator^= (unsigned int i) {
