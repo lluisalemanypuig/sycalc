@@ -33,10 +33,10 @@ $(BIN_DIR)/polynomial.o: $(COR_DIR)/polynomial.cpp $(POLYNOMIAL_DPS)
 
 # ALGORITHMS
 
-$(BIN_DIR)/nested_sums.o: $(ALG_DIR)/nested_sums.cpp
+$(BIN_DIR)/nested_sums.o: $(ALG_DIR)/nested_sums.cpp $(ALG_DPS)
 	g++ $(FLAGS) -c $< -o $@ -I $(COR_DIR) -I $(NUM_DIR) -I $(MSC_DIR)
 
-$(BIN_DIR)/power_sums.o: $(ALG_DIR)/power_sums.cpp
+$(BIN_DIR)/power_sums.o: $(ALG_DIR)/power_sums.cpp $(ALG_DPS)
 	g++ $(FLAGS) -c $< -o $@ -I $(COR_DIR) -I $(NUM_DIR) -I $(MSC_DIR)
 
 # -- MISC
