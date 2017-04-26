@@ -65,7 +65,7 @@ class polynomial {
 		polynomial operator^ (const integer& i) const;
 		polynomial& operator^= (const integer& i);
 		
-		monomial operator[] (size_t i) const;
+		const monomial& operator[] (size_t i) const;
 		monomial& operator[] (size_t i);
 		
 		inline friend

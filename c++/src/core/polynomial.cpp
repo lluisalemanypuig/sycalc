@@ -270,7 +270,7 @@ polynomial& polynomial::operator^= (const integer& i) {
 	return *this;
 }
 
-monomial polynomial::operator[] (size_t i) const	{ return ms[i]; }
+const monomial& polynomial::operator[] (size_t i) const	{ return ms[i]; }
 monomial& polynomial::operator[] (size_t i)			{ return ms[i]; }
 
 /* GETTERS */
