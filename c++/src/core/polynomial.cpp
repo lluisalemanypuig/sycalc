@@ -119,9 +119,35 @@ polynomial& polynomial::operator+= (const monomial& m) {
 }
 
 polynomial& polynomial::operator+= (const polynomial& p) {
-	for (size_t i = 0; i < p.ms.size(); ++i) {
-		*this += p.ms[i];
+	if (ms.size() == 0) {
+		ms = p.ms;
 	}
+	else {
+		size_t it, ip;
+		it = ip = 0;
+		
+		while (it < ms.size() and ip < p.ms.size()) {
+			const integer& ms_deg = ms[it].get_exponent();
+			const integer& pms_deg = p.ms[ip].get_exponent();
+			
+			if (ms_deg == pms_deg) {
+				ms[it] += p.ms[ip];
+				++it;
+				++ip;
+			}
+			else if (ms_deg < pms_deg) {
+				++it;
+			}
+			else {
+				ms.insert(ms.begin() + it, p.ms[ip]);
+				++it;
+				++ip;
+			}
+		}
+		
+		ms.insert(ms.end(), p.ms.begin() + ip, p.ms.end());
+	}
+	
 	return *this;
 }
 
@@ -148,9 +174,37 @@ polynomial& polynomial::operator-= (const monomial& m) {
 }
 
 polynomial& polynomial::operator-= (const polynomial& p) {
-	for (size_t i = 0; i < p.ms.size(); ++i) {
-		*this -= p.ms[i];
+	if (ms.size() == 0) {
+		ms = p.ms;
 	}
+	else {
+		size_t it, ip;
+		it = ip = 0;
+		
+		while (it < ms.size() and ip < p.ms.size()) {
+			const integer& ms_deg = ms[it].get_exponent();
+			const integer& pms_deg = p.ms[ip].get_exponent();
+			
+			if (ms_deg == pms_deg) {
+				ms[it] -= p.ms[ip];
+				++it;
+				++ip;
+			}
+			else if (ms_deg < pms_deg) {
+				++it;
+			}
+			else {
+				ms.insert(ms.begin() + it, -p.ms[ip]);
+				++it;
+				++ip;
+			}
+		}
+		
+		for (; ip < p.ms.size(); ++ip) {
+			ms.push_back(-p.ms[ip]);
+		}
+	}
+	
 	return *this;
 }
 

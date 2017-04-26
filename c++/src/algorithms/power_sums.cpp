@@ -5,7 +5,8 @@
 namespace sycalc {
 namespace algorithms {
 	
-	inline size_t poly_idx(size_t p) { return p - 1; }
+	inline
+	size_t poly_idx(size_t p) { return p - 1; }
 	
 }
 }
@@ -40,21 +41,23 @@ namespace algorithms {
 		polys[ poly_idx(1) ] += monomial("1/2", 2, "n");
 		polys[ poly_idx(1) ] += monomial("1/2", 1, "n");
 		
+		rational new_Bcoef, coef1, coef2;
+		
 		for (size_t d = 2; d <= p; ++d) {
 			
 			// Polynomial for power (p - 1)
 			const polynomial& last = polys[ poly_idx(d - 1) ];
 			const rational& Bcoef = last.get_monomial_coefficient(d);
 			
-			rational new_Bcoef = Bcoef + 1;
+			new_Bcoef = Bcoef + 1;
 			new_Bcoef.invert();
 			
 			// Polynomial for power p
 			polynomial& S = polys[ poly_idx(d) ];
 			S += monomial(Bcoef, d + 1, "n");
 			
-			rational coef1 = last.get_monomial_coefficient(0);
-			rational coef2 = last.get_monomial_coefficient(1);
+			coef1 = last.get_monomial_coefficient(0);
+			coef2 = last.get_monomial_coefficient(1);
 			for (size_t j = 0; j <= d - 1; ++j) {
 				//const rational& coef1 = last.get_monomial_coefficient(j);
 				//const rational& coef2 = last.get_monomial_coefficient(j + 1);
