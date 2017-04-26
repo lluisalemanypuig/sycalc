@@ -96,7 +96,7 @@ bool polynomial::operator!= (const polynomial& p) const {
 	return not (*this == p);
 }
 
-polynomial polynomial::operator+ (const monomial& m) const		{ polynomial r(*this); r += m; return r; }
+polynomial polynomial::operator+ (const monomial& m) const	{ polynomial r(*this); r += m; return r; }
 polynomial polynomial::operator+ (const polynomial& p) const	{ polynomial r(*this); r += p; return r; }
 
 polynomial& polynomial::operator+= (const monomial& m) {
@@ -151,7 +151,7 @@ polynomial& polynomial::operator+= (const polynomial& p) {
 	return *this;
 }
 
-polynomial polynomial::operator- (const monomial& m) const		{ polynomial r(*this); r -= m; return r; }
+polynomial polynomial::operator- (const monomial& m) const	{ polynomial r(*this); r -= m; return r; }
 polynomial polynomial::operator- (const polynomial& p) const	{ polynomial r(*this); r -= p; return r; }
 
 polynomial& polynomial::operator-= (const monomial& m) {
@@ -209,8 +209,8 @@ polynomial& polynomial::operator-= (const polynomial& p) {
 }
 
 polynomial polynomial::operator* (const integer& i) const		{ polynomial r(*this); r *= i; return r; }
-polynomial polynomial::operator* (const rational& s) const		{ polynomial r(*this); r *= s; return r; }
-polynomial polynomial::operator* (const monomial& m) const		{ polynomial r(*this); r *= m; return r; }
+polynomial polynomial::operator* (const rational& s) const	{ polynomial r(*this); r *= s; return r; }
+polynomial polynomial::operator* (const monomial& m) const	{ polynomial r(*this); r *= m; return r; }
 polynomial polynomial::operator* (const polynomial& p) const	{ polynomial r(*this); r *= p; return r; }
 
 polynomial& polynomial::operator*= (const integer& i) {
