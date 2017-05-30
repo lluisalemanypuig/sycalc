@@ -16,7 +16,7 @@ using namespace mtime;
 using namespace algorithms;
 using namespace core;
 
-int main(int argc, char *argv[]) {
+void some_tests(int argc, char *argv[]) {
 	//sycalc::tests::polynomial_tests();
 	//sycalc::tests::algorithms_tests();
 	
@@ -54,3 +54,40 @@ int main(int argc, char *argv[]) {
 	cout << "    * Total time: " << elapsed_time(gbegin, gend) << " s" << endl;
 }
 
+int main() {
+	int D = 1;
+	cout << "Enter a power: ";
+	
+	while (cin >> D and D > 0) {
+		
+		polynomial p;
+		timing begin = now();
+		algorithms::power_sums(D, p);
+		timing end = now();
+
+		cout << "The formula is: " << p << endl;
+		cout << "    Computed in " << elapsed_time(begin, end) << " s" << endl;
+		
+		size_t n;
+		cout << "sum from 1 to:"; cin >> n;
+		
+		rational poly_res, linear_res;
+		
+		begin = now();
+		poly_res = p.evaluate(n);
+		end = now();
+		cout << "polynomial: p(" << n << ")= " << poly_res << endl;
+		cout << "    in " << elapsed_time(begin, end) << endl;
+		
+		begin = now();
+		linear_res = algorithms::linear_power_sums(1, n, D);
+		end = now();
+		cout << "linear sum(" << n << ")= " << linear_res << endl;
+		cout << "    in " << elapsed_time(begin, end) << endl;
+		
+		cout << endl;
+		cout << "Are results equal? " << (poly_res == linear_res ? "Yes" : "No") << endl;
+		
+		cout << "Enter a power: ";
+	}
+}
