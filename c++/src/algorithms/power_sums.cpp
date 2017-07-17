@@ -30,13 +30,13 @@ namespace algorithms {
 		return s;
 	}
 	
-	void power_sums(size_t p, polynomial& s) {
-		vector<polynomial> polys(p, polynomial("n"));
-		power_sums(p, polys);
+	void power_sums(size_t p, polynomial& s, const string& var_name) {
+		vector<polynomial> polys(p, var_name);
+		power_sums(p, polys, var_name);
 		s = polys[p - 1];
 	}
 	
-	void power_sums(size_t p, vector<polynomial>& polys) {
+	void power_sums(size_t p, vector<polynomial>& polys, const string& var_name) {
 		/*
 		// ORIGINAL CODE
 		polys[ poly_idx(1) ] += monomial("1/2", 2, "n");
@@ -77,8 +77,8 @@ namespace algorithms {
 		
 		
 		// Optimized code
-		polys[ poly_idx(1) ] += monomial("1/2", 2, "n");
-		polys[ poly_idx(1) ] += monomial("1/2", 1, "n");
+		polys[ poly_idx(1) ] += monomial("1/2", 2, var_name);
+		polys[ poly_idx(1) ] += monomial("1/2", 1, var_name);
 		
 		rational new_Bcoef, coef1, coef2;
 		
@@ -89,16 +89,16 @@ namespace algorithms {
 			
 			// initialize polynomial for power p
 			polynomial& S = polys[ poly_idx(d) ];
-			S += monomial(Bcoef, d + 1, "n");
+			S += monomial(Bcoef, d + 1, var_name);
 			
 			coef2 = last.get_monomial_coefficient(1);
-			S += monomial(coef2, 1, "n");
+			S += monomial(coef2, 1, var_name);
 			
 			for (size_t j = 1; j <= d - 1; ++j) {
 				coef1 = coef2;
 				coef2 = last.get_monomial_coefficient(j + 1);
 				
-				S += monomial(coef1 + coef2, j + 1, "n");
+				S += monomial(coef1 + coef2, j + 1, var_name);
 				S -= polys[ poly_idx(j) ]*coef1;
 			}
 			
@@ -109,10 +109,34 @@ namespace algorithms {
 		//*/
 	}
 	
-	polynomial power_sums(size_t p) {
+	polynomial power_sums(size_t p, const string& var_name) {
 		polynomial s;
-		power_sums(p, s);
+		power_sums(p, s, var_name);
 		return s;
+	}
+	
+	void polynomial_sum(const polynomial& p, polynomial& q) {
+		vector<polynomial> power_sums_poly( p.get_degree().to_int() );
+		power_sums(p.get_degree().to_int(), power_sums_poly, p.get_var_name());
+		
+		for (size_t f = 0; f < power_sums_poly.size(); ++f) {
+			cout << f + 1 << " : " << power_sums_poly[f] << endl;
+		}
+		
+		for (size_t m = 0; m < p.size(); ++m) {
+			size_t sub_poly_idx = p[m].get_exponent().to_int();
+			power_sums_poly[sub_poly_idx - 1].set_var_name( p.get_var_name() );
+			
+			cout << "adding : " << power_sums_poly[sub_poly_idx - 1]*p[m].get_coefficient() << endl;
+			
+			q += power_sums_poly[sub_poly_idx - 1]*p[m].get_coefficient();
+		}
+	}
+	
+	polynomial polynomial_sum(const polynomial& p) {
+		polynomial q;
+		polynomial_sum(p, q);
+		return q;
 	}
 	
 }

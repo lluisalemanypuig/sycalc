@@ -159,6 +159,8 @@ class integer {
 		int get_sign() const;
 		
 		const mpz_t& get_raw_value() const;
+		int to_int() const;
+		unsigned int to_uint() const;
 		
 		/* CONVERTERS */
 		

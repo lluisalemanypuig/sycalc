@@ -97,6 +97,10 @@ class polynomial {
 			return os;
 		}
 		
+		/* SETTERS */
+		
+		void set_var_name(const string& var_name);
+		
 		/* GETTERS */
 		
 		integer get_degree() const;

@@ -241,6 +241,14 @@ const mpz_t& integer::get_raw_value() const	{
 	return val;
 }
 
+int integer::to_int() const {
+	return mpz_get_si(val);
+}
+
+unsigned int integer::to_uint() const {
+	return mpz_get_ui(val);
+}
+
 /* CONVERTERS */
 
 string integer::to_string() const {

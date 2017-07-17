@@ -273,6 +273,15 @@ polynomial& polynomial::operator^= (const integer& i) {
 const monomial& polynomial::operator[] (size_t i) const	{ return ms[i]; }
 monomial& polynomial::operator[] (size_t i)			{ return ms[i]; }
 
+/* SETTERS */
+
+void polynomial::set_var_name(const string& var_name) {
+	var = var_name;
+	for (size_t m = 0; m < ms.size(); ++m) {
+		ms[m].set_var_name(var_name);
+	}
+}
+
 /* GETTERS */
 
 integer polynomial::get_degree() const {

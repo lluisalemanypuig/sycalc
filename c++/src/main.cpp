@@ -54,7 +54,7 @@ void some_tests(int argc, char *argv[]) {
 	cout << "    * Total time: " << elapsed_time(gbegin, gend) << " s" << endl;
 }
 
-int main() {
+void nice_demo() {
 	int D = 1;
 	cout << "Enter a power: ";
 	
@@ -91,3 +91,18 @@ int main() {
 		cout << "Enter a power: ";
 	}
 }
+
+int main() {
+	polynomial base1;
+	base1 += monomial(1, 1, "i"); 	// base1 = i
+	base1 += monomial(1, 0, "i"); 	// base1 = i + 1
+	base1 = base1*base1*base1;		// base1 = (i + 1)^3
+	base1 *= monomial(1, 1, "i");	// base1 = i*(i + 1)^3
+	cout << "base1: " << base1 << endl;
+	
+	polynomial p;
+	algorithms::polynomial_sum(base1, p);
+	cout << "p : " << p << endl;
+	
+}
+
