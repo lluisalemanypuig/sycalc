@@ -26,7 +26,7 @@ class polynomial {
 		void add_monomial(const monomial& m, size_t idx);
 	
 	public:
-		polynomial(const string& var_name = "x");
+		polynomial(const string& var_name = "n");
 		polynomial(const polynomial& p);
 		~polynomial();
 		

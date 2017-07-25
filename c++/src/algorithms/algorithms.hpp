@@ -50,7 +50,7 @@ using namespace numeric;
 	 * assuming that all polynomials in poly[i] with 0 <= i < lower are
 	 * already calculated.
 	 */
-	void power_sums(size_t p, size_t lower, vector<polynomial>& polys, const string& var_name = "n");
+	void power_sums(size_t lower, size_t p, vector<polynomial>& polys, const string& var_name = "n");
 	
 	// q(i): sum_{i = 1}^{n} p(i)
 	void polynomial_sum(const polynomial& p, polynomial& q);
