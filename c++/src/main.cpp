@@ -59,7 +59,6 @@ void nice_demo() {
 	cout << "Enter a power: ";
 	
 	while (cin >> D and D > 0) {
-		
 		polynomial p;
 		timing begin = now();
 		algorithms::power_sums(D, p);
@@ -93,16 +92,29 @@ void nice_demo() {
 }
 
 int main() {
-	polynomial base1;
-	base1 += monomial(1, 1, "i"); 	// base1 = i
-	base1 += monomial(1, 0, "i"); 	// base1 = i + 1
-	base1 = base1*base1*base1;		// base1 = (i + 1)^3
-	base1 *= monomial(1, 1, "i");	// base1 = i*(i + 1)^3
-	cout << "base1: " << base1 << endl;
+	const size_t p1 = 10;
+	const size_t p2 = 20;
 	
-	polynomial p;
-	algorithms::polynomial_sum(base1, p);
-	cout << "p : " << p << endl;
+	vector<polynomial> polys1(p1);
+	algorithms::power_sums(p1, polys1);
 	
+	for (size_t i = 0; i < p1; ++i) {
+		cout << "power: " << i + 1 << " -> " << polys1[i] << endl;
+	}
+	
+	cout << "*********************" << endl;
+	
+	vector<polynomial> polys2(p2);
+	algorithms::power_sums(p2, polys2);
+	
+	vector<polynomial> polys3(p2);
+	for (size_t i = 0; i < p1; ++i) polys3[i] = polys1[i];
+	algorithms::power_sums(p1 + 1, p2, polys3);
+	
+	for (size_t i = 0; i < p2; ++i) {
+		cout << "power (2): " << i + 1 << " -> " << polys2[i] << endl;
+		cout << "power (3): " << i + 1 << " -> " << polys3[i] << endl;
+		cout << "-----" << endl;
+	}
 }
 
