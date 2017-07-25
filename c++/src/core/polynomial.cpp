@@ -278,7 +278,7 @@ monomial& polynomial::operator[] (size_t i)			{ return ms[i]; }
 void polynomial::set_var_name(const string& var_name) {
 	var = var_name;
 	for (size_t m = 0; m < ms.size(); ++m) {
-		ms[m].set_var_name(var_name);
+		ms[m].set_var_name(var);
 	}
 }
 

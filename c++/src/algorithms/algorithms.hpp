@@ -34,10 +34,25 @@ using namespace numeric;
 	
 	// pre: p > 0
 	void power_sums(size_t p, polynomial& s, const string& var_name = "n");
-	void power_sums(size_t d, vector<polynomial>& polys, const string& var_name = "n");
+	/* Computes all polynomials p(x) such that
+	 * p(n) = sum_{i = 1}^{n} i^d
+	 * for all d : 1 <= d <= p and p = polys.size()
+	 * assuming that no polynomial is already calculated
+	 */
+	void power_sums(size_t p, vector<polynomial>& polys, const string& var_name = "n");
+	/* Computes the polynomial p(n) such that 
+	 * p(n) = sum_{i = 1}^{n} i^d
+	 */
 	polynomial power_sums(size_t p, const string& var_name = "n");
+	/* Computes all polynomials p(x) such that
+	 * p(n) = sum_{i = 1}^{n} i^d
+	 * for all d : lower <= d <= p and p = polys.size()
+	 * assuming that all polynomials in poly[i] with 0 <= i < lower are
+	 * already calculated.
+	 */
+	void power_sums(size_t p, size_t lower, vector<polynomial>& polys, const string& var_name = "n");
 	
-	// q: sum_{i = 1}^{n} p(i)
+	// q(i): sum_{i = 1}^{n} p(i)
 	void polynomial_sum(const polynomial& p, polynomial& q);
 	polynomial polynomial_sum(const polynomial& p);
 	

@@ -106,7 +106,9 @@ namespace algorithms {
 			new_Bcoef.invert();
 			S *= new_Bcoef;
 		}
-		//*/
+	}
+	
+	void power_sums(size_t p, size_t lower, vector<polynomial>& polys, const string& var_name = "n") {
 	}
 	
 	polynomial power_sums(size_t p, const string& var_name) {
@@ -119,15 +121,9 @@ namespace algorithms {
 		vector<polynomial> power_sums_poly( p.get_degree().to_int() );
 		power_sums(p.get_degree().to_int(), power_sums_poly, p.get_var_name());
 		
-		for (size_t f = 0; f < power_sums_poly.size(); ++f) {
-			cout << f + 1 << " : " << power_sums_poly[f] << endl;
-		}
-		
 		for (size_t m = 0; m < p.size(); ++m) {
 			size_t sub_poly_idx = p[m].get_exponent().to_int();
 			power_sums_poly[sub_poly_idx - 1].set_var_name( p.get_var_name() );
-			
-			cout << "adding : " << power_sums_poly[sub_poly_idx - 1]*p[m].get_coefficient() << endl;
 			
 			q += power_sums_poly[sub_poly_idx - 1]*p[m].get_coefficient();
 		}
