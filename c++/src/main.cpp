@@ -92,6 +92,7 @@ void nice_demo() {
 }
 
 int main() {
+	/*
 	const size_t p1 = 10;
 	const size_t p2 = 20;
 	
@@ -116,5 +117,8 @@ int main() {
 		cout << "power (3): " << i + 1 << " -> " << polys3[i] << endl;
 		cout << "-----" << endl;
 	}
+	*/
+	
+	tests::polynomial_tests();
 }
 

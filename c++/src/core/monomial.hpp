@@ -91,6 +91,9 @@ class monomial {
 		const integer& get_exponent() const;
 		
 		string get_raw_string() const;
+		
+		monomial derivative() const;
+		monomial integral() const;
 };
 
 static inline

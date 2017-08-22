@@ -27,6 +27,9 @@ class rational {
 		rational(const char *s, int base = 10);
 		rational(const string& s, int base = 10);
 		rational(const integer& n, const integer& d = 1);
+		rational(const rational& r, const integer& i);
+		rational(const integer& i, const rational& r);
+		rational(const rational& r1, const rational& r2);
 		rational(const rational& r);
 		~rational();
 		
@@ -38,6 +41,9 @@ class rational {
 		void init(const char *s, int base = 10);
 		void init(const string& s, int base = 10);
 		void init(const integer& n, const integer& d = 1);
+		void init(const rational& r, const integer& i);
+		void init(const integer& i, const rational& r);
+		void init(const rational& r1, const rational& r2);
 		void init(const rational& r);
 		
 		void clear();

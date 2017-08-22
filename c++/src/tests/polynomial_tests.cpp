@@ -73,6 +73,17 @@ namespace tests {
 		cout << "    coefficient((x - 1)^5, 0)= " << (x_minus_one^5).get_monomial_coefficient(0) << endl;
 		
 		cout << endl;
+		
+		polynomial large_poly("x");
+		large_poly += monomial(1, -2, "x");
+		large_poly += monomial(-2, 2, "x");
+		large_poly += monomial(3, -3, "x");
+		large_poly += monomial(-6, 4, "x");		// large_poly = 3x^(-3) + x^(-1) - 2x^2 - 6x^4
+		
+		cout << "          p(x)= " << large_poly << endl;
+		cout << "         p(x)'= " << large_poly.derivative() << endl;
+		cout << "     int(p(x))= " << large_poly.integral() << endl;
+		cout << "    int(p(x))'= " << large_poly.integral().derivative() << endl;
 	}
 
 }

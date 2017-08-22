@@ -107,6 +107,21 @@ rational::rational(const integer& n, const integer& d) {
 	init(n, d);
 }
 
+rational::rational(const rational& r, const integer& i) {
+	initialized = false;
+	init(r, i);
+}
+
+rational::rational(const integer& i, const rational& r) {
+	initialized = false;
+	init(i, r);
+}
+
+rational::rational(const rational& r1, const rational& r2) {
+	initialized = false;
+	init(r1, r2);
+}
+
 rational::rational(const rational& r) {
 	initialized = false;
 	*this = r;
@@ -149,6 +164,27 @@ void rational::init(const integer& n, const integer& d) {
 	if (n.is_initialized() and d.is_initialized()) {
 		init();
 		set(n, d);
+	}
+}
+
+void rational::init(const rational& r, const integer& i) {
+	if (r.is_initialized() and i.is_initialized()) {
+		init();
+		set(r/i);
+	}
+}
+
+void rational::init(const integer& i, const rational& r) {
+	if (i.is_initialized() and r.is_initialized()) {
+		init();
+		set(r*i);
+	}
+}
+
+void rational::init(const rational& r1, const rational& r2) {
+	if (r1.is_initialized() and r2.is_initialized()) {
+		init();
+		set(r1/r2);
 	}
 }
 

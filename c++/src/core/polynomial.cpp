@@ -311,6 +311,24 @@ const string& polynomial::get_var_name() const {
 	return var;
 }
 
+polynomial polynomial::derivative() const {
+	polynomial p(var);
+	if (ms.size() == 0) return p;
+	
+	for (size_t m = 0; m < ms.size(); ++m) p.add_monomial(ms[m].derivative());
+	
+	return p;
+}
+
+polynomial polynomial::integral() const {
+	polynomial p(var);
+	if (ms.size() == 0) return p;
+	
+	for (size_t m = 0; m < ms.size(); ++m) p.add_monomial(ms[m].integral());
+	
+	return p;
+}
+
 }
 }
 

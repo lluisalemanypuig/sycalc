@@ -156,6 +156,28 @@ string monomial::get_raw_string() const {
 	return c.to_string() + "*" + var + "^" + e.to_string();
 }
 
+monomial monomial::derivative() const {
+	monomial m(0, 0, var);
+	if (e == 0) return m;
+	
+	m.set_exponent(e - 1);
+	m.set_coefficient(c*e);
+	return m;
+}
+
+monomial monomial::integral() const {
+	monomial m(0, 0, var);
+	
+	if (e == -1) {
+		cerr << "Error: result of integrating " << *this << " is not a monomial" << endl;
+	}
+	
+	m.set_coefficient(rational(c, e + 1));
+	m.set_exponent(e + 1);
+	
+	return m;
+}
+
 }
 }
 

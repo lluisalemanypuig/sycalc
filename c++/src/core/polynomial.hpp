@@ -108,6 +108,9 @@ class polynomial {
 		
 		size_t size() const;
 		const string& get_var_name() const;
+		
+		polynomial derivative() const;
+		polynomial integral() const;
 };
 
 static inline
