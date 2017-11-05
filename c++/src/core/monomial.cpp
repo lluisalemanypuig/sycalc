@@ -5,11 +5,11 @@ namespace core {
 
 /// NON-CLASS PRIVATE
 
-#define __SYCALC_CORE_MONOMIAL_ERROR_MSG(m_This, m_Other)				\
-	"(monomial) Error: cannot operate '"	+	\
-	m_This->get_raw_string()				+	\
-	" + "									+ 	\
-	m_Other.get_raw_string()				+	\
+#define __SYCALC_CORE_MONOMIAL_ERROR_MSG(m_This, m_Other)	\
+	"(monomial) Error: cannot operate '"	+				\
+	m_This->get_raw_string()				+				\
+	" + "									+ 				\
+	m_Other.get_raw_string()				+				\
 	"'."
 	
 /// PRIVATE
@@ -89,7 +89,7 @@ monomial& monomial::operator-= (const monomial& m) {
 	return *this;
 }
 
-monomial monomial::operator* (const integer& i) const	{ monomial r(*this); r *= i; return r; }
+monomial monomial::operator* (const integer& i) const		{ monomial r(*this); r *= i; return r; }
 monomial monomial::operator* (const rational& s) const	{ monomial r(*this); r *= s; return r; }
 monomial monomial::operator* (const monomial& m) const	{ monomial r(*this); r *= m; return r; }
 
@@ -109,7 +109,7 @@ monomial& monomial::operator*= (const monomial& m) {
 	return *this;
 }
 
-monomial monomial::operator^ (unsigned int i) const		{ monomial c = *this; c ^= i; return c; }
+monomial monomial::operator^ (unsigned int i) const	{ monomial c = *this; c ^= i; return c; }
 monomial monomial::operator^ (const integer& i) const	{ monomial c = *this; c ^= i; return c; }
 
 monomial& monomial::operator^= (unsigned int i) {

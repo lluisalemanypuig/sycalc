@@ -105,6 +105,7 @@ namespace algorithms {
 			new_Bcoef.invert();
 			S *= new_Bcoef;
 		}
+		
 	}
 	
 	void power_sums(size_t lower, size_t p, vector<polynomial>& polys, const string& var_name) {

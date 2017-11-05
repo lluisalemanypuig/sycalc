@@ -65,10 +65,11 @@ void nice_demo() {
 		timing end = now();
 
 		cout << "The formula is: " << p << endl;
-		cout << "    Computed in " << elapsed_time(begin, end) << " s" << endl;
+		cout << "    And was computed in " << elapsed_time(begin, end) << " seconds" << endl;
 		
+		/*
 		size_t n;
-		cout << "sum from 1 to:"; cin >> n;
+		cout << "sum from 1 to: "; cin >> n;
 		
 		rational poly_res, linear_res;
 		
@@ -76,18 +77,19 @@ void nice_demo() {
 		poly_res = p.evaluate(n);
 		end = now();
 		cout << "polynomial: p(" << n << ")= " << poly_res << endl;
-		cout << "    in " << elapsed_time(begin, end) << endl;
+		cout << "    computed in " << elapsed_time(begin, end) << " seconds" << endl;
 		
 		begin = now();
 		linear_res = algorithms::linear_power_sums(1, n, D);
 		end = now();
 		cout << "linear sum(" << n << ")= " << linear_res << endl;
-		cout << "    in " << elapsed_time(begin, end) << endl;
+		cout << "    computed in " << elapsed_time(begin, end) << " seconds" << endl;
 		
 		cout << endl;
 		cout << "Are results equal? " << (poly_res == linear_res ? "Yes" : "No") << endl;
 		
 		cout << "Enter a power: ";
+		*/
 	}
 }
 
@@ -119,6 +121,7 @@ int main() {
 	}
 	*/
 	
-	tests::polynomial_tests();
+	//tests::polynomial_tests();
+	nice_demo();
 }
 

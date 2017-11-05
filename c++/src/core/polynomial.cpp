@@ -7,24 +7,27 @@ namespace core {
 
 inline
 bool find_mon_degree(const vector<monomial>& ms, const integer& d, size_t& idx) {
-	int l = 0;
-	int r = ms.size() - 1;
-	
-	while (l < r) {
-		int m = (l + r)/2;
-		if (ms[m].get_exponent() < d) {
-			l = m + 1;
-		}
-		else {
-			r = m;
-		}
-	}
-	
 	bool found = false;
-	int m = (l + r)/2;
-	if (ms[m].get_exponent() == d) {
-		idx = m;
-		found = true;
+	
+	if (ms.size() > 0) {
+		size_t l = 0;
+		size_t r = ms.size() - 1;
+		
+		while (l < r) {
+			int m = (l + r)/2;
+			if (ms[m].get_exponent() < d) {
+				l = m + 1;
+			}
+			else {
+				r = m;
+			}
+		}
+		
+		int m = (l + r)/2;
+		if (ms[m].get_exponent() == d) {
+			idx = m;
+			found = true;
+		}
 	}
 	
 	return found;
@@ -209,8 +212,8 @@ polynomial& polynomial::operator-= (const polynomial& p) {
 }
 
 polynomial polynomial::operator* (const integer& i) const		{ polynomial r(*this); r *= i; return r; }
-polynomial polynomial::operator* (const rational& s) const	{ polynomial r(*this); r *= s; return r; }
-polynomial polynomial::operator* (const monomial& m) const	{ polynomial r(*this); r *= m; return r; }
+polynomial polynomial::operator* (const rational& s) const		{ polynomial r(*this); r *= s; return r; }
+polynomial polynomial::operator* (const monomial& m) const		{ polynomial r(*this); r *= m; return r; }
 polynomial polynomial::operator* (const polynomial& p) const	{ polynomial r(*this); r *= p; return r; }
 
 polynomial& polynomial::operator*= (const integer& i) {
@@ -259,8 +262,8 @@ polynomial& polynomial::operator^= (const integer& i) {
 	}
 	else if (i%2 == 0) {
 		integer h = i/2;
-		*this ^= h;						// q = p^(i/2)
-		*this *= (*this);		// q = (p^(i/2))^2 = p^i
+		*this ^= h;			// q = p^(i/2)
+		*this *= (*this);	// q = (p^(i/2))^2 = p^i
 	}
 	else {
 		integer e = i - 1;
@@ -271,7 +274,7 @@ polynomial& polynomial::operator^= (const integer& i) {
 }
 
 const monomial& polynomial::operator[] (size_t i) const	{ return ms[i]; }
-monomial& polynomial::operator[] (size_t i)			{ return ms[i]; }
+monomial& polynomial::operator[] (size_t i)				{ return ms[i]; }
 
 /* SETTERS */
 
