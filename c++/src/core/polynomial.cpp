@@ -99,8 +99,20 @@ bool polynomial::operator!= (const polynomial& p) const {
 	return not (*this == p);
 }
 
-polynomial polynomial::operator+ (const monomial& m) const		{ polynomial r(*this); r += m; return r; }
-polynomial polynomial::operator+ (const polynomial& p) const	{ polynomial r(*this); r += p; return r; }
+polynomial polynomial::operator+ (const integer& i) const		{ polynomial c(*this); c += monomial(i, 0, var); return c; }
+polynomial polynomial::operator+ (const rational& r) const		{ polynomial c(*this); c += monomial(r, 0, var); return c; }
+polynomial polynomial::operator+ (const monomial& m) const	{ polynomial c(*this); c += m; return c; }
+polynomial polynomial::operator+ (const polynomial& p) const	{ polynomial c(*this); c += p; return c; }
+
+polynomial& polynomial::operator+= (const integer& i) {
+	*this += monomial(i, 0, var);
+	return *this;
+}
+
+polynomial& polynomial::operator+= (const rational& r) {
+	*this += monomial(r, 0, var);
+	return *this;
+}
 
 polynomial& polynomial::operator+= (const monomial& m) {
 	if (ms.size() == 0) {
@@ -154,8 +166,20 @@ polynomial& polynomial::operator+= (const polynomial& p) {
 	return *this;
 }
 
-polynomial polynomial::operator- (const monomial& m) const		{ polynomial r(*this); r -= m; return r; }
-polynomial polynomial::operator- (const polynomial& p) const	{ polynomial r(*this); r -= p; return r; }
+polynomial polynomial::operator- (const integer& i) const		{ polynomial c(*this); c -= monomial(i, 0, var); return c; }
+polynomial polynomial::operator- (const rational& r) const		{ polynomial c(*this); c -= monomial(r, 0, var); return c; }
+polynomial polynomial::operator- (const monomial& m) const	{ polynomial c(*this); c -= m; return c; }
+polynomial polynomial::operator- (const polynomial& p) const	{ polynomial c(*this); c -= p; return c; }
+
+polynomial& polynomial::operator-= (const integer& i) {
+	*this -= monomial(i, 0, var);
+	return *this;
+}
+
+polynomial& polynomial::operator-= (const rational& r) {
+	*this -= monomial(r, 0, var);
+	return *this;
+}
 
 polynomial& polynomial::operator-= (const monomial& m) {
 	if (ms.size() == 0) {

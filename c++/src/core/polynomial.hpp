@@ -40,15 +40,23 @@ class polynomial {
 		bool operator== (const polynomial& p) const;
 		bool operator!= (const polynomial& p) const;
 		
+		polynomial operator+ (const integer& i) const;
+		polynomial operator+ (const rational& r) const;
 		polynomial operator+ (const monomial& m) const;
 		polynomial operator+ (const polynomial& p) const;
 		
+		polynomial& operator+= (const integer& i);
+		polynomial& operator+= (const rational& r);
 		polynomial& operator+= (const monomial& m);
 		polynomial& operator+= (const polynomial& p);
 		
+		polynomial operator- (const integer& i) const;
+		polynomial operator- (const rational& r) const;
 		polynomial operator- (const monomial& m) const;
 		polynomial operator- (const polynomial& p) const;
 		
+		polynomial& operator-= (const integer& i);
+		polynomial& operator-= (const rational& r);
 		polynomial& operator-= (const monomial& m);
 		polynomial& operator-= (const polynomial& p);
 		
