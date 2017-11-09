@@ -67,7 +67,6 @@ void nice_demo() {
 		cout << "The formula is: " << p << endl;
 		cout << "    And was computed in " << elapsed_time(begin, end) << " seconds" << endl;
 		
-		/*
 		size_t n;
 		cout << "sum from 1 to: "; cin >> n;
 		
@@ -82,14 +81,13 @@ void nice_demo() {
 		begin = now();
 		linear_res = algorithms::linear_power_sums(1, n, D);
 		end = now();
-		cout << "linear sum(" << n << ")= " << linear_res << endl;
+		cout << "   linear sum(" << n << ")= " << linear_res << endl;
 		cout << "    computed in " << elapsed_time(begin, end) << " seconds" << endl;
 		
 		cout << endl;
 		cout << "Are results equal? " << (poly_res == linear_res ? "Yes" : "No") << endl;
 		
 		cout << "Enter a power: ";
-		*/
 	}
 }
 
