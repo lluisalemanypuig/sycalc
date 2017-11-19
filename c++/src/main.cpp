@@ -58,6 +58,7 @@ void add_rationals() {
 	rational r1, r2;
 	while (cin >> r1 >> r2) {
 		cout << r1 << " + " << r2 << " = " << r1 + r2 << endl;
+		cout << r1 << " - " << r2 << " = " << r1 - r2 << endl;
 	}
 }
 
