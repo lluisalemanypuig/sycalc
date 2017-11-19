@@ -54,6 +54,33 @@ void some_tests(int argc, char *argv[]) {
 	cout << "    * Total time: " << elapsed_time(gbegin, gend) << " s" << endl;
 }
 
+void add_rationals() {
+	rational r1, r2;
+	while (cin >> r1 >> r2) {
+		cout << r1 << " + " << r2 << " = " << r1 + r2 << endl;
+	}
+}
+
+void find_contradiction() {
+	cout << "Enter power: ";
+	int d;
+	cin >> d;
+	
+	polynomial pD;
+	algorithms::power_sums(d, pD);
+	
+	cout << "Enter delta (e.g. 17/63): ";
+	rational delta;
+	cin >> delta;
+	
+	rational x0("-1/2");
+	cout << "p_" << d << "(x0 + delta) = p_" << d << "(" << x0 << " + " << delta << ")= p_" << d << "(" << x0 + delta << ")= ";
+	cout << pD.evaluate(x0 + delta) << endl;
+	
+	cout << "p_" << d << "(x0 - delta) = p_" << d << "(" << x0 << " - " << delta << ")= p_" << d << "(" << x0 - delta << ")= ";
+	cout << pD.evaluate(x0 - delta) << endl;
+}
+
 void nice_demo() {
 	int D = 1;
 	cout << "Enter a power: ";
@@ -120,6 +147,9 @@ int main() {
 	*/
 	
 	//tests::polynomial_tests();
-	nice_demo();
+	//nice_demo();
+	
+	find_contradiction();
+	//add_rationals();
 }
 

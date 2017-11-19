@@ -163,7 +163,8 @@ class rational {
 		istream& operator>> (istream& is, rational& r) {
 			string s;
 			is >> s;
-			r.set(s, 10);
+			if (r.is_initialized()) r.set(s, 10);
+			else r.init(s);
 			return is;
 		}
 		
