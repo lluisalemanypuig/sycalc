@@ -300,7 +300,7 @@ rational rational::operator- (int i) const				{ rational r(*this); r -= i; retur
 rational rational::operator- (const char *s) const		{ rational r(*this); r -= s; return r; }
 rational rational::operator- (const string& s) const		{ rational r(*this); r -= s; return r; }
 rational rational::operator- (const integer& i) const		{ rational r(*this); r -= i; return r; }
-rational rational::operator- (const rational& r) const	{ rational k(*this); k -= r; return r; }
+rational rational::operator- (const rational& r) const	{ rational k(*this); k -= r; return k; }
 
 rational& rational::operator- ()							{					mpq_neg(val, val); return *this; }
 rational& rational::operator-= (int i)						{ rational r(i);	mpq_sub(val, val, r.val); return *this; }
