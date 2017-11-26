@@ -10,6 +10,7 @@
 using namespace std;
 
 /// Custom includes
+#include "gmp_utils.hpp"
 #include "integer.hpp"
 
 namespace sycalc {
@@ -178,6 +179,7 @@ class rational {
 		
 		bool is_initialized() const;
 		int get_sign() const;
+		size_t bytes() const;
 		
 		/* CONVERTERS */
 		

@@ -158,6 +158,7 @@ class integer {
 		bool is_initialized() const;
 		int get_sign() const;
 		
+		size_t bytes() const;
 		const mpz_t& get_raw_value() const;
 		int to_int() const;
 		unsigned int to_uint() const;

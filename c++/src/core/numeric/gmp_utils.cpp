@@ -43,7 +43,11 @@ namespace gmp_utils {
 	void one(mpz_t& o) {
 		mpz_init_set_ui(o, 1);
 	}
-
+	
+	size_t bytes(const mpz_t& v) {
+		return sizeof(mp_limb_t)*v[0]._mp_alloc;
+	}
+	
 }
 
 }

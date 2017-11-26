@@ -178,6 +178,10 @@ monomial monomial::integral() const {
 	return m;
 }
 
+size_t monomial::bytes() const {
+	return c.bytes() + e.bytes() + sizeof(char)*var.length();
+}
+
 }
 }
 

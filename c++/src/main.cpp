@@ -93,7 +93,8 @@ void nice_demo() {
 		timing end = now();
 
 		cout << "The formula is: " << p << endl;
-		cout << "    And was computed in " << elapsed_time(begin, end) << " seconds" << endl;
+		cout << "    Was computed in " << elapsed_time(begin, end) << " seconds" << endl;
+		cout << "    Has size: " << p.bytes() << " bytes" << endl;
 		
 		size_t n;
 		cout << "sum from 1 to: "; cin >> n;
@@ -109,10 +110,8 @@ void nice_demo() {
 		begin = now();
 		linear_res = algorithms::linear_power_sums(1, n, D);
 		end = now();
-		cout << "   linear sum(" << n << ")= " << linear_res << endl;
+		cout << "linear sum(" << n << ")= " << linear_res << endl;
 		cout << "    computed in " << elapsed_time(begin, end) << " seconds" << endl;
-		
-		cout << endl;
 		cout << "Are results equal? " << (poly_res == linear_res ? "Yes" : "No") << endl;
 		
 		cout << "Enter a power: ";
@@ -148,9 +147,9 @@ int main() {
 	*/
 	
 	//tests::polynomial_tests();
-	//nice_demo();
+	nice_demo();
 	
-	find_contradiction();
+	//find_contradiction();
 	//add_rationals();
 }
 

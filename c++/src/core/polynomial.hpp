@@ -119,6 +119,8 @@ class polynomial {
 		
 		polynomial derivative() const;
 		polynomial integral() const;
+		
+		size_t bytes() const;
 };
 
 static inline

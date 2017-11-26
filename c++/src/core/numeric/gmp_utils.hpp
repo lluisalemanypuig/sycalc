@@ -18,6 +18,10 @@ namespace gmp_utils {
 	void zero(mpz_t& z);
 	void one(mpz_t& o);
 	
+	/* Getters of mpz_t objects */
+	
+	size_t bytes(const mpz_t& v);
+	
 }
 
 }

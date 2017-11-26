@@ -237,6 +237,11 @@ int integer::get_sign() const {
 	return mpz_sgn(val);
 }
 
+size_t integer::bytes() const {
+	if (not is_initialized()) return 0;
+	return gmp_utils::bytes(val);
+}
+
 const mpz_t& integer::get_raw_value() const	{
 	return val;
 }

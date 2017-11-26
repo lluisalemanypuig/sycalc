@@ -356,6 +356,14 @@ polynomial polynomial::integral() const {
 	return p;
 }
 
+size_t polynomial::bytes() const {
+	size_t s = sizeof(char)*var.length();;
+	for (size_t m = 0; m < ms.size(); ++m) {
+		s += ms[m].bytes();
+	}
+	return s;
+}
+
 }
 }
 

@@ -94,6 +94,8 @@ class monomial {
 		
 		monomial derivative() const;
 		monomial integral() const;
+		
+		size_t bytes() const;
 };
 
 static inline

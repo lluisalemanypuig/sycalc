@@ -365,6 +365,22 @@ int rational::get_sign() const {
 	return mpq_sgn(val);
 }
 
+size_t rational::bytes() const {
+	if (not is_initialized()) return 0;
+	
+	mpz_t num, den;
+	mpz_inits(num, den, NULL);
+	
+	mpq_get_num(num, val);
+	mpq_get_den(den, val);
+	
+	size_t bs = gmp_utils::bytes(num) + gmp_utils::bytes(den);
+	
+	mpz_clears(num, den, NULL);
+	
+	return bs;
+}
+
 /* CONVERTERS */
 
 string rational::to_string() const {
@@ -374,7 +390,7 @@ string rational::to_string() const {
 }
 
 void rational::to_string(string& s) const {
-	if (!is_initialized()) {
+	if (not is_initialized()) {
 		s = "uninitialized";
 		return;
 	}
