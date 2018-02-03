@@ -180,3 +180,15 @@ expanded_polynomial_evaluation(VAL, P, E):-
 contracted_polynomial_evaluation(VAL, P, E):-
 	polynomial_evaluation(P, EXP), expanded_polynomial_evaluation(VAL, EXP, E).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% SYMBOLIC DOT PRODUCT %%%%
+
+symbolic_dot_prod([X], [Y], P):- polynomial_evaluation( X*Y, P ), !.
+symbolic_dot_prod([X|Xs], [Y|Ys], R):-
+	polynomial_evaluation( X*Y, P ),
+	symbolic_dot_prod(Xs, Ys, Q),
+	polynomial_evaluation( P + Q, R ),
+	!.
+
+
+
