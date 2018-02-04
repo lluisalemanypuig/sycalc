@@ -1,3 +1,2 @@
-prolog/bin
-c++/bin
-
+src/debug_sycalc
+src/sycalc
