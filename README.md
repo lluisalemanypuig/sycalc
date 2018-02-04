@@ -1,2 +1,3 @@
 # sycalc
-Symbolic calculator implemented using SWI-Prolog
+
+Small symbolic calculator implemented using SWI-Prolog
