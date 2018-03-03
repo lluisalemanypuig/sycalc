@@ -158,7 +158,21 @@ polynomial_evaluation_list(Q1 * Q2, R):-
 	cartesian_product(L1, L2, L), map(mon_prod, L, PROD), list_red_list_polynomial(PROD, R), !.
 polynomial_evaluation_list(Q1 ^ N, R):-
 	polynomial_evaluation_list(Q1, L1), list_polynomial_power_list(L1, N, R), !.
-polynomial_evaluation_list(P, [R]):- red_monomial(P, R), !.
+% convert a binomial into a polynomial
+polynomial_evaluation_list( choose(P, I), R):-
+	factorial(I, F), falling_factorial(P, I, FF),
+	polynomial_evaluation_list( (1/F)*FF, R ), !.
+polynomial_evaluation_list(P, [R]):-
+	red_monomial(P, R), !.
+
+% Constructs the falling factorial polynomial on polynomial P:
+% (P - I)*(P - (I - 1))*(P - (I - 2))* .... *(P - 1)*P
+falling_factorial(P, 1, FF):- polynomial_evaluation(P, FF), !.
+falling_factorial(P, I, FF):-
+	I1 is I - 1,
+	polynomial_evaluation(P - 1, Pminus1), 
+	falling_factorial(Pminus1, I1, FF1),
+	polynomial_evaluation(P*FF1, FF).
 
 % Takes a sequence of sums and substractions P of polynomials, contracted or expanded,
 % and operates it.

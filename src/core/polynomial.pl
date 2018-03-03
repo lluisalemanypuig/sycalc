@@ -108,3 +108,4 @@ integer_roots_polynomial(P, R):-
 	polynomial_monomials(P, M), monomial_sort(M, SM), padded_poly_mons_decr(SM, PAD_SM),	% extract the padded monomial list of P
 	last(PAD_SM, _, L), monomial_coefficient(L, CF), divisors(CF, DVS), 					% obtain all the divisors of the free term
 	map(monomial_coefficient, PAD_SM, MCFS), ruffini(MCFS, DVS, R).
+

@@ -664,6 +664,12 @@ deb_exp_poly_eval(I, P, VAL, RES):-
 	expanded_polynomial_evaluation(VAL, P, R),
 	write(I), write(' P(x)='), write(P), write(' -> P('), write(VAL), write(')= '), output_text(R, RES).
 
+deb_falling_factorial(_, P, F, RES):- polynomial_evaluation(choose(P, F), R), polynomial_evaluation(RES, R), !.
+deb_falling_factorial(I, P, F, RES):-
+	polynomial_evaluation(choose(P, F), R),
+	write(I), write(' choose('), write(P), write(','), write(F), write(')= '), write(R),
+	polynomial_evaluation(RES, CORRECT_OUTPUT), output_text(R, CORRECT_OUTPUT).
+
 debug_polynomials:-
 	write('-- POLYNOMIAL EVALUATION DEBUG --'), nl,
 	write('* POLYNOMIAL LIST SUM'),
@@ -935,6 +941,26 @@ debug_polynomials:-
 	deb_exp_poly_eval(' 9)', -4*x^3 + 3*x, 9/5, -2241/125),
 	deb_exp_poly_eval(' 10)', -4*x^3 - 3*x, -9/5, 3591/125),
 
+	write(' - OK'), nl,
+	write('* FALLING FACTORIALS'),
+	
+	deb_falling_factorial(' 1)',    n, 		1,	n),
+	deb_falling_factorial(' 2)',    n - 1, 	1,	n - 1),
+	deb_falling_factorial(' 3)',    n - 2, 	1,	n - 2),
+	deb_falling_factorial(' 4)',    n, 		2,	(1/2)*n*(n - 1)),
+	deb_falling_factorial(' 5)',    n - 1,	2,	(1/2)*(n - 1)*(n - 2)),
+	deb_falling_factorial(' 6)',    n - 2,	2,	(1/2)*(n - 2)*(n - 3)),
+	deb_falling_factorial(' 7)',    n, 		3,	(1/6)*n*(n - 1)*(n - 2)),
+	deb_falling_factorial(' 8)',    n - 1,	3, 	(1/6)*(n - 1)*(n - 2)*(n - 3)),
+	deb_falling_factorial(' 9)',    n - 2,	3,	(1/6)*(n - 2)*(n - 3)*(n - 4)),
+	deb_falling_factorial('10)',    n - 7, 	1,	n - 7),
+	deb_falling_factorial('11)',    n - 7, 	2,	(1/2)*(n - 7)*(n - 8)),
+	deb_falling_factorial('12)',    n - 7, 	3,	(1/6)*(n - 7)*(n - 8)*(n - 9)),
+	deb_falling_factorial('13)',    n - 7,	4,	(1/24)*(n - 7)*(n - 8)*(n - 9)*(n - 10)),
+	deb_falling_factorial('14)',  2*n - 7, 	4,	(1/24)*(2*n - 7)*(2*n - 8)*(2*n - 9)*(2*n - 10)),
+	deb_falling_factorial('15)',  3*n - 7, 	4,	(1/24)*(3*n - 7)*(3*n - 8)*(3*n - 9)*(3*n - 10)),
+	deb_falling_factorial('16)', -4*n + 7, 	4,	(1/24)*(-4*n + 7)*(-4*n + 6)*(-4*n + 5)*(-4*n + 4)),
+	
 	write(' - OK'), nl,
 	nl, true.
 
