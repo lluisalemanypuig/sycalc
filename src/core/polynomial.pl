@@ -18,8 +18,10 @@
 %   x + 3, -x^2, -9
 
 % Returns the polynomials' monomials as a list of reduced monomials
-polynomial_monomials(A + B, S):- polynomial_monomials(A, L), polynomial_monomials(B, R), concat(L, R, S), !.
-polynomial_monomials(A - B, S):- polynomial_monomials(A, L), polynomial_monomials(-B, R), concat(L, R, S), !.
+polynomial_monomials(A + B, S):-
+	polynomial_monomials(A, L), polynomial_monomials(B, R), concat(L, R, S), !.
+polynomial_monomials(A - B, S):-
+	polynomial_monomials(A, L), polynomial_monomials(-B, R), concat(L, R, S), !.
 polynomial_monomials(M, [R]):- red_monomial(M, R), !.
 
 % Pads a list of monomials DECREASINGLY sorted.
@@ -31,7 +33,8 @@ padded_poly_mons_decr_(K, M, MS, P):-
 	concat(R, Q, P), !.
 
 padded_poly_mons_decr([], []).
-padded_poly_mons_decr([M], R):- monomial_degree(M, D), D > 0, padded_list_end([M], D, 0, R), !.
+padded_poly_mons_decr([M], R):-
+	monomial_degree(M, D), D > 0, padded_list_end([M], D, 0, R), !.
 padded_poly_mons_decr([M], [M]):- !.
 padded_poly_mons_decr([M|MS], P):-
 	first(MS, F, _),
@@ -57,47 +60,62 @@ polynomial_last_monomial(A - B, A, N):- monomial(B), monomial_neg(B, N), !.
 % The last monomial will be the first in the polynomial
 list_polynomial_([], 0):- !.
 list_polynomial_([M], M):- !.
-list_polynomial_([M|L], S + M):- monomial_positive_coefficient(M), list_polynomial_(L, S), !.
-list_polynomial_([M|L], S - N):- monomial_neg(M, N), list_polynomial_(L, S), !.
-list_polynomial(M, P):- monomial_inv_sort(M, MS), list_polynomial_(MS, P).
+list_polynomial_([M|L], S + M):-
+	monomial_positive_coefficient(M), list_polynomial_(L, S), !.
+list_polynomial_([M|L], S - N):-
+	monomial_neg(M, N), list_polynomial_(L, S), !.
+list_polynomial(M, P):-
+	monomial_inv_sort(M, MS), list_polynomial_(MS, P).
 
 % Compares two polynomials as list of monomials and fails if they are not equal
 polynomial_list_eq(M1, M2):- monomial_sort(M1, S1), monomial_sort(M2, S1).
 
 % Compares two expanded polynomials and fails if they are not equal
-polynomial_eq(P1, P2):- polynomial_monomials(P1, M1), polynomial_monomials(P2, M2), polynomial_list_eq(M1, M2).
+polynomial_eq(P1, P2):-
+	polynomial_monomials(P1, M1), polynomial_monomials(P2, M2),
+	polynomial_list_eq(M1, M2).
 
 % Checks if P is an expanded polynomial
 polynomial(P):- polynomial_monomials(P, _).
 
 % P is an expanded polynomial. N = -P
-polynomial_neg(P, N):- polynomial_monomials(P, L1), map(monomial_neg, L1, L2), polynomial_list(L2, N).
+polynomial_neg(P, N):-
+	polynomial_monomials(P, L1), map(monomial_neg, L1, L2),
+	polynomial_list(L2, N).
 
 % P is an expanded polynomial. D is the maximum degree of its monomials
-polynomial_degree(P, D):- polynomial_monomials(P, MS), map(monomial_degree, MS, DS), max(DS, D).
+polynomial_degree(P, D):-
+	polynomial_monomials(P, MS), map(monomial_degree, MS, DS), max(DS, D).
 
 pretty_polynomial_roots_([[X,1]], (x + XX)):- X < 0, rational_neg(X, XX).
 pretty_polynomial_roots_([[X,Po]], (x + XX)^Po):- X < 0, rational_neg(X, XX).
 pretty_polynomial_roots_([[X,1]], (x - X)):- !.
 pretty_polynomial_roots_([[X,Po]], (x - X)^Po):- !.
-pretty_polynomial_roots_([[X,1]|L], P*(x + XX)):- X < 0, rational_neg(X, XX), pretty_polynomial_roots_(L, P), !.
-pretty_polynomial_roots_([[X,Po]|L], P*((x + XX)^Po)):- X < 0, rational_neg(X, XX), pretty_polynomial_roots_(L, P), !.
-pretty_polynomial_roots_([[X,1]|L], P*(x - X)):- pretty_polynomial_roots_(L, P), !.
-pretty_polynomial_roots_([[X,Po]|L], P*((x - X)^Po)):- pretty_polynomial_roots_(L, P), !.
+pretty_polynomial_roots_([[X,1]|L], P*(x + XX)):-
+	X < 0, rational_neg(X, XX), pretty_polynomial_roots_(L, P), !.
+pretty_polynomial_roots_([[X,Po]|L], P*((x + XX)^Po)):-
+	X < 0, rational_neg(X, XX), pretty_polynomial_roots_(L, P), !.
+pretty_polynomial_roots_([[X,1]|L], P*(x - X)):-
+	pretty_polynomial_roots_(L, P), !.
+pretty_polynomial_roots_([[X,Po]|L], P*((x - X)^Po)):-
+	pretty_polynomial_roots_(L, P), !.
 
-% pretty_polynomial_roots(L, P):
-% Given a list of rationals L, buils a contracted polynomial P with these numbers as its roots.
+% pretty_polynomial_roots(L, P): Given a list of rationals L, buils a
+% contracted polynomial P with these numbers as its roots.
 pretty_polynomial_roots(R, P):- how_many(R, C), pretty_polynomial_roots_(C, P).
 
 % ruffini(C, D, R)
-% Given the list of integers C (coefficients of the monomials sorten DECREASINGLY),
-% the list of divisors D of the last coefficient (that is a free term)
-% applies Ruffini's method for polynomial factorization and obtains the list of roots R.
+% Given the list of integers C (coefficients of the monomials sorted
+% DECREASINGLY), the list of divisors D of the last coefficient (that is
+% a free term) applies Ruffini's method for polynomial factorization and
+% obtains the list of roots R.
 %
-% The list of integers (coefficients of the monomials sorten DECREASINGLY) must be from
-% a polynomial with ONLY integer roots.
+% The list of integers (coefficients of the monomials sorten DECREASINGLY)
+% must be from a polynomial with ONLY integer roots.
 ruffini([_], _, []):- !.
-ruffini(CS, [D|_], [D|L]):- ladder_prod(D, 0, CS, RS, 0), last(RS, _, NC), divisors(NC, ND), ruffini(RS, ND, L), !.
+ruffini(CS, [D|_], [D|L]):-
+	ladder_prod(D, 0, CS, RS, 0), last(RS, _, NC), divisors(NC, ND),
+	ruffini(RS, ND, L), !.
 ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L), !.
 
 % Finds all the integer roots of the polynomial P.

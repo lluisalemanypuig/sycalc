@@ -177,9 +177,11 @@ deb_rat_gcd(I, F1, F2, RES1, RES2, RES3):- rational_gcd_rel(F1, F2, R1, R2, R3),
 	term_to_atom(RES1, ARES1), term_to_atom(RES2, ARES2), term_to_atom(RES3, ARES3),
 
 	write(I), write(' '), write(F1), write(' + '), write(F2), write(' = '),
-	atom_concat(AR1, '*(', S1), atom_concat(S1, AR2, S2), atom_concat(S2, ' + ', S3), atom_concat(S3, AR3, S4), atom_concat(S4, ')', R),
-	atom_concat(ARES1, '*(', SES1), atom_concat(SES1, ARES2, SES2), atom_concat(SES2, ' + ', SES3), atom_concat(SES3, ARES3, SES4), atom_concat(SES4, ')', RES),
-	output_text(R, RES).
+	atom_concat(AR1, '*(', S1), atom_concat(S1, AR2, S2),
+	atom_concat(S2, ' + ', S3), atom_concat(S3, AR3, S4), atom_concat(S4, ')', R),
+	atom_concat(ARES1, '*(', SES1), atom_concat(SES1, ARES2, SES2),
+	atom_concat(SES2, ' + ', SES3), atom_concat(SES3, ARES3, SES4),
+	atom_concat(SES4, ')', RES), output_text(R, RES).
 
 debug_numbers:-
 	write('-- NUMBERS DEBUG --'), nl,
@@ -233,22 +235,26 @@ DEBUG - ARITHMETIC EVALUATION
 deb_sum(_, A, B, RES):- eval_sum(A, B, RES), !.
 deb_sum(I, A, B, RES):-
 	eval_sum(A, B, R),
-	write(I), write(' '), write(A), write(' + '), write(B), write(' = '), output_text(R, RES).
+	write(I), write(' '), write(A), write(' + '), write(B), write(' = '),
+	output_text(R, RES).
 
 deb_sub(_, A, B, RES):- eval_sub(A, B, RES), !.
 deb_sub(I, A, B, RES):-
 	eval_sub(A, B, R),
-	write(I), write(' '), write(A), write(' - '), write(B), write(' = '), output_text(R, RES).
+	write(I), write(' '), write(A), write(' - '), write(B), write(' = '),
+	output_text(R, RES).
 
 deb_prod(_, A, B, RES):- eval_prod(A, B, RES), !.
 deb_prod(I, A, B, RES):-
 	eval_sub(A, B, R),
-	write(I), write(' '), write(A), write(' * '), write(B), write(' = '), output_text(R, RES).
+	write(I), write(' '), write(A), write(' * '), write(B), write(' = '),
+	output_text(R, RES).
 
 deb_power(_, A, B, RES):- eval_pow(A, B, RES), !.
 deb_power(I, A, B, RES):-
 	eval_pow(A, B, R),
-	write(I), write(' '), write(A), write('^'), write(B), write(' = '), output_text(R, RES).
+	write(I), write(' '), write(A), write('^'), write(B), write(' = '),
+	output_text(R, RES).
 
 deb_arithm(_, E, RES):- arithmetic_eval(E, RES), !.
 deb_arithm(I, E, RES):-
@@ -367,9 +373,10 @@ DEBUG - MONOMIAL EVALUATION
 
 deb_mon_comp(_, M, C, V, E):- monomial_comps(M, C, V, E), !.
 deb_mon_comp(I, M, RC, RV, RE):-
-	monomial_comps(M, C, V, E), write(I), write(' Components of '), write(M),
-	write(' are ('), write(C), write(','), write(V), write(','), write(E), write(') but were expected to be '),
-	write('('), write(RC), write(','), write(RV), write(','), write(RE), write(')'), false.
+	monomial_comps(M, C, V, E), write(I), write(' Components of '),
+	write(M), write(' are ('), write(C), write(','), write(V), write(','),
+	write(E), write(') but were expected to be '), write('('), write(RC),
+	write(','), write(RV), write(','), write(RE), write(')'), false.
 
 deb_red_mon(_, M, RES):- red_monomial(M, RES), !.
 deb_red_mon(I, M, RES):-
@@ -379,27 +386,33 @@ deb_red_mon(I, M, RES):-
 deb_mon_sum(_, M1, M2, RES):- mon_sum(M1, M2, RES), !.
 deb_mon_sum(I, M1, M2, RES):-
 	mon_sum(M1, M2, S),
-	write(I), write(' '), write(M1), write(' + '), write(M2), write(' = '), output_text(S, RES).
+	write(I), write(' '), write(M1), write(' + '), write(M2), write(' = '),
+	output_text(S, RES).
 
 deb_mon_sub(_, M1, M2, RES):- mon_sub(M1, M2, RES), !.
 deb_mon_sub(I, M1, M2, RES):-
 	mon_sub(M1, M2, S),
-	write(I), write(' '), write(M1), write(' - '), write(M2), write(' = '), output_text(S, RES).
+	write(I), write(' '), write(M1), write(' - '), write(M2), write(' = '),
+	output_text(S, RES).
 
 deb_mon_prod(_, M1, M2, RES):- mon_prod(M1, M2, RES), !.
 deb_mon_prod(I, M1, M2, RES):-
 	mon_prod(M1, M2, S),
-	write(I), write(' ('), write(M1), write(')'), write('*'), write('('), write(M2), write(')'), write(' = '), output_text(S, RES).
+	write(I), write(' ('), write(M1), write(')'), write('*'), write('('),
+	write(M2), write(')'), write(' = '), output_text(S, RES).
 
 deb_mon_pos_coef(_, M1, RES):- monomial_positive_coefficient(M1), RES == 'YES', !.
 deb_mon_pos_coef(_, _, RES):- RES == 'NO', !.
-deb_mon_pos_coef(I, M1, RES):- monomial_positive_coefficient(M1), write(I), write(M1), write(' '), output_text('YES', RES).
-deb_mon_pos_coef(I, M1, RES):- write(I), write(' '), write(M1), write(' -> '), output_text('NO', RES).
+deb_mon_pos_coef(I, M1, RES):- monomial_positive_coefficient(M1), write(I),
+	write(M1), write(' '), output_text('YES', RES).
+deb_mon_pos_coef(I, M1, RES):- write(I), write(' '), write(M1), write(' -> '),
+	output_text('NO', RES).
 
 deb_mon_eval(_, M, VAL, RES):- monomial_evaluation(VAL, M, RES), !.
 deb_mon_eval(I, M, VAL, RES):-
 	monomial_evaluation(VAL, M, R),
-	write(I), write(' M(x)='), write(M), write('('), write(VAL), write(') = '), output_text(R, RES).
+	write(I), write(' M(x)='), write(M), write('('), write(VAL), write(') = '),
+	output_text(R, RES).
 
 debug_monomials:-
 	write('-- MONOMIAL EVALUATION DEBUG --'), nl,
@@ -570,86 +583,110 @@ debug_monomials:-
 DEBUG - POLYNOMIAL EVALUATION
 */
 
-deb_poly_list_sum(_, P1, P2, RES):- list_polynomial_sum_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_list_sum(_, P1, P2, RES):-
+	list_polynomial_sum_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_list_sum(I, P1, P2, RES):-
 	list_polynomial_sum_list(P1, P2, R),
-	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '), output_text(R, RES).
+	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '),
+	output_text(R, RES).
 
-deb_poly_sorted_list_sum(_, P1, P2, RES):- list_polynomial_sum_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_sorted_list_sum(_, P1, P2, RES):-
+	list_polynomial_sum_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_sorted_list_sum(I, P1, P2, RES):-
 	list_polynomial_sum_sorted_list(P1, P2, R),
-	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '), output_text(R, RES).
+	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '),
+	output_text(R, RES).
 
-deb_poly_list_sub(_, P1, P2, RES):- list_polynomial_sub_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_list_sub(_, P1, P2, RES):-
+	list_polynomial_sub_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_list_sub(I, P1, P2, RES):-
 	list_polynomial_sub_list(P1, P2, R),
-	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '), output_text(R, RES).
+	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '),
+	output_text(R, RES).
 
-deb_poly_sorted_list_sub(_, P1, P2, RES):- list_polynomial_sub_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_sorted_list_sub(_, P1, P2, RES):-
+	list_polynomial_sub_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_sorted_list_sub(I, P1, P2, RES):-
 	list_polynomial_sub_sorted_list(P1, P2, R),
-	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '), output_text(R, RES).
+	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '),
+	output_text(R, RES).
 
-deb_poly_list_prod(_, P1, P2, RES):- list_polynomial_prod_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+deb_poly_list_prod(_, P1, P2, RES):-
+	list_polynomial_prod_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_list_prod(I, P1, P2, RES):-
 	list_polynomial_prod_list(P1, P2, R),
-	write(I), write(' '), write(P1), write(' * '), write(P2), write(' = '), output_text(R, RES).
+	write(I), write(' '), write(P1), write(' * '), write(P2), write(' = '),
+	output_text(R, RES).
 
 deb_poly_sorted_list_prod(_, P1, P2):-
 	list_polynomial_prod_sorted_list(P1, P2, R1), list_polynomial_prod_list(P1, P2, R2),
 	polynomial_list_eq(R1, R2), !.
 deb_poly_sorted_list_prod(I, P1, P2):-
-	list_polynomial_prod_sorted_list(P1, P2, R1), list_polynomial_prod_list(P1, P2, R2),
-	write(I), write(' '), write(P1), write(' * '), write(P2), write(' = '), output_text(R1, R2).
+	list_polynomial_prod_sorted_list(P1, P2, R1),
+	list_polynomial_prod_list(P1, P2, R2), write(I), write(' '), write(P1),
+	write(' * '), write(P2), write(' = '), output_text(R1, R2).
 
 deb_poly_sum(_, P, RES):- polynomial_sum(P, R), polynomial_eq(R, RES), !.
 deb_poly_sum(I, P, RES):-
 	polynomial_sum(P, R),
 	write(I), write(' '), write(P), write(' = '), output_text(R, RES).
 
-deb_poly_prod(_, P1, P2, RES):- polynomial_prod(P1, P2, R), polynomial_eq(R, RES), !.
+deb_poly_prod(_, P1, P2, RES):-
+	polynomial_prod(P1, P2, R), polynomial_eq(R, RES), !.
 deb_poly_prod(I, P1, P2, RES):-
 	polynomial_prod(P1, P2, R),
-	write(I), write(' ('), write(P1), write(')*('), write(P2), write(') = '), output_text(R, RES).
+	write(I), write(' ('), write(P1), write(')*('), write(P2), write(') = '),
+	output_text(R, RES).
 
 deb_poly_pow(_, P, N, RES):- polynomial_power(P, N, R), polynomial_eq(R, RES), !.
 deb_poly_pow(I, P, N, RES):-
 	polynomial_power(P, N, R),
-	write(I), write(' ('), write(P), write(')^'), write(N), write(' = '), output_text(R, RES).
+	write(I), write(' ('), write(P), write(')^'), write(N), write(' = '),
+	output_text(R, RES).
 
 deb_poly_eval(_, E, RES):- polynomial_evaluation(E, R), polynomial_eq(R, RES), !.
 deb_poly_eval(I, E, RES):-
 	polynomial_evaluation(E, R),
 	write(I), write(' '), write(E), write(' = '), output_text(R, RES).
 
-deb_poly_first_mon(_, E, RES1, RES2):- polynomial_first_monomial(E, R1, R2), polynomial_eq(R1, RES1), polynomial_eq(R2, RES2), !.
+deb_poly_first_mon(_, E, RES1, RES2):-
+	polynomial_first_monomial(E, R1, R2), polynomial_eq(R1, RES1),
+	polynomial_eq(R2, RES2), !.
 deb_poly_first_mon(I, E, RES1, RES2):-
 	polynomial_first_monomial(E, R1, R2),
-	write(I), write('' ), write(E), write(' -> '), output_text( (R1, R2), (RES1, RES2)).
+	write(I), write('' ), write(E), write(' -> '),
+	output_text( (R1, R2), (RES1, RES2)).
 
-deb_poly_last_mon(_, E, RES1, RES2):- polynomial_last_monomial(E, R1, R2), polynomial_eq(R1, RES1), polynomial_eq(R2, RES2), !.
+deb_poly_last_mon(_, E, RES1, RES2):-
+	polynomial_last_monomial(E, R1, R2), polynomial_eq(R1, RES1),
+	polynomial_eq(R2, RES2), !.
 deb_poly_last_mon(I, E, RES1, RES2):-
 	polynomial_last_monomial(E, R1, R2),
-	write(I), write('' ), write(E), write(' -> '), output_text( (R1, R2), (RES1, RES2)).
+	write(I), write('' ), write(E), write(' -> '),
+	output_text( (R1, R2), (RES1, RES2)).
 
 deb_poly_pad(_, L, RES):- padded_poly_mons_decr(L, R), R == RES, !.
 deb_poly_pad(I, L, RES):-
 	padded_poly_mons_decr(L, R),
 	write(I), write(' '), write(L), write(' -> '), output_text(R, RES).
 
-deb_pretty_polynomial_roots(_, R, RES):- pretty_polynomial_roots(R, P), polynomial_eval_eq(RES, P), !.
+deb_pretty_polynomial_roots(_, R, RES):-
+	pretty_polynomial_roots(R, P), polynomial_eval_eq(RES, P), !.
 deb_pretty_polynomial_roots(I, R, RES):-
 	pretty_polynomial_roots(R, P),
 	write(I), write(' Using roots '), write(R), write(' -> '), output_text(P, RES).
 
-deb_poly_roots(_, P, RES):- polynomial_evaluation(P, E), integer_roots_polynomial(E, R), msort(R, SR), msort(RES, SRES), SR == SRES, !.
+deb_poly_roots(_, P, RES):-
+	polynomial_evaluation(P, E), integer_roots_polynomial(E, R),
+	msort(R, SR), msort(RES, SRES), SR == SRES, !.
 deb_poly_roots(I, P, RES):-
 	polynomial_evaluation(P, E), integer_roots_polynomial(E, R),
 	write(I), write(' '), write(P), write(' -> '), output_text(R, RES).
 
 deb_poly_roots_eval_roots(_, R):-
 	pretty_polynomial_roots(R, P), polynomial_evaluation(P, Q),
-	integer_roots_polynomial(Q, RES), sort(R, RS), sort(RES, RESS), RS == RESS, !.
+	integer_roots_polynomial(Q, RES), sort(R, RS), sort(RES, RESS),
+	RS == RESS, !.
 deb_poly_roots_eval_roots(I, R):-
 	write(I), write(' '),
 	pretty_polynomial_roots(R, P),
@@ -659,12 +696,15 @@ deb_poly_roots_eval_roots(I, R):-
 	all_to_string([R, space, ->, space, P, space, ->, space, Q, space, ->, space, R], S2),
 	output_text(S1, S2), nl.
 
-deb_exp_poly_eval(_, P, VAL, RES):- expanded_polynomial_evaluation(VAL, P, RES), !.
+deb_exp_poly_eval(_, P, VAL, RES):-
+	expanded_polynomial_evaluation(VAL, P, RES), !.
 deb_exp_poly_eval(I, P, VAL, RES):-
 	expanded_polynomial_evaluation(VAL, P, R),
-	write(I), write(' P(x)='), write(P), write(' -> P('), write(VAL), write(')= '), output_text(R, RES).
+	write(I), write(' P(x)='), write(P), write(' -> P('), write(VAL),
+	write(')= '), output_text(R, RES).
 
-deb_falling_factorial(_, P, F, RES):- polynomial_evaluation(choose(P, F), R), polynomial_evaluation(RES, R), !.
+deb_falling_factorial(_, P, F, RES):-
+	polynomial_evaluation(choose(P, F), R), polynomial_evaluation(RES, R), !.
 deb_falling_factorial(I, P, F, RES):-
 	polynomial_evaluation(choose(P, F), R),
 	write(I), write(' choose('), write(P), write(','), write(F), write(')= '), write(R),
@@ -969,7 +1009,8 @@ debug_polynomials:-
 DEBUG - POWER SUMS
 */
 
-deb_power_sum_D(_, N, F, D):- expanded_polynomial_evaluation(N, F, RES), sum_from_1_to_n_to_D(N, D, RES), !.
+deb_power_sum_D(_, N, F, D):-
+	expanded_polynomial_evaluation(N, F, RES), sum_from_1_to_n_to_D(N, D, RES), !.
 deb_power_sum_D(I, N, F, D):-
 	expanded_polynomial_evaluation(N, F, RES), sum_from_1_to_n_to_D(N, D, R),
 	write(I), write(' Sum from 1 to '), write(N), write(' = '), output_text(R, RES).

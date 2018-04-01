@@ -44,8 +44,12 @@ compare_divisors(X, Y):- X > 0, Y < 0, false.
 % Find all the divisors of a number (negative divisors included)
 divisors(1, [1,-1]):- !.
 divisors(-1, [1,-1]):- !.
-divisors(X, [1,-1|S]):- X < 0, !, XX is -X, divisorsp(XX, 2, P), divisorsn(XX, -2, N), concat(P, N, C), isort_by(compare_divisors, C, S).
-divisors(X, [1,-1|S]):- divisorsp(X, 2, P), divisorsn(X, -2, N), concat(P, N, C), isort_by(compare_divisors, C, S).
+divisors(X, [1,-1|S]):-
+	X < 0, !, XX is -X, divisorsp(XX, 2, P), divisorsn(XX, -2, N),
+	concat(P, N, C), isort_by(compare_divisors, C, S).
+divisors(X, [1,-1|S]):-
+	divisorsp(X, 2, P), divisorsn(X, -2, N), concat(P, N, C),
+	isort_by(compare_divisors, C, S).
 
 % Compute the factorial of a number
 factorial(0, 1):- !.
