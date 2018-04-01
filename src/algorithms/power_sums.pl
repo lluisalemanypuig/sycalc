@@ -1,4 +1,4 @@
-:-ensure_loaded(core).
+:-ensure_loaded("../core").
 
 % FORMULA OF SUMS OF POWERS
 

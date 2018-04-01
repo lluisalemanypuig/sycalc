@@ -1,5 +1,5 @@
 :-ensure_loaded(core).
-:-ensure_loaded(power_sums).
+:-ensure_loaded(algorithms/power_sums).
 
 debug:-
 	debug_integer_algs,
