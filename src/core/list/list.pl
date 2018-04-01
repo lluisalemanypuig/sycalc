@@ -63,16 +63,22 @@ padded_list_end(L, K, S, R):- padding(K, S, P), concat(L, P, R).
 % C = A x B
 cartesian_product([], _, []):- !.
 cartesian_product(_, [], []):- !.
-cartesian_product([X], [Y|R], [[X,Y]|S]):- cartesian_product([X], R, S), !.
-cartesian_product([X|L], R, S):- cartesian_product([X], R, S1), cartesian_product(L, R, S2), concat(S1, S2, S), !.
+cartesian_product([X], [Y|R], [[X,Y]|S]):-
+	cartesian_product([X], R, S), !.
+cartesian_product([X|L], R, S):-
+	cartesian_product([X], R, S1), cartesian_product(L, R, S2),
+	concat(S1, S2, S), !.
 
 % cartesian_product_by(F, A, B, C): C is the result of applying the function
 % F to every element of (A x B).
 % C = map(F, A x B)
 cartesian_product_by(_, [], _, []):- !.
 cartesian_product_by(_, _, [], []):- !.
-cartesian_product_by(F, [X], [Y|R], [E|S]):- call(F, X, Y, E), cartesian_product_by(F, [X], R, S), !.
-cartesian_product_by(F, [X|L], R, S):- cartesian_product_by(F, [X], R, S1), cartesian_product_by(F, L, R, S2), concat(S1, S2, S), !.
+cartesian_product_by(F, [X], [Y|R], [E|S]):-
+	call(F, X, Y, E), cartesian_product_by(F, [X], R, S), !.
+cartesian_product_by(F, [X|L], R, S):-
+	cartesian_product_by(F, [X], R, S1), cartesian_product_by(F, L, R, S2),
+	concat(S1, S2, S), !.
 
 % SORTING ALGORITHMS
 
@@ -93,8 +99,10 @@ isort(L, R):- isort_by(lt__, L, R).
 % COUNTING FUNCTIONS
 
 how_many_([X], [[X, 1]]):- !.
-how_many_([X|L], [[X, C] | RR]):- how_many_(L, R), first(R, [X, N], RR), !, C is N + 1.
-how_many_([X|L], [[X, 1] | R]):- how_many_(L, R).
+how_many_([X|L], [[X, C] | RR]):-
+	how_many_(L, R), first(R, [X, N], RR), !, C is N + 1.
+how_many_([X|L], [[X, 1] | R]):-
+	how_many_(L, R).
 
 how_many(L, R):- isort(L, S), how_many_(S, R).
 
@@ -121,6 +129,8 @@ P = x*(p + D)
 
 L = [B,C,D]
 */
-ladder_prod(X, A, [Y], [], P):- P is X*(Y + A), !.
-ladder_prod(X, A, [Y|Ys], [R|L], Q):- R is Y + A, P is X*R, ladder_prod(X, P, Ys, L, Q), !.
+ladder_prod(X, A, [Y], [], P):-
+	P is X*(Y + A), !.
+ladder_prod(X, A, [Y|Ys], [R|L], Q):-
+	R is Y + A, P is X*R, ladder_prod(X, P, Ys, L, Q), !.
 

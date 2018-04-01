@@ -53,7 +53,9 @@ mon_sum([M1,M2], S):- mon_sum(M1, M2, S), !.
 
 % SUBSTRACTION
 
-mon_sub(0, M2, M3):- monomial_comps(M2, C, V, E), rational_neg(C, K), red_monomial_comps(K, V, E, M3), !.
+mon_sub(0, M2, M3):-
+	monomial_comps(M2, C, V, E), rational_neg(C, K),
+	red_monomial_comps(K, V, E, M3), !.
 mon_sub(M1, 0, M3):- red_monomial(M1, M3), !.
 mon_sub(M1, M2, M3 - M4):-
 	monomial_comps(M1, _, V1, _), monomial_comps(M2, _, V2, _),
@@ -97,7 +99,8 @@ mon_prod(M1, M2, M3):-
 
 mon_prod(M1, M2, M3):-
 	monomial_comps(M1, C1, V1, E1), monomial_comps(M2, C2, V1, E2),
-	arithmetic_eval(C1*C2, C), arithmetic_eval(E1 + E2, E), red_monomial_comps(C, V1, E, M3), !.
+	arithmetic_eval(C1*C2, C), arithmetic_eval(E1 + E2, E),
+	red_monomial_comps(C, V1, E, M3), !.
 
 mon_prod([M1,M2], S):- mon_prod(M1, M2, S), !.
 
@@ -107,4 +110,5 @@ mon_prod([M1,M2], S):- mon_prod(M1, M2, S), !.
 % VAL: real value
 % M: reduced monomial
 % E: M(VAL)
-monomial_evaluation(VAL, M, E):- monomial_comps(M, C, _, EXP), arithmetic_eval(C*VAL^EXP, E).
+monomial_evaluation(VAL, M, E):-
+	monomial_comps(M, C, _, EXP), arithmetic_eval(C*VAL^EXP, E).
