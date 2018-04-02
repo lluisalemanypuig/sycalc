@@ -112,7 +112,6 @@ list_polynomial_prod_sorted_list_([M], L2, [P]):-
 list_polynomial_prod_sorted_list_([M|L], L2, [P|Q]):-
 	map(mon_prod(M), L2, P2), padded_poly_mons_decr(P2, P),
 	list_polynomial_prod_sorted_list_(L, L2, Q), !.
-
 list_polynomial_prod_sorted_list(L1, L2, L):-
 	list_polynomial_prod_sorted_list_(L1, L2, ML),
 	foldl(list_polynomial_sum_sorted_list_, [], ML, LR),
