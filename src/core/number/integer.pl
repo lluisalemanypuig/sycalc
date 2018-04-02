@@ -8,6 +8,10 @@ multiple(A, A):- !, true.
 multiple(A, B):- D is A mod B, D == 0, !.
 multiple(_, _):- false.
 
+% Is number A even/odd?
+even(A):- B is A mod 2, B == 0.
+odd(A):- B is A mod 2, B == 1.
+
 % Greatest common divisor
 gcd(X, 0, X):- !.
 gcd(0, X, X):- !.
