@@ -134,12 +134,19 @@ polynomial_prod(P1, P2, P):-
 %%%%%%%%%%%%%%%
 %%%% POWER %%%%
 
-% Takes a polynomial as a list, an integer number and performs the power P^N
+% Takes a polynomial as list, a natural number and computes P^N
 list_polynomial_power_list(_, 0, [1]):- !.
 list_polynomial_power_list(L, 1, L):- !.
 list_polynomial_power_list(LP, N, LN):-
-	natural(N), N1 is N - 1, list_polynomial_power_list(LP, N1, L),
-	list_polynomial_prod_list(LP, L, LN).
+	natural(N), even(N),
+	Nhalf is N/2, list_polynomial_power_list(LP, Nhalf, L),
+	list_polynomial_prod_list(L, L, LN), !.
+list_polynomial_power_list(LP, N, LN):-
+	natural(N), odd(N),
+	N1 is N - 1, NmHalf is N1/2,
+	list_polynomial_power_list(LP, NmHalf, L),
+	list_polynomial_prod_list(L, L, LN1),
+	list_polynomial_prod_list(LN1, LP, LN), !.
 
 % Takes an expanded polynomial, an integer number and performs the power P^N
 % polynomial_prod(P, N, Q), where Q = P^N
@@ -177,7 +184,7 @@ polynomial_evaluation_list(P, [R]):-
 falling_factorial(P, 1, FF):- polynomial_evaluation(P, FF), !.
 falling_factorial(P, I, FF):-
 	I1 is I - 1,
-	polynomial_evaluation(P - 1, Pminus1), 
+	polynomial_evaluation(P - 1, Pminus1),
 	falling_factorial(Pminus1, I1, FF1),
 	polynomial_evaluation(P*FF1, FF).
 
