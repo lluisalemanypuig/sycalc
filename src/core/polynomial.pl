@@ -5,9 +5,9 @@
 % POLYNOMIALS
 % A polynomial is a sum of monomials.
 % These are monomials:
-% 	x^3, -2*x, 6*x^2, x, -2
+%	x^3, -2*x, 6*x^2, x, -2
 % These are not monomials:
-% 	(x + 3)*(x - 2), x*x, x*y
+%	(x + 3)*(x - 2), x*x, x*y
 % A polynomial may be expanded:
 %   x^2 + 6*x + 6
 % or contraced:
@@ -87,6 +87,11 @@ polynomial_neg(P, N):-
 polynomial_degree(P, D):-
 	polynomial_monomials(P, MS), map(monomial_degree, MS, DS), max(DS, D).
 
+% Replace the polynomial's variable with 'X'
+% The polynomial is passed as a list of monomials
+polynomial_list_revar(X, P, Q):- map(monomial_revar(X), P, Q).
+
+% recursive function called by pretty_polynomial_roots_
 pretty_polynomial_roots_([[X,1]], (x + XX)):- X < 0, rational_neg(X, XX).
 pretty_polynomial_roots_([[X,Po]], (x + XX)^Po):- X < 0, rational_neg(X, XX).
 pretty_polynomial_roots_([[X,1]], (x - X)):- !.
@@ -100,7 +105,7 @@ pretty_polynomial_roots_([[X,1]|L], P*(x - X)):-
 pretty_polynomial_roots_([[X,Po]|L], P*((x - X)^Po)):-
 	pretty_polynomial_roots_(L, P), !.
 
-% pretty_polynomial_roots(L, P): Given a list of rationals L, buils a
+% pretty_polynomial_roots(L, P): Given a list of rationals L, builds a
 % contracted polynomial P with these numbers as its roots.
 pretty_polynomial_roots(R, P):- how_many(R, C), pretty_polynomial_roots_(C, P).
 
@@ -110,7 +115,7 @@ pretty_polynomial_roots(R, P):- how_many(R, C), pretty_polynomial_roots_(C, P).
 % a free term) applies Ruffini's method for polynomial factorization and
 % obtains the list of roots R.
 %
-% The list of integers (coefficients of the monomials sorten DECREASINGLY)
+% The list of integers (coefficients of the monomials sorted DECREASINGLY)
 % must be from a polynomial with ONLY integer roots.
 ruffini([_], _, []):- !.
 ruffini(CS, [D|_], [D|L]):-
@@ -123,7 +128,12 @@ ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L), !.
 % This polynomial should have one free term (a constant multiplied by x^0)
 % and the first monomial be multiplied by 1 or -1.
 integer_roots_polynomial(P, R):-
-	polynomial_monomials(P, M), monomial_sort(M, SM), padded_poly_mons_decr(SM, PAD_SM),	% extract the padded monomial list of P
-	last(PAD_SM, _, L), monomial_coefficient(L, CF), divisors(CF, DVS), 					% obtain all the divisors of the free term
+	% extract the padded monomial list of P
+	polynomial_monomials(P, M), monomial_sort(M, SM), padded_poly_mons_decr(SM, PAD_SM),
+
+	% obtain all the divisors of the free term
+	last(PAD_SM, _, L), monomial_coefficient(L, CF), divisors(CF, DVS),
+
+	% apply ruffini's algorithm
 	map(monomial_coefficient, PAD_SM, MCFS), ruffini(MCFS, DVS, R).
 

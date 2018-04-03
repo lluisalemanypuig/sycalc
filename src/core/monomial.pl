@@ -6,8 +6,8 @@
 % value (at the left of the variable). The variable may have an exponent
 % which is also a numerical value (at the right of the variable).
 % The coefficient or the exponent may be inexistent (= 1), but the variable
-% can not. A red numerical value is the result of eval(E) where E is an
-% arithmetic expression.
+% can not. A reduced numerical value is the result of arithmetic_eval(E)
+% where E is an arithmetic expression.
 
 % Extracts the components of a monomial in reduced form:
 % (2 + 2)*x^(3 - 1) gives: C = 4, V = x, E = 2
@@ -87,3 +87,7 @@ monomial_inv_sort(L, R):- isort_by(monomial_inv_comp, L, R).
 
 % Does this monomial has a positive coefficient?
 monomial_positive_coefficient(M):- monomial_comps(M, C, _, _), C >= 0.
+
+% Replace the variable of the monomial with 'X'
+monomial_revar(X, M, R):-
+	monomial_comps(M, C,_,E), red_monomial(C*X^E, R).
