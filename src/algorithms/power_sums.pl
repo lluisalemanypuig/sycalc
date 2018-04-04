@@ -13,7 +13,7 @@ reminder_([[D, F]|Fs], [M|Ms], R):-
 	monomial_degree(M, D), monomial_coefficient(M, MC),
 	map(mon_prod(MC), F, R1),
 	reminder_(Fs, Ms, R2),
-	list_polynomial_sum_list(R1, R2, R), !.
+	polynomial_from_list_sum_list(R1, R2, R), !.
 reminder_([_|Fs], Ms, R):- reminder_(Fs, Ms, R).
 
 reminder(F, P, R):- reminder_(F, P, R).
@@ -30,20 +30,20 @@ power_sums_(D, SUM, L):-
 	
 	monomial_coefficient(S1RF, COEF),
 	polynomial_evaluation((n + 1 - COEF), B),				% B = (n + 1 - c_d)
-	polynomial_monomials(B, BMS),
+	list_from_polynomial(B, BMS),
 
-	list_polynomial_prod_sorted_list(BMS, S1, S),			% S = B*p(n, d)
+	polynomial_from_list_prod_sorted_list(BMS, S1, S),			% S = B*p(n, d)
 	
 	first(L1, _, L1R), reminder(L1R, S1RR, R),				% R = sum[j=1->d] c_{d - j}*p(n, d - j)
 
-	list_polynomial_sub_sorted_list(S, R, S_MINUS_R),
-	list_polynomial_prod_sorted_list([H], S_MINUS_R, SUM),	% SUM = H*(S - R)
+	polynomial_from_list_sub_sorted_list(S, R, S_MINUS_R),
+	polynomial_from_list_prod_sorted_list([H], S_MINUS_R, SUM),	% SUM = H*(S - R)
 	
 	concat([[D,SUM]], L1, L),
 	!.
 
 % S = f(n) = 1^D + 2^D + ... + n^D
-power_sums(D, S):- power_sums_(D, SS, _), list_polynomial(SS, S).
+power_sums(D, S):- power_sums_(D, SS, _), polynomial_from_list(SS, S).
 
 % L = [i, f(n, i)] where f(n, i) = 1^i + 2^i + ... + n^i
 power_sums_list(D, L):- power_sums_(D, _, L).

@@ -584,46 +584,46 @@ DEBUG - POLYNOMIAL EVALUATION
 */
 
 deb_poly_list_sum(_, P1, P2, RES):-
-	list_polynomial_sum_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+	polynomial_from_list_sum_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_list_sum(I, P1, P2, RES):-
-	list_polynomial_sum_list(P1, P2, R),
+	polynomial_from_list_sum_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '),
 	output_text(R, RES).
 
 deb_poly_sorted_list_sum(_, P1, P2, RES):-
-	list_polynomial_sum_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+	polynomial_from_list_sum_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_sorted_list_sum(I, P1, P2, RES):-
-	list_polynomial_sum_sorted_list(P1, P2, R),
+	polynomial_from_list_sum_sorted_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '),
 	output_text(R, RES).
 
 deb_poly_list_sub(_, P1, P2, RES):-
-	list_polynomial_sub_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+	polynomial_from_list_sub_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_list_sub(I, P1, P2, RES):-
-	list_polynomial_sub_list(P1, P2, R),
+	polynomial_from_list_sub_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '),
 	output_text(R, RES).
 
 deb_poly_sorted_list_sub(_, P1, P2, RES):-
-	list_polynomial_sub_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+	polynomial_from_list_sub_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_sorted_list_sub(I, P1, P2, RES):-
-	list_polynomial_sub_sorted_list(P1, P2, R),
+	polynomial_from_list_sub_sorted_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '),
 	output_text(R, RES).
 
 deb_poly_list_prod(_, P1, P2, RES):-
-	list_polynomial_prod_list(P1, P2, R), polynomial_list_eq(RES, R), !.
+	polynomial_from_list_prod_list(P1, P2, R), polynomial_list_eq(RES, R), !.
 deb_poly_list_prod(I, P1, P2, RES):-
-	list_polynomial_prod_list(P1, P2, R),
+	polynomial_from_list_prod_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' * '), write(P2), write(' = '),
 	output_text(R, RES).
 
 deb_poly_sorted_list_prod(_, P1, P2):-
-	list_polynomial_prod_sorted_list(P1, P2, R1), list_polynomial_prod_list(P1, P2, R2),
+	polynomial_from_list_prod_sorted_list(P1, P2, R1), polynomial_from_list_prod_list(P1, P2, R2),
 	polynomial_list_eq(R1, R2), !.
 deb_poly_sorted_list_prod(I, P1, P2):-
-	list_polynomial_prod_sorted_list(P1, P2, R1),
-	list_polynomial_prod_list(P1, P2, R2), write(I), write(' '), write(P1),
+	polynomial_from_list_prod_sorted_list(P1, P2, R1),
+	polynomial_from_list_prod_list(P1, P2, R2), write(I), write(' '), write(P1),
 	write(' * '), write(P2), write(' = '), output_text(R1, R2).
 
 deb_poly_sum(_, P, RES):- polynomial_sum(P, R), polynomial_eq(R, RES), !.

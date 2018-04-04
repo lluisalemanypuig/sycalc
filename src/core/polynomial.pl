@@ -18,11 +18,11 @@
 %   x + 3, -x^2, -9
 
 % Returns the polynomials' monomials as a list of reduced monomials
-polynomial_monomials(A + B, S):-
-	polynomial_monomials(A, L), polynomial_monomials(B, R), concat(L, R, S), !.
-polynomial_monomials(A - B, S):-
-	polynomial_monomials(A, L), polynomial_monomials(-B, R), concat(L, R, S), !.
-polynomial_monomials(M, [R]):- red_monomial(M, R), !.
+list_from_polynomial(A + B, S):-
+	list_from_polynomial(A, L), list_from_polynomial(B, R), concat(L, R, S), !.
+list_from_polynomial(A - B, S):-
+	list_from_polynomial(A, L), list_from_polynomial(-B, R), concat(L, R, S), !.
+list_from_polynomial(M, [R]):- red_monomial(M, R), !.
 
 % Pads a list of monomials DECREASINGLY sorted.
 % If [m1, m2, ..., mN] is the list of monomials, this predicate will add 0s between
@@ -58,34 +58,34 @@ polynomial_last_monomial(A - B, A, N):- monomial(B), monomial_neg(B, N), !.
 
 % Builds an expanded polynomial from a list of reduced monomials.
 % The last monomial will be the first in the polynomial
-list_polynomial_([], 0):- !.
-list_polynomial_([M], M):- !.
-list_polynomial_([M|L], S + M):-
-	monomial_positive_coefficient(M), list_polynomial_(L, S), !.
-list_polynomial_([M|L], S - N):-
-	monomial_neg(M, N), list_polynomial_(L, S), !.
-list_polynomial(M, P):-
-	monomial_inv_sort(M, MS), list_polynomial_(MS, P).
+polynomial_from_list_([], 0):- !.
+polynomial_from_list_([M], M):- !.
+polynomial_from_list_([M|L], S + M):-
+	monomial_positive_coefficient(M), polynomial_from_list_(L, S), !.
+polynomial_from_list_([M|L], S - N):-
+	monomial_neg(M, N), polynomial_from_list_(L, S), !.
+polynomial_from_list(M, P):-
+	monomial_inv_sort(M, MS), polynomial_from_list_(MS, P).
 
 % Compares two polynomials as list of monomials and fails if they are not equal
 polynomial_list_eq(M1, M2):- monomial_sort(M1, S1), monomial_sort(M2, S1).
 
 % Compares two expanded polynomials and fails if they are not equal
 polynomial_eq(P1, P2):-
-	polynomial_monomials(P1, M1), polynomial_monomials(P2, M2),
+	list_from_polynomial(P1, M1), list_from_polynomial(P2, M2),
 	polynomial_list_eq(M1, M2).
 
 % Checks if P is an expanded polynomial
-polynomial(P):- polynomial_monomials(P, _).
+polynomial(P):- list_from_polynomial(P, _).
 
 % P is an expanded polynomial. N = -P
 polynomial_neg(P, N):-
-	polynomial_monomials(P, L1), map(monomial_neg, L1, L2),
+	list_from_polynomial(P, L1), map(monomial_neg, L1, L2),
 	polynomial_list(L2, N).
 
 % P is an expanded polynomial. D is the maximum degree of its monomials
 polynomial_degree(P, D):-
-	polynomial_monomials(P, MS), map(monomial_degree, MS, DS), max(DS, D).
+	list_from_polynomial(P, MS), map(monomial_degree, MS, DS), max(DS, D).
 
 % Replace the polynomial's variable with 'X'
 % The polynomial is passed as a list of monomials
@@ -129,7 +129,7 @@ ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L), !.
 % and the first monomial be multiplied by 1 or -1.
 integer_roots_polynomial(P, R):-
 	% extract the padded monomial list of P
-	polynomial_monomials(P, M), monomial_sort(M, SM), padded_poly_mons_decr(SM, PAD_SM),
+	list_from_polynomial(P, M), monomial_sort(M, SM), padded_poly_mons_decr(SM, PAD_SM),
 
 	% obtain all the divisors of the free term
 	last(PAD_SM, _, L), monomial_coefficient(L, CF), divisors(CF, DVS),
