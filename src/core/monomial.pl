@@ -24,10 +24,21 @@ monomial_comps(C, CE, _, 0):- arithmetic_eval(C, CE), !.
 monomial_comps(X, 1, X, 1):- not(expr(X)).
 
 % Monomial definition
-
-% Is M a monomial?
+% If the variable is present, check it is an atom
 monomial(M):-
-	monomial_comps(M, C, _, E), arithmetic_eval(C, _), arithmetic_eval(E, _).
+	monomial_comps(M, C, V, E),
+	arithmetic_eval(C, _),
+	arithmetic_eval(E, _),
+	nonvar(V), atom(V), !.
+% If the variable is present, but it is not atom -> reject
+monomial(M):-
+	monomial_comps(M, _, V, _),
+	nonvar(V), !, false.
+% If the variable is not present, ignore it
+monomial(M):-
+	monomial_comps(M, C, _, E),
+	arithmetic_eval(C, _),
+	arithmetic_eval(E, _).
 
 % N = -M, where M is a monomial
 monomial_neg(M, N):-
