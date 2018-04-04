@@ -58,3 +58,9 @@ expr(_ - _):- !.
 expr(_*_):- !.
 expr(_/_):- !.
 expr(_^_):- !.
+
+% Computes the factorial of a natural number N,
+factorial_(0, 1):- !.
+factorial_(N, F):- N1 is N - 1, factorial_(N1, F1), F is N*F1.
+factorial(E, F):- expr(E), arithmetic_eval(E, N), natural(N), factorial_(N, F), !.
+factorial(N, F):- natural(N), factorial_(N, F).

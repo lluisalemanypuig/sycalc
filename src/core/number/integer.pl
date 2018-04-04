@@ -54,7 +54,3 @@ divisors(X, [1,-1|S]):-
 divisors(X, [1,-1|S]):-
 	divisorsp(X, 2, P), divisorsn(X, -2, N), concat(P, N, C),
 	isort_by(compare_divisors, C, S).
-
-% Compute the factorial of a number
-factorial(0, 1):- !.
-factorial(N, F):- N1 is N - 1, factorial(N1, F1), F is N*F1.
