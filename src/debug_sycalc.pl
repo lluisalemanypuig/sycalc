@@ -1,5 +1,5 @@
 :-ensure_loaded(core).
-:-ensure_loaded(algorithms/power_sums).
+:-ensure_loaded(algorithms).
 
 debug:-
 	debug_integer_algs,
@@ -629,9 +629,9 @@ deb_poly_sorted_list_prod(I, P1, P2):-
 	polynomial_from_list_prod_list(P1, P2, R2), write(I), write(' '), write(P1),
 	write(' * '), write(P2), write(' = '), output_text(R1, R2).
 
-deb_poly_sum(_, P, RES):- polynomial_sum(P, R), polynomial_eq(R, RES), !.
+deb_poly_sum(_, P, RES):- polynomial_reduction(P, R), polynomial_eq(R, RES), !.
 deb_poly_sum(I, P, RES):-
-	polynomial_sum(P, R),
+	polynomial_reduction(P, R),
 	write(I), write(' '), write(P), write(' = '), output_text(R, RES).
 
 deb_poly_prod(_, P1, P2, RES):-

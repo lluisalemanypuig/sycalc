@@ -1,7 +1,7 @@
 :-ensure_loaded(polynomial).
 :-ensure_loaded(list).
 
-% Takes a polynomial as a list of monomials and reduces it
+% Takes a multivariate polynomial as a list of monomials and reduces it
 list_red_monomials([], []):- !.
 list_red_monomials([0], []):- !.
 list_red_monomials([M], [RM]):- red_monomial(M, RM), !.
@@ -15,9 +15,10 @@ list_red_monomials([M1,M2|L], R):-
 list_red_monomials([M1,M2|L], [M1|R]):- list_red_monomials([M2|L], R), !.
 list_red_monomials(X, X).
 
-% Takes a polynomial as a list and returns it as a reduced list of monomials
+% Takes a multivariate polynomial as a list and returns it as a reduced
+% list of monomials.
 % These are not reduced lists of polynomials:
-% - [x^2, -2*x^2, x]
+% - [x^2,-2*x^2, x, y]
 % - [x^3, 0, 1]
 % These are reduced lists of polynomials:
 % - [x^3, 1]
@@ -25,17 +26,19 @@ list_red_monomials(X, X).
 list_red_polynomial_from_list(L, LR):-
 	monomial_sort(L, R), list_red_monomials(R, LR).
 
-
 %%	ATTENTION:
 %%	All arithmetic operations between polynomials as lists of
-%%	monomials assume both polynomials to have the same variable.
+%%	monomials assume both polynomials to have the same single
+%%	variable. Therefore, the two polynomials must be univariate.
 
-%%%%%%%%%%%%%
-%%%% SUM %%%%
+%---------------
+%%	SUM
 
-% Takes an expanded polynomial and reduces it: x + x + 2 -> 2*x + 2
-polynomial_sum(P, R):-
-	list_from_polynomial(P, M), list_red_polynomial_from_list(M, L),
+% Takes an expanded multivariate polynomial and reduces it:
+% x + x + 2 -> 2*x + 2
+polynomial_reduction(P, R):-
+	list_from_polynomial(P, M),
+	list_red_polynomial_from_list(M, L),
 	polynomial_from_list(L, R).
 
 % Takes two polynomials each of them as reduced and
@@ -69,8 +72,8 @@ polynomial_from_list_sum_sorted_list(P1, P2, R):-
 polynomial_from_list_sum_list(P1, P2, R):-
 	concat(P1, P2, P), list_red_polynomial_from_list(P, R).
 
-%%%%%%%%%%%%%
-%%%% SUB %%%%
+%---------------
+%%	SUB
 
 % Takes two polynomials each of them as reduced and DECREASINGLY sorted
 % lists of monomials of unique degree and substracts the second from the
@@ -101,14 +104,14 @@ polynomial_from_list_sub_sorted_list(P1, P2, R):-
 polynomial_from_list_sub_list(P1, P2, R):-
 	map(monomial_neg, P2, NP2), polynomial_from_list_sum_list(P1, NP2, R).
 
-%%%%%%%%%%%%%%
-%%%% PROD %%%%
+%---------------
+%%	PROD
 
-% Takes two polynomials each of them as reduced and DECREASINGLY sorted
-% lists of monomials of unique degree and multiplies them. The result is
-% a list of reduced monomials.
-% This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
-% This list has monomials with unique degree: [3*x^2, x, 1]
+% Takes two polynomials each of them as reduced and DECREASINGLY
+% sorted lists of monomials of unique degree and multiplies
+% them. The result is a list of reduced monomials. This list has
+% monomials with no unique degree: [2*x^2, x^2, x, 1] This list has
+% monomials with unique degree: [3*x^2, x, 1]
 polynomial_from_list_prod_sorted_list_([], _, [[]]):- !.
 polynomial_from_list_prod_sorted_list_(_, [], [[]]):- !.
 polynomial_from_list_prod_sorted_list_([M], L2, [P]):-
@@ -135,8 +138,8 @@ polynomial_prod(P1, P2, P):-
 	polynomial_from_list_prod_list(L1, L2, MON_PROD),
 	polynomial_from_list(MON_PROD, P).
 
-%%%%%%%%%%%%%%%
-%%%% POWER %%%%
+%---------------
+%%	 POWER
 
 % Takes a polynomial as list, a natural number and computes P^N
 polynomial_from_list_power_list(_, 0, [1]):- !.
@@ -159,66 +162,6 @@ polynomial_power(P, 1, P):- !.
 polynomial_power(P, N, PN):-
 	list_from_polynomial(P, M), polynomial_from_list_power_list(M, N, L),
 	polynomial_from_list(L, PN).
-
-%%	ATTENTION:
-%%	Evaluation of polynomials is allowed with multi-variate
-%%	polynomials.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% POLYNOMIAL SUMMATION %%%%
-
-% Computes the result of the summation over the induction variable VAR
-% from the value INI to either the polynomial or value FIN of the
-% polynomial P. Result in Q.
-summation_over_polynomial(VAR, INI, FIN, P, Q):-
-	false.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% POLYNOMIAL EXPRESSIONS' EVALUATION %%%%
-
-polynomial_evaluation_list(P, [R]):-
-	monomial(P), red_monomial(P, R), !.
-polynomial_evaluation_list(Q1 + Q2, R):-
-	polynomial_evaluation_list(Q1, L1),
-	polynomial_evaluation_list(Q2, L2),
-	concat(L1, L2, L),
-	list_red_polynomial_from_list(L, R), !.
-polynomial_evaluation_list(Q1 - Q2, R):-
-	polynomial_evaluation_list(Q1, L1),
-	polynomial_evaluation_list(Q2, L2),
-	map(monomial_neg, L2, NL2),
-	concat(L1, NL2, L),
-	list_red_polynomial_from_list(L, R), !.
-polynomial_evaluation_list(Q1 * Q2, R):-
-	polynomial_evaluation_list(Q1, L1),
-	polynomial_evaluation_list(Q2, L2),
-	cartesian_product(L1, L2, L),
-	map(mon_prod, L, PROD),
-	list_red_polynomial_from_list(PROD, R), !.
-polynomial_evaluation_list(Q1 ^ N, R):-
-	polynomial_evaluation_list(Q1, L1),
-	polynomial_from_list_power_list(L1, N, R), !.
-% Convert a binomial into a polynomial.
-% I is either a natural number or an arithmetic expression that
-% evaluates to a natural number.
-polynomial_evaluation_list( choose(P, I), R):-
-	factorial(I, F),
-	falling_factorial(P, I, FF),
-	polynomial_evaluation_list( (1/F)*FF, R ), !.
-% Evaluation a summation over polynomials
-% VAR: induction variable
-% INI: lowest value of summation range. Must evaluate to a natural
-% number
-% FIN: highest value of summation range. Either a polynomial or an
-% arithmetic expression
-% EXPR: expression within the sum. A polynomial in
-% any variable.
-polynomial_evaluation_list(sum(VAR, INI, FIN, EXPR), R):-
-	polynomial_evaluation_list(EXPR, P_EXPR),
-	polynomial_evaluation_list(FIN, P_FIN),
-	write(P_EXPR), nl,
-	write(P_FIN), nl,
-	false.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%% OTHER POLYNOMIAL USEFUL OPERATIONS %%%%%%%%%

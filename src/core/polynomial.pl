@@ -106,8 +106,8 @@ pretty_polynomial_roots_([[X,1]|L], P*(x - X)):-
 pretty_polynomial_roots_([[X,Po]|L], P*((x - X)^Po)):-
 	pretty_polynomial_roots_(L, P), !.
 
-% pretty_polynomial_roots(L, P): Given a list of rationals L, builds a
-% contracted polynomial P with these numbers as its roots.
+% Given a list of rationals R, builds a univariate contracted polynomial
+% P on variable 'x' with these numbers as its roots.
 pretty_polynomial_roots(R, P):- how_many(R, C), pretty_polynomial_roots_(C, P).
 
 % ruffini(C, D, R)
