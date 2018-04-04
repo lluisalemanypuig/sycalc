@@ -48,7 +48,7 @@ debug_integer_algs:-
 	deb_divisors(' 7)', 20, [1,-1,2,-2,4,-4,5,-5,10,-10,20,-20]),
 	deb_divisors(' 8)', 24, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,12,-12,24,-24]),
 	deb_divisors(' 9)', 32, [1,-1,2,-2,4,-4,8,-8,16,-16,32,-32]),
-	deb_divisors(' 10)', 576, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,9,-9,12,-12,16,-16,18,-18,24,-24,32,-32,36,-36,48,-48,64,-64,72,-72,96,-96,144,-144,192,-192,288,-288,576,-576]),	
+	deb_divisors(' 10)', 576, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,9,-9,12,-12,16,-16,18,-18,24,-24,32,-32,36,-36,48,-48,64,-64,72,-72,96,-96,144,-144,192,-192,288,-288,576,-576]),
 	deb_divisors(' 11)', -1, [1,-1]),
 	deb_divisors(' 12)', -2, [1,-1,2,-2]),
 	deb_divisors(' 13)', -3, [1,-1,3,-3]),
@@ -60,7 +60,7 @@ debug_integer_algs:-
 	deb_divisors(' 19)', -32, [1,-1,2,-2,4,-4,8,-8,16,-16,32,-32]),
 	deb_divisors(' 20)', -576, [1,-1,2,-2,3,-3,4,-4,6,-6,8,-8,9,-9,12,-12,16,-16,18,-18,24,-24,32,-32,36,-36,48,-48,64,-64,72,-72,96,-96,144,-144,192,-192,288,-288,576,-576]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* GREATEST COMMON DIVISOR'),
 
 	deb_gcd(' 1)', 1, 1, 1),
@@ -82,7 +82,7 @@ debug_integer_algs:-
 	deb_gcd(' 17)', -247, 270, 1),
 	deb_gcd(' 18)', -247, -270, 1),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	nl, true.
 
 /*
@@ -118,7 +118,7 @@ debug_lists:-
 	deb_insertion_sort(' 2) ', [123,4,46,7,578,67,8567,58,21,23,4,245,3,2,1]),
 	deb_insertion_sort(' 3) ', [-4,8567,25,123,4,46,7,-8,578,67,-4,8567,58,21,-7,23,4,245,3,2,1,8567]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* COUNTING HOW MANY'),
 
 	deb_how_many(' 1)', [1], [[1,1]]),
@@ -132,7 +132,7 @@ debug_lists:-
 	deb_how_many(' 9)', [3,1,3,2,1], [[1,2],[2,1],[3,2]]),
 	deb_how_many(' 10)', [4,1,3,2,1], [[1,2],[2,1],[3,1],[4,1]]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* CARTESIAN PRODUCT'),
 
 	deb_cart_prod(' 1)', [], [], []),
@@ -146,7 +146,7 @@ debug_lists:-
 	deb_cart_prod(' 9)', [1,3], [1,2], [[1,1],[1,2],[3,1],[3,2]]),
 	deb_cart_prod(' 10)', [1,2], [1,3], [[1,1],[1,3],[2,1],[2,3]]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* CARTESIAN PRODUCT BY'),
 
 	deb_cart_prod_by(' 1)', [], [], []),
@@ -160,7 +160,7 @@ debug_lists:-
 	deb_cart_prod_by(' 9)', [1,3], [1,2], [2,3,4,5]),
 	deb_cart_prod_by(' 10)', [1,2], [1,3], [2,4,3,5]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	nl, true.
 
 /*
@@ -205,10 +205,10 @@ debug_numbers:-
 	deb_red_frac(' 16)', -6/4, -3/2),
 	deb_red_frac(' 17)', -6/8, -3/4),
 	deb_red_frac(' 18)', -6/10, -3/5),
-	
-	write(' - OK'), nl,
+
+	write(' -> OK'), nl,
 	write('* RATIONAL GREATEST COMMON DIVISOR'),
-	
+
 	deb_rat_gcd(' 1)', 1, 2, 1, 1, 2),
 	deb_rat_gcd(' 2)', 2, 2, 2, 1, 1),
 	deb_rat_gcd(' 3)', 4, 2, 2, 2, 1),
@@ -223,8 +223,8 @@ debug_numbers:-
 	deb_rat_gcd(' 12)', 5, 5/3, 5, 1, 1/3),
 	deb_rat_gcd(' 13)', 2, 1/2, 1, 2, 1/2),
 	deb_rat_gcd(' 14)', 2, -1/2, 1, 2, -1/2),
-	
-	write(' - OK'), nl,
+
+	write(' -> OK'), nl,
 	nl, true.
 
 /*
@@ -282,8 +282,8 @@ debug_arithmetic_evaluation:-
 	deb_sum(' 10)', 2/2, 2/2, 2),
 	deb_sum(' 11)', 2/2, 3/2, 5/2),
 	deb_sum(' 12)', 3/2, 1, 5/2),
-	
-	write(' - OK'), nl,
+
+	write(' -> OK'), nl,
 	write('* SUBS'),
 
 	deb_sub(' 1)', 0, 0, 0),
@@ -299,8 +299,8 @@ debug_arithmetic_evaluation:-
 	deb_sub(' 11)', 2/2, 3/2, -1/2),
 	deb_sub(' 12)', 3/2, 1, 1/2),
 	deb_sub(' 13)', 0, 1/25, -1/25),
-	
-	write(' - OK'), nl,
+
+	write(' -> OK'), nl,
 	write('* PRODS'),
 
 	deb_prod(' 1)', 0, 0, 0),
@@ -315,8 +315,8 @@ debug_arithmetic_evaluation:-
 	deb_prod(' 10)', 2/2, 2/2, 1),
 	deb_prod(' 11)', 2/2, 3/2, 3/2),
 	deb_prod(' 12)', 3/2, 1, 3/2),
-	
-	write(' - OK'), nl,
+
+	write(' -> OK'), nl,
 	write('* POWERS'),
 
 	deb_power(' 1)', 0, 0, 1),
@@ -331,8 +331,8 @@ debug_arithmetic_evaluation:-
 	deb_power(' 10)', 2/2, 3, 1),
 	deb_power(' 11)', 3/2, 1, 3/2),
 	deb_power(' 12)', 3/2, 2, 9/4),
-	
-	write(' - OK'), nl,
+
+	write(' -> OK'), nl,
 	write('* ARITHMETIC EXPRESSIONS'),
 
 	deb_arithm(' 1)', 3 + 3, 6),
@@ -347,8 +347,8 @@ debug_arithmetic_evaluation:-
 	deb_arithm(' 10)', (1/2)^0 + 3/4, 7/4),
 	deb_arithm(' 11)', 1 - (1 + 1), -1),
 	deb_arithm(' 12)', 1/2, 1/2),
-	
-	write(' - OK'), nl,
+
+	write(' -> OK'), nl,
 	write('* ABSOLUTE VALUES'),
 
 	deb_abs(' 1)', 3, 3),
@@ -363,7 +363,7 @@ debug_arithmetic_evaluation:-
 	deb_abs(' 10)', 1.4142, 1.4142),
 	deb_abs(' 11)', -1.4142, 1.4142),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	nl, true.
 
 /*
@@ -408,10 +408,10 @@ deb_mon_pos_coef(I, M1, RES):- monomial_positive_coefficient(M1), write(I),
 deb_mon_pos_coef(I, M1, RES):- write(I), write(' '), write(M1), write(' -> '),
 	output_text('NO', RES).
 
-deb_mon_eval(_, M, VAL, RES):- monomial_evaluation(VAL, M, RES), !.
-deb_mon_eval(I, M, VAL, RES):-
-	monomial_evaluation(VAL, M, R),
-	write(I), write(' M(x)='), write(M), write('('), write(VAL), write(') = '),
+deb_mon_eval(_, M, V, VAL, RES):- monomial_evaluation(VAL, V, M, RES), !.
+deb_mon_eval(I, M, V, VAL, RES):-
+	monomial_evaluation(VAL, V, M, R),
+	write(I), write(' M('), write(V), write(')='), write(M), write('('), write(VAL), write(') = '),
 	output_text(R, RES).
 
 debug_monomials:-
@@ -429,7 +429,7 @@ debug_monomials:-
 	deb_mon_comp(' 9)', (-3 + 1)*x^(4 - 4), -2, x, 0),
 	deb_mon_comp(' 10)', (-3*3 + 1)*x^(4 - 4), -8, x, 0),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* MONOMIAL REDUCTION'),
 
 	deb_red_mon(' 1)', 0*x^0, 0),
@@ -498,7 +498,7 @@ debug_monomials:-
 	deb_red_mon(' 65)', -1/2*x, -1/2*x),
 	deb_red_mon(' 66)', (-1/2)*x, -1/2*x),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* MONOMIAL SUM'),
 
 	deb_mon_sum(' 1)', 3*x, 2*x, 5*x),
@@ -514,7 +514,7 @@ debug_monomials:-
 	deb_mon_sum(' 11)', 0, 0*x^2, 0),
 	deb_mon_sum(' 12)', 0, 0, 0),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* MONOMIAL SUB'),
 
 	deb_mon_sub(' 1)', 0, x, -x),
@@ -532,7 +532,7 @@ debug_monomials:-
 	deb_mon_sub(' 13)', 0, 0, 0),
 	deb_mon_sub(' 14)', 0, 1/24, -1/24),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* MONOMIAL PROD'),
 
 	deb_mon_prod(' 1)', 3*x, 2*x, 6*x^2),
@@ -548,7 +548,7 @@ debug_monomials:-
 	deb_mon_prod(' 11)', 0, 0*x^2, 0),
 	deb_mon_prod(' 12)', 0, 0, 0),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* MONOMIAL POSITIVE COEFFICIENT'),
 
 	deb_mon_pos_coef(' 1)', 3*x, 'YES'),
@@ -556,26 +556,29 @@ debug_monomials:-
 	deb_mon_pos_coef(' 3)', -x, 'NO'),
 	deb_mon_pos_coef(' 4)', x, 'YES'),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* MONOMIAL EVALUATION'),
 
-	deb_mon_eval(' 1)', 1, 0, 1),
-	deb_mon_eval(' 2)', 1, 1, 1),
-	deb_mon_eval(' 3)', 1, 100, 1),
-	deb_mon_eval(' 4)', -1, 100, -1),
-	deb_mon_eval(' 5)', -1, -2, -1),
-	deb_mon_eval(' 6)', -x, -2, 2),
-	deb_mon_eval(' 7)', x, 2, 2),
-	deb_mon_eval(' 8)', x^2, 2, 4),
-	deb_mon_eval(' 9)', 3*x, 2, 6),
-	deb_mon_eval(' 10)', 3*x^2, 2, 12),
-	deb_mon_eval(' 11)', 9*x^2, 2, 36),
-	deb_mon_eval(' 12)', -9*x, 2, -18),
-	deb_mon_eval(' 13)', -10*x^3, 0, 0),
-	deb_mon_eval(' 14)', x^3, 0, 0),
-	deb_mon_eval(' 15)', 0, 11, 0),
+	deb_mon_eval(' 1)',	   1, x, 0, 1),
+	deb_mon_eval(' 2)',        1, x, 1, 1),
+	deb_mon_eval(' 3)',        1, x, 100, 1),
+	deb_mon_eval(' 4)',       -1, x, 100, -1),
+	deb_mon_eval(' 5)',       -1, x, -2, -1),
+	deb_mon_eval(' 6)',       -x, x, -2, 2),
+	deb_mon_eval(' 7)',        x, x, 2, 2),
+	deb_mon_eval(' 8)',      x^2, x, 2, 4),
+	deb_mon_eval(' 9)',      3*x, x, 2, 6),
+	deb_mon_eval(' 10)',   3*x^2, x, 2, 12),
+	deb_mon_eval(' 11)',   9*x^2, x, 2, 36),
+	deb_mon_eval(' 12)',    -9*x, x, 2, -18),
+	deb_mon_eval(' 13)', -10*x^3, x, 0, 0),
+	deb_mon_eval(' 14)',     x^3, x, 0, 0),
+	deb_mon_eval(' 15)',       0, x, 11, 0),
+	deb_mon_eval(' 16)',	 3*x, i, 11, 3*x),
+	deb_mon_eval(' 17)',       0, i, 11, 0),
+	deb_mon_eval(' 18)',     3*i, i, 3, 9),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	nl, true.
 
 /*
@@ -696,11 +699,11 @@ deb_poly_roots_eval_roots(I, R):-
 	all_to_string([R, space, ->, space, P, space, ->, space, Q, space, ->, space, R], S2),
 	output_text(S1, S2), nl.
 
-deb_exp_poly_eval(_, P, VAL, RES):-
-	expanded_polynomial_evaluation(VAL, P, RES), !.
-deb_exp_poly_eval(I, P, VAL, RES):-
-	expanded_polynomial_evaluation(VAL, P, R),
-	write(I), write(' P(x)='), write(P), write(' -> P('), write(VAL),
+deb_exp_poly_eval(_, P, V, VAL, RES):-
+	expanded_polynomial_evaluation(VAL, V, P, RES), !.
+deb_exp_poly_eval(I, P, V, VAL, RES):-
+	expanded_polynomial_evaluation(VAL, V, P, R),
+	write(I), write(' P('), write(V), write(')='), write(P), write(' -> P('), write(VAL),
 	write(')= '), output_text(R, RES).
 
 deb_falling_factorial(_, P, F, RES):-
@@ -712,6 +715,21 @@ deb_falling_factorial(I, P, F, RES):-
 
 debug_polynomials:-
 	write('-- POLYNOMIAL EVALUATION DEBUG --'), nl,
+	write('* POLYNOMIAL PADDING'),
+
+	deb_poly_pad(' 1)', [2], [2]),
+	deb_poly_pad(' 2)', [x], [x, 0]),
+	deb_poly_pad(' 3)', [x, 3], [x, 3]),
+	deb_poly_pad(' 4)', [x^2], [x^2, 0, 0]),
+	deb_poly_pad(' 5)', [x^2, 3], [x^2, 0, 3]),
+	deb_poly_pad(' 6)', [x^3, x], [x^3, 0, x, 0]),
+	deb_poly_pad(' 7)', [x^4, x^3, x], [x^4, x^3, 0, x, 0]),
+	deb_poly_pad(' 8)', [x^4, x^2, 1], [x^4, 0, x^2, 0, 1]),
+	deb_poly_pad(' 9)', [x^3], [x^3, 0, 0, 0]),
+	deb_poly_pad(' 10)', [x^4], [x^4, 0, 0, 0, 0]),
+	deb_poly_pad(' 11)', [x^6, x^4], [x^6, 0, x^4, 0, 0, 0, 0]),
+
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL LIST SUM'),
 
 	deb_poly_list_sum(' 1)', [], [], []),
@@ -734,8 +752,9 @@ debug_polynomials:-
 	deb_poly_list_sum(' 18)', [2*x, x, x, x], [-x, x, -x], [4*x]),
 	deb_poly_list_sum(' 19)', [x, x, 2*x, x], [-x, x, -x], [4*x]),
 	deb_poly_list_sum(' 20)', [x, x, x, x^2], [-x, x, -x], [x^2, 2*x]),
+	deb_poly_list_sum(' 21)', [x, -x, y, 2*y], [-x, x, -y, -2*y], []),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL SORTED LIST SUM'),
 
 	deb_poly_sorted_list_sum(' 1)', [], [], []),
@@ -754,7 +773,7 @@ debug_polynomials:-
 	deb_poly_sorted_list_sum(' 16)', [x^3, x^2, x, 1], [-x], [x^3, x^2, 1]),
 	deb_poly_sorted_list_sum(' 17)', [x^3, x^2, x, -1], [x], [x^3, x^2, 2*x, -1]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL LIST SUB'),
 
 	deb_poly_list_sub(' 1)', [], [], []),
@@ -778,7 +797,7 @@ debug_polynomials:-
 	deb_poly_list_sub(' 19)', [x, x, 2*x, x], [-x, x, -x], [6*x]),
 	deb_poly_list_sub(' 20)', [x, x, x, x^2], [-x, x, -x], [x^2, 4*x]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL SORTED LIST SUB'),
 
 	deb_poly_sorted_list_sub(' 1)', [], [], []),
@@ -798,7 +817,7 @@ debug_polynomials:-
 	deb_poly_sorted_list_sub(' 17)', [x^3, x^2, x, -1], [x], [x^3, x^2, -1]),
 	deb_poly_sorted_list_sub(' 18)', [x^3, x^2, x, -1], [(1/2)*x^3, x], [(1/2)*x^3, x^2, -1]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL LIST PROD'),
 
 	deb_poly_list_prod(' 1)', [], [], []),
@@ -822,7 +841,7 @@ debug_polynomials:-
 	deb_poly_list_prod(' 19)', [x, x, 2*x, x], [-x, x, -x], [-5*x^2]),
 	deb_poly_list_prod(' 20)', [x, x, x, x^2], [-x, x, -x], [-3*x^2, -x^3]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL SORTED LIST PROD'),
 
 	deb_poly_sorted_list_prod(' 1)', [], []),
@@ -836,7 +855,7 @@ debug_polynomials:-
 	deb_poly_sorted_list_prod(' 9)', [4*x^3, x^2, -34], [x^3, -2*x^2]),
 	deb_poly_sorted_list_prod(' 10)', [x^20, -x^15, 6*x^12, -24*x^8, 4*x^3, x^2, -34], [x^10, x^5, x^3, -2*x^2]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL REDUCTION'),
 
 	deb_poly_sum(' 1)', 0*x^0, 0),
@@ -853,7 +872,7 @@ debug_polynomials:-
 	deb_poly_sum(' 12)', x - x^2 + x^3 - x^4 + x^5, x - x^2 + x^3 - x^4 + x^5),
 	deb_poly_sum(' 13)', (1/3)*x^4 + (1/2)*x^3 + (1/6)*x^2 - (1/6)*x^3 + (1/4)*x^2 - (1/12)*x - (1/12)*x^2 + (1/12)*x - x^3, (1/3)*x^2 - (2/3)*x^3 + (1/3)*x^4),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL PRODUCT'),
 
 	deb_poly_prod(' 1)', x, x, x^2),
@@ -870,9 +889,9 @@ debug_polynomials:-
 	deb_poly_prod(' 11)', 2*x^2 - 3*x^3 + 30, 2*x^2 - 3*x^3 + 30, 9*x^6 - 12*x^5 + 4*x^4 - 180*x^3 + 120*x^2 + 900),
 	deb_poly_prod(' 12)', 0, x, 0),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL POWER'),
-	
+
 	deb_poly_pow(' 1)', x, 0, 1),
 	deb_poly_pow(' 2)', x + 1, 0, 1),
 	deb_poly_pow(' 3)', x + 1, 1, x + 1),
@@ -891,7 +910,7 @@ debug_polynomials:-
 	deb_poly_pow(' 16)', 2 + 2, 2, 16),
 	deb_poly_pow(' 17)', 0, 2, 0),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL EVALUATION'),
 
 	deb_poly_eval(' 1)', x + x - 2, 2*x - 2),
@@ -905,35 +924,20 @@ debug_polynomials:-
 	deb_poly_eval(' 9)', (3*x)^5, 243*x^5),
 	deb_poly_eval(' 10)', 3*x^5, 3*x^5),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL\' FIRST AND LAST MONOMIALS'),
-	
+
 	deb_poly_first_mon(' 1.1)', 3*x - 2*x^2, 3*x, -2*x^2),
 	deb_poly_first_mon(' 1.2)', 3*x + 2*x^2, 3*x, 2*x^2),
 	deb_poly_first_mon(' 1.3)', 3*x - 2*x^3 + 4*x^4, 3*x, -2*x^3 + 4*x^4),
 	deb_poly_first_mon(' 1.4)', 3*x + 2*x^2 + 4*x^3, 3*x, 2*x^2 + 4*x^3),
-	
+
 	deb_poly_last_mon(' 2.1)', 3*x - 2*x^2, 3*x, -2*x^2),
 	deb_poly_last_mon(' 2.2)', 3*x + 2*x^2, 3*x, 2*x^2),
 	deb_poly_last_mon(' 2.3)', 3*x - 2*x^3 + 4*x^4, 3*x - 2*x^3, 4*x^4),
 	deb_poly_last_mon(' 2.4)', 3*x + 2*x^2 + 4*x^3, 3*x + 2*x^2, 4*x^3),
 
-	write(' - OK'), nl,
-	write('* POLYNOMIAL PADDING'),
-
-	deb_poly_pad(' 1)', [2], [2]),
-	deb_poly_pad(' 2)', [x], [x, 0]),
-	deb_poly_pad(' 3)', [x, 3], [x, 3]),
-	deb_poly_pad(' 4)', [x^2], [x^2, 0, 0]),
-	deb_poly_pad(' 5)', [x^2, 3], [x^2, 0, 3]),
-	deb_poly_pad(' 6)', [x^3, x], [x^3, 0, x, 0]),
-	deb_poly_pad(' 7)', [x^4, x^3, x], [x^4, x^3, 0, x, 0]),
-	deb_poly_pad(' 8)', [x^4, x^2, 1], [x^4, 0, x^2, 0, 1]),
-	deb_poly_pad(' 9)', [x^3], [x^3, 0, 0, 0]),
-	deb_poly_pad(' 10)', [x^4], [x^4, 0, 0, 0, 0]),
-	deb_poly_pad(' 11)', [x^6, x^4], [x^6, 0, x^4, 0, 0, 0, 0]),
-
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* PRETTY POLYNOMIAL ROOTS'),
 
 	deb_pretty_polynomial_roots(' 1)', [2], (x - 2)),
@@ -946,7 +950,7 @@ debug_polynomials:-
 	deb_pretty_polynomial_roots(' 8)', [2,3,2], ((x - 2)^2)*(x - 3)),
 	deb_pretty_polynomial_roots(' 9)', [3,2,2], ((x - 2)^2)*(x - 3)),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL ROOTS'),
 
 	deb_poly_roots(' 1)', (x + 1)^2, [-1, -1]),
@@ -955,7 +959,7 @@ debug_polynomials:-
 	deb_poly_roots(' 4)', ((x + 1)^2)*(x - 3)*(x + 3), [-1, -1, -3, 3]),
 	deb_poly_roots(' 5)', (x + 1)*(x - 1)*(x - 3)*(x + 3), [-1, 1, -3, 3]),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* POLYNOMIAL ROOTS -> PRETTY -> EVAL -> ROOTS'),
 
 	deb_poly_roots_eval_roots(' 1)', [1]),
@@ -967,41 +971,52 @@ debug_polynomials:-
 	deb_poly_roots_eval_roots(' 7)', [-2,1]),
 	deb_poly_roots_eval_roots(' 8)', [-2,1,4]),
 
-	write(' - OK'), nl,
-	write('* POLYNOMIAL EVALUATION'),
+	write(' -> OK'), nl,
+	write('* EXPANDED POLYNOMIAL EVALUATION'),
 
-	deb_exp_poly_eval(' 1)', 3*x, 1, 3),
-	deb_exp_poly_eval(' 2)', x, 1, 1),
-	deb_exp_poly_eval(' 3)', x^2, 1, 1),
-	deb_exp_poly_eval(' 4)', x^2 + x, 1, 2),
-	deb_exp_poly_eval(' 5)', x^2 + 3, 1, 4),
-	deb_exp_poly_eval(' 6)', 4*x^2 + 3, -8, 259),
-	deb_exp_poly_eval(' 7)', 4*x^2 + 3, 7/8, 97/16),
-	deb_exp_poly_eval(' 8)', -4*x^3 + 3*x, 0, 0),
-	deb_exp_poly_eval(' 9)', -4*x^3 + 3*x, 9/5, -2241/125),
-	deb_exp_poly_eval(' 10)', -4*x^3 - 3*x, -9/5, 3591/125),
+	deb_exp_poly_eval(' 1)',           3*x, x, 1, 3),
+	deb_exp_poly_eval(' 2)',             x, x, 1, 1),
+	deb_exp_poly_eval(' 3)',           x^2, x, 1, 1),
+	deb_exp_poly_eval(' 4)',       x^2 + x, x, 1, 2),
+	deb_exp_poly_eval(' 5)',       x^2 + 3, x, 1, 4),
+	deb_exp_poly_eval(' 6)',     4*x^2 + 3, x, -8, 259),
+	deb_exp_poly_eval(' 7)',     4*x^2 + 3, x, 7/8, 97/16),
+	deb_exp_poly_eval(' 8)',  -4*x^3 + 3*x, x, 0, 0),
+	deb_exp_poly_eval(' 9)',  -4*x^3 + 3*x, x, 9/5, -2241/125),
+	deb_exp_poly_eval(' 10)', -4*x^3 - 3*x, x, -9/5, 3591/125),
+	deb_exp_poly_eval(' 11)',          3*i, i, 1, 3),
+	deb_exp_poly_eval(' 12)',            i, i, 1, 1),
+	deb_exp_poly_eval(' 13)',          i^2, i, 1, 1),
+	deb_exp_poly_eval(' 14)',      i^2 + x, i, 1, x + 1),
+	deb_exp_poly_eval(' 15)',      i^2 + 3, i, 1, 4),
+	deb_exp_poly_eval(' 16)',    4*i^2 + 3, i, -8, 259),
+	deb_exp_poly_eval(' 17)',    4*i^2 + 3, i, 7/8, 97/16),
+	deb_exp_poly_eval(' 18)', -4*i^3 + 3*x, i, 0, 3*x),
+	deb_exp_poly_eval(' 19)', -4*i^3 + 3*x, i,  9/5, 3*x - 2916/125),
+	deb_exp_poly_eval(' 20)', -4*i^3 - 3*x, i, -9/5, -3*x + 2916/125),
+	deb_exp_poly_eval(' 21)', 4*x - 4*y + 4*i - 4*x, x, 2, 4*i - 4*y),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* FALLING FACTORIALS'),
-	
-	deb_falling_factorial(' 1)',    n, 		1,	n),
-	deb_falling_factorial(' 2)',    n - 1, 	1,	n - 1),
-	deb_falling_factorial(' 3)',    n - 2, 	1,	n - 2),
-	deb_falling_factorial(' 4)',    n, 		2,	(1/2)*n*(n - 1)),
+
+	deb_falling_factorial(' 1)',    n,		1,	n),
+	deb_falling_factorial(' 2)',    n - 1,	1,	n - 1),
+	deb_falling_factorial(' 3)',    n - 2,	1,	n - 2),
+	deb_falling_factorial(' 4)',    n,		2,	(1/2)*n*(n - 1)),
 	deb_falling_factorial(' 5)',    n - 1,	2,	(1/2)*(n - 1)*(n - 2)),
 	deb_falling_factorial(' 6)',    n - 2,	2,	(1/2)*(n - 2)*(n - 3)),
-	deb_falling_factorial(' 7)',    n, 		3,	(1/6)*n*(n - 1)*(n - 2)),
-	deb_falling_factorial(' 8)',    n - 1,	3, 	(1/6)*(n - 1)*(n - 2)*(n - 3)),
+	deb_falling_factorial(' 7)',    n,		3,	(1/6)*n*(n - 1)*(n - 2)),
+	deb_falling_factorial(' 8)',    n - 1,	3,	(1/6)*(n - 1)*(n - 2)*(n - 3)),
 	deb_falling_factorial(' 9)',    n - 2,	3,	(1/6)*(n - 2)*(n - 3)*(n - 4)),
-	deb_falling_factorial('10)',    n - 7, 	1,	n - 7),
-	deb_falling_factorial('11)',    n - 7, 	2,	(1/2)*(n - 7)*(n - 8)),
-	deb_falling_factorial('12)',    n - 7, 	3,	(1/6)*(n - 7)*(n - 8)*(n - 9)),
+	deb_falling_factorial('10)',    n - 7,	1,	n - 7),
+	deb_falling_factorial('11)',    n - 7,	2,	(1/2)*(n - 7)*(n - 8)),
+	deb_falling_factorial('12)',    n - 7,	3,	(1/6)*(n - 7)*(n - 8)*(n - 9)),
 	deb_falling_factorial('13)',    n - 7,	4,	(1/24)*(n - 7)*(n - 8)*(n - 9)*(n - 10)),
-	deb_falling_factorial('14)',  2*n - 7, 	4,	(1/24)*(2*n - 7)*(2*n - 8)*(2*n - 9)*(2*n - 10)),
-	deb_falling_factorial('15)',  3*n - 7, 	4,	(1/24)*(3*n - 7)*(3*n - 8)*(3*n - 9)*(3*n - 10)),
-	deb_falling_factorial('16)', -4*n + 7, 	4,	(1/24)*(-4*n + 7)*(-4*n + 6)*(-4*n + 5)*(-4*n + 4)),
-	
-	write(' - OK'), nl,
+	deb_falling_factorial('14)',  2*n - 7,	4,	(1/24)*(2*n - 7)*(2*n - 8)*(2*n - 9)*(2*n - 10)),
+	deb_falling_factorial('15)',  3*n - 7,	4,	(1/24)*(3*n - 7)*(3*n - 8)*(3*n - 9)*(3*n - 10)),
+	deb_falling_factorial('16)', -4*n + 7,	4,	(1/24)*(-4*n + 7)*(-4*n + 6)*(-4*n + 5)*(-4*n + 4)),
+
+	write(' -> OK'), nl,
 	nl, true.
 
 /*
@@ -1010,12 +1025,12 @@ DEBUG - POWER SUMS
 */
 
 deb_power_sum_D(_, N, F, D):-
-	expanded_polynomial_evaluation(N, F, RES), sum_from_1_to_n_to_D(N, D, RES), !.
+	expanded_polynomial_evaluation(N, n, F, RES), sum_from_1_to_n_to_D(N, D, RES), !.
 deb_power_sum_D(I, N, F, D):-
-	expanded_polynomial_evaluation(N, F, RES), sum_from_1_to_n_to_D(N, D, R),
+	expanded_polynomial_evaluation(N, n, F, RES), sum_from_1_to_n_to_D(N, D, R),
 	write(I), write(' Sum from 1 to '), write(N), write(' = '), output_text(R, RES).
 
-debug_power_sums:- 
+debug_power_sums:-
 	F = power_sums,
 	write('-- POWER SUMS --'), nl,
 	write('* D = 1'),
@@ -1029,7 +1044,7 @@ debug_power_sums:-
 	deb_power_sum_D(' 1.7)', 75, D1, 1),
 	deb_power_sum_D(' 1.8)', 100, D1, 1),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* D = 2'),
 
 	call(F, 2, D2),
@@ -1042,7 +1057,7 @@ debug_power_sums:-
 	deb_power_sum_D(' 2.7)', 75, D2, 2),
 	deb_power_sum_D(' 2.8)', 100, D2, 2),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* D = 3'),
 
 	call(F, 3, D3),
@@ -1055,7 +1070,7 @@ debug_power_sums:-
 	deb_power_sum_D(' 3.7)', 75, D3, 3),
 	deb_power_sum_D(' 3.8)', 100, D3, 3),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* D = 5'),
 
 	call(F, 5, D5),
@@ -1068,7 +1083,7 @@ debug_power_sums:-
 	deb_power_sum_D(' 5.7)', 75, D5, 5),
 	deb_power_sum_D(' 5.8)', 100, D5, 5),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* D = 7'),
 
 	call(F, 7, D7),
@@ -1081,7 +1096,7 @@ debug_power_sums:-
 	deb_power_sum_D(' 7.7)', 75, D7, 7),
 	deb_power_sum_D(' 7.8)', 100, D7, 7),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* D = 10'),
 
 	call(F, 10, D10),
@@ -1094,7 +1109,7 @@ debug_power_sums:-
 	deb_power_sum_D(' 10.7)', 75, D10, 10),
 	deb_power_sum_D(' 10.8)', 100, D10, 10),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* D = 15'),
 
 	call(F, 15, D15),
@@ -1107,7 +1122,7 @@ debug_power_sums:-
 	deb_power_sum_D(' 15.7)', 75, D15, 15),
 	deb_power_sum_D(' 15.8)', 100, D15, 15),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	write('* D = 20'),
 
 	call(F, 20, D20),
@@ -1120,5 +1135,5 @@ debug_power_sums:-
 	deb_power_sum_D(' 20.7)', 75, D20, 20),
 	deb_power_sum_D(' 20.8)', 100, D20, 20),
 
-	write(' - OK'), nl,
+	write(' -> OK'), nl,
 	nl, true.

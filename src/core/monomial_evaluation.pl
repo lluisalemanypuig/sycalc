@@ -1,6 +1,6 @@
 :-ensure_loaded(monomial).
 
-%					  C1, V1, E1, C2, V2, E2, R
+%			   C1, V1, E1, C2, V2, E2, R
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TO BE USED ONLY WHEN V1 \= V2 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,9 +29,6 @@ mon_sum(M1, -(M2), R):- mon_sub(M1, M2, R), !.
 mon_sum(M1, M2, M3 + M4):-
 	monomial_comps(M1, _, V1, _), monomial_comps(M2, _, V2, _),
 	V1 \= V2,
-	write('Warning (mon_sum): variables of monomials are not equal: '), nl,
-	write('    Monomial 1: '), write(M1), write(', variable: '), write(V1), nl,
-	write('    Monomial 2: '), write(M2), write(', variable: '), write(V2), nl,
 	red_monomial(M1, M3), red_monomial(M2, M4), !.
 
 mon_sum(M1, M2, M3):-
@@ -60,9 +57,6 @@ mon_sub(M1, 0, M3):- red_monomial(M1, M3), !.
 mon_sub(M1, M2, M3 - M4):-
 	monomial_comps(M1, _, V1, _), monomial_comps(M2, _, V2, _),
 	V1 \= V2,
-	write('Warning (mon_sum): variables of monomials are not equal: '), nl,
-	write('    Monomial 1: '), write(M1), write(', variable: '), write(V1), nl,
-	write('    Monomial 2: '), write(M2), write(', variable: '), write(V2), nl,
 	red_monomial(M1, M3), red_monomial(M2, M4), !.
 
 mon_sub(M1, M2, M3):-
@@ -89,13 +83,13 @@ mon_prod(_, 0, 0):- !.
 mon_prod(M1, M2, M3):-
 	monomial_comps(M1, C1, V1, E1), monomial_comps(M2, C2, V2, E2),
 	V1 \= V2,
-	write('Warning (mon_product): variables of monomials are not equal: '), nl,
+	write('Error (mon_product): variables of monomials are not equal: '), nl,
 	write('    Monomial 1: '), write(M1), write(', variable: '), write(V1), nl,
 	write('    Monomial 2: '), write(M2), write(', variable: '), write(V2), nl,
-	
+
 	red_monomial_comps(C1, V1, E1, RM1), red_monomial_comps(C2, V2, E2, RM2),
 	monomial_comps(RM1, RC1, _, RE1), monomial_comps(RM2, RC2, _, RE2),
-	pretty_monomials_prod(RC1, V1, RE1, RC2, V2, RE2, M3), !.
+	pretty_monomials_prod_comp(RC1, V1, RE1, RC2, V2, RE2, M3), !.
 
 mon_prod(M1, M2, M3):-
 	monomial_comps(M1, C1, V1, E1), monomial_comps(M2, C2, V1, E2),
@@ -106,9 +100,11 @@ mon_prod([M1,M2], S):- mon_prod(M1, M2, S), !.
 
 % MONOMIAL EVALUATION
 
+% Evaluate the monomial if its variable is equal to 'V'.
 % Takes a reduced monomial and evaluates it with the value VAL
 % VAL: real value
 % M: reduced monomial
 % E: M(VAL)
-monomial_evaluation(VAL, M, E):-
-	monomial_comps(M, C, _, EXP), arithmetic_eval(C*VAL^EXP, E).
+monomial_evaluation(VAL, V, M, R):-
+	monomial_comps(M, C, V, EXP), arithmetic_eval(C*VAL^EXP, R).
+monomial_evaluation(_, _, M, M).

@@ -25,6 +25,11 @@ list_red_monomials(X, X).
 list_red_polynomial_from_list(L, LR):-
 	monomial_sort(L, R), list_red_monomials(R, LR).
 
+
+%%	ATTENTION:
+%%	All arithmetic operations between polynomials as lists of
+%%	monomials assume both polynomials to have the same variable.
+
 %%%%%%%%%%%%%
 %%%% SUM %%%%
 
@@ -33,11 +38,11 @@ polynomial_sum(P, R):-
 	list_from_polynomial(P, M), list_red_polynomial_from_list(M, L),
 	polynomial_from_list(L, R).
 
-% Takes two polynomials each of them as reduced and decreasingly sorted
-% lists of monomials of unique degree and adds the second from to first
-% and returns it as a reduced list of monomials.
-% This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
-% This list has monomials with unique degree: [3*x^2, x, 1]
+% Takes two polynomials each of them as reduced and
+% decreasingly sorted lists of monomials of unique degree and adds the
+% second from to first and returns it as a reduced list of monomials.
+% This list has monomials with no unique degree: [2*x^2, x^2, x, 1] This
+% list has monomials with unique degree: [3*x^2, x, 1]
 polynomial_from_list_sum_sorted_list__(P1, D1, P2, D2, R):- D1 < D2,
 	NZEROES is D2 - D1, padded_list_begin(P1, NZEROES, 0, PP1),
 	zip_with(mon_sum, PP1, P2, R).
@@ -155,6 +160,10 @@ polynomial_power(P, N, PN):-
 	list_from_polynomial(P, M), polynomial_from_list_power_list(M, N, L),
 	polynomial_from_list(L, PN).
 
+%%	ATTENTION:
+%%	Evaluation of polynomials is allowed with multi-variate
+%%	polynomials.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% POLYNOMIAL SUMMATION %%%%
 
@@ -238,20 +247,26 @@ polynomial_eval_eq(P1, P2):-
 %%%%%% POLYNOMIAL EVALUATION %%%%%%%%%
 
 % Takes an expanded polynomial and evaluates it with the value VAL
+% on variable X. All those monomials with that variable will be
+% evaluated on such variable.
 % VAL: real value
 % P(x): expanded polynomial
 % E: P(VAL)
-expanded_polynomial_evaluation(VAL, P, E):-
-	list_from_polynomial(P, MS), map(monomial_evaluation(VAL), MS, R),
-	foldl(eval_sum, 0, R, E).
+expanded_polynomial_evaluation(VAL, V, P, E):-
+	list_from_polynomial(P, MS),
+	map(monomial_evaluation(VAL, V), MS, R),
+	list_red_polynomial_from_list(R, L),
+	polynomial_from_list(L, E).
 
-% Takes a contracted polynomial and evaluates it with the value VAL
+% Takes an expanded polynomial and evaluates it with the value VAL
+% on variable X. All those monomials with that variable will be
+% evaluated on such variable.
 % VAL: real value
 % P(x): expanded polynomial
 % E: P(VAL)
-polynomial_evaluation(VAL, P, E):-
+polynomial_evaluation(VAL, V, P, E):-
 	polynomial_evaluation(P, EXP),
-	expanded_polynomial_evaluation(VAL, EXP, E).
+	expanded_polynomial_evaluation(VAL, V, EXP, E).
 
 % Takes an expanded
 

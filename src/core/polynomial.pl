@@ -24,9 +24,10 @@ list_from_polynomial(A - B, S):-
 	list_from_polynomial(A, L), list_from_polynomial(-B, R), concat(L, R, S), !.
 list_from_polynomial(M, [R]):- red_monomial(M, R), !.
 
-% Pads a list of monomials DECREASINGLY sorted.
+% Pads a list of uni-variate* monomials DECREASINGLY sorted.
 % If [m1, m2, ..., mN] is the list of monomials, this predicate will add 0s between
 % those monomials with degrees di, dj such that |di - dj| > 1
+% *: uni-variate here means that all monomials have the same variable
 padded_poly_mons_decr_(0, M, MS, [M|P]):- padded_poly_mons_decr(MS, P), !.
 padded_poly_mons_decr_(K, M, MS, P):-
 	padded_list_end([M], K, 0, R), padded_poly_mons_decr(MS, Q),
@@ -76,7 +77,7 @@ polynomial_eq(P1, P2):-
 	polynomial_list_eq(M1, M2).
 
 % Checks if P is an expanded polynomial
-polynomial(P):- list_from_polynomial(P, _).
+expanded_polynomial(P):- list_from_polynomial(P, _).
 
 % P is an expanded polynomial. N = -P
 polynomial_neg(P, N):-
@@ -123,7 +124,7 @@ ruffini(CS, [D|_], [D|L]):-
 	ruffini(RS, ND, L), !.
 ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L), !.
 
-% Finds all the integer roots of the polynomial P.
+% Finds all the integer roots of a univariate polynomial P.
 % This predicate is simply a wrapper that calls 'ruffini/3' predicate.
 % This polynomial should have one free term (a constant multiplied by x^0)
 % and the first monomial be multiplied by 1 or -1.
