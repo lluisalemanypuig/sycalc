@@ -155,28 +155,64 @@ polynomial_power(P, N, PN):-
 	list_from_polynomial(P, M), polynomial_from_list_power_list(M, N, L),
 	polynomial_from_list(L, PN).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% POLYNOMIAL SUMMATION %%%%
+
+% Computes the result of the summation over the induction variable VAR
+% from the value INI to either the polynomial or value FIN of the
+% polynomial P. Result in Q.
+summation_over_polynomial(VAR, INI, FIN, P, Q):-
+	false.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% POLYNOMIAL EXPRESSIONS' EVALUATION %%%%
 
+polynomial_evaluation_list(P, [R]):-
+	monomial(P), red_monomial(P, R), !.
 polynomial_evaluation_list(Q1 + Q2, R):-
-	polynomial_evaluation_list(Q1, L1), polynomial_evaluation_list(Q2, L2),
-	concat(L1, L2, L), list_red_polynomial_from_list(L, R), !.
+	polynomial_evaluation_list(Q1, L1),
+	polynomial_evaluation_list(Q2, L2),
+	concat(L1, L2, L),
+	list_red_polynomial_from_list(L, R), !.
 polynomial_evaluation_list(Q1 - Q2, R):-
-	polynomial_evaluation_list(Q1, L1), polynomial_evaluation_list(Q2, L2),
+	polynomial_evaluation_list(Q1, L1),
+	polynomial_evaluation_list(Q2, L2),
 	map(monomial_neg, L2, NL2),
-	concat(L1, NL2, L), list_red_polynomial_from_list(L, R), !.
+	concat(L1, NL2, L),
+	list_red_polynomial_from_list(L, R), !.
 polynomial_evaluation_list(Q1 * Q2, R):-
-	polynomial_evaluation_list(Q1, L1), polynomial_evaluation_list(Q2, L2),
-	cartesian_product(L1, L2, L), map(mon_prod, L, PROD),
+	polynomial_evaluation_list(Q1, L1),
+	polynomial_evaluation_list(Q2, L2),
+	cartesian_product(L1, L2, L),
+	map(mon_prod, L, PROD),
 	list_red_polynomial_from_list(PROD, R), !.
 polynomial_evaluation_list(Q1 ^ N, R):-
-	polynomial_evaluation_list(Q1, L1), polynomial_from_list_power_list(L1, N, R), !.
-% convert a binomial into a polynomial
+	polynomial_evaluation_list(Q1, L1),
+	polynomial_from_list_power_list(L1, N, R), !.
+% Convert a binomial into a polynomial.
+% I is either a natural number or an arithmetic expression that
+% evaluates to a natural number.
 polynomial_evaluation_list( choose(P, I), R):-
-	factorial(I, F), falling_factorial(P, I, FF),
+	factorial(I, F),
+	falling_factorial(P, I, FF),
 	polynomial_evaluation_list( (1/F)*FF, R ), !.
-polynomial_evaluation_list(P, [R]):-
-	red_monomial(P, R), !.
+% Evaluation a summation over polynomials
+% VAR: induction variable
+% INI: lowest value of summation range. Must evaluate to a natural
+% number
+% FIN: highest value of summation range. Either a polynomial or an
+% arithmetic expression
+% EXPR: expression within the sum. A polynomial in
+% any variable.
+polynomial_evaluation_list(sum(VAR, INI, FIN, EXPR), R):-
+	polynomial_evaluation_list(EXPR, P_EXPR),
+	polynomial_evaluation_list(FIN, P_FIN),
+	write(P_EXPR), nl,
+	write(P_FIN), nl,
+	false.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% OTHER POLYNOMIAL USEFUL OPERATIONS %%%%%%%%%
 
 % Constructs the falling factorial polynomial on polynomial P:
 % (P - I)*(P - (I - 1))*(P - (I - 2))* .... *(P - 1)*P
@@ -198,7 +234,8 @@ polynomial_eval_eq(P1, P2):-
 	polynomial_evaluation(P1, EP1), polynomial_evaluation(P2, EP2),
 	polynomial_eq(EP1, EP2).
 
-% POLYNOMIAL EVALUATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% POLYNOMIAL EVALUATION %%%%%%%%%
 
 % Takes an expanded polynomial and evaluates it with the value VAL
 % VAL: real value
@@ -209,19 +246,25 @@ expanded_polynomial_evaluation(VAL, P, E):-
 	foldl(eval_sum, 0, R, E).
 
 % Takes a contracted polynomial and evaluates it with the value VAL
-contracted_polynomial_evaluation(VAL, P, E):-
+% VAL: real value
+% P(x): expanded polynomial
+% E: P(VAL)
+polynomial_evaluation(VAL, P, E):-
 	polynomial_evaluation(P, EXP),
 	expanded_polynomial_evaluation(VAL, EXP, E).
+
+% Takes an expanded
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% SYMBOLIC DOT PRODUCT %%%%
 
-symbolic_dot_prod([X], [Y], P):- polynomial_evaluation( X*Y, P ), !.
+% Takes two lists of polynomials and computes the dot product of the two
+% lists.
+symbolic_dot_prod([X], [Y], P):- polynomial_evaluation(X*Y, P), !.
 symbolic_dot_prod([X|Xs], [Y|Ys], R):-
-	polynomial_evaluation( X*Y, P ),
+	polynomial_evaluation(X*Y, P),
 	symbolic_dot_prod(Xs, Ys, Q),
-	polynomial_evaluation( P + Q, R ),
-	!.
+	polynomial_evaluation(P + Q, R).
 
 
 
