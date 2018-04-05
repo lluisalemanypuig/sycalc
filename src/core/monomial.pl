@@ -78,7 +78,7 @@ red_monomial(M, R):-
 %	exponent of monomial Mi
 monomial_comp(M1, M2):-
 	monomial_comps(M1, _, V1, _), monomial_comps(M2, _, V2, _),
-	V1 \= V2, V1 @< V2, !.
+	V1 \= V2, !, V1 @< V2.
 monomial_comp(M1, M2):-
 	monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2),
 	E1 is E2, C1 < C2, !.
