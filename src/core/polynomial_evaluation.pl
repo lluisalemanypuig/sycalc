@@ -5,9 +5,8 @@
 list_red_monomials([], []):- !.
 list_red_monomials([0], []):- !.
 list_red_monomials([M], [RM]):- red_monomial(M, RM), !.
-list_red_monomials([M1,M2], []):- mon_sum(M1, M2, 0), !.
-list_red_monomials([M1,M2], [S]):-
-	mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)), !.
+list_red_monomials([M1,M2], []):- mon_sum(M1, M2, R), R = 0, !.
+list_red_monomials([M1,M2], [S]):- mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)), !.
 list_red_monomials([M1,M2], [M1,M2]):- !.
 list_red_monomials([M1,M2|L], R):-
 	mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)),
@@ -82,7 +81,7 @@ polynomial_from_list_sum_list(P1, P2, R):-
 % This list has monomials with unique degree: [3*x^2, x, 1]
 polynomial_from_list_sub_sorted_list_(P1, D1, P2, D2, R):- D1 < D2,
 	NZEROES is D2 - D1, padded_list_begin(P1, NZEROES, 0, PP1),
-	zip_with(mon_sub, PP1, P2, R).
+	zip_with(mon_sub, PP1, P2, R), !.
 polynomial_from_list_sub_sorted_list_(P1, D1, P2, D2, R):-
 	NZEROES is D1 - D2, padded_list_begin(P2, NZEROES, 0, PP2),
 	zip_with(mon_sub, P1, PP2, R).
