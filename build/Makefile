@@ -42,7 +42,7 @@ CORE =					\
 ALGORITHMS = 									\
 	$(SRC_DIR)/algorithms.pl					\
 	$(ALG_DIR)/power_sums.pl					\
-	$(ALG_DIR)/poly_expression_evaluation.pl
+	$(ALG_DIR)/poly_expr_eval.pl
 
 ALL_FILES = $(CORE) $(ALGORITHMS)
 
