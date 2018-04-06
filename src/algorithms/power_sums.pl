@@ -2,7 +2,8 @@
 
 % FORMULA OF SUMS OF POWERS
 
-h_coefficient(C, H):- frac_sum(C, 1/1, R), fraction_comp(R, N, D), fraction_comp(H, D, N).
+h_coefficient(C, H):-
+	frac_sum(C, 1/1, R), fraction_comp(R, N, D), fraction_comp(H, D, N).
 
 reminder_(_, [], []):- !.
 reminder_([[D, F]|_], [M], R):-
@@ -24,20 +25,29 @@ power_sums_(D, SUM, L):-
 	power_sums_(D1, S1, L1),
 	
 	first(S1, S1F, S1R),
-	monomial_coefficient(S1F, FH), h_coefficient(FH, H),	% H = 1/(1 + c_{d + 1})
-
+	
+	% H = 1/(1 + c_{d + 1})
+	monomial_coefficient(S1F, FH), h_coefficient(FH, H),
+	
 	first(S1R, S1RF, S1RR),
 	
 	monomial_coefficient(S1RF, COEF),
-	polynomial_evaluation((n + 1 - COEF), B),				% B = (n + 1 - c_d)
-	list_from_polynomial(B, BMS),
-
-	polynomial_from_list_prod_sorted_list(BMS, S1, S),			% S = B*p(n, d)
 	
-	first(L1, _, L1R), reminder(L1R, S1RR, R),				% R = sum[j=1->d] c_{d - j}*p(n, d - j)
+	% B = (n + 1 - c_d)
+	polynomial_evaluation((n + 1 - COEF), B),
+	
+	list_from_polynomial(B, BMS),
+	
+	% S = B*p(n, d)
+	polynomial_from_list_prod_sorted_list(BMS, S1, S),
+	
+	% R = sum[j=1->d] c_{d - j}*p(n, d - j)
+	first(L1, _, L1R), reminder(L1R, S1RR, R),
 
 	polynomial_from_list_sub_sorted_list(S, R, S_MINUS_R),
-	polynomial_from_list_prod_sorted_list([H], S_MINUS_R, SUM),	% SUM = H*(S - R)
+	
+	% SUM = H*(S - R)
+	polynomial_from_list_prod_sorted_list([H], S_MINUS_R, SUM),
 	
 	concat([[D,SUM]], L1, L),
 	!.

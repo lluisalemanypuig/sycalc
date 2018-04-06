@@ -71,3 +71,20 @@ polynomial_evaluation_list(sum(VAR, INI, FIN, EXPR), R):-
 	write(P_EXPR), nl,
 	write(P_FIN), nl,
 	false.
+
+% Takes a sequence of sums and substractions P of polynomials, contracted
+% or expanded, and operates it.
+polynomial_evaluation(P, R):-
+	polynomial_evaluation_list(P, L), polynomial_from_list(L, R).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% SYMBOLIC DOT PRODUCT %%%%
+
+% Takes two lists of polynomials and computes the dot product of the two
+% lists.
+symbolic_dot_prod([X], [Y], P):- polynomial_evaluation(X*Y, P), !.
+symbolic_dot_prod([X|Xs], [Y|Ys], R):-
+	polynomial_evaluation(X*Y, P),
+	symbolic_dot_prod(Xs, Ys, Q),
+	polynomial_evaluation(P + Q, R).

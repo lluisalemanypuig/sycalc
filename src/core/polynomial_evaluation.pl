@@ -175,19 +175,11 @@ falling_factorial(P, I, FF):-
 	falling_factorial(Pminus1, I1, FF1),
 	polynomial_evaluation(P*FF1, FF).
 
-% Takes a sequence of sums and substractions P of polynomials, contracted
-% or expanded, and operates it.
-polynomial_evaluation(P, R):-
-	polynomial_evaluation_list(P, L), polynomial_from_list(L, R).
-
 % Takes two polynomials, expanded or contracted, evaluates them, and
 % fails if they are not equal
 polynomial_eval_eq(P1, P2):-
 	polynomial_evaluation(P1, EP1), polynomial_evaluation(P2, EP2),
 	polynomial_eq(EP1, EP2).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%% POLYNOMIAL EVALUATION %%%%%%%%%
 
 % Takes an expanded polynomial and evaluates it with the value VAL
 % on variable X. All those monomials with that variable will be
@@ -211,18 +203,6 @@ polynomial_evaluation(VAL, V, P, E):-
 	polynomial_evaluation(P, EXP),
 	expanded_polynomial_evaluation(VAL, V, EXP, E).
 
-% Takes an expanded
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% SYMBOLIC DOT PRODUCT %%%%
-
-% Takes two lists of polynomials and computes the dot product of the two
-% lists.
-symbolic_dot_prod([X], [Y], P):- polynomial_evaluation(X*Y, P), !.
-symbolic_dot_prod([X|Xs], [Y|Ys], R):-
-	polynomial_evaluation(X*Y, P),
-	symbolic_dot_prod(Xs, Ys, Q),
-	polynomial_evaluation(P + Q, R).
 
 
 
