@@ -2,13 +2,13 @@
 :-ensure_loaded(algorithms).
 
 debug:-
-	%debug_integer_algs,
-	%debug_lists,
-	%debug_numbers,
-	%debug_arithmetic_evaluation,
+	debug_integer_algs,
+	debug_lists,
+	debug_numbers,
+	debug_arithmetic_evaluation,
 	debug_monomials,
-	%debug_polynomials,
-	%debug_power_sums,
+	debug_polynomials,
+	debug_power_sums,
 	true.
 
 main:- debug, halt.
@@ -521,11 +521,12 @@ debug_monomials:-
 	deb_mon_sub(' 12)', 0, 0*x^2, 0),
 	deb_mon_sub(' 13)', 0, 0, 0),
 	deb_mon_sub(' 14)', 0, 1/24, -1/24),
-	deb_mon_sub(' 15)', 3*x, 3*y, 3*x - 3*y),
-	deb_mon_sub(' 16)', 3*y, 3*x, -3*x + 3*y),
-	deb_mon_sub(' 17)', 3*y, -3*x, 3*x + 3*y),
-	deb_mon_sub(' 18)', -3*y, 3*x, -3*x - 3*y),
-	deb_mon_sub(' 19)', -3*y, -3*x, 3*x - 3*y),
+	deb_mon_sub(' 15)', 0, 1, -1),
+	deb_mon_sub(' 16)', 3*x, 3*y, 3*x - 3*y),
+	deb_mon_sub(' 17)', 3*y, 3*x, -3*x + 3*y),
+	deb_mon_sub(' 18)', 3*y, -3*x, 3*x + 3*y),
+	deb_mon_sub(' 19)', -3*y, 3*x, -3*x - 3*y),
+	deb_mon_sub(' 20)', -3*y, -3*x, 3*x - 3*y),
 
 	write('* MONOMIAL PROD'), nl,
 
@@ -788,20 +789,20 @@ debug_polynomials:-
 
 	deb_poly_sorted_list_sub('  1)', [], [], []),
 	deb_poly_sorted_list_sub('  2)', [0], [0], []),
-	deb_poly_sorted_list_sub('  5)', [1], [0], [1]),
-	deb_poly_sorted_list_sub('  6)', [0], [1], [-1]),
-	deb_poly_sorted_list_sub('  7)', [1], [1], []),
-	deb_poly_sorted_list_sub('  8)', [x], [0], [x]),
-	deb_poly_sorted_list_sub('  9)', [x], [x], []),
-	deb_poly_sorted_list_sub(' 10)', [x], [-x], [2*x]),
-	deb_poly_sorted_list_sub(' 11)', [2*x], [-x], [3*x]),
-	deb_poly_sorted_list_sub(' 12)', [-2*x], [-x], [-x]),
-	deb_poly_sorted_list_sub(' 13)', [3*x], [-4*x], [7*x]),
-	deb_poly_sorted_list_sub(' 14)', [x^2], [-x], [x^2, x]),
-	deb_poly_sorted_list_sub(' 15)', [4*x^3], [-x], [4*x^3, x]),
-	deb_poly_sorted_list_sub(' 16)', [x^3, x^2, x, 1], [-x], [x^3, x^2, 2*x, 1]),
-	deb_poly_sorted_list_sub(' 17)', [x^3, x^2, x, -1], [x], [x^3, x^2, -1]),
-	deb_poly_sorted_list_sub(' 18)', [x^3, x^2, x, -1], [(1/2)*x^3, x], [(1/2)*x^3, x^2, -1]),
+	deb_poly_sorted_list_sub('  3)', [1], [0], [1]),
+	deb_poly_sorted_list_sub('  4)', [0], [1], [-1]),
+	deb_poly_sorted_list_sub('  5)', [1], [1], []),
+	deb_poly_sorted_list_sub('  6)', [x], [0], [x]),
+	deb_poly_sorted_list_sub('  7)', [x], [x], []),
+	deb_poly_sorted_list_sub('  8)', [x], [-x], [2*x]),
+	deb_poly_sorted_list_sub('  9)', [2*x], [-x], [3*x]),
+	deb_poly_sorted_list_sub(' 10)', [-2*x], [-x], [-x]),
+	deb_poly_sorted_list_sub(' 11)', [3*x], [-4*x], [7*x]),
+	deb_poly_sorted_list_sub(' 12)', [x^2], [-x], [x^2, x]),
+	deb_poly_sorted_list_sub(' 13)', [4*x^3], [-x], [4*x^3, x]),
+	deb_poly_sorted_list_sub(' 14)', [x^3, x^2, x, 1], [-x], [x^3, x^2, 2*x, 1]),
+	deb_poly_sorted_list_sub(' 15)', [x^3, x^2, x, -1], [x], [x^3, x^2, -1]),
+	deb_poly_sorted_list_sub(' 16)', [x^3, x^2, x, -1], [(1/2)*x^3, x], [(1/2)*x^3, x^2, -1]),
 
 	write('* POLYNOMIAL LIST PROD'), nl,
 
@@ -898,7 +899,7 @@ debug_polynomials:-
 	deb_poly_pow(' 16)', 2 + 2, 2, 16),
 	deb_poly_pow(' 17)', 0, 2, 0),
 
-	write('* POLYNOMIAL EVALUATION'), nl,
+	write('* POLYNOMIAL SYMBOLIC EVALUATION'), nl,
 
 	deb_poly_eval('  1)', x + x - 2, 2*x - 2),
 	deb_poly_eval('  2)', x + x^2 - 2, x^2 + x - 2),
