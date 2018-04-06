@@ -112,7 +112,7 @@ mon_sub_( _,C1,V1,E1,   _,C2,V2,E2, N2  - N1):-
 	rational_neg(C1,K1), red_monomial_comps(K1,V1,E1, N1),
 	rational_neg(C2,K2), red_monomial_comps(K2,V2,E2, N2), !.
 
-mon_sub(0, M2, M3):- red_monomial(M2, M3), !.
+mon_sub(0, M2, M3):- monomial_neg(M2, M3), !.
 mon_sub(M1, 0, M3):- red_monomial(M1, M3), !.
 mon_sub(M1, M2, R):-
 	monomial_comps(M1, C1, V1, E1),
@@ -151,5 +151,5 @@ mon_prod([M1,M2], S):- mon_prod(M1, M2, S), !.
 % M: reduced monomial
 % E: M(VAL)
 monomial_evaluation(VAL, V, M, R):-
-	monomial_comps(M, C, V, EXP), arithmetic_eval(C*VAL^EXP, R).
+	monomial_comps(M, C, V, EXP), arithmetic_eval(C*(VAL^EXP), R).
 monomial_evaluation(_, _, M, M).
