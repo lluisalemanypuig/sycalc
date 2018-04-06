@@ -38,6 +38,10 @@ eval_pow(A, B, C):- fraction(A), frac_pow(A, B/1, R), red_frac(R, C), !.
 eval_pow(A, B, C):- fraction(B), frac_pow(A/1, B, R), red_frac(R, C), !.
 eval_pow(A, B, C):- C is A^B.
 
+% C is -A
+eval_neg(A, B):- fraction(A), neg_frac(A, B), !.
+eval_neg(A, B):- B is -A, !.
+
 % ARITHMETIC EVALUATION
 
 % An arithmetic expression is a sum, sub, prod, div or pow of real numbers
@@ -47,6 +51,7 @@ arithmetic_eval(A*B, C):- arithmetic_eval(A, AA), arithmetic_eval(B, BB), eval_p
 arithmetic_eval(A/B, C):- arithmetic_eval(A, AA), arithmetic_eval(B, BB), red_frac(AA/BB, C), !.
 arithmetic_eval(A^B, C):- arithmetic_eval_pow(A^B, C), !.
 arithmetic_eval(A^B, C):- arithmetic_eval(A, AA), arithmetic_eval(B, BB), eval_pow(AA, BB, C), !.
+arithmetic_eval(-A, C):- arithmetic_eval(A, AA), eval_neg(AA, C), !.
 arithmetic_eval(A, A):- real(A).
 
 arithmetic_eval_pow(A^B^C, R):- arithmetic_eval(A^B, R1), arithmetic_eval(R1^C, R), !.
