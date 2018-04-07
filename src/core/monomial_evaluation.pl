@@ -24,11 +24,13 @@ mon_sum_( _,C1, _, 0,   M, _, _, _, C1 + M):- !.
 % same variables, same exponents
 mon_sum_( _,C1,V1,E1,   _,C2,V1,E1,  R):- red_monomial_comps(C1 + C2, V1, E1, R), !.
 % same variables, different exponents
-mon_sum_(M1, _,V1,E1,  M2,C2,V1,E2,  M1 + M2):- E1 > E2, C2 > 0, !.
+mon_sum_(M1, _,V1,E1,  M2,C2,V1,E2,  M1 + M2):-
+	E1 > E2, C2 > 0, !.
 mon_sum_(M1, _,V1,E1,   _,C2,V1,E2,  M1 - N2):-
 	E1 > E2, C2 < 0,
 	rational_neg(C2,K), red_monomial_comps(K,V1,E2, N2), !.
-mon_sum_(M1,C1,V1,E1,  M2, _,V1,E2,  M2 + M1):- E1 < E2, C1 > 0, !.
+mon_sum_(M1,C1,V1,E1,  M2, _,V1,E2,  M2 + M1):-
+	E1 < E2, C1 > 0, !.
 mon_sum_( _,C1,V1,E1,  M2, _,V1,E2,  M2 - N1):-
 	E1 < E2, C1 < 0,
 	rational_neg(C1,K), red_monomial_comps(K,V1,E1, N1), !.
@@ -59,8 +61,10 @@ mon_sum([M1,M2], S):- mon_sum(M1, M2, S), !.
 
 % null coeficients
 mon_sub_( _, 0, _, _,   _, 0, _, _, 0):- !.
-mon_sub_( _, 0, _, _,   _, C, V, E, M):- rational_neg(C,K), red_monomial_comps(K,V,E, M), !.
-mon_sub_( _, C, V, E,   _, 0, _, _, M):- red_monomial_comps(C,V,E, M), !.
+mon_sub_( _, 0, _, _,   _, C, V, E, M):-
+	rational_neg(C,K), red_monomial_comps(K,V,E, M), !.
+mon_sub_( _, C, V, E,   _, 0, _, _, M):-
+	red_monomial_comps(C,V,E, M), !.
 % null exponents
 mon_sub_( _,C1, _, 0,   _,C2, _, 0, R):- arithmetic_eval(C1 - C2,R), !.
 mon_sub_( M, _, _, _,   _,C2, _, 0, M - C2):- !.
@@ -68,13 +72,16 @@ mon_sub_( _,C1, _, 0,   M,C2, _, _, C1 - M):- C2 > 0, !.
 mon_sub_( _,C1, _, 0,   _,C2,V2,E2, C1 + N):-
 	C2 < 0, rational_neg(C2,K), red_monomial_comps(K,V2,E2, N), !.
 % same variables, same exponents
-mon_sub_( _,C1,V1,E1,   _,C2,V1,E1,  R):- red_monomial_comps(C1 - C2, V1, E1, R), !.
+mon_sub_( _,C1,V1,E1,   _,C2,V1,E1,  R):-
+	red_monomial_comps(C1 - C2, V1, E1, R), !.
 % same variables, different exponents
-mon_sub_(M1, _,V1,E1,  M2,C2,V1,E2,  M1 - M2):- E1 > E2, C2 > 0, !.
+mon_sub_(M1, _,V1,E1,  M2,C2,V1,E2,  M1 - M2):-
+	E1 > E2, C2 > 0, !.
 mon_sub_(M1, _,V1,E1,   _,C2,V1,E2,  M1 - N2):-
 	E1 > E2, C2 < 0,
 	rational_neg(C2,K), red_monomial_comps(K,V1,E2, N2), !.
-mon_sub_(M1,C1,V1,E1,  M2, _,V1,E2, M2 + M1):- E1 < E2, C1 > 0, !.
+mon_sub_(M1,C1,V1,E1,  M2, _,V1,E2, M2 + M1):-
+	E1 < E2, C1 > 0, !.
 mon_sub_( _,C1,V1,E1,  M2, _,V1,E2, M2 - N1):-
 	E1 < E2, C1 < 0,
 	rational_neg(C1,K), red_monomial_comps(K,V1,E1, N1), !.
@@ -84,7 +91,6 @@ mon_sub_(M1, _,V1, _,  M2,C2,V2, _, M1 - M2):-
 mon_sub_(M1, _,V1, _,   _,C2,V2,E2, M1 + N1):-
 	V1 @< V2, C2 < 0,
 	rational_neg(C2,K), red_monomial_comps(K,V2,E2, N1), !.
-
 mon_sub_(M1,C1,V1, _,   _,C2,V2,E2, N2 + M1):-
 	V1 @> V2, C1 > 0,
 	rational_neg(C2,K), red_monomial_comps(K,V2,E2, N2), !.

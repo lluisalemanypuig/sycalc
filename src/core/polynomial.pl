@@ -45,8 +45,8 @@ padded_poly_mons_decr([M|MS], P):-
 % A + B is an expanded polynomial.
 % A is its first monomial
 % B is the rest of the polynomial
-polynomial_first_monomial(A + B, A, B):- monomial(A), monomial(B), !.
-polynomial_first_monomial(A - B, A, N):- monomial(A), monomial(B), monomial_neg(B, N), !.
+polynomial_first_monomial(A + B, A,  B):- monomial(A), monomial(B), !.
+polynomial_first_monomial(A - B, A, NB):- monomial(A), monomial(B), monomial_neg(B, NB), !.
 polynomial_first_monomial(A + B, F, S + B):- polynomial_first_monomial(A, F, S), !.
 polynomial_first_monomial(A - B, F, S - B):- polynomial_first_monomial(A, F, S), !.
 polynomial_first_monomial(F, F, _).
