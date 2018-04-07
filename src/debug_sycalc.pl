@@ -2,13 +2,13 @@
 :-ensure_loaded(algorithms).
 
 debug:-
-	debug_integer_algs,
-	debug_lists,
-	debug_numbers,
-	debug_arithmetic_evaluation,
+	%debug_integer_algs,
+	%debug_lists,
+	%debug_numbers,
+	%debug_arithmetic_evaluation,
 	debug_monomials,
-	debug_polynomials,
-	debug_power_sums,
+	%debug_polynomials,
+	%debug_power_sums,
 	true.
 
 main:- debug, halt.
@@ -542,6 +542,16 @@ debug_monomials:-
 	deb_mon_prod(' 10)', 0*x^1, 0*x^2, 0),
 	deb_mon_prod(' 11)', 0, 0*x^2, 0),
 	deb_mon_prod(' 12)', 0, 0, 0),
+	deb_mon_prod(' 13)', x, y, x*y),
+	deb_mon_prod(' 14)', 3*x, y, 3*x*y),
+	deb_mon_prod(' 15)', 3*x, 3*y, 9*x*y),
+	deb_mon_prod(' 16)', y, x, x*y),
+	deb_mon_prod(' 17)', 3*y, x, 3*x*y),
+	deb_mon_prod(' 18)', 3*y, 3*x, 9*x*y),
+	deb_mon_prod(' 19)', 3*y^0, -4*x, -12*x),
+	deb_mon_prod(' 20)', 3*y, -4*x, -12*x*y),
+	deb_mon_prod(' 21)', 3*y, -4*x^0, -12*y),
+	deb_mon_prod(' 22)', 3*y^0, -4*x^0, -12),
 
 	write('* MONOMIAL POSITIVE COEFFICIENT'), nl,
 
