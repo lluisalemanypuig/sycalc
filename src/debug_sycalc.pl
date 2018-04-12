@@ -357,9 +357,9 @@ debug_arithmetic_evaluation:-
 DEBUG - MONOMIAL EVALUATION
 */
 
-deb_mon_comp(I, M, C, V, E):- monomial_comps(M, C, V, E), !, output_correct(I).
+deb_mon_comp(I, M, C, V, E):- univariate_monomial_comps(M, C, V, E), !, output_correct(I).
 deb_mon_comp(I, M, RC, RV, RE):-
-	monomial_comps(M, C, V, E), write(I), write(' Components of '),
+	univariate_monomial_comps(M, C, V, E), write(I), write(' Components of '),
 	write(M), write(' are ('), write(C), write(','), write(V), write(','),
 	write(E), write(') but were expected to be '), write('('), write(RC),
 	write(','), write(RV), write(','), write(RE), write(')'), false.

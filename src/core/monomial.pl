@@ -11,42 +11,45 @@
 
 % Extracts the components of a monomial in reduced form:
 % (2 + 2)*x^(3 - 1) gives: C = 4, V = x, E = 2
-monomial_comps(_ + _, _, _, _):- !, false.
-monomial_comps(_ - _, _, _, _):- !, false.
-monomial_comps(- (M), NC, V, E):- monomial_comps(M, C, V, E), rational_neg(C, NC), !.
-monomial_comps(- (M), NC, V, E):- monomial_comps(M, C, V, E), rational_neg(C, NC), !.
-monomial_comps(C*X^E, CE, X, EE):-
+univariate_monomial_comps(_ + _, _, _, _):- !, false.
+univariate_monomial_comps(_ - _, _, _, _):- !, false.
+univariate_monomial_comps(- (M), NC, V, E):-
+	univariate_monomial_comps(M, C, V, E), rational_neg(C, NC), !.
+univariate_monomial_comps(- (M), NC, V, E):-
+	univariate_monomial_comps(M, C, V, E), rational_neg(C, NC), !.
+univariate_monomial_comps(C*X^E, CE, X, EE):-
 	arithmetic_eval(C, CE), arithmetic_eval(E, EE), !.
-monomial_comps(X^E, 1, X, EE):- arithmetic_eval(E, EE), !.
-monomial_comps(C*X, CE, X, 1):- arithmetic_eval(C, CE), !.
-monomial_comps(C, CE, _, 0):- arithmetic_eval(C, CE), !.
-monomial_comps(X, 1, X, 1):- not(expr(X)).
+univariate_monomial_comps(X^E, 1, X, EE):- arithmetic_eval(E, EE), !.
+univariate_monomial_comps(C*X, CE, X, 1):- arithmetic_eval(C, CE), !.
+univariate_monomial_comps(C, CE, _, 0):- arithmetic_eval(C, CE), !.
+univariate_monomial_comps(X, 1, X, 1):- not(expr(X)).
 
 % Monomial definition
 % If the variable is present, check it is an atom
 monomial(M):-
-	monomial_comps(M, C, V, E),
+	univariate_monomial_comps(M, C, V, E),
 	arithmetic_eval(C, _),
 	arithmetic_eval(E, _),
 	nonvar(V), atom(V), !.
 % If the variable is present, but it is not atom -> reject
 monomial(M):-
-	monomial_comps(M, _, V, _),
-	nonvar(V), !, false.
+	univariate_monomial_comps(M, _, V, _),
+	nonvar(V), !,
+	false.
 % If the variable is not present, ignore it
 monomial(M):-
-	monomial_comps(M, C, _, E),
+	univariate_monomial_comps(M, C, _, E),
 	arithmetic_eval(C, _),
 	arithmetic_eval(E, _).
 
 % N = -M, where M is a monomial
 monomial_neg(M, N):-
-	monomial_comps(M, C, V, E), rational_neg(C, CN),
-	red_monomial_comps(CN, V, E, N).
+	univariate_monomial_comps(M, C, V, E), rational_neg(C, CN),
+	red_univariate_monomial_comps(CN, V, E, N).
 
 % C (or D) is the coefficient (or the degree) of the monomial M
-monomial_coefficient(M, C):- monomial_comps(M, C, _, _).
-monomial_degree(M, D):- monomial_comps(M, _, _, D).
+monomial_coefficient(M, C):- univariate_monomial_comps(M, C, _, _).
+monomial_degree(M, D):- univariate_monomial_comps(M, _, _, D).
 
 % Auxiliar predicate for univariate monomial reduction
 red_monomial__( 0, _, _, 0):- !.
@@ -61,13 +64,14 @@ red_monomial__( C, V, 1, C*V):- !.
 red_monomial__( C, V, E, C*V^E):- !.
 
 % R is the reduction of the univariate monomial C*V^E
-red_monomial_comps(C, V, E, R):-
+red_univariate_monomial_comps(C, V, E, R):-
 	arithmetic_eval(C, CE), arithmetic_eval(E, EE),
 	red_monomial__(CE, V, EE, R).
 
 % R is the reduction of the univariate monomial M
 red_monomial(M, R):-
-	monomial_comps(M, C, V, E), red_monomial_comps(C, V, E, R).
+	univariate_monomial_comps(M, C, V, E),
+	red_univariate_monomial_comps(C, V, E, R).
 
 % Univariate monomial comparison (1/2).
 % - If the variables are different : M1 < M2 iff V1 < V2
@@ -76,13 +80,16 @@ red_monomial(M, R):-
 % - If the exponents are different : M1 < M2 iff E1 > E2 - where Ci is the
 %	exponent of monomial Mi
 monomial_comp(M1, M2):-
-	monomial_comps(M1, _, V1, _), monomial_comps(M2, _, V2, _),
+	univariate_monomial_comps(M1, _, V1, _),
+	univariate_monomial_comps(M2, _, V2, _),
 	V1 \= V2, !, V1 @< V2.
 monomial_comp(M1, M2):-
-	monomial_comps(M1, C1, _, E1), monomial_comps(M2, C2, _, E2),
+	univariate_monomial_comps(M1, C1, _, E1),
+	univariate_monomial_comps(M2, C2, _, E2),
 	E1 is E2, C1 < C2, !.
 monomial_comp(M1, M2):-
-	monomial_comps(M1, _, _, E1), monomial_comps(M2, _, _, E2), E1 > E2.
+	univariate_monomial_comps(M1, _, _, E1),
+	univariate_monomial_comps(M2, _, _, E2), E1 > E2.
 
 % Univariate monomial comparison (2/2).
 % - If the variables are different : M1 < M2 iff V1 > V2
@@ -97,8 +104,9 @@ monomial_sort(L, R):- isort_by(monomial_comp, L, R).
 monomial_inv_sort(L, R):- isort_by(monomial_inv_comp, L, R).
 
 % Does this monomial has a positive coefficient?
-monomial_positive_coefficient(M):- monomial_comps(M, C, _, _), C >= 0.
+monomial_positive_coefficient(M):-
+	univariate_monomial_comps(M, C, _, _), C >= 0.
 
 % Replace the variable of the monomial with variable 'X'
 monomial_revar(X, M, R):-
-	monomial_comps(M, C,_,E), red_monomial(C*X^E, R).
+	univariate_monomial_comps(M, C,_,E), red_monomial(C*X^E, R).
