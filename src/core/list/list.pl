@@ -14,10 +14,6 @@ first([X|L], X, L):- !.
 last([X], [], X):- !.
 last([X|R], [X|K], L):- last(R, K, L), !.
 
-reverse([], []):- !.
-reverse([X], [X]):- !.
-reverse([X|L], S):- reverse(L, R), concat(R, [X], S), !.
-
 % replaces the first element of the list with Y
 replace_first([_], Y, [Y]).
 replace_first([_|L], Y, [Y|L]).
