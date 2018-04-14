@@ -1,10 +1,10 @@
 % LIST-RELATED FUNCTIONS
 
-min([X], X).
+min([X], X):- !.
 min([X|L], M):- min(L, N), X > N, !, M is N.
 min([X|_], X).
 
-max([X], X).
+max([X], X):- !.
 max([X|L], M):- max(L, N), X < N, !, M is N.
 max([X|_], X).
 
@@ -15,7 +15,7 @@ last([X], [], X):- !.
 last([X|R], [X|K], L):- last(R, K, L), !.
 
 % replaces the first element of the list with Y
-replace_first([_], Y, [Y]).
+replace_first([_], Y, [Y]):- !.
 replace_first([_|L], Y, [Y|L]).
 
 member(X, [X]):- !.
