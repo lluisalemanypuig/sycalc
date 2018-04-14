@@ -18,6 +18,19 @@ last([X|R], [X|K], L):- last(R, K, L), !.
 replace_first([_], Y, [Y]):- !.
 replace_first([_|L], Y, [Y|L]).
 
+% drops all elements equal to O from list
+drop(_, [], []):- !.
+drop(O, [X], [X]):- O \= X, !.
+drop(O, [O|Xs], D):- drop(O, Xs, D), !.
+drop(O, [X|Xs], [X|Ds]):- drop(O, Xs, Ds).
+
+% replace all elements equal to O with I in list
+drop_with(_, _, [], []):- !.
+drop_with(O, _, [X], [X]):- O \= X, !.
+drop_with(O, I, [O|Xs], [I|Ds]):- drop_with(O, I, Xs, Ds), !.
+drop_with(O, I, [X|Xs], [X|Ds]):- drop_with(O, I, Xs, Ds).
+
+% is element X in list?
 member(X, [X]):- !.
 member(X, [X|_]):- !.
 member(X, [_|L]):- member(X, L), !.
