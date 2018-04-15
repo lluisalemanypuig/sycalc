@@ -127,6 +127,8 @@ pisort_by(F, [X|Xs],[Y|Ys],  Rx, Ry):-
 
 % merges two same-sized sorted lists into one, according to function F
 merge_by(_,     [],     [],       []):- !.
+merge_by(_,     [],      L,        L):- !.
+merge_by(_,      L,     [],        L):- !.
 merge_by(F,    [X],    [Y],    [X,Y]):- call(F, X, Y), !.
 merge_by(_,    [X],    [Y],    [Y,X]):- !.
 merge_by(F, [X|Xs], [Y|Ys], [X,Y|Ms]):- call(F, X, Y), !, merge_by(F, Xs, Ys, Ms).
@@ -134,7 +136,9 @@ merge_by(F, [X|Xs], [Y|Ys], [Y,X|Ms]):- merge_by(F, Xs, Ys, Ms).
 
 % merges four same-sized sorted lists into two, pairwise, according to
 % function F, in the same fashion as pisort_by sorts two lists
-pmerge_by(_,     [],    [],	 [],     [],     [],    []):- !.
+pmerge_by(_, [],[], [],[], [],[]):- !.
+pmerge_by(_, [],[],  V, E,  V, E):- !.
+pmerge_by(_,  V, E, [],[],  V, E):- !.
 pmerge_by(F, [X1|Xs],[Y1|Ys], [X2|Xr],[Y2|Yr], [X1,X2|Xz],[Y1,Y2|Yz]):-
 	call(F, X1, X2), pmerge_by(F, Xs,Ys, Xr,Yr, Xz,Yz), !.
 pmerge_by(F, [X1|Xs],[Y1|Ys], [X2|Xr],[Y2|Yr], [X2,X1|Xz],[Y2,Y1|Yz]):-
