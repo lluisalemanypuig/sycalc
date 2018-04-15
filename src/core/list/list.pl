@@ -93,7 +93,7 @@ cartesian_product_by(F, [X|L], R, S):-
 % SORTING ALGORITHMS
 % F(X,Y) is true when X < Y
 
-% inserts element X in list L
+% inserts element X in list L, according to function F
 insert_by(_, X, [], [X]):- !.
 insert_by(F, X, [Y|L], [Y|R]):-
 	not(call(F, X, Y)),        % check X >= Y
@@ -101,34 +101,52 @@ insert_by(F, X, [Y|L], [Y|R]):-
 insert_by(_, X, [Y|L], [X,Y|L]).   % X < Y
 
 % insertion sort (as always)
-
 isort_by(_, [], []):- !.
 isort_by(_, [X], [X]):- !.
 isort_by(F, [X|L], R):- isort_by(F, L, S), !, insert_by(F, X, S, R).
 
 % pairwise insertion sort
-
 % In short, given two lists A,B of the same length, and two elements
 % a,b, inserts a into A. If position of 'a' in 'A' is 'p', then position
 % of 'b' in 'B' is also p. Note that B may not be sorted at the end.
+
+% inserts two elements, each to a different list, according function F,
+% guided by the first list
 pinsert_by(_, X,Y,      [],     [],       [X],      [Y]):- !.
 pinsert_by(F, X,Y, [Xx|Xs],[Yy|Ys],   [Xx|Xr],  [Yy|Yr]):-
 	not(call(F,X,Xx)),   % check X >= Xx
 	pinsert_by(F, X,Y, Xs,Ys, Xr,Yr), !.
 pinsert_by(_, X,Y, [Xx|Xs],[Yy|Ys], [X,Xx|Xs],[Y,Yy|Ys]).
 
+% insertion sort of two lists using function F, guided by first list
 pisort_by(_,     [],    [],  [], []):- !.
 pisort_by(_,    [X],   [Y], [X],[Y]):- !.
 pisort_by(F, [X|Xs],[Y|Ys],  Rx, Ry):-
 	pisort_by(F, Xs,Ys, Sx,Sy),
 	pinsert_by(F, X,Y, Sx,Sy, Rx,Ry).
 
+% merges two same-sized sorted lists into one, according to function F
+merge_by(_,     [],     [],       []):- !.
+merge_by(F,    [X],    [Y],    [X,Y]):- call(F, X, Y), !.
+merge_by(_,    [X],    [Y],    [Y,X]):- !.
+merge_by(F, [X|Xs], [Y|Ys], [X,Y|Ms]):- call(F, X, Y), !, merge_by(F, Xs, Ys, Ms).
+merge_by(F, [X|Xs], [Y|Ys], [Y,X|Ms]):- merge_by(F, Xs, Ys, Ms).
+
+% merges four same-sized sorted lists into two, pairwise, according to
+% function F, in the same fashion as pisort_by sorts two lists
+pmerge_by(_,     [],    [],	 [],     [],     [],    []):- !.
+pmerge_by(F, [X1|Xs],[Y1|Ys], [X2|Xr],[Y2|Yr], [X1,X2|Xz],[Y1,Y2|Yz]):-
+	call(F, X1, X2), pmerge_by(F, Xs,Ys, Xr,Yr, Xz,Yz), !.
+pmerge_by(F, [X1|Xs],[Y1|Ys], [X2|Xr],[Y2|Yr], [X2,X1|Xz],[Y2,Y1|Yz]):-
+	pmerge_by(F, Xs,Ys, Xr,Yr, Xz,Yz).
+
 % macros
-lt__(X, Y):- X @< Y.
-insert(X, L, R):- insert_by(lt__, X, L, R).
-pinsert(X,Y, Xs,Ys, SX,SY):- pinsert_by(lt__, X,Y, Xs,Ys, SX,SY).
-isort(L, R):- isort_by(lt__, L, R).
-pisort(X,Y, SX,SY):- pisort_by(lt__, X,Y, SX,SY).
+insert(X, L, R):- insert_by(@<, X, L, R).
+pinsert(X,Y, Xs,Ys, SX,SY):- pinsert_by(@<, X,Y, Xs,Ys, SX,SY).
+isort(L, R):- isort_by(@<, L, R).
+pisort(X,Y, SX,SY):- pisort_by(@<, X,Y, SX,SY).
+merge(X,Y, M):- merge_by(@<, X,Y, M).
+pmerge(X,Y, SX,SY, RX,RY):- pmerge_by(@<, X,Y, SX,SY, RX,RY).
 
 % COUNTING FUNCTIONS
 
