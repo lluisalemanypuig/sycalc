@@ -91,20 +91,44 @@ cartesian_product_by(F, [X|L], R, S):-
 	concat(S1, S2, S), !.
 
 % SORTING ALGORITHMS
+% F(X,Y) is true when X < Y
 
+% inserts element X in list L
 insert_by(_, X, [], [X]):- !.
-insert_by(F, X, [Y|L], [Y|R]):- not(call(F, X, Y)), insert_by(F, X, L, R), !.
-insert_by(_, X, [Y|L], [X,Y|L]).
+insert_by(F, X, [Y|L], [Y|R]):-
+	not(call(F, X, Y)),        % check X >= Y
+	insert_by(F, X, L, R), !.  % if so, insert X in L
+insert_by(_, X, [Y|L], [X,Y|L]).   % X < Y
 
-% insertion sort
+% insertion sort (as always)
 
 isort_by(_, [], []):- !.
 isort_by(_, [X], [X]):- !.
 isort_by(F, [X|L], R):- isort_by(F, L, S), !, insert_by(F, X, S, R).
 
-lt__(X, Y):- X < Y.
+% pairwise insertion sort
+
+% In short, given two lists A,B of the same length, and two elements
+% a,b, inserts a into A. If position of 'a' in 'A' is 'p', then position
+% of 'b' in 'B' is also p. Note that B may not be sorted at the end.
+pinsert_by(_, X,Y,      [],     [],       [X],      [Y]):- !.
+pinsert_by(F, X,Y, [Xx|Xs],[Yy|Ys],   [Xx|Xr],  [Yy|Yr]):-
+	not(call(F,X,Xx)),   % check X >= Xx
+	pinsert_by(F, X,Y, Xs,Ys, Xr,Yr), !.
+pinsert_by(_, X,Y, [Xx|Xs],[Yy|Ys], [X,Xx|Xs],[Y,Yy|Ys]).
+
+pisort_by(_,     [],    [],  [], []):- !.
+pisort_by(_,    [X],   [Y], [X],[Y]):- !.
+pisort_by(F, [X|Xs],[Y|Ys],  Rx, Ry):-
+	pisort_by(F, Xs,Ys, Sx,Sy),
+	pinsert_by(F, X,Y, Sx,Sy, Rx,Ry).
+
+% macros
+lt__(X, Y):- X @< Y.
 insert(X, L, R):- insert_by(lt__, X, L, R).
+pinsert(X,Y, Xs,Ys, SX,SY):- pinsert_by(lt__, X,Y, Xs,Ys, SX,SY).
 isort(L, R):- isort_by(lt__, L, R).
+pisort(X,Y, SX,SY):- pisort_by(lt__, X,Y, SX,SY).
 
 % COUNTING FUNCTIONS
 
