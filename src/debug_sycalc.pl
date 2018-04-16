@@ -2,13 +2,13 @@
 :-ensure_loaded(algorithms).
 
 debug:-
-	%debug_integer_algs,
-	%debug_lists,
-	%debug_numbers,
-	%debug_arithmetic_evaluation,
-	%debug_monomials,
+	debug_integer_algs,
+	debug_lists,
+	debug_numbers,
+	debug_arithmetic_evaluation,
+	debug_monomials,
 	debug_polynomials,
-	%debug_power_sums,
+	debug_power_sums,
 	true.
 
 main:- debug, halt.
@@ -517,12 +517,12 @@ debug_monomials:-
 	deb_mon_comp('  8)', (-3 + 1)*x^4,         -2, [x], [4]),
 	deb_mon_comp('  9)', (-3 + 1)*x^(4 - 4),   -2, [x], [0]),
 	deb_mon_comp(' 10)', (-3*3 + 1)*x^(4 - 4), -8, [x], [0]),
-	deb_mon_comp(' 11)', 3*x*y,		            3, [x,y], [1,1]),
-	deb_mon_comp(' 12)', 3*x*y*z,		        3, [x,y,z], [1,1,1]),
+	deb_mon_comp(' 11)', 3*x*y,                 3, [x,y], [1,1]),
+	deb_mon_comp(' 12)', 3*x*y*z,               3, [x,y,z], [1,1,1]),
 	deb_mon_comp(' 13)', 3*x^3*y^0*z^(1/2),     3, [x,y,z], [3,0,1/2]),
 	deb_mon_comp(' 14)', 3*x*z,                 3, [x,z], [1,1]),
-	deb_mon_comp(' 15)', -3*x*y,		       -3, [x,y], [1,1]),
-	deb_mon_comp(' 16)', -3*x*y*z,		       -3, [x,y,z], [1,1,1]),
+	deb_mon_comp(' 15)', -3*x*y,               -3, [x,y], [1,1]),
+	deb_mon_comp(' 16)', -3*x*y*z,             -3, [x,y,z], [1,1,1]),
 	deb_mon_comp(' 17)', -3*x^3*y^0*z^(1/2),   -3, [x,y,z], [3,0,1/2]),
 	deb_mon_comp(' 18)', -3*x*z,               -3, [x,z], [1,1]),
 	deb_mon_comp(' 19)', -1*x^0*y^0*z^0,       -1, [x,y,z], [0,0,0]),
