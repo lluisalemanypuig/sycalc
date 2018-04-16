@@ -5,9 +5,9 @@
 % POLYNOMIALS
 % A polynomial is a sum of monomials.
 % These are monomials:
-%	x^3, -2*x, 6*x^2, x, -2
+%	x^3, -2*x, 6*x^2, x, -2, x*y
 % These are not monomials:
-%	(x + 3)*(x - 2), x*x, x*y
+%	(x + 3)*(x - 2),
 % A polynomial may be expanded:
 %   x^2 + 6*x + 6
 % or contraced:
@@ -17,30 +17,36 @@
 % Some polynomials may be both contracted and expanded at the same time:
 %   x + 3, -x^2, -9
 
-% Returns the polynomials' monomials as a list of reduced monomials
+% Returns the list of reduced monomials from a polynomial
 list_from_polynomial(A + B, S):-
-	list_from_polynomial(A, L), list_from_polynomial(B, R), concat(L, R, S), !.
+	list_from_polynomial(A, L), list_from_polynomial(B, R), list_concat(L, R, S), !.
 list_from_polynomial(A - B, S):-
-	list_from_polynomial(A, L), list_from_polynomial(-B, R), concat(L, R, S), !.
+	list_from_polynomial(A, L), list_from_polynomial(-B, R), list_concat(L, R, S), !.
 list_from_polynomial(M, [R]):- red_monomial(M, R), !.
 
 % Pads a list of uni-variate* monomials DECREASINGLY sorted.
 % If [m1, m2, ..., mN] is the list of monomials, this predicate will add 0s between
 % those monomials with degrees di, dj such that |di - dj| > 1
-% *: uni-variate here means that all monomials have the same variable
-padded_poly_mons_decr_(0, M, MS, [M|P]):- padded_poly_mons_decr(MS, P), !.
-padded_poly_mons_decr_(K, M, MS, P):-
-	padded_list_end([M], K, 0, R), padded_poly_mons_decr(MS, Q),
-	concat(R, Q, P), !.
-
-padded_poly_mons_decr([], []).
-padded_poly_mons_decr([M], R):-
-	monomial_degree(M, D), D > 0, padded_list_end([M], D, 0, R), !.
-padded_poly_mons_decr([M], [M]):- !.
-padded_poly_mons_decr([M|MS], P):-
-	first(MS, F, _),
-	monomial_degree(M, D1), monomial_degree(F, D2), K is D1 - D2 - 1,
-	padded_poly_mons_decr_(K, M, MS, P), !.
+% *: a polynomial is uni-variate if all monomials have the same variable (only one)
+padded_unipoly_mons_decr([], []):- !.
+padded_unipoly_mons_decr([M], [M]):- monomial_degrees(M, []), !.
+padded_unipoly_mons_decr([M], R):-
+	monomial_degrees(M, Ds), first(Ds, D, _),
+	padded_list_end([M], D, 0, R), !.
+padded_unipoly_mons_decr([M|Ms], R):-
+	first(Ms, F, _), monomial_degrees(F, []), !,
+	unimonomial_degree(M, D),
+	K is D - 1,
+	padded_list_end([M], K, 0, Q),
+	list_concat(Q, Ms, R).
+padded_unipoly_mons_decr([M|Ms], P):-
+	unimonomial_degree(M, D1),
+	first(Ms, F, _),
+	unimonomial_degree(F, D2),
+	K is D1 - D2 - 1,
+	padded_list_end([M], K, 0, Q),    % K zeros between M and Ms
+	padded_unipoly_mons_decr(Ms, R),
+	list_concat(Q,R, P), !.
 
 % A + B is an expanded polynomial.
 % A is its first monomial
@@ -88,9 +94,9 @@ polynomial_neg(P, N):-
 polynomial_degree(P, D):-
 	list_from_polynomial(P, MS), map(monomial_degree, MS, DS), max(DS, D).
 
-% Replace the polynomial's variable with 'X'
+% Replace the polynomial's variable O with I
 % The polynomial is passed as a list of monomials
-polynomial_list_revar(X, P, Q):- map(monomial_revar(X), P, Q).
+polynomial_list_revar(O,I, P, Q):- map(monomial_revar(O,I), P, Q).
 
 % recursive function called by pretty_polynomial_roots_
 pretty_polynomial_roots_([[X,1]], (x + XX)):- X < 0, rational_neg(X, XX).
@@ -130,7 +136,7 @@ ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L), !.
 % and the first monomial be multiplied by 1 or -1.
 integer_roots_polynomial(P, R):-
 	% extract the padded monomial list of P
-	list_from_polynomial(P, M), monomial_sort(M, SM), padded_poly_mons_decr(SM, PAD_SM),
+	list_from_polynomial(P, M), monomial_sort(M, SM), padded_unipoly_mons_decr(SM, PAD_SM),
 
 	% obtain all the divisors of the free term
 	last(PAD_SM, _, L), monomial_coefficient(L, CF), divisors(CF, DVS),

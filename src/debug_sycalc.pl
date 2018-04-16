@@ -6,8 +6,8 @@ debug:-
 	%debug_lists,
 	%debug_numbers,
 	%debug_arithmetic_evaluation,
-	debug_monomials,
-	%debug_polynomials,
+	%debug_monomials,
+	debug_polynomials,
 	%debug_power_sums,
 	true.
 
@@ -90,8 +90,18 @@ debug_integer_algs:-
 DEBUG - LIST OPERATIONS
 */
 
-deb_insertion_sort(I, L):- isort(L, R), msort(L, RES), R == RES, !, output_correct(I).
-deb_insertion_sort(I, L):- isort(L, R), msort(L, RES), write(I), write(L), write(' -> '), output_text(R, RES).
+deb_insertion_sort(I, L):-
+	isort(L, R), msort(L, R), !, output_correct(I).
+deb_insertion_sort(I, L):-
+	isort(L, R),
+	sort(L, RES), write(I), write(L), write(' -> '), output_text(R, RES).
+
+deb_pinsertion_sort(I, L1,L2, E1,E2):- pisort(L1,L2, E1,E2), !, output_correct(I).
+deb_pinsertion_sort(I, L1,L2, E1,E2):-
+	pisort(L1,L2, R1,R2),
+	write(I), write(' Pair-wise sorting not correct'), nl,
+	write('    Sorted '), write(L1), write(' is '), write(R1), write(' but expected '), write(E1), nl,
+	write('    Sorted '), write(L2), write(' is '), write(R2), write(' but expected '), write(E2), nl.
 
 deb_how_many(I, L, RES):- how_many(L, RES), !, output_correct(I).
 deb_how_many(I, L, RES):-
@@ -112,9 +122,17 @@ debug_lists:-
 	write('-- LISTS OPERATIONS DEBUG --'), nl,
 	write('* SORTING ALGORITHMS - INSERTION SORT'), nl,
 
-	deb_insertion_sort(' 1) ', [3,2,1]),
-	deb_insertion_sort(' 2) ', [123,4,46,7,578,67,8567,58,21,23,4,245,3,2,1]),
-	deb_insertion_sort(' 3) ', [-4,8567,25,123,4,46,7,-8,578,67,-4,8567,58,21,-7,23,4,245,3,2,1,8567]),
+	deb_insertion_sort('  1) ', [3,2,1]),
+	deb_insertion_sort('  2) ', [123,4,46,7,578,67,8567,58,21,23,4,245,3,2,1]),
+	deb_insertion_sort('  3) ', [-4,8567,25,123,4,46,7,-8,578,67,-4,8567,58,21,-7,23,4,245,3,2,1,8567]),
+
+	write('* SORTING ALGORITHMS - PAIRWISE INSERTION SORT'), nl,
+
+	deb_pinsertion_sort('  1)', [x,y,z],[1,2,3], [x,y,z],[1,2,3]),
+	deb_pinsertion_sort('  2)', [x,y,z],[3,2,1], [x,y,z],[3,2,1]),
+	deb_pinsertion_sort('  3)', [z,y,x],[3,2,1], [x,y,z],[1,2,3]),
+	deb_pinsertion_sort('  4)', [y,z,x],[2,1,3], [x,y,z],[3,2,1]),
+	deb_pinsertion_sort('  5)', [z,x,y],[3,1,2], [x,y,z],[1,2,3]),
 
 	write('* COUNTING HOW MANY'), nl,
 
@@ -357,63 +375,237 @@ debug_arithmetic_evaluation:-
 DEBUG - MONOMIAL EVALUATION
 */
 
-deb_mon_comp(I, M, C, V, E):- univariate_monomial_comps(M, C, V, E), !, output_correct(I).
-deb_mon_comp(I, M, RC, RV, RE):-
-	univariate_monomial_comps(M, C, V, E), write(I), write(' Components of '),
-	write(M), write(' are ('), write(C), write(','), write(V), write(','),
-	write(E), write(') but were expected to be '), write('('), write(RC),
-	write(','), write(RV), write(','), write(RE), write(')'), false.
+deb_mon_def(I, M, EXP):- monomial(M), EXP == 'YES', !, output_correct(I).
+deb_mon_def(I, M, EXP):- not(monomial(M)), EXP == 'NO', !, output_correct(I).
+deb_mon_def(I, M, EXP):-
+	monomial(M), EXP == 'NO',
+	write(I), write(' string '),
+	write(M), write(' is a monomial, NOT as expected'), nl, !.
+deb_mon_def(I, M, EXP):-
+	not(monomial(M)), EXP == 'YES',
+	write(I), write(' string '),
+	write(M), write(' is not a monomial, but we expected it to be'), nl.
+
+deb_mon_comp(I, M, C,V,E):- monomial_comps(M, C,V,E), !, output_correct(I).
+deb_mon_comp(I, M, RC,RV,RE):-
+	monomial_comps(M, C, V, E),
+	write(I), write(' Components of '), write(M), write(' are ('),
+	write(C), write(','), write(V), write(','), write(E), write(') but were expected to be '),
+	write('('), write(RC), write(','), write(RV), write(','), write(RE), write(')'), false.
+
+deb_mon_reduced_vars(I, V,E, EV,EE):-
+	red_monomial_vars_list(V,E, EV,EE), !, output_correct(I).
+deb_mon_reduced_vars(I, V,E, EV,EE):-
+	red_monomial_vars_list(V,E, RV,RE),
+	write(I), write(' The reduced variables are '), nl,
+	write('    V='), write(RV), write(' but expected '), write(EV), nl,
+	write('    E='), write(RE), write(' but expected '), write(EE), nl,
+	false.
+
+deb_mon_reduced_comps(I, C,V,E, EC,EV,EE):-
+	red_monomial_comps(C,V,E, EC,EV,EE), !, output_correct(I).
+deb_mon_reduced_comps(I, C,V,E, EC,EV,EE):-
+	red_monomial_comps(C,V,E, RC,RV,RE),
+	write(I), write(' The reduced components are '), nl,
+	write('    C='), write(RC), write(' but expected '), write(EC), nl,
+	write('    V='), write(RV), write(' but expected '), write(EV), nl,
+	write('    E='), write(RE), write(' but expected '), write(EE), nl,
+	false.
+
+deb_mon_obtention_comps(I, C,V,E, M):-
+	red_monomial_from_comps(C,V,E, M), !, output_correct(I).
+deb_mon_obtention_comps(I, C,V,E, M):-
+	red_monomial_from_comps(C,V,E, RM),
+	write(I), write(' The reduced monomial is '), output_text(RM, M).
 
 deb_red_mon(I, M, RES):- red_monomial(M, RES), !, output_correct(I).
 deb_red_mon(I, M, RES):-
 	red_monomial(M, R),
 	write(I), write(' '), write(M), write(' = '), output_text(R, RES).
 
-deb_mon_sum(I, M1, M2, RES):- mon_sum(M1, M2, RES), !, output_correct(I).
+deb_mon_comparison(I, M1,M2):- monomial_comp(M1,M2), !, output_correct(I).
+deb_mon_comparison(I, M1,M2):-
+	write(I), write(' '),
+	write(M1), write(' < '), write(M2), write(' is false'), nl,
+	false.
+
+deb_mon_sort(I, L, E):- monomial_sort(L, S), E == S, !, output_correct(I).
+deb_mon_sort(I, L, E):-
+	monomial_sort(L, S),
+	write(I), write(L), write(' sorted is '), output_text(S, E).
+
+deb_mon_sum(I, M1, M2, RES):-
+	mon_sum(M1, M2, R), RES == R, !, output_correct(I).
 deb_mon_sum(I, M1, M2, RES):-
 	mon_sum(M1, M2, S),
 	write(I), write(' '), write(M1), write(' + '), write(M2), write(' = '),
 	output_text(S, RES).
 
-deb_mon_sub(I, M1, M2, RES):- mon_sub(M1, M2, RES), !, output_correct(I).
+deb_mon_sub(I, M1, M2, RES):-
+	mon_sub(M1, M2, R), RES == R, !, output_correct(I).
 deb_mon_sub(I, M1, M2, RES):-
 	mon_sub(M1, M2, S),
 	write(I), write(' '), write(M1), write(' - '), write(M2), write(' = '),
 	output_text(S, RES).
 
-deb_mon_prod(I, M1, M2, RES):- mon_prod(M1, M2, RES), !, output_correct(I).
+deb_mon_prod(I, M1, M2, RES):-
+	mon_prod(M1, M2, R), RES == R, !, output_correct(I).
 deb_mon_prod(I, M1, M2, RES):-
 	mon_prod(M1, M2, S),
 	write(I), write(' ('), write(M1), write(')'), write('*'), write('('),
 	write(M2), write(')'), write(' = '), output_text(S, RES).
 
-deb_mon_pos_coef(I, M1, RES):- monomial_positive_coefficient(M1), RES == 'YES', !, output_correct(I).
-deb_mon_pos_coef(_, _, RES):- RES == 'NO', !.
-deb_mon_pos_coef(I, M1, RES):- monomial_positive_coefficient(M1), write(I),
-	write(M1), write(' '), output_text('YES', RES).
-deb_mon_pos_coef(I, M1, RES):- write(I), write(' '), write(M1), write(' -> '),
+deb_mon_pos_coef(I, M1, RES):-
+	monomial_positive_coefficient(M1), RES == 'YES', !, output_correct(I).
+deb_mon_pos_coef(I, M1, RES):-
+	not(monomial_positive_coefficient(M1)), RES == 'NO', !, output_correct(I).
+deb_mon_pos_coef(I, M1, RES):-
+	monomial_positive_coefficient(M1), RES == 'NO', !,
+	write(I), write(M1), write(' '), output_text('YES', RES).
+deb_mon_pos_coef(I, M1, RES):-
+	not(monomial_positive_coefficient(M1)), RES == 'YES',
+	write(I), write(' '), write(M1), write(' -> '),
 	output_text('NO', RES).
 
-deb_mon_eval(I, M, V, VAL, RES):- monomial_evaluation(VAL, V, M, RES), !, output_correct(I).
+deb_mon_eval(I, M, V, VAL, RES):-
+	monomial_evaluation(VAL, V, M, R), RES == R, !, output_correct(I).
 deb_mon_eval(I, M, V, VAL, RES):-
 	monomial_evaluation(VAL, V, M, R),
-	write(I), write(' M('), write(V), write(')='), write(M), write('('), write(VAL), write(') = '),
+	write(I),
+	write(' M('), write(V), write('|'), write(VAL), write(')='),
 	output_text(R, RES).
+
+deb_mon_revar(I, O,Vi, M, RES):-
+	monomial_revar(O,Vi, M, R), RES == R, !, output_correct(I).
+deb_mon_revar(I, O,Vi, M, RES):-
+	monomial_revar(O,Vi, M, R),
+	write(I),
+	write(M), write('|{'), write(O), write('->'), write(Vi), write('} = '),
+	output_text(R, RES).
+
+deb_mon_split(I, V, M, Mo,Mr):-
+	monomial_split(V, M, Vo,Wr), Vo == Mo, Wr == Mr, !, output_correct(I).
+deb_mon_split(I, V, M, Mo,Mr):-
+	monomial_split(V, M, Vo,Wr),
+	write(I), write('Splitting monomial '), write(M), write(' at '), write(V), write(' produces:'), nl,
+	write('     Vo='), write(Vo), write(' but expected '), write(Mo), nl,
+	write('     Wr='), write(Wr), write(' but expected '), write(Mr), nl,
+	false.
 
 debug_monomials:-
 	write('-- MONOMIAL EVALUATION DEBUG --'), nl,
+	write('* MONOMIAL DEFINITION'), nl,
+
+	deb_mon_def('  1)', 3, 'YES'),
+	deb_mon_def('  2)', x, 'YES'),
+	deb_mon_def('  3)', 3*x, 'YES'),
+	deb_mon_def('  4)', 3*x^0, 'YES'),
+	deb_mon_def('  5)', x^0, 'YES'),
+	deb_mon_def('  6)', (3+3)*x^(3 + 1/2), 'YES'),
+	deb_mon_def('  7)', 3 + 3, 'YES'),
+	deb_mon_def('  8)', 3*3, 'YES'),
+
 	write('* COMPONENT EXTRACTION'), nl,
 
-	deb_mon_comp('  1)', 0*x^0, 0, x, 0),
-	deb_mon_comp('  2)', 0*x^1, 0, x, 1),
-	deb_mon_comp('  3)', 3*x^0, 3, x, 0),
-	deb_mon_comp('  4)', 3*x^1, 3, x, 1),
-	deb_mon_comp('  5)', 3*x^4, 3, x, 4),
-	deb_mon_comp('  6)', (3 + 1)*x^4, 4, x, 4),
-	deb_mon_comp('  7)', -2*x^4, -2, x, 4),
-	deb_mon_comp('  8)', (-3 + 1)*x^4, -2, x, 4),
-	deb_mon_comp('  9)', (-3 + 1)*x^(4 - 4), -2, x, 0),
-	deb_mon_comp(' 10)', (-3*3 + 1)*x^(4 - 4), -8, x, 0),
+	deb_mon_comp('  1)', 0*x^0,                 0, [x], [0]),
+	deb_mon_comp('  2)', 0*x^1,                 0, [x], [1]),
+	deb_mon_comp('  3)', 3*x^0,                 3, [x], [0]),
+	deb_mon_comp('  4)', 3*x^1,		            3, [x], [1]),
+	deb_mon_comp('  5)', 3*x^4,                 3, [x], [4]),
+	deb_mon_comp('  6)', (3 + 1)*x^4,           4, [x], [4]),
+	deb_mon_comp('  7)', -2*x^4,               -2, [x], [4]),
+	deb_mon_comp('  8)', (-3 + 1)*x^4,         -2, [x], [4]),
+	deb_mon_comp('  9)', (-3 + 1)*x^(4 - 4),   -2, [x], [0]),
+	deb_mon_comp(' 10)', (-3*3 + 1)*x^(4 - 4), -8, [x], [0]),
+	deb_mon_comp(' 11)', 3*x*y,		            3, [x,y], [1,1]),
+	deb_mon_comp(' 12)', 3*x*y*z,		        3, [x,y,z], [1,1,1]),
+	deb_mon_comp(' 13)', 3*x^3*y^0*z^(1/2),     3, [x,y,z], [3,0,1/2]),
+	deb_mon_comp(' 14)', 3*x*z,                 3, [x,z], [1,1]),
+	deb_mon_comp(' 15)', -3*x*y,		       -3, [x,y], [1,1]),
+	deb_mon_comp(' 16)', -3*x*y*z,		       -3, [x,y,z], [1,1,1]),
+	deb_mon_comp(' 17)', -3*x^3*y^0*z^(1/2),   -3, [x,y,z], [3,0,1/2]),
+	deb_mon_comp(' 18)', -3*x*z,               -3, [x,z], [1,1]),
+	deb_mon_comp(' 19)', -1*x^0*y^0*z^0,       -1, [x,y,z], [0,0,0]),
+	deb_mon_comp(' 20)', -2*x^0*y^0*z^1,       -2, [x,y,z], [0,0,1]),
+	deb_mon_comp(' 21)', -1*x^0*y^0*z,         -1, [x,y,z], [0,0,1]),
+	deb_mon_comp(' 22)', -2*x^0*y^0*z^2,       -2, [x,y,z], [0,0,2]),
+	deb_mon_comp(' 23)', -2*x^0*y^1*z^0,       -2, [x,y,z], [0,1,0]),
+	deb_mon_comp(' 24)', -2*x^0*y*z^0,         -2, [x,y,z], [0,1,0]),
+	deb_mon_comp(' 25)', -1*x^0*y^2*z^0,       -1, [x,y,z], [0,2,0]),
+	deb_mon_comp(' 26)', -2*x^0*y^2*z^1,       -2, [x,y,z], [0,2,1]),
+	deb_mon_comp(' 27)', -2*x^0*y^2*z^2,       -2, [x,y,z], [0,2,2]),
+	deb_mon_comp(' 28)', -1*x^1*y^2*z^2,       -1, [x,y,z], [1,2,2]),
+	deb_mon_comp(' 29)', -2*x*y^2*z^2,         -2, [x,y,z], [1,2,2]),
+	deb_mon_comp(' 30)', -2*x^2*y^2*z^2,       -2, [x,y,z], [2,2,2]),
+
+	write('* VARIABLE REDUCTION'), nl,
+
+	deb_mon_reduced_vars('  1)', [x,y,z],[0,0,0], [],[]),
+	deb_mon_reduced_vars('  2)', [x,y,z],[1,0,0], [x],[1]),
+	deb_mon_reduced_vars('  3)', [x,y,z],[0,1,0], [y],[1]),
+	deb_mon_reduced_vars('  4)', [x,y,z],[0,0,1], [z],[1]),
+	deb_mon_reduced_vars('  5)', [x,y,z],[1,1,0], [x,y],[1,1]),
+	deb_mon_reduced_vars('  6)', [x,y,z],[1,0,1], [x,z],[1,1]),
+	deb_mon_reduced_vars('  7)', [x,y,z],[0,1,1], [y,z],[1,1]),
+	deb_mon_reduced_vars('  8)', [x,y,z],[1,1,1], [x,y,z],[1,1,1]),
+	deb_mon_reduced_vars('  9)', [x,y,z],[2,1,0], [x,y],[2,1]),
+	deb_mon_reduced_vars(' 10)', [x,y,z],[0,1,2], [y,z],[1,2]),
+	deb_mon_reduced_vars(' 11)', [x,y,z],[1,0,2], [x,z],[1,2]),
+
+	write('* COMPONENT REDUCTION'), nl,
+
+	deb_mon_reduced_comps('  1)',  0,[x,y,z],[1,1,1],  0,[],[]),
+	deb_mon_reduced_comps('  1)',  1,[x,y,z],[0,0,0],  1,[],[]),
+	deb_mon_reduced_comps('  2)',  1,[x,y,z],[1,0,0],  1,[x],[1]),
+	deb_mon_reduced_comps('  3)',  1,[x,y,z],[0,1,0],  1,[y],[1]),
+	deb_mon_reduced_comps('  4)',  1,[x,y,z],[0,0,1],  1,[z],[1]),
+	deb_mon_reduced_comps('  5)',  1,[x,y,z],[1,1,0],  1,[x,y],[1,1]),
+	deb_mon_reduced_comps('  6)', -1,[x,y,z],[1,0,1], -1,[x,z],[1,1]),
+	deb_mon_reduced_comps('  7)', -1,[x,y,z],[0,1,1], -1,[y,z],[1,1]),
+	deb_mon_reduced_comps('  8)', -1,[x,y,z],[1,1,1], -1,[x,y,z],[1,1,1]),
+	deb_mon_reduced_comps('  9)', -1,[x,y,z],[2,1,0], -1,[x,y],[2,1]),
+	deb_mon_reduced_comps(' 10)', -1,[x,y,z],[0,1,2], -1,[y,z],[1,2]),
+	deb_mon_reduced_comps(' 11)', -1,[x,y,z],[1,0,2], -1,[x,z],[1,2]),
+	deb_mon_reduced_comps(' 12)',  2,[x,y,z],[1,0,1],  2,[x,z],[1,1]),
+	deb_mon_reduced_comps(' 13)',  2,[x,y,z],[0,1,1],  2,[y,z],[1,1]),
+	deb_mon_reduced_comps(' 14)',  2,[x,y,z],[1,1,1],  2,[x,y,z],[1,1,1]),
+	deb_mon_reduced_comps(' 15)',  2,[x,y,z],[2,1,0],  2,[x,y],[2,1]),
+	deb_mon_reduced_comps(' 16)',  2,[x,y,z],[0,1,2],  2,[y,z],[1,2]),
+	deb_mon_reduced_comps(' 17)',  2,[x,y,z],[1,0,2],  2,[x,z],[1,2]),
+
+	write('* MONOMIAL OBTENTION FROM COMPONENTS'), nl,
+
+	deb_mon_obtention_comps('  1)',  1,[x,y,z],[0,0,0], 1),
+	deb_mon_obtention_comps('  2)',  1,[x,y,z],[1,0,0], x),
+	deb_mon_obtention_comps('  2)', -1,[x,y,z],[1,0,0], -x),
+	deb_mon_obtention_comps('  3)',  2,[x,y,z],[0,1,0], 2*y),
+	deb_mon_obtention_comps('  4)', -2,[x,y,z],[0,0,1], -2*z),
+	deb_mon_obtention_comps('  5)',  2,[x,y,z],[1,0,1], 2*x*z),
+	deb_mon_obtention_comps('  6)',  2,[x,y,z],[1,1,0], 2*x*y),
+	deb_mon_obtention_comps('  7)',  2,[x,y,z],[0,1,1], 2*y*z),
+	deb_mon_obtention_comps('  8)',  2,[x,y,z],[1,1,1], 2*x*y*z),
+	deb_mon_obtention_comps('  9)',  2,[x,y,z],[2,1,1], 2*x^2*y*z),
+	deb_mon_obtention_comps(' 10)',  2,[x,y,z],[1,2,1], 2*x*y^2*z),
+	deb_mon_obtention_comps(' 11)',  2,[x,y,z],[1,1,2], 2*x*y*z^2),
+	deb_mon_obtention_comps(' 12)',  2,[x,y,z],[2,1,2], 2*x^2*y*z^2),
+	deb_mon_obtention_comps(' 13)',  2,[x,y,z],[2,2,1], 2*x^2*y^2*z),
+	deb_mon_obtention_comps(' 14)',  2,[x,y,z],[1,2,2], 2*x*y^2*z^2),
+	deb_mon_obtention_comps(' 15)',  2,[x,y,z],[2,2,2], 2*x^2*y^2*z^2),
+	deb_mon_obtention_comps(' 16)',  1,[z,x,y],[1,0,0], z),
+	deb_mon_obtention_comps(' 17)', -1,[z,x,y],[1,0,0], -z),
+	deb_mon_obtention_comps(' 18)',  2,[z,x,y],[0,1,0], 2*x),
+	deb_mon_obtention_comps(' 19)', -2,[z,x,y],[0,0,1], -2*y),
+	deb_mon_obtention_comps(' 20)',  2,[z,x,y],[1,0,1], 2*y*z),
+	deb_mon_obtention_comps(' 21)',  2,[z,x,y],[1,1,0], 2*x*z),
+	deb_mon_obtention_comps(' 22)',  2,[z,x,y],[0,1,1], 2*x*y),
+	deb_mon_obtention_comps(' 23)',  2,[z,x,y],[1,1,1], 2*x*y*z),
+	deb_mon_obtention_comps(' 24)',  2,[z,x,y],[2,1,1], 2*x*y*z^2),
+	deb_mon_obtention_comps(' 25)',  2,[z,x,y],[1,2,1], 2*x^2*y*z),
+	deb_mon_obtention_comps(' 26)',  2,[z,x,y],[1,1,2], 2*x*y^2*z),
+	deb_mon_obtention_comps(' 27)',  2,[z,x,y],[2,1,2], 2*x*y^2*z^2),
+	deb_mon_obtention_comps(' 28)',  2,[z,x,y],[2,2,1], 2*x^2*y*z^2),
+	deb_mon_obtention_comps(' 29)',  2,[z,x,y],[1,2,2], 2*x^2*y^2*z),
+	deb_mon_obtention_comps(' 30)',  2,[z,x,y],[2,2,2], 2*x^2*y^2*z^2),
 
 	write('* MONOMIAL REDUCTION'), nl,
 
@@ -482,13 +674,87 @@ debug_monomials:-
 	deb_red_mon(' 64)', -(1/2*x), -1/2*x),
 	deb_red_mon(' 65)', -1/2*x, -1/2*x),
 	deb_red_mon(' 66)', (-1/2)*x, -1/2*x),
+	deb_red_mon(' 67)', 0*x^0*y^0*z^0, 0),
+	deb_red_mon(' 68)', 0*x^0*y^0*z^1, 0),
+	deb_red_mon(' 69)', 0*x^0*y^0*z, 0),
+	deb_red_mon(' 70)', 0*x^0*y^0*z^2, 0),
+	deb_red_mon(' 71)', 0*x^0*y^1*z^0, 0),
+	deb_red_mon(' 72)', 0*x^0*y*z^0, 0),
+	deb_red_mon(' 73)', 0*x^0*y^2*z^0, 0),
+	deb_red_mon(' 74)', 0*x^0*y^2*z^1, 0),
+	deb_red_mon(' 75)', 0*x^0*y^2*z^2, 0),
+	deb_red_mon(' 76)', 0*x^1*y^2*z^2, 0),
+	deb_red_mon(' 77)', 0*x*y^2*z^2, 0),
+	deb_red_mon(' 78)', 0*x^2*y^2*z^2, 0),
+	deb_red_mon(' 79)', 1*x^0*y^0*z^0, 1),
+	deb_red_mon(' 80)', 2*x^0*y^0*z^1, 2*z),
+	deb_red_mon(' 81)', 1*x^0*y^0*z, z),
+	deb_red_mon(' 82)', 2*x^0*y^0*z^2, 2*z^2),
+	deb_red_mon(' 83)', 2*x^0*y^1*z^0, 2*y),
+	deb_red_mon(' 84)', 2*x^0*y*z^0, 2*y),
+	deb_red_mon(' 85)', 1*x^0*y^2*z^0, y^2),
+	deb_red_mon(' 86)', 2*x^0*y^2*z^1, 2*y^2*z),
+	deb_red_mon(' 87)', 2*x^0*y^2*z^2, 2*y^2*z^2),
+	deb_red_mon(' 88)', 1*x^1*y^2*z^2, x*y^2*z^2),
+	deb_red_mon(' 89)', 2*x*y^2*z^2, 2*x*y^2*z^2),
+	deb_red_mon(' 90)', 2*x^2*y^2*z^2, 2*x^2*y^2*z^2),
+	deb_red_mon(' 91)', -1*x^0*y^0*z^0, -1),
+	deb_red_mon(' 92)', -2*x^0*y^0*z^1, -2*z),
+	deb_red_mon(' 93)', -1*x^0*y^0*z, -z),
+	deb_red_mon(' 94)', -2*x^0*y^0*z^2, -2*z^2),
+	deb_red_mon(' 95)', -2*x^0*y^1*z^0, -2*y),
+	deb_red_mon(' 96)', -2*x^0*y*z^0, -2*y),
+	deb_red_mon(' 97)', -1*x^0*y^2*z^0, -y^2),
+	deb_red_mon(' 98)', -2*x^0*y^2*z^1, -2*y^2*z),
+	deb_red_mon(' 99)', -2*y^0*z^2*x^2, -2*x^2*z^2),
+	deb_red_mon('100)', -1*x^1*y^2*z^2, -x*y^2*z^2),
+	deb_red_mon('101)', -2*z*y^2*z^2, -2*y^2*z^3),
+	deb_red_mon('102)', -2*y^2*x^2*z^2, -2*x^2*y^2*z^2),
+	deb_red_mon('103)', -2*z^2*x^2*z^2, -2*x^2*z^4),
+	deb_red_mon('104)', -2*z^2*z^2*z^2, -2*z^6),
+	deb_red_mon('105)',  1*x*y*x*y*x*y, x^3*y^3),
+	deb_red_mon('106)', x*y*z*x^2*y^2*z^2*x^3*y^3*z^3, x^6*y^6*z^6),
+	deb_red_mon('107)', z*y*x*z^2*x^2*y^2*x^3*z^3*y^3, x^6*y^6*z^6),
+
+	write('* MONOMIAL COMPARISON'), nl,
+
+	deb_mon_comparison('  1)', x, 2),
+	deb_mon_comparison('  2)', 2*x, 2),
+	deb_mon_comparison('  3)', x, z),
+	deb_mon_comparison('  4)', x*y, z),
+	deb_mon_comparison('  5)', x*z, 2),
+	deb_mon_comparison('  6)', x^2, z),
+	deb_mon_comparison('  7)', x*z, z^2),
+	deb_mon_comparison('  8)', x*z, x^2),
+	deb_mon_comparison('  9)', x*z, y),
+	deb_mon_comparison(' 10)', x*z, y^2),
+	deb_mon_comparison(' 11)', x^2*z, x*z),
+	deb_mon_comparison(' 12)', x^2*z^2, x*z),
+	deb_mon_comparison(' 13)', x^2*z^2, x^2*z),
+	deb_mon_comparison(' 14)', x^2*z^2, x*z^2),
+	deb_mon_comparison(' 15)', x*y^2, x^2*z^2),
+	deb_mon_comparison(' 16)', x^2*y, x^2*z),
+	deb_mon_comparison(' 17)', x^3*y, x^2*y),
+	deb_mon_comparison(' 18)', x^3*y^3, x^3*y^2),
+	deb_mon_comparison(' 19)', x^4*y^3, x^3*y^3),
+
+	write('* MONOMIAL SORTING'), nl,
+
+	deb_mon_sort('  1)', [x^2, y^2], [x^2, y^2]),
+	deb_mon_sort('  2)', [2, x], [x, 2]),
+	deb_mon_sort('  3)', [x, z^2], [x, z^2]),
+	deb_mon_sort('  4)', [z^2, x], [x, z^2]),
+	deb_mon_sort('  5)', [2*x, x*y], [x*y, 2*x]),
+	deb_mon_sort('  6)', [y, z^2, x^3], [x^3, y, z^2]),
+	deb_mon_sort('  7)', [2, y, z^2, x^3], [x^3, y, z^2, 2]),
+	deb_mon_sort('  8)', [2*x, x*y, y*z^2, x^3*y], [x^3*y, x*y, y*z^2, 2*x]),
 
 	write('* MONOMIAL SUM'), nl,
 
 	deb_mon_sum('  1)', 3*x, 2*x, 5*x),
 	deb_mon_sum('  2)', 3*x, 2*x^0, 3*x + 2),
 	deb_mon_sum('  3)', 3*x, 2*x^1, 5*x),
-	deb_mon_sum('  4)', 3*x^0, 2*x, 3 + 2*x),
+	deb_mon_sum('  4)', 3*x^0, 2*x, 2*x + 3),
 	deb_mon_sum('  5)', 3*x^1, 2*x, 5*x),
 	deb_mon_sum('  6)', 3*x^2, 2*x, 3*x^2 + 2*x),
 	deb_mon_sum('  7)', 3*x^2, 2*x^2, 5*x^2),
@@ -504,6 +770,22 @@ debug_monomials:-
 	deb_mon_sum(' 16)', 3*x, 3*y, 3*x + 3*y),
 	deb_mon_sum(' 17)', 3*y, 3*x, 3*x + 3*y),
 	deb_mon_sum(' 18)', 2*x^0, 2, 4),
+	deb_mon_sum(' 19)', 2*x^2, 2*y, 2*x^2 + 2*y),
+	deb_mon_sum(' 20)', 2*x*z, 2*x, 2*x*z + 2*x),
+	deb_mon_sum(' 21)', 2*x, 2*r*x, 2*r*x + 2*x),
+	deb_mon_sum(' 22)', 2, 2*x^2*y^3, 2*x^2*y^3 + 2),
+	deb_mon_sum(' 23)', 2*x*y, 2*x*y, 4*x*y),
+	deb_mon_sum(' 24)', 2*x*y, -2*x*y, 0),
+	deb_mon_sum(' 25)', -2*x*y, 2*x*y, 0),
+	deb_mon_sum(' 26)', -2*x*y, -2*x*y, -4*x*y),
+	deb_mon_sum(' 27)', -1, 0, -1),
+	deb_mon_sum(' 28)', 0, -1, -1),
+	deb_mon_sum(' 29)', -1, -1, -2),
+	deb_mon_sum(' 30)', 0, 0, 0),
+	deb_mon_sum(' 31)', 1, 1, 2),
+	deb_mon_sum(' 32)', 3*x, -4*x, -x),
+	deb_mon_sum(' 33)', -3*x, 4*x, x),
+	deb_mon_sum(' 34)', -3*x, -4*x, -7*x),
 
 	write('* MONOMIAL SUB'), nl,
 
@@ -511,7 +793,7 @@ debug_monomials:-
 	deb_mon_sub('  2)', 3*x, 2*x, x),
 	deb_mon_sub('  3)', 3*x, 2*x^0, 3*x - 2),
 	deb_mon_sub('  4)', 3*x, 2*x^1, x),
-	deb_mon_sub('  5)', 3*x^0, 2*x, 3 - 2*x),
+	deb_mon_sub('  5)', 3*x^0, 2*x, -2*x + 3),
 	deb_mon_sub('  6)', 3*x^1, 2*x, x),
 	deb_mon_sub('  7)', 3*x^2, 2*x, 3*x^2 - 2*x),
 	deb_mon_sub('  8)', 3*x^2, 2*x^2, x^2),
@@ -527,6 +809,8 @@ debug_monomials:-
 	deb_mon_sub(' 18)', 3*y, -3*x, 3*x + 3*y),
 	deb_mon_sub(' 19)', -3*y, 3*x, -3*x - 3*y),
 	deb_mon_sub(' 20)', -3*y, -3*x, 3*x - 3*y),
+	deb_mon_sub(' 21)', -3*y*z, -3*x, -3*y*z + 3*x),
+	deb_mon_sub(' 22)', -3*asdf, -3*x, -3*asdf + 3*x),
 
 	write('* MONOMIAL PROD'), nl,
 
@@ -552,6 +836,15 @@ debug_monomials:-
 	deb_mon_prod(' 20)', 3*y, -4*x, -12*x*y),
 	deb_mon_prod(' 21)', 3*y, -4*x^0, -12*y),
 	deb_mon_prod(' 22)', 3*y^0, -4*x^0, -12),
+	deb_mon_prod(' 23)', 3*x*z, -4*x*y, -12*x^2*y*z),
+	deb_mon_prod(' 24)', 3*a*z, 3*b*y, 9*a*b*y*z),
+	deb_mon_prod(' 25)', 3, x*y, 3*x*y),
+	deb_mon_prod(' 26)', x*y, 3, 3*x*y),
+	deb_mon_prod(' 27)', 0*x*y, x*y, 0),
+	deb_mon_prod(' 28)', -1, x*y, -x*y),
+	deb_mon_prod(' 29)', -1, 0*z, 0),
+	deb_mon_prod(' 30)', z, y, y*z),
+	deb_mon_prod(' 31)', z, -1, -z),
 
 	write('* MONOMIAL POSITIVE COEFFICIENT'), nl,
 
@@ -562,24 +855,47 @@ debug_monomials:-
 
 	write('* MONOMIAL EVALUATION'), nl,
 
-	deb_mon_eval('  1)',	   1, x, 0, 1),
-	deb_mon_eval('  2)',        1, x, 1, 1),
-	deb_mon_eval('  3)',        1, x, 100, 1),
-	deb_mon_eval('  4)',       -1, x, 100, -1),
-	deb_mon_eval('  5)',       -1, x, -2, -1),
-	deb_mon_eval('  6)',       -x, x, -2, 2),
-	deb_mon_eval('  7)',        x, x, 2, 2),
-	deb_mon_eval('  8)',      x^2, x, 2, 4),
-	deb_mon_eval('  9)',      3*x, x, 2, 6),
-	deb_mon_eval(' 10)',   3*x^2, x, 2, 12),
-	deb_mon_eval(' 11)',   9*x^2, x, 2, 36),
-	deb_mon_eval(' 12)',    -9*x, x, 2, -18),
-	deb_mon_eval(' 13)', -10*x^3, x, 0, 0),
-	deb_mon_eval(' 14)',     x^3, x, 0, 0),
-	deb_mon_eval(' 15)',       0, x, 11, 0),
-	deb_mon_eval(' 16)',	 3*x, i, 11, 3*x),
-	deb_mon_eval(' 17)',       0, i, 11, 0),
-	deb_mon_eval(' 18)',     3*i, i, 3, 9),
+	deb_mon_eval('  1)',	     1, x, 0, 1),
+	deb_mon_eval('  2)',         1, x, 1, 1),
+	deb_mon_eval('  3)',         1, x, 100, 1),
+	deb_mon_eval('  4)',        -1, x, 100, -1),
+	deb_mon_eval('  5)',        -1, x, -2, -1),
+	deb_mon_eval('  6)',        -x, x, -2, 2),
+	deb_mon_eval('  7)',         x, x, 2, 2),
+	deb_mon_eval('  8)',       x^2, x, 2, 4),
+	deb_mon_eval('  9)',       3*x, x, 2, 6),
+	deb_mon_eval(' 10)',     3*x^2, x, 2, 12),
+	deb_mon_eval(' 11)',     9*x^2, x, 2, 36),
+	deb_mon_eval(' 12)',      -9*x, x, 2, -18),
+	deb_mon_eval(' 13)',   -10*x^3, x, 0, 0),
+	deb_mon_eval(' 14)',       x^3, x, 0, 0),
+	deb_mon_eval(' 15)',         0, x, 11, 0),
+	deb_mon_eval(' 16)',	   3*x, i, 11, 3*x),
+	deb_mon_eval(' 17)',         0, i, 11, 0),
+	deb_mon_eval(' 18)',       3*i, i, 3, 9),
+	deb_mon_eval(' 19)',     3*x*y, x, 3, 9*y),
+	deb_mon_eval(' 20)',   3*x^2*y, x, 3, 27*y),
+	deb_mon_eval(' 21)',   3*x^2*y, y, 3, 9*x^2),
+	deb_mon_eval(' 22)',   3*x^2*y, z, 3, 3*x^2*y),
+	deb_mon_eval(' 23)', 3*x^2*y*z, z, 0, 0),
+	deb_mon_eval(' 24)', 3*x^2*y*z, z, 1, 3*x^2*y),
+
+	write('* MONOMIAL REVAR'), nl,
+
+	deb_mon_revar('  1)', x,y, 3*x,	    3*y),
+	deb_mon_revar('  2)', z,x, 3*x*y*z, 3*x^2*y),
+	deb_mon_revar('  3)', z,y, 3*x*y*z, 3*x*y^2),
+	deb_mon_revar('  4)', a,x, 3*x*y,   3*x*y),
+	deb_mon_revar('  5)', x,y, 3,       3),
+
+	write('* MONOMIAL SPLIT'), nl,
+
+	deb_mon_split('  1)', x,       3*x,   x, 3),
+	deb_mon_split('  2)', z,       3*x,   1, 3*x),
+	deb_mon_split('  3)', y, 3*x*y^2*z, y^2, 3*x*z),
+	deb_mon_split('  4)', y,   3*x^2*z,   1, 3*x^2*z),
+	deb_mon_split('  5)', z,   3*x^2*z,   z, 3*x^2),
+	deb_mon_split('  6)', x,   3*x^2*z, x^2, 3*z),
 
 	nl, true.
 
@@ -596,9 +912,9 @@ deb_poly_list_sum(I, P1, P2, RES):-
 	output_text(R, RES).
 
 deb_poly_sorted_list_sum(I, P1, P2, RES):-
-	polynomial_from_list_sum_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !, output_correct(I).
+	unipoly_from_list_sum_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !, output_correct(I).
 deb_poly_sorted_list_sum(I, P1, P2, RES):-
-	polynomial_from_list_sum_sorted_list(P1, P2, R),
+	unipoly_from_list_sum_sorted_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' + '), write(P2), write(' = '),
 	output_text(R, RES).
 
@@ -610,9 +926,9 @@ deb_poly_list_sub(I, P1, P2, RES):-
 	output_text(R, RES).
 
 deb_poly_sorted_list_sub(I, P1, P2, RES):-
-	polynomial_from_list_sub_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !, output_correct(I).
+	unipoly_from_list_sub_sorted_list(P1, P2, R), polynomial_list_eq(RES, R), !, output_correct(I).
 deb_poly_sorted_list_sub(I, P1, P2, RES):-
-	polynomial_from_list_sub_sorted_list(P1, P2, R),
+	unipoly_from_list_sub_sorted_list(P1, P2, R),
 	write(I), write(' '), write(P1), write(' - '), write(P2), write(' = '),
 	output_text(R, RES).
 
@@ -624,10 +940,11 @@ deb_poly_list_prod(I, P1, P2, RES):-
 	output_text(R, RES).
 
 deb_poly_sorted_list_prod(I, P1, P2):-
-	polynomial_from_list_prod_sorted_list(P1, P2, R1), polynomial_from_list_prod_list(P1, P2, R2),
+	unipoly_from_list_prod_sorted_list(P1, P2, R1),
+	polynomial_from_list_prod_list(P1, P2, R2),
 	polynomial_list_eq(R1, R2), !, output_correct(I).
 deb_poly_sorted_list_prod(I, P1, P2):-
-	polynomial_from_list_prod_sorted_list(P1, P2, R1),
+	unipoly_from_list_prod_sorted_list(P1, P2, R1),
 	polynomial_from_list_prod_list(P1, P2, R2), write(I), write(' '), write(P1),
 	write(' * '), write(P2), write(' = '), output_text(R1, R2).
 
@@ -670,9 +987,9 @@ deb_poly_last_mon(I, E, RES1, RES2):-
 	write(I), write('' ), write(E), write(' -> '),
 	output_text( (R1, R2), (RES1, RES2)).
 
-deb_poly_pad(I, L, RES):- padded_poly_mons_decr(L, R), R == RES, !, output_correct(I).
+deb_poly_pad(I, L, RES):- padded_unipoly_mons_decr(L, R), R == RES, !, output_correct(I).
 deb_poly_pad(I, L, RES):-
-	padded_poly_mons_decr(L, R),
+	padded_unipoly_mons_decr(L, R),
 	write(I), write(' '), write(L), write(' -> '), output_text(R, RES).
 
 deb_pretty_polynomial_roots(I, R, RES):-
@@ -725,11 +1042,12 @@ debug_polynomials:-
 	deb_poly_pad('  4)', [x^2], [x^2, 0, 0]),
 	deb_poly_pad('  5)', [x^2, 3], [x^2, 0, 3]),
 	deb_poly_pad('  6)', [x^3, x], [x^3, 0, x, 0]),
-	deb_poly_pad('  7)', [x^4, x^3, x], [x^4, x^3, 0, x, 0]),
-	deb_poly_pad('  8)', [x^4, x^2, 1], [x^4, 0, x^2, 0, 1]),
-	deb_poly_pad('  9)', [x^3], [x^3, 0, 0, 0]),
-	deb_poly_pad(' 10)', [x^4], [x^4, 0, 0, 0, 0]),
-	deb_poly_pad(' 11)', [x^6, x^4], [x^6, 0, x^4, 0, 0, 0, 0]),
+	deb_poly_pad('  7)', [x^4, x^3], [x^4, x^3, 0, 0, 0]),
+	deb_poly_pad('  8)', [x^4, x^3, x], [x^4, x^3, 0, x, 0]),
+	deb_poly_pad('  9)', [x^4, x^2, 1], [x^4, 0, x^2, 0, 1]),
+	deb_poly_pad(' 10)', [x^3], [x^3, 0, 0, 0]),
+	deb_poly_pad(' 11)', [x^4], [x^4, 0, 0, 0, 0]),
+	deb_poly_pad(' 12)', [x^6, x^4], [x^6, 0, x^4, 0, 0, 0, 0]),
 
 	write('* POLYNOMIAL LIST SUM'), nl,
 
@@ -753,6 +1071,13 @@ debug_polynomials:-
 	deb_poly_list_sum(' 18)', [2*x, x, x, x], [-x, x, -x], [4*x]),
 	deb_poly_list_sum(' 19)', [x, x, 2*x, x], [-x, x, -x], [4*x]),
 	deb_poly_list_sum(' 20)', [x, x, x, x^2], [-x, x, -x], [x^2, 2*x]),
+	deb_poly_list_sum(' 21)', [x,z], [], [x,z]),
+	deb_poly_list_sum(' 22)', [x,z], [x,z], [2*x,2*z]),
+	deb_poly_list_sum(' 23)', [x^2,x,z], [x,y,z], [x^2,2*x,y,2*z]),
+	deb_poly_list_sum(' 24)', [x^2,z], [-x^2, -z], []),
+	deb_poly_list_sum(' 25)', [-x^2,z^2], [x^2,-z^2], []),
+	deb_poly_list_sum(' 26)', [x,y,z], [x,y,z], [2*x,2*y,2*z]),
+	deb_poly_list_sum(' 27)', [x^2,y^2,x^2,z^2], [x,x,x,y,y,y,z^2], [2*x^2, y^2, 2*z^2, 3*x,3*y]),
 
 	write('* POLYNOMIAL SORTED LIST SUM'), nl,
 
@@ -871,7 +1196,7 @@ debug_polynomials:-
 	deb_poly_sum(' 17)', -z - y + x^2 + y + x, x^2 + x - z),
 	deb_poly_sum(' 18)', -z - y + x^2 + y + x + z, x^2 + x),
 	deb_poly_sum(' 19)', z^2 + x - y - 3*x + 4*z^2 + 2*y, 5*z^2 + y - 2*x),
-	deb_poly_sum(' 20)', a + z^2 + x - y - 3*x + 4*z^2 + 2*y - a, 5*z^2 + y - 2*x),
+	deb_poly_sum(' 20)', a + z^2 + x - y - 3*x + 4*z^2 + 2*y - a, 5*z^2 - 2*x + y),
 
 	write('* POLYNOMIAL PRODUCT'), nl,
 
@@ -888,6 +1213,10 @@ debug_polynomials:-
 	deb_poly_prod(' 10)', -1 + x^2 + 1, -1 + x^2 + 1, x^4),
 	deb_poly_prod(' 11)', 2*x^2 - 3*x^3 + 30, 2*x^2 - 3*x^3 + 30, 9*x^6 - 12*x^5 + 4*x^4 - 180*x^3 + 120*x^2 + 900),
 	deb_poly_prod(' 12)', 0, x, 0),
+	deb_poly_prod(' 13)', x, z, x*z),
+	deb_poly_prod(' 14)', x + 1, z, x*z + z),
+	deb_poly_prod(' 15)', x + y, x^2 + z, x^2*y + x^3 + x*z + y*z),
+	deb_poly_prod(' 16)', x*y*z + x^2 + n^2, 3*k^2 + 4*q, 4*q*x*y*z + 4*q*x^2 + 4*q*n^2 + 3*k^2*x*y*z + 3*k^2*x^2 + 3*k^2*n^2),
 
 	write('* POLYNOMIAL POWER'), nl,
 
@@ -908,6 +1237,12 @@ debug_polynomials:-
 	deb_poly_pow(' 15)', 2*x^2 - 3*x^3 + 30, 5, -243*x^15 + 810*x^14 - 1080*x^13 + 12870*x^12 - 32640*x^11 + 32432*x^10 - 257400*x^9 + 488400*x^8 - 324000*x^7 + 2502000*x^6 - 3240000*x^5 + 1080000*x^4 - 12150000*x^3 + 8100000*x^2 + 24300000),
 	deb_poly_pow(' 16)', 2 + 2, 2, 16),
 	deb_poly_pow(' 17)', 0, 2, 0),
+	deb_poly_pow(' 18)', (x + z), 2, x^2 + 2*x*z + z^2),
+	deb_poly_pow(' 19)', (x + z + y), 2, x^2 + y^2 + z^2 + 2*x*z + 2*x*y + 2*y*z),
+	deb_poly_pow(' 20)', (x + z + 5), 2, x^2 + 25 + z^2 + 2*x*z + 10*x + 10*z),
+	deb_poly_pow(' 21)', (x + z + 1/4), 2, x^2 + 1/16 + z^2 + 2*x*z + 1/2*x + 1/2*z),
+	deb_poly_pow(' 22)', (x + 1/4 + z), 2, x^2 + 1/16 + z^2 + 2*x*z + 1/2*x + 1/2*z),
+	deb_poly_pow(' 23)', (1/4 + x + z), 2, x^2 + 1/16 + z^2 + 2*x*z + 1/2*x + 1/2*z),
 
 	write('* POLYNOMIAL SYMBOLIC EVALUATION'), nl,
 
@@ -915,7 +1250,7 @@ debug_polynomials:-
 	deb_poly_eval('  2)', x + x^2 - 2, x^2 + x - 2),
 	deb_poly_eval('  3)', x*x^2 - 2, x^3 - 2),
 	deb_poly_eval('  4)', (x + 1)^2 - 1, x^2 + 2*x),
-	deb_poly_eval('  5)', x*(x + 1)^2 - 1, x^3 + 2*x^2 + x - 1),
+	deb_poly_eval('  5)', x*((x + 1)^2) - 1, x^3 + 2*x^2 + x - 1),
 	deb_poly_eval('  6)', x*(x + 1)^2 - x, x^3 + 2*x^2),
 	deb_poly_eval('  7)', (1/8)*x*((x + 1)^2)*(2*x + 1) - (1/16)*x*(x + 1)*(2*x + 1) - (1/16)*x*(x + 1), 1/4*x^4 + 1/2*x^3 + 1/4*x^2),
 	deb_poly_eval('  8)', (-1/8)*(n^2 + n)^2 + (1/12)*n*(n - 2)*(n + 1)*(2*n + 1) + (1/4)*n*(n - 1)*(n + 1), 1/24*n^4 - 1/12*n^3 - 13/24*n^2 - 5/12*n),
@@ -929,6 +1264,10 @@ debug_polynomials:-
 	deb_poly_eval(' 12)', (z + 1)^2 + (x + 1)^2 + (z + 1)^2, x^2 + 2*x + 2*z^2 + 4*z + 3),
 	deb_poly_eval(' 13)', (-z + 1)^2 + (x + 1)^2, x^2 + 2*x + z^2 - 2*z + 2),
 	deb_poly_eval(' 14)', 2*z + (-z + 1)^2 + (x + 1)^2, x^2 + 2*x + z^2 + 2),
+	deb_poly_eval(' 15)', 3*x*(y + z), 3*x*y + 3*x*z),
+	deb_poly_eval(' 16)', 3*x^2*(y + z)^2, 3*x^2*y^2 + 3*x^2*z^2 + 6*x^2*y*z),
+	deb_poly_eval(' 17)', 3*x^2*(y + z)^2, 3*x^2*y^2 + 3*x^2*z^2 + 6*x^2*y*z),
+	deb_poly_eval(' 18)', n*(x + y + z + n + 3), n*x + n*y + n*z + n^2 + 3*n),
 
 	write('* POLYNOMIAL\' FIRST AND LAST MONOMIALS'), nl,
 

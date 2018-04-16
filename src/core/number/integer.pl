@@ -50,7 +50,7 @@ divisors(1, [1,-1]):- !.
 divisors(-1, [1,-1]):- !.
 divisors(X, [1,-1|S]):-
 	X < 0, !, XX is -X, divisorsp(XX, 2, P), divisorsn(XX, -2, N),
-	concat(P, N, C), isort_by(compare_divisors, C, S).
+	list_concat(P, N, C), isort_by(compare_divisors, C, S).
 divisors(X, [1,-1|S]):-
-	divisorsp(X, 2, P), divisorsn(X, -2, N), concat(P, N, C),
+	divisorsp(X, 2, P), divisorsn(X, -2, N), list_concat(P, N, C),
 	isort_by(compare_divisors, C, S).

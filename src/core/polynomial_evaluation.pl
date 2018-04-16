@@ -40,88 +40,102 @@ polynomial_reduction(P, R):-
 	list_red_polynomial_from_list(M, L),
 	polynomial_from_list(L, R).
 
-% Takes two polynomials each of them as reduced and
+% Takes two uni-variate polynomials each of them as reduced and
 % decreasingly sorted lists of monomials of unique degree and adds the
 % second from to first and returns it as a reduced list of monomials.
-% This list has monomials with no unique degree: [2*x^2, x^2, x, 1] This
-% list has monomials with unique degree: [3*x^2, x, 1]
-polynomial_from_list_sum_sorted_list__(P1, D1, P2, D2, R):- D1 < D2,
-	NZEROES is D2 - D1, padded_list_begin(P1, NZEROES, 0, PP1),
+% This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
+% This list has monomials with unique degree: [3*x^2, x, 1]
+unipoly_from_list_sum_sorted_list__(P1, D1, P2, D2, R):- D1 < D2, !,
+	NZEROES is D2 - D1,
+	padded_list_begin(P1, NZEROES, 0, PP1),
 	zip_with(mon_sum, PP1, P2, R).
-polynomial_from_list_sum_sorted_list__(P1, D1, P2, D2, R):-
-	NZEROES is D1 - D2, padded_list_begin(P2, NZEROES, 0, PP2),
+unipoly_from_list_sum_sorted_list__(P1, D1, P2, D2, R):-
+	NZEROES is D1 - D2,
+	padded_list_begin(P2, NZEROES, 0, PP2),
 	zip_with(mon_sum, P1, PP2, R).
 
-polynomial_from_list_sum_sorted_list_(P, [], P):- !.
-polynomial_from_list_sum_sorted_list_([], P, P):- !.
-polynomial_from_list_sum_sorted_list_(PP1, PP2, R):-
-	first(PP1, FMON1, _), first(PP2, FMON2, _),
-	monomial_degree(FMON1, D1), monomial_degree(FMON2, D2),
-	polynomial_from_list_sum_sorted_list__(PP1, D1, PP2, D2, R).
+unipoly_from_list_sum_sorted_list_(PP1, PP2, R):-
+	first(PP1, M1, _),
+	first(PP2, M2, _),
+	unimonomial_degree(M1, D1),
+	unimonomial_degree(M2, D2),
+	unipoly_from_list_sum_sorted_list__(PP1, D1, PP2, D2, R).
 
-polynomial_from_list_sum_sorted_list(P, [], P):- !.
-polynomial_from_list_sum_sorted_list([], P, P):- !.
-polynomial_from_list_sum_sorted_list(P1, P2, R):-
-	padded_poly_mons_decr(P1, PP1), padded_poly_mons_decr(P2, PP2),
-	polynomial_from_list_sum_sorted_list_(PP1, PP2, LR),
+unipoly_from_list_sum_sorted_list(P, [], P):- !.
+unipoly_from_list_sum_sorted_list([], P, P):- !.
+unipoly_from_list_sum_sorted_list(P1, P2, R):-
+	padded_unipoly_mons_decr(P1, PP1),
+	padded_unipoly_mons_decr(P2, PP2),
+	unipoly_from_list_sum_sorted_list_(PP1, PP2, LR),
 	list_red_monomials(LR, R), !.
 
 % Takes two polynomials each of them as a list, adds the second from the
 % first and returns it as a reduced list of monomials
 polynomial_from_list_sum_list(P1, P2, R):-
-	concat(P1, P2, P), list_red_polynomial_from_list(P, R).
+	list_concat(P1, P2, P),
+	list_red_polynomial_from_list(P, R).
 
 %---------------
 %%	SUB
 
-% Takes two polynomials each of them as reduced and DECREASINGLY sorted
-% lists of monomials of unique degree and substracts the second from the
-% first and returns it as a reduced list of monomials.
+% Takes two uni-variate polynomials each of them as reduced and
+% DECREASINGLY sorted lists of monomials of unique degree and substracts
+% the second from the first and returns it as a reduced list of
+% monomials.
 % This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
 % This list has monomials with unique degree: [3*x^2, x, 1]
-polynomial_from_list_sub_sorted_list_(P1, D1, P2, D2, R):- D1 < D2,
-	NZEROES is D2 - D1, padded_list_begin(P1, NZEROES, 0, PP1),
+unipoly_from_list_sub_sorted_list(P1, D1, P2, D2, R):- D1 < D2,
+	NZEROES is D2 - D1,
+	padded_list_begin(P1, NZEROES, 0, PP1),
 	zip_with(mon_sub, PP1, P2, R), !.
-polynomial_from_list_sub_sorted_list_(P1, D1, P2, D2, R):-
-	NZEROES is D1 - D2, padded_list_begin(P2, NZEROES, 0, PP2),
+unipoly_from_list_sub_sorted_list(P1, D1, P2, D2, R):-
+	NZEROES is D1 - D2,
+	padded_list_begin(P2, NZEROES, 0, PP2),
 	zip_with(mon_sub, P1, PP2, R).
 
-polynomial_from_list_sub_sorted_list(P1, [], P1):- !.
-polynomial_from_list_sub_sorted_list([], P2, R):- map(monomial_neg, P2, R), !.
-polynomial_from_list_sub_sorted_list(P1, P2, R):-
-	padded_poly_mons_decr(P1, PP1), padded_poly_mons_decr(P2, PP2),
+unipoly_from_list_sub_sorted_list(P1, [], P1):- !.
+unipoly_from_list_sub_sorted_list([], P2, R):- map(monomial_neg, P2, R), !.
+unipoly_from_list_sub_sorted_list(P1, P2, R):-
+	padded_unipoly_mons_decr(P1, PP1),
+	padded_unipoly_mons_decr(P2, PP2),
 	first(PP1, FMON1, _), first(PP2, FMON2, _),
-	monomial_degree(FMON1, D1), monomial_degree(FMON2, D2),
-	polynomial_from_list_sub_sorted_list_(PP1, D1, PP2, D2, LR),
+	unimonomial_degree(FMON1, D1),
+	unimonomial_degree(FMON2, D2),
+	unipoly_from_list_sub_sorted_list(PP1, D1, PP2, D2, LR),
 	list_red_monomials(LR, R), !.
 
-% Takes two polynomials each of them as reduced and DECREASINGLY sorted
-% lists of monomials of unique degree and multiplies the second and the
-% first and returns it as a reduced list of monomials.
-% This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
+% Takes two uni-variate polynomials each of them as reduced and
+% DECREASINGLY sorted lists of monomials of unique degree and multiplies
+% the second and the first and returns it as a reduced list of
+% monomials.
+% This list has monomials with no unique degree: [2*x^2,x^2,x,1]
 % This list has monomials with unique degree: [3*x^2, x, 1]
 polynomial_from_list_sub_list(P1, P2, R):-
-	map(monomial_neg, P2, NP2), polynomial_from_list_sum_list(P1, NP2, R).
+	map(monomial_neg, P2, NP2),
+	polynomial_from_list_sum_list(P1, NP2, R).
 
 %---------------
 %%	PROD
 
-% Takes two polynomials each of them as reduced and DECREASINGLY
-% sorted lists of monomials of unique degree and multiplies
-% them. The result is a list of reduced monomials. This list has
-% monomials with no unique degree: [2*x^2, x^2, x, 1] This list has
-% monomials with unique degree: [3*x^2, x, 1]
-polynomial_from_list_prod_sorted_list_([], _, [[]]):- !.
-polynomial_from_list_prod_sorted_list_(_, [], [[]]):- !.
-polynomial_from_list_prod_sorted_list_([M], L2, [P]):-
-	map(mon_prod(M), L2, P2),
-	padded_poly_mons_decr(P2, P), !.
-polynomial_from_list_prod_sorted_list_([M|L], L2, [P|Q]):-
-	map(mon_prod(M), L2, P2), padded_poly_mons_decr(P2, P),
-	polynomial_from_list_prod_sorted_list_(L, L2, Q), !.
-polynomial_from_list_prod_sorted_list(L1, L2, L):-
-	polynomial_from_list_prod_sorted_list_(L1, L2, ML),
-	foldl(polynomial_from_list_sum_sorted_list_, [], ML, LR),
+% Takes two uni-variate polynomials each of them as reduced and
+% DECREASINGLY sorted lists of monomials of unique degree and multiplies
+% them. The result is a list of reduced monomials.
+% This list has monomials with no unique degree: [2*x^2, x^2, x, 1]
+% This list has monomials with unique degree: [3*x^2, x, 1]
+unipoly_from_list_prod_sorted_list_([], _, [[]]):- !.
+unipoly_from_list_prod_sorted_list_(_, [], [[]]):- !.
+unipoly_from_list_prod_sorted_list_([M], L2, [P]):-
+	map(mon_prod(M), L2, P), !.
+unipoly_from_list_prod_sorted_list_([M|L], L2, [P|Q]):-
+	map(mon_prod(M), L2, P),
+	unipoly_from_list_prod_sorted_list_(L, L2, Q), !.
+
+unipoly_from_list_prod_sorted_list([], [], []):- !.
+unipoly_from_list_prod_sorted_list([],  _, []):- !.
+unipoly_from_list_prod_sorted_list( _, [], []):- !.
+unipoly_from_list_prod_sorted_list(L1, L2, L):-
+	unipoly_from_list_prod_sorted_list_(L1, L2, ML),
+	foldl(unipoly_from_list_sum_sorted_list, [], ML, LR),
 	list_red_monomials(LR, L), !.
 
 % Takes two polynomials each of them as a list, multiplies them and
@@ -159,7 +173,8 @@ polynomial_from_list_power_list(LP, N, LN):-
 polynomial_power(_, 0, 1):- !.
 polynomial_power(P, 1, P):- !.
 polynomial_power(P, N, PN):-
-	list_from_polynomial(P, M), polynomial_from_list_power_list(M, N, L),
+	list_from_polynomial(P, M),
+	polynomial_from_list_power_list(M, N, L),
 	polynomial_from_list(L, PN).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -177,7 +192,8 @@ falling_factorial(P, I, FF):-
 % Takes two polynomials, expanded or contracted, evaluates them, and
 % fails if they are not equal
 polynomial_eval_eq(P1, P2):-
-	polynomial_evaluation(P1, EP1), polynomial_evaluation(P2, EP2),
+	polynomial_evaluation(P1, EP1),
+	polynomial_evaluation(P2, EP2),
 	polynomial_eq(EP1, EP2).
 
 % Takes an expanded polynomial and evaluates it with the value VAL

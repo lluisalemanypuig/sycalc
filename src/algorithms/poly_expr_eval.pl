@@ -14,20 +14,20 @@ summation_over_polynomial(VAR, INI, FIN, P, Q):-
 
 polynomial_evaluation_list(P, [R]):-
 	monomial(P), red_monomial(P, R), !.
-	
+
 polynomial_evaluation_list(Q1 + Q2, R):-
 	polynomial_evaluation_list(Q1, L1),
 	polynomial_evaluation_list(Q2, L2),
-	concat(L1, L2, L),
+	list_concat(L1, L2, L),
 	list_red_polynomial_from_list(L, R), !.
-	
+
 polynomial_evaluation_list(Q1 - Q2, R):-
 	polynomial_evaluation_list(Q1, L1),
 	polynomial_evaluation_list(Q2, L2),
 	map(monomial_neg, L2, NL2),
-	concat(L1, NL2, L),
+	list_concat(L1, NL2, L),
 	list_red_polynomial_from_list(L, R), !.
-	
+
 polynomial_evaluation_list(Q1*Q2, R):-
 	polynomial_evaluation_list(Q1, L1),
 	polynomial_evaluation_list(Q2, L2),
@@ -56,7 +56,7 @@ polynomial_evaluation_list( choose(P, I), R):-
 	factorial(I, F),
 	falling_factorial(P, I, FF),
 	polynomial_evaluation_list( (1/F)*FF, R ), !.
-	
+
 % Evaluation a summation over polynomials
 % VAR: induction variable
 % INI: lowest value of summation range. Must evaluate to a natural

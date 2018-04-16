@@ -3,15 +3,19 @@
 % FORMULA OF SUMS OF POWERS
 
 h_coefficient(C, H):-
-	frac_sum(C, 1/1, R), fraction_comp(R, N, D), fraction_comp(H, D, N).
+	frac_sum(C, 1/1, R),
+	fraction_comp(R, N, D),
+	fraction_comp(H, D, N).
 
 reminder_(_, [], []):- !.
 reminder_([[D, F]|_], [M], R):-
-	monomial_degree(M, D), monomial_coefficient(M, MC),
+	unimonomial_degree(M, D),
+	monomial_coefficient(M, MC),
 	map(mon_prod(MC), F, R), !.
 reminder_([_|Fs], Ms, R):- reminder_(Fs, Ms, R), !.
 reminder_([[D, F]|Fs], [M|Ms], R):-
-	monomial_degree(M, D), monomial_coefficient(M, MC),
+	unimonomial_degree(M, D),
+	monomial_coefficient(M, MC),
 	map(mon_prod(MC), F, R1),
 	reminder_(Fs, Ms, R2),
 	polynomial_from_list_sum_list(R1, R2, R), !.
@@ -20,36 +24,36 @@ reminder_([_|Fs], Ms, R):- reminder_(Fs, Ms, R).
 reminder(F, P, R):- reminder_(F, P, R).
 
 power_sums_(1, [(1/2)*n^2 ,(1/2)*n], [[1, [(1/2)*n^2, (1/2)*n]]]):- !.
-power_sums_(D, SUM, L):- 
+power_sums_(D, SUM, L):-
 	D1 is D - 1,
 	power_sums_(D1, S1, L1),
-	
+
 	first(S1, S1F, S1R),
-	
+
 	% H = 1/(1 + c_{d + 1})
 	monomial_coefficient(S1F, FH), h_coefficient(FH, H),
-	
+
 	first(S1R, S1RF, S1RR),
-	
+
 	monomial_coefficient(S1RF, COEF),
-	
+
 	% B = (n + 1 - c_d)
 	polynomial_evaluation((n + 1 - COEF), B),
-	
+
 	list_from_polynomial(B, BMS),
-	
+
 	% S = B*p(n, d)
-	polynomial_from_list_prod_sorted_list(BMS, S1, S),
-	
+	unipoly_from_list_prod_sorted_list(BMS, S1, S),
+
 	% R = sum[j=1->d] c_{d - j}*p(n, d - j)
 	first(L1, _, L1R), reminder(L1R, S1RR, R),
 
-	polynomial_from_list_sub_sorted_list(S, R, S_MINUS_R),
-	
+	unipoly_from_list_sub_sorted_list(S, R, S_MINUS_R),
+
 	% SUM = H*(S - R)
-	polynomial_from_list_prod_sorted_list([H], S_MINUS_R, SUM),
-	
-	concat([[D,SUM]], L1, L),
+	unipoly_from_list_prod_sorted_list([H], S_MINUS_R, SUM),
+
+	list_concat([[D,SUM]], L1, L),
 	!.
 
 % S = f(n) = 1^D + 2^D + ... + n^D

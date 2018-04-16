@@ -12,7 +12,7 @@ first([X], X, []):- !.
 first([X|L], X, L):- !.
 
 last([X], [], X):- !.
-last([X|R], [X|K], L):- last(R, K, L), !.
+last([X|R], [X|K], L):- last(R, K, L).
 
 % replaces the first element of the list with Y
 replace_first([_], Y, [Y]):- !.
@@ -30,10 +30,23 @@ drop_with(O, _, [X], [X]):- O \= X, !.
 drop_with(O, I, [O|Xs], [I|Ds]):- drop_with(O, I, Xs, Ds), !.
 drop_with(O, I, [X|Xs], [X|Ds]):- drop_with(O, I, Xs, Ds).
 
+% splits a list in two groups: the first containing all elements equal
+% to X and the second containing the other elements
+split_at(X,    [Y],    [Y],[]):- X == Y, !.
+split_at(X,    [Y],    [],[Y]):- X \= Y, !.
+split_at(X, [Y|Xx], [Y|Xs],Lr):- X == Y, split_at(X, Xx, Xs,Lr), !.
+split_at(X, [Y|Yy], Xs,[Y|Lr]):- X \= Y, split_at(X, Yy, Xs,Lr).
+
+% pairwise split
+psplit_at(X,	   [Y],[Q],	  [Y],[Q],	   [],[]):- X == Y, !.
+psplit_at(X,       [Y],[Q],         [],[],	 [Y],[Q]):- X \= Y, !.
+psplit_at(X, [Y|Xx],[R|Rr], [X|Xs],[R|Rs],         Xr,Lr):- X == Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr), !.
+psplit_at(X, [Y|Xx],[R|Rr],	    Xs,Rs, [Y|Xr],[R|Lr]):- X \= Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr).
+
 % is element X in list?
 member(X, [X]):- !.
 member(X, [X|_]):- !.
-member(X, [_|L]):- member(X, L), !.
+member(X, [_|L]):- member(X, L).
 
 % High order functions
 
@@ -41,15 +54,21 @@ member(X, [_|L]):- member(X, L), !.
 map(_, [], []):- !.
 map(F, [X|L], [E|R]):- call(F, X, E), map(F, L, R), !.
 
+% The inspection of a list with function F is the verification that
+% applying the function F to all elements in the list never fails
+inspection(_, []):- !.
+inspection(F, [X|Xs]):- call(F, X), inspection(F, Xs).
+
 zip([A], [B], [(A, B)]):- !.
 zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S), !.
 
 % F :: a -> a -> a
+zip_with(_,  [],  [],  []):- !.
 zip_with(F, [A], [B], [X]):- call(F, A, B, X), !.
 zip_with(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zip_with(F, L, R, S), !.
 
-concat([], L, L).
-concat([A|L], R, [A|C]):- concat(L, R, C).
+list_concat([], L, L).
+list_concat([A|L], R, [A|C]):- list_concat(L, R, C).
 
 % F :: a -> b -> a
 % foldl F x (y:ys) = foldl F (F x y) ys
@@ -62,12 +81,12 @@ foldr(_, X, [], X):- !.
 foldr(F, X, [Y|L], R):- foldr(F, X, L, S), call(F, Y, S, R).
 
 % creates a list with K elements equal to S
-padding(0, _, []):- !.
-padding(K, S, [S|R]):- K1 is K - 1, padding(K1, S, R), !.
+padded_list(0, _, []):- !.
+padded_list(K, S, [S|R]):- K1 is K - 1, padded_list(K1, S, R), !.
 
 % adds at the beggining/ending of the list L K elements equal to S
-padded_list_begin(L, K, S, R):- padding(K, S, P), concat(P, L, R).
-padded_list_end(L, K, S, R):- padding(K, S, P), concat(L, P, R).
+padded_list_begin(L, K, S, R):- padded_list(K, S, P), list_concat(P, L, R).
+padded_list_end(L, K, S, R):- padded_list(K, S, P), list_concat(L, P, R).
 
 % cartesian_product(A, B, C): C is the cartesian product of A and B.
 % C = A x B
@@ -77,7 +96,7 @@ cartesian_product([X], [Y|R], [[X,Y]|S]):-
 	cartesian_product([X], R, S), !.
 cartesian_product([X|L], R, S):-
 	cartesian_product([X], R, S1), cartesian_product(L, R, S2),
-	concat(S1, S2, S), !.
+	list_concat(S1, S2, S), !.
 
 % cartesian_product_by(F, A, B, C): C is the result of applying the function
 % F to every element of (A x B).
@@ -88,7 +107,7 @@ cartesian_product_by(F, [X], [Y|R], [E|S]):-
 	call(F, X, Y, E), cartesian_product_by(F, [X], R, S), !.
 cartesian_product_by(F, [X|L], R, S):-
 	cartesian_product_by(F, [X], R, S1), cartesian_product_by(F, L, R, S2),
-	concat(S1, S2, S), !.
+	list_concat(S1, S2, S), !.
 
 % SORTING ALGORITHMS
 % F(X,Y) is true when X < Y
