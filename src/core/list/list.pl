@@ -18,6 +18,10 @@ last([X|R], [X|K], L):- last(R, K, L).
 replace_first([_], Y, [Y]):- !.
 replace_first([_|L], Y, [Y|L]).
 
+% replaces the last element of the list with Y
+replace_last([_], Y, [Y]):- !.
+replace_last([X|L], Y, [X|R]):- replace_last(L, Y, R).
+
 % drops all elements equal to O from list
 drop(_, [], []):- !.
 drop(O, [X], [X]):- O \= X, !.
@@ -38,10 +42,10 @@ split_at(X, [Y|Xx], [Y|Xs],Lr):- X == Y, split_at(X, Xx, Xs,Lr), !.
 split_at(X, [Y|Yy], Xs,[Y|Lr]):- X \= Y, split_at(X, Yy, Xs,Lr).
 
 % pairwise split
-psplit_at(X,	   [Y],[Q],	  [Y],[Q],	   [],[]):- X == Y, !.
-psplit_at(X,       [Y],[Q],         [],[],	 [Y],[Q]):- X \= Y, !.
-psplit_at(X, [Y|Xx],[R|Rr], [X|Xs],[R|Rs],         Xr,Lr):- X == Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr), !.
-psplit_at(X, [Y|Xx],[R|Rr],	    Xs,Rs, [Y|Xr],[R|Lr]):- X \= Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr).
+psplit_at(X,       [Y],[Q],       [Y],[Q],     [],[]):- X == Y, !.
+psplit_at(X,       [Y],[Q],         [],[],   [Y],[Q]):- X \= Y, !.
+psplit_at(X, [Y|Xx],[R|Rr], [X|Xs],[R|Rs],     Xr,Lr):- X == Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr), !.
+psplit_at(X, [Y|Xx],[R|Rr],     Xs,Rs, [Y|Xr],[R|Lr]):- X \= Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr).
 
 % is element X in list?
 member(X, [X]):- !.
@@ -82,11 +86,11 @@ foldr(F, X, [Y|L], R):- foldr(F, X, L, S), call(F, Y, S, R).
 
 % creates a list with K elements equal to S
 padded_list(0, _, []):- !.
-padded_list(K, S, [S|R]):- K1 is K - 1, padded_list(K1, S, R), !.
+padded_list(K, S, [S|R]):- K1 is K - 1, padded_list(K1, S, R).
 
-% adds at the beggining/ending of the list L K elements equal to S
-padded_list_begin(L, K, S, R):- padded_list(K, S, P), list_concat(P, L, R).
-padded_list_end(L, K, S, R):- padded_list(K, S, P), list_concat(L, P, R).
+% adds K elements equal to S at the beggining/ending of the list L
+padded_list_begin(K, L, S, R):- padded_list(K, S, B), list_concat(B, L, R).
+padded_list_end(K, L, S, R):- padded_list(K, S, E), list_concat(L, E, R).
 
 % cartesian_product(A, B, C): C is the cartesian product of A and B.
 % C = A x B
@@ -114,15 +118,12 @@ cartesian_product_by(F, [X|L], R, S):-
 
 % inserts element X in list L, according to function F
 insert_by(_, X, [], [X]):- !.
-insert_by(F, X, [Y|L], [Y|R]):-
-	not(call(F, X, Y)),        % check X >= Y
-	insert_by(F, X, L, R), !.  % if so, insert X in L
-insert_by(_, X, [Y|L], [X,Y|L]).   % X < Y
+insert_by(F, X, [Y|L], [X,Y|L]):- call(F, X, Y), !.   % X < Y
+insert_by(F, X, [Y|L], [Y|R]):- insert_by(F, X, L, R).
 
 % insertion sort (as always)
 isort_by(_, [], []):- !.
-isort_by(_, [X], [X]):- !.
-isort_by(F, [X|L], R):- isort_by(F, L, S), !, insert_by(F, X, S, R).
+isort_by(F, [X|L], R):- isort_by(F, L, S), insert_by(F, X, S, R).
 
 % pairwise insertion sort
 % In short, given two lists A,B of the same length, and two elements
