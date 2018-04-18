@@ -61,41 +61,6 @@ mon_sub([M1,M2], S):- mon_sub(M1, M2, S), !.
 
 %% PRODUCT
 
-/*
-% multiplies two monomials assuming their variables are different.
-% the result is a multivariate monomial (this is the only predicate to
-% produce this kind of monomials - the rest are always univariate).
-%						   C1, V1, E1, C2, V2, E2, R
-pretty_monomials_prod_comp( 0,  _,  _,  _,  _,  _, 0).
-pretty_monomials_prod_comp( _,  _,  _,  0,  _,  _, 0).
-pretty_monomials_prod_comp( 1,  _,  0,  1,  _,  0, 1).
-pretty_monomials_prod_comp( 1,  _,  0,  1,  Y,  1, Y).
-pretty_monomials_prod_comp( 1,  X,  1,  1,  _,  0, X).
-pretty_monomials_prod_comp( 1,  X,  1,  1,  Y,  1, X*Y):- X @< Y, !.
-pretty_monomials_prod_comp( 1,  X,  1,  1,  Y,  1, Y*X):- !.
-pretty_monomials_prod_comp(CX,  _,  0, CY,  _,  0, C):- arithmetic_eval(CX*CY, C), !.
-pretty_monomials_prod_comp(CX,  _,  0, CY,  Y,  1, C*Y):- arithmetic_eval(CX*CY, C), !.
-pretty_monomials_prod_comp(CX,  X,  1, CY,  _,  0, C*X):- arithmetic_eval(CX*CY, C), !.
-pretty_monomials_prod_comp(CX,  X,  1, CY,  Y,  1, C*X*Y):- X @< Y, arithmetic_eval(CX*CY, C), !.
-pretty_monomials_prod_comp(CX,  X,  1, CY,  Y,  1, C*Y*X):- X @> Y, arithmetic_eval(CX*CY, C), !.
-pretty_monomials_prod_comp(CX,  X,  1, CY,  Y, EY, C*X*(Y^EY)):- X @< Y, arithmetic_eval(CX*CY, C), !.
-pretty_monomials_prod_comp(CX,  X,  1, CY,  Y, EY, C*(Y^EY)*X):- X @> Y, arithmetic_eval(CX*CY, C), !.
-pretty_monomials_prod_comp(CX,  X, EX, CY,  Y,  1, C*(X^EX)*Y):- X @< Y, arithmetic_eval(CX*CY, C), !.
-pretty_monomials_prod_comp(CX,  X, EX, CY,  Y,  1, C*Y*(X^EX)):- X @> Y, arithmetic_eval(CX*CY, C), !.
-pretty_monomials_prod_comp(CX,  X, EX, CY,  Y, EY, C*(X^EX)*(Y^EY)):- X @< Y, arithmetic_eval(CX*CY, C).
-pretty_monomials_prod_comp(CX,  X, EX, CY,  Y, EY, C*(Y^EY)*(X^EX)):- arithmetic_eval(CX*CY, C).
-
-mon_prod_( _,C1,V1,E1,  _,C2,V1,E2, P):-
-	arithmetic_eval(C1*C2, C), arithmetic_eval(E1 + E2, E),
-	red_monomial_comps(C, V1, E, P), !.
-mon_prod_( _,C1,V1,E1,  _,C2,V2,E2, P):-
-	red_monomial_comps(C1, V1, E1, RM1),
-	red_monomial_comps(C2, V2, E2, RM2),
-	monomial_comps(RM1, RC1, _, RE1),
-	monomial_comps(RM2, RC2, _, RE2),
-	pretty_monomials_prod_comp(RC1, V1, RE1, RC2, V2, RE2, P).
-*/
-
 mon_prod(0, _, 0):- !.
 mon_prod(_, 0, 0):- !.
 mon_prod(M1, M2, PROD):-
