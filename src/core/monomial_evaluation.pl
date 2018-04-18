@@ -103,7 +103,7 @@ mon_prod(M1, M2, PROD):-
 	monomial_comps(M2, C2,V2,E2),
 	red_monomial_comps(C1,V1,E1, RC1,RV1,RE1),
 	red_monomial_comps(C2,V2,E2, RC2,RV2,RE2),
-	pmerge(RV1,RE1, RV2,RE2, MV,ME),
+	pfuse(RV1,RE1, RV2,RE2, MV,ME),
 	collapse_vars_list(MV,ME, CV,CE),
 	arithmetic_eval(RC1*RC2, CP),
 	red_monomial_from_comps(CP,CV,CE, PROD).
