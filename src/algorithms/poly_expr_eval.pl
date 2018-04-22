@@ -1,14 +1,5 @@
 :-ensure_loaded("../core").
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% POLYNOMIAL SUMMATION %%%%
-
-% Computes the result of the summation over the induction variable VAR
-% from the value INI to either the polynomial or value FIN of the
-% polynomial P. Result in Q.
-summation_over_polynomial(VAR, INI, FIN, P, Q):-
-	false.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% POLYNOMIAL EXPRESSIONS' EVALUATION %%%%
 
@@ -56,21 +47,6 @@ polynomial_evaluation_list( choose(P, I), R):-
 	factorial(I, F),
 	falling_factorial(P, I, FF),
 	polynomial_evaluation_list( (1/F)*FF, R ), !.
-
-% Evaluation a summation over polynomials
-% VAR: induction variable
-% INI: lowest value of summation range. Must evaluate to a natural
-% number
-% FIN: highest value of summation range. Either a polynomial or an
-% arithmetic expression
-% EXPR: expression within the sum. A polynomial in
-% any variable.
-polynomial_evaluation_list(sum(VAR, INI, FIN, EXPR), R):-
-	polynomial_evaluation_list(EXPR, P_EXPR),
-	polynomial_evaluation_list(FIN, P_FIN),
-	write(P_EXPR), nl,
-	write(P_FIN), nl,
-	false.
 
 % Takes a sequence of sums and substractions P of polynomials, contracted
 % or expanded, and operates it.
