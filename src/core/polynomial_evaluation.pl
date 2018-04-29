@@ -209,8 +209,8 @@ expanded_polynomial_evaluation(VAL, V, P, E):-
 	list_red_polynomial_from_list(R, L),
 	polynomial_from_list(L, E).
 
-% Takes an expanded polynomial and evaluates it with the value VAL
-% on variable X. All those monomials with that variable will be
+% Takes a polynomial and evaluates it with the value VAL
+% on variable V. All those monomials with that variable will be
 % evaluated on such variable.
 % VAL: real value
 % P(x): expanded polynomial
