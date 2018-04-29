@@ -7,8 +7,8 @@ debug:-
 	%debug_numbers,
 	%debug_arithmetic_evaluation,
 	%debug_monomials,
-	debug_polynomials,
-	%debug_power_sums,
+	%debug_polynomials,
+	debug_power_sums,
 	true.
 
 main:- debug, halt.
@@ -1424,6 +1424,18 @@ deb_power_sum_D(I, N, F, D):-
 debug_power_sums:-
 	F = power_sums,
 	write('-- POWER SUMS --'), nl,
+	write('* D = 0'), nl,
+
+	call(F, 0, D0),
+	deb_power_sum_D(' 0.1)', 1, D0, 0),
+	deb_power_sum_D(' 0.2)', 5, D0, 0),
+	deb_power_sum_D(' 0.3)', 10, D0, 0),
+	deb_power_sum_D(' 0.4)', 20, D0, 0),
+	deb_power_sum_D(' 0.5)', 30, D0, 0),
+	deb_power_sum_D(' 0.6)', 50, D0, 0),
+	deb_power_sum_D(' 0.7)', 75, D0, 0),
+	deb_power_sum_D(' 0.8)', 100, D0, 0),
+
 	write('* D = 1'), nl,
 
 	call(F, 1, D1),
