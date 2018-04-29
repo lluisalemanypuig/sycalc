@@ -7,8 +7,8 @@ debug:-
 	%debug_numbers,
 	%debug_arithmetic_evaluation,
 	%debug_monomials,
-	%debug_polynomials,
-	debug_power_sums,
+	debug_polynomials,
+	%debug_power_sums,
 	true.
 
 main:- debug, halt.
@@ -971,14 +971,6 @@ deb_poly_eval(I, E, RES):-
 	polynomial_evaluation(E, R),
 	write(I), write(' '), write(E), write(' = '), output_text(R, RES).
 
-deb_mono_eval(I, M,V, E, RES):-
-	monomial_symb_evaluation(V, E, M, RES), !, output_correct(I).
-deb_mono_eval(I, M,V, E, RES):-
-	monomial_symb_evaluation(V, E, M, N),
-	write(I), write(' '),
-	write(M), write( '(-> '), write(E), write(' @ '), write(V), write(' )= '),
-	output_text(N, RES).
-
 deb_poly_first_mon(I, E, RES1, RES2):-
 	polynomial_first_monomial(E, R1, R2), polynomial_eq(R1, RES1),
 	polynomial_eq(R2, RES2), !, output_correct(I).
@@ -1039,6 +1031,22 @@ deb_falling_factorial(I, P, F, RES):-
 	polynomial_evaluation(choose(P, F), R),
 	write(I), write(' choose('), write(P), write(','), write(F), write(')= '), write(R),
 	polynomial_evaluation(RES, CORRECT_OUTPUT), output_text(R, CORRECT_OUTPUT).
+
+deb_mono_eval(I, M,V, E, RES):-
+	monomial_symb_evaluation(V, E, M, RES), !, output_correct(I).
+deb_mono_eval(I, M,V, E, RES):-
+	monomial_symb_evaluation(V, E, M, N),
+	write(I), write(' '),
+	write(M), write( '(-> '), write(E), write(' @ '), write(V), write(' )= '),
+	output_text(N, RES).
+
+deb_mono_summation(CASE, VAR, I,F, M, RES):-
+	polynomial_evaluation(RES, RESE), monomial_summation(VAR, I,F, M, RESE), !, output_correct(CASE).
+deb_mono_summation(CASE, VAR, I,F, M, RES):-
+	monomial_summation(VAR, I,F, M, S),
+	write(CASE), write(' '),
+	write('sum_{'), write(VAR), write('='), write(I), write('}^{'), write(F), write('} ('), write(M), write(')= '),
+	output_text(S, RES).
 
 debug_polynomials:-
 	write('-- POLYNOMIAL EVALUATION DEBUG --'), nl,
@@ -1277,41 +1285,6 @@ debug_polynomials:-
 	deb_poly_eval(' 17)', 3*x^2*(y + z)^2, 3*x^2*y^2 + 3*x^2*z^2 + 6*x^2*y*z),
 	deb_poly_eval(' 18)', n*(x + y + z + n + 3), n*x + n*y + n*z + n^2 + 3*n),
 
-	write('* MONOMIAL SYMBOLIC EVALUATION'), nl,
-
-	deb_mono_eval('  1)', 3*i,i,   n, 3*n),
-	deb_mono_eval('  2)', 3*i^2,i, n, 3*n^2),
-	deb_mono_eval('  3)', 3*i^0,i, n, 3),
-	deb_mono_eval('  4)', 3*i^0,i, n-2, 3),
-	deb_mono_eval('  5)', 3*i,i,   n-2, 3*n - 6),
-	deb_mono_eval('  6)', 3*i^2,i, n-2, 3*n^2 - 12*n + 12),
-	deb_mono_eval('  7)', 3*i^2,i, 0, 0),
-	deb_mono_eval('  8)', 3*i^2,i, 3, 27),
-	deb_mono_eval('  9)', 3*i,j,   n, 3*i),
-	deb_mono_eval(' 10)', 3*i^2,j, n, 3*i^2),
-	deb_mono_eval(' 11)', 3*i^0,j, n, 3),
-	deb_mono_eval(' 12)', 3*i^0,j, n-2, 3),
-	deb_mono_eval(' 13)', 3*i,j,   n-2, 3*i),
-	deb_mono_eval(' 14)', 3*i^2,j, n-2, 3*i^2),
-	deb_mono_eval(' 15)', 3*i^2,j, 0, 3*i^2),
-	deb_mono_eval(' 16)', 3*i^2,j, 3, 3*i^2),
-	deb_mono_eval(' 17)', 3*i*j^2*k^3*l^4,i, 0,   0),
-	deb_mono_eval(' 18)', 3*i*j^2*k^3*l^4,i, 3,   9*j^2*k^3*l^4),
-	deb_mono_eval(' 19)', 3*i*j^2*k^3*l^4,i, n,   3*j^2*k^3*l^4*n),
-	deb_mono_eval(' 20)', 3*i*j^2*k^3*l^4,i, n-2, 3*j^2*k^3*l^4*n - 6*j^2*k^3*l^4),
-	deb_mono_eval(' 21)', 3*i*j^2*k^3*l^4,j, 0,   0),
-	deb_mono_eval(' 22)', 3*i*j^2*k^3*l^4,j, 3,   27*i*k^3*l^4),
-	deb_mono_eval(' 23)', 3*i*j^2*k^3*l^4,j, n,   3*i*k^3*l^4*n^2),
-	deb_mono_eval(' 24)', 3*i*j^2*k^3*l^4,j, n-2, 3*i*k^3*l^4*n^2 - 12*i*k^3*l^4*n + 12*i*k^3*l^4),
-	deb_mono_eval(' 25)', 3*i*j^2*k^3*l^4,k, 0,   0),
-	deb_mono_eval(' 26)', 3*i*j^2*k^3*l^4,k, 3,   81*i*j^2*l^4),
-	deb_mono_eval(' 27)', 3*i*j^2*k^3*l^4,k, n,   3*i*j^2*l^4*n^3),
-	deb_mono_eval(' 28)', 3*i*j^2*k^3*l^4,k, n-2, 3*i*j^2*l^4*n^3 - 18*i*j^2*l^4*n^2 + 36*i*j^2*l^4*n - 24*i*j^2*l^4),
-	deb_mono_eval(' 29)', 3*i*j^2*k^3*l^4,l, 0,   0),
-	deb_mono_eval(' 30)', 3*i*j^2*k^3*l^4,l, 3,   243*i*j^2*k^3),
-	deb_mono_eval(' 31)', 3*i*j^2*k^3*l^4,l, n,   3*i*j^2*k^3*n^4),
-	deb_mono_eval(' 32)', 3*i*j^2*k^3*l^4,l, n-2, 3*i*j^2*k^3*n^4 - 24*i*j^2*k^3*n^3 + 72*i*j^2*k^3*n^2 - 96*i*j^2*k^3*n + 48*i*j^2*k^3),
-
 	write('* POLYNOMIAL\' FIRST AND LAST MONOMIALS'), nl,
 
 	deb_poly_first_mon('  1.1)', 3*x - 2*x^2,	3*x,		-2*x^2),
@@ -1407,6 +1380,126 @@ debug_polynomials:-
 	deb_falling_factorial(' 14)',  2*n - 7,	4,	(1/24)*(2*n - 7)*(2*n - 8)*(2*n - 9)*(2*n - 10)),
 	deb_falling_factorial(' 15)',  3*n - 7,	4,	(1/24)*(3*n - 7)*(3*n - 8)*(3*n - 9)*(3*n - 10)),
 	deb_falling_factorial(' 16)', -4*n + 7,	4,	(1/24)*(-4*n + 7)*(-4*n + 6)*(-4*n + 5)*(-4*n + 4)),
+
+	write('* MONOMIAL SYMBOLIC EVALUATION'), nl,
+
+	deb_mono_eval('  1)', 3*i,i,   n, 3*n),
+	deb_mono_eval('  2)', 3*i^2,i, n, 3*n^2),
+	deb_mono_eval('  3)', 3*i^0,i, n, 3),
+	deb_mono_eval('  4)', 3*i^0,i, n-2, 3),
+	deb_mono_eval('  5)', 3*i,i,   n-2, 3*n - 6),
+	deb_mono_eval('  6)', 3*i^2,i, n-2, 3*n^2 - 12*n + 12),
+	deb_mono_eval('  7)', 3*i^2,i, 0, 0),
+	deb_mono_eval('  8)', 3*i^2,i, 3, 27),
+	deb_mono_eval('  9)', 3*i,j,   n, 3*i),
+	deb_mono_eval(' 10)', 3*i^2,j, n, 3*i^2),
+	deb_mono_eval(' 11)', 3*i^0,j, n, 3),
+	deb_mono_eval(' 12)', 3*i^0,j, n-2, 3),
+	deb_mono_eval(' 13)', 3*i,j,   n-2, 3*i),
+	deb_mono_eval(' 14)', 3*i^2,j, n-2, 3*i^2),
+	deb_mono_eval(' 15)', 3*i^2,j, 0, 3*i^2),
+	deb_mono_eval(' 16)', 3*i^2,j, 3, 3*i^2),
+	deb_mono_eval(' 17)', 3*i*j^2*k^3*l^4,i, 0,   0),
+	deb_mono_eval(' 18)', 3*i*j^2*k^3*l^4,i, 3,   9*j^2*k^3*l^4),
+	deb_mono_eval(' 19)', 3*i*j^2*k^3*l^4,i, n,   3*j^2*k^3*l^4*n),
+	deb_mono_eval(' 20)', 3*i*j^2*k^3*l^4,i, n-2, 3*j^2*k^3*l^4*n - 6*j^2*k^3*l^4),
+	deb_mono_eval(' 21)', 3*i*j^2*k^3*l^4,j, 0,   0),
+	deb_mono_eval(' 22)', 3*i*j^2*k^3*l^4,j, 3,   27*i*k^3*l^4),
+	deb_mono_eval(' 23)', 3*i*j^2*k^3*l^4,j, n,   3*i*k^3*l^4*n^2),
+	deb_mono_eval(' 24)', 3*i*j^2*k^3*l^4,j, n-2, 3*i*k^3*l^4*n^2 - 12*i*k^3*l^4*n + 12*i*k^3*l^4),
+	deb_mono_eval(' 25)', 3*i*j^2*k^3*l^4,k, 0,   0),
+	deb_mono_eval(' 26)', 3*i*j^2*k^3*l^4,k, 3,   81*i*j^2*l^4),
+	deb_mono_eval(' 27)', 3*i*j^2*k^3*l^4,k, n,   3*i*j^2*l^4*n^3),
+	deb_mono_eval(' 28)', 3*i*j^2*k^3*l^4,k, n-2, 3*i*j^2*l^4*n^3 - 18*i*j^2*l^4*n^2 + 36*i*j^2*l^4*n - 24*i*j^2*l^4),
+	deb_mono_eval(' 29)', 3*i*j^2*k^3*l^4,l, 0,   0),
+	deb_mono_eval(' 30)', 3*i*j^2*k^3*l^4,l, 3,   243*i*j^2*k^3),
+	deb_mono_eval(' 31)', 3*i*j^2*k^3*l^4,l, n,   3*i*j^2*k^3*n^4),
+	deb_mono_eval(' 32)', 3*i*j^2*k^3*l^4,l, n-2, 3*i*j^2*k^3*n^4 - 24*i*j^2*k^3*n^3 + 72*i*j^2*k^3*n^2 - 96*i*j^2*k^3*n + 48*i*j^2*k^3),
+
+	write('* MONOMIAL SUMMATION'), nl,
+
+	deb_mono_summation('  1)', j,0,10,  i, 11*i),
+	deb_mono_summation('  2)', j,5,10,  i, 6*i),
+	deb_mono_summation('  3)', j,10,10, i, i),
+	deb_mono_summation('  4)', j,0,10,  i^2, 11*i^2),
+	deb_mono_summation('  5)', j,5,10,  i^2, 6*i^2),
+	deb_mono_summation('  6)', j,10,10, i^2, i^2),
+	deb_mono_summation('  7)', j,0,10,  i*k, 11*i*k),
+	deb_mono_summation('  8)', j,5,10,  i*k, 6*i*k),
+	deb_mono_summation('  9)', j,10,10, i*k^2, i*k^2),
+	deb_mono_summation(' 10)', j,0,10,  i^2*k, 11*i^2*k),
+	deb_mono_summation(' 11)', j,5,10,  i^2*k, 6*i^2*k),
+	deb_mono_summation(' 12)', j,10,10, i^2*k^2, i^2*k^2),
+
+	deb_mono_summation(' 13)', j,0,y, i, (y+1)*i),
+	deb_mono_summation(' 14)', j,5,y, i, (y-4)*i),
+	deb_mono_summation(' 15)', j,10,y, i, (y-9)*i),
+	deb_mono_summation(' 16)', j,0,y, i^2, (y+1)*i^2),
+	deb_mono_summation(' 17)', j,5,y, i^2, (y-4)*i^2),
+	deb_mono_summation(' 18)', j,10,y, i^2, (y-9)*i^2),
+	deb_mono_summation(' 19)', j,0,y, i*k, (y+1)*i*k),
+	deb_mono_summation(' 20)', j,5,y, i*k, (y-4)*i*k),
+	deb_mono_summation(' 21)', j,10,y, i*k^2, (y-9)*i*k^2),
+	deb_mono_summation(' 22)', j,0,y, i^2*k, (y+1)*i^2*k),
+	deb_mono_summation(' 23)', j,5,y, i^2*k, (y-4)*i^2*k),
+	deb_mono_summation(' 24)', j,10,y, i^2*k^2, (y-9)*i^2*k^2),
+
+	deb_mono_summation(' 25)', j,x,0,  i, (0-x+1)*i),
+	deb_mono_summation(' 26)', j,x,5,  i, (5-x+1)*i),
+	deb_mono_summation(' 27)', j,x,10, i, (10-x+1)*i),
+	deb_mono_summation(' 28)', j,x,0,  i^2, (0-x+1)*i^2),
+	deb_mono_summation(' 29)', j,x,5,  i^2, (5-x+1)*i^2),
+	deb_mono_summation(' 30)', j,x,10, i^2, (10-x+1)*i^2),
+	deb_mono_summation(' 31)', j,x,0,  i*k, (0-x+1)*i*k),
+	deb_mono_summation(' 32)', j,x,5,  i*k, (5-x+1)*i*k),
+	deb_mono_summation(' 33)', j,x,10, i*k^2, (10-x+1)*i*k^2),
+	deb_mono_summation(' 34)', j,x,0,  i^2*k, (0-x+1)*i^2*k),
+	deb_mono_summation(' 35)', j,x,5,  i^2*k, (5-x+1)*i^2*k),
+	deb_mono_summation(' 36)', j,x,10, i^2*k^2, (10-x+1)*i^2*k^2),
+
+	deb_mono_summation(' 37)', j,x,y,  i, (y-x+1)*i),
+	deb_mono_summation(' 38)', j,x,y,  i*k, (y-x+1)*i*k),
+	deb_mono_summation(' 39)', j,x,y,  i^2, (y-x+1)*i^2),
+	deb_mono_summation(' 40)', j,x,y,  i^2*k, (y-x+1)*i^2*k),
+
+	deb_mono_summation(' 41)', i,0,10,  i, 55),
+	deb_mono_summation(' 42)', i,5,10,  i, 45),
+	deb_mono_summation(' 43)', i,10,10, i, 10),
+	deb_mono_summation(' 44)', i,0,10,  i^2, 385),
+	deb_mono_summation(' 45)', i,5,10,  i^2, 355),
+	deb_mono_summation(' 46)', i,10,10, i^2, 100),
+	deb_mono_summation(' 47)', i,0,10,  i*k, 55*k),
+	deb_mono_summation(' 48)', i,5,10,  i*k, 45*k),
+	deb_mono_summation(' 49)', i,10,10, i*k^2, 10*k^2),
+	deb_mono_summation(' 50)', i,0,10,  i^2*k, 385*k),
+	deb_mono_summation(' 51)', i,5,10,  i^2*k, 355*k),
+	deb_mono_summation(' 52)', i,10,10, i^2*k^2, 100*k^2),
+
+	deb_mono_summation(' 53)', i,0,y,  i, 1/2*y*(y+1)),
+	deb_mono_summation(' 54)', i,5,y,  i, 1/2*y*(y+1) - 1/2*4*(4+1)),
+	deb_mono_summation(' 55)', i,10,y, i, 1/2*y*(y+1) - 1/2*9*(9+1)),
+	deb_mono_summation(' 56)', i,0,y,  i^2, 1/6*y*(y+1)*(2*y+1)),
+	deb_mono_summation(' 57)', i,5,y,  i^2, 1/6*y*(y+1)*(2*y+1) - 1/6*4*(4+1)*(2*4+1)),
+	deb_mono_summation(' 58)', i,10,y, i^2, 1/6*y*(y+1)*(2*y+1) - 1/6*9*(9+1)*(2*9+1)),
+	deb_mono_summation(' 59)', i,0,y,  i*k, 1/2*y*(y+1)*k),
+	deb_mono_summation(' 60)', i,5,y,  i*k, (1/2*y*(y+1) - 1/2*4*(4+1))*k),
+	deb_mono_summation(' 61)', i,10,y, i*k^2, (1/2*y*(y+1) - 1/2*9*(9+1))*k^2),
+	deb_mono_summation(' 62)', i,0,y,  i^2*k, 1/6*y*(y+1)*(2*y+1)*k),
+	deb_mono_summation(' 63)', i,5,y,  i^2*k, (1/6*y*(y+1)*(2*y+1) - 1/6*4*(4+1)*(2*4+1))*k),
+	deb_mono_summation(' 64)', i,10,y, i^2*k^2, (1/6*y*(y+1)*(2*y+1) - 1/6*9*(9+1)*(2*9+1))*k^2),
+
+	deb_mono_summation(' 65)', i,x,0,  i, 1/2*y*(y+1)),
+	deb_mono_summation(' 66)', i,x,5,  i, 1/2*y*(y+1) - 1/2*4*(4+1)),
+	deb_mono_summation(' 67)', i,x,10, i, 1/2*y*(y+1) - 1/2*9*(9+1)),
+	deb_mono_summation(' 68)', i,x,0,  i^2, 1/6*y*(y+1)*(2*y+1)),
+	deb_mono_summation(' 69)', i,x,5,  i^2, 1/6*y*(y+1)*(2*y+1) - 1/6*4*(4+1)*(2*4+1)),
+	deb_mono_summation(' 70)', i,x,10, i^2, 1/6*y*(y+1)*(2*y+1) - 1/6*9*(9+1)*(2*9+1)),
+	deb_mono_summation(' 71)', i,x,0,  i*k, 1/2*y*(y+1)*k),
+	deb_mono_summation(' 72)', i,x,5,  i*k, (1/2*y*(y+1) - 1/2*4*(4+1))*k),
+	deb_mono_summation(' 73)', i,x,10, i*k^2, (1/2*y*(y+1) - 1/2*9*(9+1))*k^2),
+	deb_mono_summation(' 74)', i,x,0,  i^2*k, 1/6*y*(y+1)*(2*y+1)*k),
+	deb_mono_summation(' 75)', i,x,5,  i^2*k, (1/6*y*(y+1)*(2*y+1) - 1/6*4*(4+1)*(2*4+1))*k),
+	deb_mono_summation(' 76)', i,x,10, i^2*k^2, (1/6*y*(y+1)*(2*y+1) - 1/6*9*(9+1)*(2*9+1))*k^2),
 
 	nl, true.
 

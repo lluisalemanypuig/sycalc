@@ -88,7 +88,7 @@ expanded_polynomial(P):- list_from_polynomial(P, _).
 % P is an expanded polynomial. N = -P
 polynomial_neg(P, N):-
 	list_from_polynomial(P, L1), map(monomial_neg, L1, L2),
-	polynomial_list(L2, N).
+	polynomial_from_list(L2, N).
 
 % P is an expanded polynomial. D is the maximum degree of its monomials
 polynomial_degree(P, D):-

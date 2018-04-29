@@ -1,11 +1,12 @@
 :-ensure_loaded("../core").
+:-ensure_loaded("power_sums").
 
 % MONOMIAL SYMBOLIC EVALUATION
 
 % The symbolic evaluation of monomial M at variable V with expression E
 % is the resulting symbolic expression of replacing variable V inside
 % monomial M with E.
-monomial_symb_evaluation(V, E, M, N):-
+monomial_symb_evaluation(V,E, M, N):-
 	monomial_split(V, M, Vo,Wo),
 	monomial_var_exp(Vo, V, V^P),
 	polynomial_evaluation( Wo*(E^P), N ).
@@ -17,7 +18,7 @@ monomial_symb_evaluation(V, E, M, N):-
 % the monomial and the difference between the summation of the monomial
 % v_i^p_i over variable v_k from 0 to F and the summation of the
 % monomial v_i^p_i over variable v_k from 0 to I - 1 (2).
-% (1)
+% (1) for I <= F
 %     sum_{v_k=I}^{F} M
 %     where M = coefficient * {v_i^p_i},
 %         v_i is a variable
@@ -34,10 +35,44 @@ monomial_symb_evaluation(V, E, M, N):-
 % (2)
 %     sum_{v_k=I}^{F} M =
 %     M(-v_k)*(sum_{v_k=0}^{F} (v_k^p_k) - sum_{v_k=0}^{I-1} (v_k^p_k))
-monomial_summation(VAR, I,F, M, S).
+monomial_summation_(VAR, I,F, M, S):-	% I < F
+	monomial_split(VAR, M, Vo,Wo),
+	monomial_var_exp(Vo, VAR, VAR^P),
+
+	% SP: power sums for power P
+	power_sums(P, PS),
+
+	polynomial_symb_eval(n,F, PS, EPlus),
+
+	polynomial_evaluation(I-1, I1),
+	polynomial_symb_eval(n,I1, PS, EMinus),
+
+	polynomial_evaluation(Wo*(EPlus - EMinus), S).
+
+monomial_summation(VAR, I,0, M, S):-
+	not(rational(I)), !,
+	polynomial_evaluation(I-1, I1),
+	monomial_summation_(VAR, 0,I1, M, S).
+monomial_summation(VAR, I,0, M, 0):- rational(I), I >= 0, !.
+monomial_summation(VAR, I,0, M, NS):-
+	rational(I), I < 0, !,
+	rational_neg(I, NI),
+	monomial_summation_(VAR, 0,NI, M, S),
+	polynomial_neg(S, NS).
+monomial_summation(VAR, I,F, M, 0):-
+	rational(I), rational(F), I > F.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% POLYNOMIAL EXPRESSIONS' EVALUATION %%%%
+
+% Polynomial symbolic evaluation
+
+polynomial_symb_eval(V,E, P, R):-
+	list_from_polynomial(P, MS),
+	map(monomial_symb_evaluation(V,E), MS, MSR),
+	polynomial_from_list(MSR, Q),
+	polynomial_evaluation(Q, R).
 
 polynomial_evaluation_list(P, [R]):-
 	monomial(P), red_monomial(P, R), !.
