@@ -23,7 +23,8 @@ reminder_([_|Fs], Ms, R):- reminder_(Fs, Ms, R).
 
 reminder(F, P, R):- reminder_(F, P, R).
 
-power_sums_(1, [(1/2)*n^2 ,(1/2)*n], [[1, [(1/2)*n^2, (1/2)*n]]]):- !.
+power_sums_(0, [n], [[0, n]]):- !.
+power_sums_(1, [(1/2)*n^2 ,(1/2)*n], [[0, n], [1, [(1/2)*n^2, (1/2)*n]]]):- !.
 power_sums_(D, SUM, L):-
 	D1 is D - 1,
 	power_sums_(D1, S1, L1),
