@@ -86,15 +86,16 @@ monomial_coefficient(M, C):- monomial_comps(M, C, _, _).
 % E is the exponent of variable V, if such variable exists,
 % extracted from the list of variables and corresponding exponents.
 % Vr and Er are the other variables and exponents, in the same
-% original order
-monomial_exponent(_,     [],     [],      _,     _, _):- false.
+% original order. If it does not exist, then the exponent is 0.
+monomial_exponent(_,     [],     [],      _,     _, 0):- !.
 monomial_exponent(V, [V|Vs], [E|Es],     Vs,    Es, E):- !.
 monomial_exponent(V, [X|Vs], [P|Es], [X|Vr],[P|Er], E):-
 	monomial_exponent(V, Vs,Es, Vr,Er,E).
 
-monomial_variable(M, V, V^E):-
+% The exponent E of a variable V in the monomial V
+monomial_var_exp(M, V, V^E):-
 	monomial_comps(M, _,Vs,Es),
-	monomial_exponent_(V, Vs,Es, E).
+	monomial_exponent(V, Vs,Es, _,_, E).
 
 % D are the exponents of the monomial M
 monomial_degrees(M, []):- monomial_comps(M, _, [],[]), !.
