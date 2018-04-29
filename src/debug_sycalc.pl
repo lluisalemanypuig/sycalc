@@ -2,13 +2,13 @@
 :-ensure_loaded(algorithms).
 
 debug:-
-	debug_integer_algs,
-	debug_lists,
-	debug_numbers,
-	debug_arithmetic_evaluation,
-	debug_monomials,
+	%debug_integer_algs,
+	%debug_lists,
+	%debug_numbers,
+	%debug_arithmetic_evaluation,
+	%debug_monomials,
 	debug_polynomials,
-	debug_power_sums,
+	%debug_power_sums,
 	true.
 
 main:- debug, halt.
@@ -971,6 +971,14 @@ deb_poly_eval(I, E, RES):-
 	polynomial_evaluation(E, R),
 	write(I), write(' '), write(E), write(' = '), output_text(R, RES).
 
+deb_mono_eval(I, M,V, E, RES):-
+	monomial_symb_evaluation(V, E, M, RES), !, output_correct(I).
+deb_mono_eval(I, M,V, E, RES):-
+	monomial_symb_evaluation(V, E, M, N),
+	write(I), write(' '),
+	write(M), write( '(-> '), write(E), write(' @ '), write(V), write(' )= '),
+	output_text(N, RES).
+
 deb_poly_first_mon(I, E, RES1, RES2):-
 	polynomial_first_monomial(E, R1, R2), polynomial_eq(R1, RES1),
 	polynomial_eq(R2, RES2), !, output_correct(I).
@@ -1268,6 +1276,41 @@ debug_polynomials:-
 	deb_poly_eval(' 16)', 3*x^2*(y + z)^2, 3*x^2*y^2 + 3*x^2*z^2 + 6*x^2*y*z),
 	deb_poly_eval(' 17)', 3*x^2*(y + z)^2, 3*x^2*y^2 + 3*x^2*z^2 + 6*x^2*y*z),
 	deb_poly_eval(' 18)', n*(x + y + z + n + 3), n*x + n*y + n*z + n^2 + 3*n),
+
+	write('* MONOMIAL SYMBOLIC EVALUATION'), nl,
+
+	deb_mono_eval('  1)', 3*i,i,   n, 3*n),
+	deb_mono_eval('  2)', 3*i^2,i, n, 3*n^2),
+	deb_mono_eval('  3)', 3*i^0,i, n, 3),
+	deb_mono_eval('  4)', 3*i^0,i, n-2, 3),
+	deb_mono_eval('  5)', 3*i,i,   n-2, 3*n - 6),
+	deb_mono_eval('  6)', 3*i^2,i, n-2, 3*n^2 - 12*n + 12),
+	deb_mono_eval('  7)', 3*i^2,i, 0, 0),
+	deb_mono_eval('  8)', 3*i^2,i, 3, 27),
+	deb_mono_eval('  9)', 3*i,j,   n, 3*i),
+	deb_mono_eval(' 10)', 3*i^2,j, n, 3*i^2),
+	deb_mono_eval(' 11)', 3*i^0,j, n, 3),
+	deb_mono_eval(' 12)', 3*i^0,j, n-2, 3),
+	deb_mono_eval(' 13)', 3*i,j,   n-2, 3*i),
+	deb_mono_eval(' 14)', 3*i^2,j, n-2, 3*i^2),
+	deb_mono_eval(' 15)', 3*i^2,j, 0, 3*i^2),
+	deb_mono_eval(' 16)', 3*i^2,j, 3, 3*i^2),
+	deb_mono_eval(' 17)', 3*i*j^2*k^3*l^4,i, 0,   0),
+	deb_mono_eval(' 18)', 3*i*j^2*k^3*l^4,i, 3,   9*j^2*k^3*l^4),
+	deb_mono_eval(' 19)', 3*i*j^2*k^3*l^4,i, n,   3*j^2*k^3*l^4*n),
+	deb_mono_eval(' 20)', 3*i*j^2*k^3*l^4,i, n-2, 3*j^2*k^3*l^4*n - 6*j^2*k^3*l^4),
+	deb_mono_eval(' 21)', 3*i*j^2*k^3*l^4,j, 0,   0),
+	deb_mono_eval(' 22)', 3*i*j^2*k^3*l^4,j, 3,   27*i*k^3*l^4),
+	deb_mono_eval(' 23)', 3*i*j^2*k^3*l^4,j, n,   3*i*k^3*l^4*n^2),
+	deb_mono_eval(' 24)', 3*i*j^2*k^3*l^4,j, n-2, 3*i*k^3*l^4*n^2 - 12*i*k^3*l^4*n + 12*i*k^3*l^4),
+	deb_mono_eval(' 25)', 3*i*j^2*k^3*l^4,k, 0,   0),
+	deb_mono_eval(' 26)', 3*i*j^2*k^3*l^4,k, 3,   81*i*j^2*l^4),
+	deb_mono_eval(' 27)', 3*i*j^2*k^3*l^4,k, n,   3*i*j^2*l^4*n^3),
+	deb_mono_eval(' 28)', 3*i*j^2*k^3*l^4,k, n-2, 3*i*j^2*l^4*n^3 - 18*i*j^2*l^4*n^2 + 36*i*j^2*l^4*n - 24*i*j^2*l^4),
+	deb_mono_eval(' 29)', 3*i*j^2*k^3*l^4,l, 0,   0),
+	deb_mono_eval(' 30)', 3*i*j^2*k^3*l^4,l, 3,   243*i*j^2*k^3),
+	deb_mono_eval(' 31)', 3*i*j^2*k^3*l^4,l, n,   3*i*j^2*k^3*n^4),
+	deb_mono_eval(' 32)', 3*i*j^2*k^3*l^4,l, n-2, 3*i*j^2*k^3*n^4 - 24*i*j^2*k^3*n^3 + 72*i*j^2*k^3*n^2 - 96*i*j^2*k^3*n + 48*i*j^2*k^3),
 
 	write('* POLYNOMIAL\' FIRST AND LAST MONOMIALS'), nl,
 
