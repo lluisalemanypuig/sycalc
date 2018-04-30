@@ -234,22 +234,22 @@ monomial_positive_coefficient(M):-
 	monomial_comps(M, C, _, _), C >= 0.
 
 % Replace the variable O with variable I
-monomial_revar(O,I, M, R):-
+monomial_revar(VAR,I, M, R):-
 	monomial_comps(M, C,V,E),
-	drop_with(O, I, V, Rv),
+	drop_with(VAR, I, V, Rv),
 	pisort(Rv,E, Vs,Es),
 	red_monomial_from_comps(C,Vs,Es, R).
 
 % Vo is the variable O with its exponent
 % Wo is the rest of the monomial M
 % (if monomial M does not have variable O, Vo is 1)
-monomial_split_(_, M,_,[],[], 1, M):- !.
-monomial_split_(O, M, _,V, E, 1, M):- psplit_at(O, V,E, [],[], _,_), !.
-monomial_split_(O, _, C,V, E, Vo,Wo):-
-	psplit_at(O, V,E, Os,Oes, Vs,Es),
+monomial_split_(  _, M,_,[],[], 1, M):- !.
+monomial_split_(VAR, M, _,V, E, 1, M):- psplit_at(VAR, V,E, [],[], _,_), !.
+monomial_split_(VAR, _, C,V, E, Vo,Wo):-
+	psplit_at(VAR, V,E, Os,Oes, Vs,Es),
 	red_monomial_from_comps(1,Os,Oes, Vo),
 	red_monomial_from_comps(C,Vs,Es, Wo), !.
 
-monomial_split(O, M, Vo,Wo):-
+monomial_split(VAR, M, Vo,Wo):-
 	monomial_comps(M, C,V,E),
-	monomial_split_(O, M,C,V,E, Vo,Wo).
+	monomial_split_(VAR, M,C,V,E, Vo,Wo).

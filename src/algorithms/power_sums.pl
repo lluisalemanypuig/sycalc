@@ -39,7 +39,7 @@ power_sums_(D, SUM, L):-
 	monomial_coefficient(S1RF, COEF),
 
 	% B = (n + 1 - c_d)
-	polynomial_evaluation((n + 1 - COEF), B),
+	polynomial_expression_evaluation((n + 1 - COEF), B),
 
 	list_from_polynomial(B, BMS),
 

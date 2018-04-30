@@ -178,46 +178,6 @@ polynomial_power(P, N, PN):-
 	polynomial_from_list_power_list(M, N, L),
 	polynomial_from_list(L, PN).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% OTHER POLYNOMIAL USEFUL OPERATIONS %%%%%%%%%
-
-% Constructs the falling factorial polynomial on polynomial P:
-% (P - I)*(P - (I - 1))*(P - (I - 2))* .... *(P - 1)*P
-falling_factorial(P, 1, FF):- polynomial_evaluation(P, FF), !.
-falling_factorial(P, I, FF):-
-	I1 is I - 1,
-	polynomial_evaluation(P - 1, Pminus1),
-	falling_factorial(Pminus1, I1, FF1),
-	polynomial_evaluation(P*FF1, FF).
-
-% Takes two polynomials, expanded or contracted, evaluates them, and
-% fails if they are not equal
-polynomial_eval_eq(P1, P2):-
-	polynomial_evaluation(P1, EP1),
-	polynomial_evaluation(P2, EP2),
-	polynomial_eq(EP1, EP2).
-
-% Takes an expanded polynomial and evaluates it with the value VAL
-% on variable X. All those monomials with that variable will be
-% evaluated on such variable.
-% VAL: real value
-% P(x): expanded polynomial
-% E: P(VAL)
-expanded_polynomial_evaluation(VAL, V, P, E):-
-	list_from_polynomial(P, MS),
-	map(monomial_evaluation(VAL, V), MS, R),
-	list_red_polynomial_from_list(R, L),
-	polynomial_from_list(L, E).
-
-% Takes a polynomial and evaluates it with the value VAL
-% on variable V. All those monomials with that variable will be
-% evaluated on such variable.
-% VAL: real value
-% P(x): expanded polynomial
-% E: P(VAL)
-polynomial_evaluation(VAL, V, P, E):-
-	polynomial_evaluation(P, EXP),
-	expanded_polynomial_evaluation(VAL, V, EXP, E).
 
 
 
