@@ -1,0 +1,5 @@
+
+release: $(BIN_DIR)/sycalc
+
+$(BIN_DIR)/sycalc: $(ALL_FILES) $(SRC_DIR)/sycalc.pl
+	swipl $(FLAGS) -o $(BIN_DIR)/sycalc -c $(SRC_DIR)/sycalc.pl

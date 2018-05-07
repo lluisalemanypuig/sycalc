@@ -2,6 +2,7 @@
 
 PROJ_DIR = ..
 SRC_DIR = $(PROJ_DIR)/src
+DEB_DIR = $(PROJ_DIR)/debug
 BIN_DIR = $(PROJ_DIR)/bin
 ALG_DIR = $(SRC_DIR)/algorithms
 
@@ -11,8 +12,6 @@ OPT = -O3
 FLAGS = $(OPT) --goal=main --stand_alone=true
 
 # FILES FOR COMPILING
-
-EXE_FILES = $(SRC_DIR)/sycalc.pl $(SRC_DIR)/debug_sycalc.pl
 
 NUMBER =												\
 	$(SRC_DIR)/core/number/natural.pl					\
@@ -56,14 +55,9 @@ $(BIN_DIR):
 # COMPILATION RULES
 
 all: release debug
-release: $(BIN_DIR)/sycalc
-debug: $(BIN_DIR)/debug_sycalc
 
-$(BIN_DIR)/sycalc: $(ALL_FILES) $(SRC_DIR)/sycalc.pl
-	swipl $(FLAGS) -o $(BIN_DIR)/sycalc -c $(SRC_DIR)/sycalc.pl
-
-$(BIN_DIR)/debug_sycalc: $(ALL_FILES) $(SRC_DIR)/debug_sycalc.pl
-	swipl $(FLAGS) -o $(BIN_DIR)/debug_sycalc -c $(SRC_DIR)/debug_sycalc.pl
+include Makefile.release
+include Makefile.debug
 
 clean:
 	rm -f $(BIN_DIR)/sycalc
