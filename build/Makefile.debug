@@ -1,5 +1,4 @@
 
-
 DEBUG_FILES = 								\
 	$(DEB_DIR)/debug_integer_algs.pl		\
 	$(DEB_DIR)/debug_lists.pl				\
@@ -9,7 +8,7 @@ DEBUG_FILES = 								\
 	$(DEB_DIR)/debug_polynomials.pl			\
 	$(DEB_DIR)/debug_power_sums.pl
 
-debug: $(BIN_DIR)/debug_sycalc
+debug: bindirectory $(BIN_DIR)/debug_sycalc
 
 $(BIN_DIR)/debug_sycalc: $(ALL_FILES) $(DEBUG_FILES) $(DEB_DIR)/debug_sycalc.pl
 	swipl $(FLAGS) -o $(BIN_DIR)/debug_sycalc -c $(DEB_DIR)/debug_sycalc.pl

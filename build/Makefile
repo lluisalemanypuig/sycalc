@@ -45,14 +45,12 @@ ALGORITHMS = 									\
 
 ALL_FILES = $(CORE) $(ALGORITHMS)
 
-# BUILD BIN DIRECTORY
+# RULES
 
 .PHONY: bindirectory
 bindirectory: $(BIN_DIR)
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
-
-# COMPILATION RULES
 
 all: release debug
 
