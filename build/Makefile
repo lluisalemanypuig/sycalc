@@ -4,6 +4,7 @@ PROJ_DIR = ..
 SRC_DIR = $(PROJ_DIR)/src
 DEB_DIR = $(PROJ_DIR)/debug
 BIN_DIR = $(PROJ_DIR)/bin
+RUL_DIR = $(PROJ_DIR)/build
 ALG_DIR = $(SRC_DIR)/algorithms
 
 # COMPILATION FLAGS
@@ -54,8 +55,8 @@ $(BIN_DIR):
 
 all: release debug
 
-include Makefile.release
-include Makefile.debug
+include $(RUL_DIR)/Makefile.release
+include $(RUL_DIR)/Makefile.debug
 
 clean:
 	rm -f $(BIN_DIR)/sycalc
