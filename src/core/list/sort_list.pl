@@ -1,7 +1,6 @@
-
 /***
 	@descr This file contains a number of simple sorting algorithms,
-	and two "list fusion" algorithms.
+	and two "list-fusion" algorithms.
 */
 
 /**
@@ -45,15 +44,16 @@ pisort_by(F, [X|Xs],[Y|Ys],  Rx, Ry):-
 
 /**
 	@form fuse_by(Function, List1, List2, NewList)
-	@constraints List1 and List2 must be sorted according to Function.
 	@descr Fuses two sorted lists into one, guided by Function. The
 	result of fusing two lists is the concatenation of the element-wise
 	sorting of the elements of the two lists: take the i-th element
 	of both lists and put first the one that is defined "to go before"
-	according to Function:
-		fuse([x|xs], [y|ys], [x,y|r]) with x < y
-		fuse([x|xs], [y|ys], [y,x|r]) with x > y
-	where r is the fusion of xs and ys
+	according to Function. Assuming that Function is @<:
+	
+		fuse([X|Xs], [Y|Ys], [X,Y|R]) with X < Y
+		fuse([X|Xs], [Y|Ys], [Y,X|R]) with X > Y
+		
+	where R is the fusion of Xs and Ys
 */
 fuse_by(_,     [],     [],       []):- !.
 fuse_by(_,     [],      L,        L):- !.
@@ -63,24 +63,25 @@ fuse_by(F, [X|Xs], [Y|Ys], [Y,X|Ms]):- call(F, Y, X), fuse_by(F, Xs, Ys, Ms).
 
 /**
 	@form fuse_by(Function, LeftList1,RightList1, LeftList2,RightList2, NewList1,NewList2)
-	@constraints LeftList1 and RightList1 must have the same length and
-	be sorted, according to Function.
 	@descr Fuses two pairs of sorted lists into one, guided by Function
 	and the pair of lists LeftList1 and LeftList2: take the i-th element
-	of LeftList1 and LeftList2. Let ll1 and ll2 be such elements. If
-	ll1 goes before in the ordering and then goes ll2, then the ordering
-	of the second pair of lists (RightList1 and RIghtList2) is forced
-	to be the same: first goes the element of RightList1 and then the
-	element of RightList2.
+	of LeftList1 and LeftList2 and let ll1 and ll2 be such elements. If
+	we have that Function(ll1,ll2) is true, read as "ll1 < ll2", then
+	the ordering of the second pair of lists (RightList1 and RIghtList2)
+	is forced to be the same: first goes the element of RightList1 and
+	then the element of RightList2.
+	Assuming that Function is @<
 	
-		fuse([x1|xs1],[y1|ys1], [x2|xs2],[y2|ys2], [x1,y1|r1],[x2,y2|r2]) with x1 < y1
-		fuse([x1|xs1],[y1|ys1], [x2|xs2],[y2|ys2], [y1,x1|r1],[y2,x2|r2]) with x1 < y1
+		pfuse([X1|Xs1],[Y1|Ys1], [X2|Xs2],[Y2|Ys2], [X1,X2|R1],[Y1,Y2|R2]) with X1 < X2
+		pfuse([X1|Xs1],[Y1|Ys1], [X2|Xs2],[Y2|Ys2], [X2,X1|R1],[Y2,Y2|R2]) with X1 > X2
 	
-	where r1 is the fusion of xs1 and ys1 and r2 the fusion of xs2 and ys2.
+	where R1 and R2 are the result of applying
+		
+		pfuse(Xs1,Ys1, Xs2,Ys2, R1,R2)
+		
 	Notice that it is not necessarily true that
-	-> x2 < y2 when x1 < y1, or that
-	-> x2 > y2 when x1 > y1 
-	
+	-> X2 < Y2 when X1 < Y1, or that
+	-> X2 > Y2 when X1 > Y1	
 */
 pfuse_by(_,           [],[],           [],[],                 [],[]):- !.
 pfuse_by(_,             X,Y,           [],[],                   X,Y):- !.

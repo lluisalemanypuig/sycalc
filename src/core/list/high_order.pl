@@ -15,7 +15,8 @@ map(F, [X|L], [E|R]):- call(F, X, E), map(F, L, R), !.
 /**
 	@form inspection(Function, List)
 	@descr The inspection of List with Function is the verification
-	that applying Function to all elements in List never fails.
+	that applying Function to all elements in List does not fail. To
+	check this, the function is applied to every element of List.
 */
 inspection(_, []):- !.
 inspection(F, [X|Xs]):- call(F, X), inspection(F, Xs).
@@ -34,8 +35,8 @@ zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S).
 /**
 	@form zip(Function, List1, List2, NewList)
 	@constraints List1 and List2 must have the same length.
-	@descr NewList is the result of applying Function to the i-th
-	element of both List1 and List2.
+	@descr NewList is the result of applying Function to the
+	i-th element of both List1 and List2.
 	In Haskell notation: zip_with :: (a -> b -> c) -> [a] -> [b] -> [c]
 */
 zip_with(_,  [],  [],  []):- !.
@@ -44,8 +45,8 @@ zip_with(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zip_with(F, L, R, S).
 
 /**
 	@form list_concat(List1, List2, NewList)
-	@descr NewList is the result of applying Function to the i-th
-	element of both List1 and List2.
+	@descr NewList is a list with all the elements in List1 followed
+	by all the elements in List2.
 */
 list_concat([], L, L).
 list_concat([A|L], R, [A|C]):- list_concat(L, R, C).
@@ -97,8 +98,7 @@ pad_end(K, L, S, R):- make_list(K, S, E), list_concat(L, E, R).
 */
 cartesian_product([], _, []):- !.
 cartesian_product(_, [], []):- !.
-cartesian_product([X], [Y|R], [[X,Y]|S]):-
-	cartesian_product([X], R, S), !.
+cartesian_product([X], [Y|R], [[X,Y]|S]):- cartesian_product([X], R, S), !.
 cartesian_product([X|L], R, S):-
 	cartesian_product([X], R, S1), cartesian_product(L, R, S2),
 	list_concat(S1, S2, S), !.
@@ -110,6 +110,9 @@ cartesian_product([X|L], R, S):-
 	
 	cartesian_product_by(F, List1,List2, R):- 
 		cartesian_product(List1,List2, C), map(F,C, R)
+	
+	However, this implementation should be faster because it does
+	a single pass on the elements of the cartesian product.
 */
 cartesian_product_by(_, [], _, []):- !.
 cartesian_product_by(_, _, [], []):- !.

@@ -243,10 +243,11 @@ monomial_revar(VAR,I, M, R):-
 % Vo is the variable O with its exponent
 % Wo is the rest of the monomial M
 % (if monomial M does not have variable O, Vo is 1)
-monomial_split_(  _, M,_,[],[], 1, M):- !.
-monomial_split_(VAR, M, _,V, E, 1, M):- psplit_at(VAR, V,E, [],[], _,_), !.
+monomial_split_(  _, M,_,[],[], 1, M):- write(1), nl, !.
+monomial_split_(VAR, M, _,V, E, 1, M):- write(2), nl, psplit(VAR, V,E, [],[], _,_), !.
 monomial_split_(VAR, _, C,V, E, Vo,Wo):-
-	psplit_at(VAR, V,E, Os,Oes, Vs,Es),
+	write(2), nl,
+	psplit(VAR, V,E, Os,Oes, Vs,Es),
 	red_monomial_from_comps(1,Os,Oes, Vo),
 	red_monomial_from_comps(C,Vs,Es, Wo), !.
 

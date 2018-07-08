@@ -25,7 +25,7 @@ NUMBER =												\
 	$(SRC_DIR)/core/number.pl
 
 LISTS =									\
-	$(SRC_DIR)/core/list/list.pl 		\
+	$(SRC_DIR)/core/list/basic.pl 		\
 	$(SRC_DIR)/core/list/high_order.pl 	\
 	$(SRC_DIR)/core/list/sort_list.pl 	\
 	$(SRC_DIR)/core/list.pl

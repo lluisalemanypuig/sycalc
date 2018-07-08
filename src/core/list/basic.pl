@@ -6,6 +6,8 @@
 
 /**
 	@form min(List, Min)
+	@constraints List must have at least one element (what is the minimum
+	value of a list with no values?).
 	@descr Min is the smallest value, according to '@>' in List
 */
 min([X], X):- !.
@@ -14,6 +16,8 @@ min([X|_], X).
 
 /**
 	@form max(List, Max)
+	@constraints List must have at least one element (what is the maximum
+	value of a list with no values?).
 	@descr Max is the smallest value, according to '@<' in List
 */
 max([X], X):- !.
@@ -79,22 +83,23 @@ drop(O, [O|Xs], D):- drop(O, Xs, D), !.
 drop(O, [X|Xs], [X|Ds]):- drop(O, Xs, Ds).
 
 /**
-	@form split_at(Value,List, Left,Right)
+	@form split(Value,List, Left,Right)
+	@constraints List can not be empty.
 	@descr Splits List into two groups, Left and Right. Left contains
 	all elements in List equal to Value. Right contains all the other
 	elements in List. The sum of lengths of Left and Right equals the
 	length of List.
 */
-split_at(X,    [Y],    [Y],[]):- X == Y, !.
-split_at(X,    [Y],    [],[Y]):- X \= Y, !.
-split_at(X, [Y|Xx], [Y|Xs],Lr):- X == Y, split_at(X, Xx, Xs,Lr), !.
-split_at(X, [Y|Yy], Xs,[Y|Lr]):- X \= Y, split_at(X, Yy, Xs,Lr).
+split(X,    [Y],    [Y],[]):- X == Y, !.
+split(X,    [Y],    [],[Y]):- X \= Y, !.
+split(X, [Y|Xx], [Y|Xs],Lr):- X == Y, split(X, Xx, Xs,Lr), !.
+split(X, [Y|Yy], Xs,[Y|Lr]):- X \= Y, split(X, Yy, Xs,Lr).
 
 /**
-	@form split_at(Value, List1,List2, L1,R1, L2,R2)
-	@constraints List1 and List2 must be of equal length.
+	@form split(Value, List1,List2, L1,R1, L2,R2)
+	@constraints List1 and List2 must be non-empty and of equal length.
 	@descr Splits two lists each into two groups. The splitting is done
-	similarly as in predicate 'split_at'. However, here the splitting is
+	similarly as in predicate 'split'. However, here the splitting is
 	guided by List1, that is:
 		* if i-th element of List1 is equal to Value then L1 will contain
 		i-th element of List1 and L2 will contain i-th element of List2.
@@ -102,10 +107,10 @@ split_at(X, [Y|Yy], Xs,[Y|Lr]):- X \= Y, split_at(X, Yy, Xs,Lr).
 		contain i-th element of List1 and R2 will contain i-th element
 		of List2.
 */
-psplit_at(X,       [Y],[Q],       [Y],[Q],     [],[]):- X == Y, !.
-psplit_at(X,       [Y],[Q],         [],[],   [Y],[Q]):- X \= Y, !.
-psplit_at(X, [Y|Xx],[R|Rr], [X|Xs],[R|Rs],     Xr,Lr):- X == Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr), !.
-psplit_at(X, [Y|Xx],[R|Rr],     Xs,Rs, [Y|Xr],[R|Lr]):- X \= Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr).
+psplit(X,       [Y],[Q],       [Y],[Q],     [],[]):- X == Y, !.
+psplit(X,       [Y],[Q],         [],[],   [Y],[Q]):- X \= Y, !.
+psplit(X, [Y|Xx],[R|Rr], [X|Xs],[R|Rs],     Xr,Lr):- X == Y, psplit(X, Xx,Rr, Xs,Rs, Xr,Lr), !.
+psplit(X, [Y|Xx],[R|Rr],     Xs,Rs, [Y|Xr],[R|Lr]):- X \= Y, psplit(X, Xx,Rr, Xs,Rs, Xr,Lr).
 
 % COUNTING FUNCTIONS
 
@@ -139,37 +144,37 @@ dot_prod([X], [Y], P):- P is X*Y, !.
 dot_prod([X|Xs], [Y|Ys], R):- P is X*Y, dot_prod(Xs, Ys, Q), R is P + Q, !.
 
 /**
-	@form ladder_prod(Divisor, StartValue, Coefficients, NewCoefficients, LastTerm)
-	@constraints Coefficients cannot be empty and must contain
-	elements to which the operators '*' and '+' can be applied.
-	@descr One should interpret this predicate as some sort of Ruffini's
-	rule generalisation.
-	Therefore, if Coefficients has the elements [m,n,o,p], Divisor has
-	the value 'x' and StartValue is 'A' then the ladder product is
-	defined as follows:
-	
-	  | m n o p
-	x | A B C D
-	--+-------------
-	  | T U V W
-	T = m + A
-	B = x*T = x*(m + A)
-	U = n + B
-	C = x*U = x*(n + B)
-	V = o + C
-	D = x*V = x*(o + C)
-	LastTerm = W = p + D
-	NewCoefficients = [T,U,V]
-	
-	For the case of Ruffini's rule:
-	-> Coefficients must be a list of integer values with a '1' in the
-	first element.
-	-> StartValue (A) has to be 0
-	-> Divisor must divide the last element of Coefficients
-	-> NewCoefficients are the integer values representing the coefficients
-	of a new polynomial.
-	-> LastTerm must be equal to 0 for Divisor to be a root of the
-	polynomial represented by Coefficients.
+@form ladder_prod(Divisor, StartValue, Coefficients, NewCoefficients, LastTerm)
+@constraints Coefficients cannot be empty and must contain
+elements to which the operators '*' and '+' can be applied.
+@descr One should interpret this predicate as some sort of Ruffini's
+rule generalisation.
+Therefore, if Coefficients has the elements [m,n,o,p], Divisor has
+the value 'x' and StartValue is 'A' then the ladder product is
+defined as follows:
+
+  | m n o p
+x | A B C D
+--+-------------
+  | T U V W
+T = m + A
+B = x*T = x*(m + A)
+U = n + B
+C = x*U = x*(n + B)
+V = o + C
+D = x*V = x*(o + C)
+LastTerm = W = p + D
+NewCoefficients = [T,U,V]
+
+For the case of Ruffini's rule:
+-> Coefficients must be a list of integer values with a '1' in the
+first element.
+-> StartValue (A) has to be 0
+-> Divisor must divide the last element of Coefficients
+-> NewCoefficients are the integer values representing the coefficients
+of a new polynomial.
+-> LastTerm must be equal to 0 for Divisor to be a root of the
+polynomial represented by Coefficients.
 */
 ladder_prod(X, A, [Y], [], P):- P is X*(Y + A), !.
 ladder_prod(X, A, [Y|Ys], [R|L], Q):-
