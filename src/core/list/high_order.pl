@@ -1,0 +1,120 @@
+/***
+	@descr This file contains a number of high-order predicates for
+	list manipulation, such as map, foldl, foldr, zip, ...
+*/
+
+/**
+	@form map(Function, List, NewList)
+	@descr NewList is the result of applying Function to every element
+	of List.
+	In Haskell notation: map :: (a -> b) -> [a] -> [b]
+*/
+map(_, [], []):- !.
+map(F, [X|L], [E|R]):- call(F, X, E), map(F, L, R), !.
+
+/**
+	@form inspection(Function, List)
+	@descr The inspection of List with Function is the verification
+	that applying Function to all elements in List never fails.
+*/
+inspection(_, []):- !.
+inspection(F, [X|Xs]):- call(F, X), inspection(F, Xs).
+
+/**
+	@form zip(List1, List2, NewList)
+	@constraints List1 and List2 must have the same length.
+	@descr NewList is the result of an element-wise pairing of the
+	elements in List1 and List2. Each of NewList is a pair, where
+	the left element is an element from List1 and the right element
+	is an element from List2.
+*/
+zip([], [], []).
+zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S).
+
+/**
+	@form zip(Function, List1, List2, NewList)
+	@constraints List1 and List2 must have the same length.
+	@descr NewList is the result of applying Function to the i-th
+	element of both List1 and List2.
+	In Haskell notation: zip_with :: (a -> b -> c) -> [a] -> [b] -> [c]
+*/
+zip_with(_,  [],  [],  []):- !.
+zip_with(F, [A], [B], [X]):- call(F, A, B, X), !.
+zip_with(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zip_with(F, L, R, S).
+
+/**
+	@form list_concat(List1, List2, NewList)
+	@descr NewList is the result of applying Function to the i-th
+	element of both List1 and List2.
+*/
+list_concat([], L, L).
+list_concat([A|L], R, [A|C]):- list_concat(L, R, C).
+
+/**
+	@form foldl(Function, Value, List, Result)
+	@descr foldl as usually defined.
+	In Haskell notation: foldl :: (b -> a -> b) -> b -> a -> b
+*/
+foldl(_, X, [], X):- !.
+foldl(F, X, [Y|L], R):- call(F, X, Y, S), foldl(F, S, L, R).
+
+/**
+	@form foldr(Function, Value, List, Result)
+	@descr foldr as usually defined.
+	In Haskell notation: foldr :: (a -> b -> b) -> b -> t a -> b
+*/
+foldr(_, X, [], X):- !.
+foldr(F, X, [Y|L], R):- foldr(F, X, L, S), call(F, Y, S, R).
+
+/**
+	@form make_list(Times, Value, NewList)
+	@constraints Times must be a positive (>= 0) integer.
+	@descr NewList is a list containing Value as many times as Times.
+*/
+make_list(0, _, []):- !.
+make_list(K, S, [S|R]):- K1 is K - 1, make_list(K1, S, R).
+
+/**
+	@form pad_begin(Times, List, Value, NewList)
+	@constraints Times must be a positive (>= 0) integer.
+	@descr NewList is the concatenation of a list of length Times
+	with all elements equal to Value and List.
+*/
+pad_begin(K, L, S, R):- make_list(K, S, B), list_concat(B, L, R).
+
+/**
+	@form pad_end(Times, List, Value, NewList)
+	@constraints Times must be a positive (>= 0) integer.
+	@descr NewList is the concatenation of List and a list of length
+	Times with all elements equal to Value.
+*/
+pad_end(K, L, S, R):- make_list(K, S, E), list_concat(L, E, R).
+
+/**
+	@form cartesian_product(List1, List2, CP)
+	@descr CP is the cartesian product of List1 and List2. Every element
+	of CP is a list of two elements.
+*/
+cartesian_product([], _, []):- !.
+cartesian_product(_, [], []):- !.
+cartesian_product([X], [Y|R], [[X,Y]|S]):-
+	cartesian_product([X], R, S), !.
+cartesian_product([X|L], R, S):-
+	cartesian_product([X], R, S1), cartesian_product(L, R, S2),
+	list_concat(S1, S2, S), !.
+
+/**
+	@form cartesian_product_by(Function, List1, List2, CP)
+	@descr CP is the result of applying Function to every element
+	of the cartesian product of List1 and List2. Similar to doing:
+	
+	cartesian_product_by(F, List1,List2, R):- 
+		cartesian_product(List1,List2, C), map(F,C, R)
+*/
+cartesian_product_by(_, [], _, []):- !.
+cartesian_product_by(_, _, [], []):- !.
+cartesian_product_by(F, [X], [Y|R], [E|S]):-
+	call(F, X, Y, E), cartesian_product_by(F, [X], R, S), !.
+cartesian_product_by(F, [X|L], R, S):-
+	cartesian_product_by(F, [X], R, S1), cartesian_product_by(F, L, R, S2),
+	list_concat(S1, S2, S), !.

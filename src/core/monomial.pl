@@ -236,7 +236,7 @@ monomial_positive_coefficient(M):-
 % Replace the variable O with variable I
 monomial_revar(VAR,I, M, R):-
 	monomial_comps(M, C,V,E),
-	drop_with(VAR, I, V, Rv),
+	replace(VAR, I, V, Rv),
 	pisort(Rv,E, Vs,Es),
 	red_monomial_from_comps(C,Vs,Es, R).
 

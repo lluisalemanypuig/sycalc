@@ -32,19 +32,19 @@ padded_unipoly_mons_decr([], []):- !.
 padded_unipoly_mons_decr([M], [M]):- monomial_degrees(M, []), !.
 padded_unipoly_mons_decr([M], R):-
 	unimonomial_degree(M, D),
-	padded_list_end(D, [M], 0, R), !.
+	pad_end(D, [M], 0, R), !.
 padded_unipoly_mons_decr([M|Ms], R):-
 	first(Ms, F, _), monomial_degrees(F, []), !,
 	unimonomial_degree(M, D),
 	K is D - 1,
-	padded_list_end(K, [M], 0, Q),
+	pad_end(K, [M], 0, Q),
 	list_concat(Q, Ms, R).
 padded_unipoly_mons_decr([M|Ms], P):-
 	unimonomial_degree(M, D1),
 	first(Ms, F, _),
 	unimonomial_degree(F, D2),
 	K is D1 - D2 - 1,
-	padded_list_end(K, [M], 0, Q),    % K zeros between M and Ms
+	pad_end(K, [M], 0, Q),    % K zeros between M and Ms
 	padded_unipoly_mons_decr(Ms, R),
 	list_concat(Q,R, P), !.
 

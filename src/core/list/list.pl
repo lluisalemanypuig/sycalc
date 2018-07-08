@@ -1,215 +1,177 @@
-% LIST-RELATED FUNCTIONS
+/***
+	@descr This file contains a number of simple list-related simple
+	predicates. Finding the minimum and maximum values in a list, sorting
+	a list, dropping certain elements from a list, ...
+*/
 
+/**
+	@form min(List, Min)
+	@descr Min is the smallest value, according to '@>' in List
+*/
 min([X], X):- !.
-min([X|L], M):- min(L, N), X > N, !, M is N.
+min([X|L], M):- min(L, N), X @> N, !, M is N.
 min([X|_], X).
 
+/**
+	@form max(List, Max)
+	@descr Max is the smallest value, according to '@<' in List
+*/
 max([X], X):- !.
-max([X|L], M):- max(L, N), X < N, !, M is N.
+max([X|L], M):- max(L, N), X @< N, !, M is N.
 max([X|_], X).
 
+/**
+	@form first(List, First, Rest)
+	@constraints List cannot be empty.
+	@descr First is the head of List and Rest are the other elements of
+	List.
+*/
 first([X], X, []):- !.
-first([X|L], X, L):- !.
+first([X|L], X, L).
 
+/**
+	@form last(List, Rest, Last)
+	@constraints List cannot be empty.
+	@descr Last is the last element of List. Rest are the elements from
+	the first to the second to last.
+*/
 last([X], [], X):- !.
 last([X|R], [X|K], L):- last(R, K, L).
 
-% replaces the first element of the list with Y
+/**
+	@form replace_first(List, Value, NewList)
+	@constraints List cannot be empty.
+	@descr NewList is List but the first value is now Value. NewList
+	has the same length as List.
+*/
 replace_first([_], Y, [Y]):- !.
 replace_first([_|L], Y, [Y|L]).
 
-% replaces the last element of the list with Y
+/**
+	@form replace_last(List, Value, NewList)
+	@constraints List cannot be empty.
+	@descr NewList is List but the last value is now Value. NewList
+	has the same length as List.
+*/
 replace_last([_], Y, [Y]):- !.
 replace_last([X|L], Y, [X|R]):- replace_last(L, Y, R).
 
-% drops all elements equal to O from list
+/**
+	@form replace(Value,With, List, NewList)
+	@descr This predicete replaces all elements equal to Value with
+	value With in List. NewList is the result of this substitution.
+*/
+replace(_, _, [], []):- !.
+replace(V, I, [V], [I]):- !.
+replace(_, _, [X], [X]):- !.
+replace(V, I, [V|Xs], [I|Ds]):- replace(V, I, Xs, Ds), !.
+replace(V, I, [X|Xs], [X|Ds]):- replace(V, I, Xs, Ds).
+
+/**
+	@form drop(Value, List, NewList)
+	@descr NewList contains all elements from List except for those
+	equal to Value, according to \=.
+*/
 drop(_, [], []):- !.
-drop(O, [X], [X]):- O \= X, !.
+drop(O, [O], []):- !.
+drop(_, [X], [X]):- !.
 drop(O, [O|Xs], D):- drop(O, Xs, D), !.
 drop(O, [X|Xs], [X|Ds]):- drop(O, Xs, Ds).
 
-% replace all elements equal to O with I in list
-drop_with(_, _, [], []):- !.
-drop_with(O, _, [X], [X]):- O \= X, !.
-drop_with(O, I, [O|Xs], [I|Ds]):- drop_with(O, I, Xs, Ds), !.
-drop_with(O, I, [X|Xs], [X|Ds]):- drop_with(O, I, Xs, Ds).
-
-% splits a list in two groups: the first containing all elements equal
-% to X and the second containing the other elements
+/**
+	@form split_at(Value,List, Left,Right)
+	@descr Splits List into two groups, Left and Right. Left contains
+	all elements in List equal to Value. Right contains all the other
+	elements in List. The sum of lengths of Left and Right equals the
+	length of List.
+*/
 split_at(X,    [Y],    [Y],[]):- X == Y, !.
 split_at(X,    [Y],    [],[Y]):- X \= Y, !.
 split_at(X, [Y|Xx], [Y|Xs],Lr):- X == Y, split_at(X, Xx, Xs,Lr), !.
 split_at(X, [Y|Yy], Xs,[Y|Lr]):- X \= Y, split_at(X, Yy, Xs,Lr).
 
-% pairwise split
+/**
+	@form split_at(Value, List1,List2, L1,R1, L2,R2)
+	@constraints List1 and List2 must be of equal length.
+	@descr Splits two lists each into two groups. The splitting is done
+	similarly as in predicate 'split_at'. However, here the splitting is
+	guided by List1, that is:
+		* if i-th element of List1 is equal to Value then L1 will contain
+		i-th element of List1 and L2 will contain i-th element of List2.
+		* if i-th element of List1 is not equal to Value then R1 will
+		contain i-th element of List1 and R2 will contain i-th element
+		of List2.
+*/
 psplit_at(X,       [Y],[Q],       [Y],[Q],     [],[]):- X == Y, !.
 psplit_at(X,       [Y],[Q],         [],[],   [Y],[Q]):- X \= Y, !.
 psplit_at(X, [Y|Xx],[R|Rr], [X|Xs],[R|Rs],     Xr,Lr):- X == Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr), !.
 psplit_at(X, [Y|Xx],[R|Rr],     Xs,Rs, [Y|Xr],[R|Lr]):- X \= Y, psplit_at(X, Xx,Rr, Xs,Rs, Xr,Lr).
 
-% is element X in list?
-member(X, [X]):- !.
-member(X, [X|_]):- !.
-member(X, [_|L]):- member(X, L).
-
-% High order functions
-
-% F :: a -> b
-map(_, [], []):- !.
-map(F, [X|L], [E|R]):- call(F, X, E), map(F, L, R), !.
-
-% The inspection of a list with function F is the verification that
-% applying the function F to all elements in the list never fails
-inspection(_, []):- !.
-inspection(F, [X|Xs]):- call(F, X), inspection(F, Xs).
-
-zip([A], [B], [(A, B)]):- !.
-zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S), !.
-
-% F :: a -> a -> a
-zip_with(_,  [],  [],  []):- !.
-zip_with(F, [A], [B], [X]):- call(F, A, B, X), !.
-zip_with(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zip_with(F, L, R, S), !.
-
-list_concat([], L, L).
-list_concat([A|L], R, [A|C]):- list_concat(L, R, C).
-
-% F :: a -> b -> a
-% foldl F x (y:ys) = foldl F (F x y) ys
-foldl(_, X, [], X):- !.
-foldl(F, X, [Y|L], R):- call(F, X, Y, S), foldl(F, S, L, R).
-
-% F :: a -> b -> b
-% foldr f x (y:ys) = f y (foldr f x ys)
-foldr(_, X, [], X):- !.
-foldr(F, X, [Y|L], R):- foldr(F, X, L, S), call(F, Y, S, R).
-
-% creates a list with K elements equal to S
-padded_list(0, _, []):- !.
-padded_list(K, S, [S|R]):- K1 is K - 1, padded_list(K1, S, R).
-
-% adds K elements equal to S at the beggining/ending of the list L
-padded_list_begin(K, L, S, R):- padded_list(K, S, B), list_concat(B, L, R).
-padded_list_end(K, L, S, R):- padded_list(K, S, E), list_concat(L, E, R).
-
-% cartesian_product(A, B, C): C is the cartesian product of A and B.
-% C = A x B
-cartesian_product([], _, []):- !.
-cartesian_product(_, [], []):- !.
-cartesian_product([X], [Y|R], [[X,Y]|S]):-
-	cartesian_product([X], R, S), !.
-cartesian_product([X|L], R, S):-
-	cartesian_product([X], R, S1), cartesian_product(L, R, S2),
-	list_concat(S1, S2, S), !.
-
-% cartesian_product_by(F, A, B, C): C is the result of applying the function
-% F to every element of (A x B).
-% C = map(F, A x B)
-cartesian_product_by(_, [], _, []):- !.
-cartesian_product_by(_, _, [], []):- !.
-cartesian_product_by(F, [X], [Y|R], [E|S]):-
-	call(F, X, Y, E), cartesian_product_by(F, [X], R, S), !.
-cartesian_product_by(F, [X|L], R, S):-
-	cartesian_product_by(F, [X], R, S1), cartesian_product_by(F, L, R, S2),
-	list_concat(S1, S2, S), !.
-
-% SORTING ALGORITHMS
-% F(X,Y) is true when X < Y
-
-% inserts element X in list L, according to function F
-insert_by(_, X, [], [X]):- !.
-insert_by(F, X, [Y|L], [X,Y|L]):- call(F, X, Y), !.   % X < Y
-insert_by(F, X, [Y|L], [Y|R]):- insert_by(F, X, L, R).
-
-% insertion sort (as always)
-isort_by(_, [], []):- !.
-isort_by(F, [X|L], R):- isort_by(F, L, S), insert_by(F, X, S, R).
-
-% pairwise insertion sort
-% In short, given two lists A,B of the same length, and two elements
-% a,b, inserts a into A. If position of 'a' in 'A' is 'p', then position
-% of 'b' in 'B' is also p. Note that B may not be sorted at the end.
-
-% Pair-wise insertion of two elements, each to a different list, according
-% function F, guided by the first list
-pinsert_by(_, X,Y,      [],     [],       [X],      [Y]):- !.
-pinsert_by(F, X,Y, [Xx|Xs],[Yy|Ys], [X,Xx|Xs],[Y,Yy|Ys]):- call(F,X,Xx), !.
-pinsert_by(F, X,Y, [Xx|Xs],[Yy|Ys],   [Xx|Xr],  [Yy|Yr]):- pinsert_by(F, X,Y, Xs,Ys, Xr,Yr).
-
-% Pair-wise insertion sort of two lists using function F, guided by first list
-pisort_by(_,     [],    [],  [], []):- !.
-pisort_by(F, [X|Xs],[Y|Ys],  Rx, Ry):-
-	pisort_by(F, Xs,Ys, Sx,Sy),
-	pinsert_by(F, X,Y, Sx,Sy, Rx,Ry).
-
-% Fuses two sorted lists into one, according to function F.
-% The result of fusing two lists is the concatenation of the element-wise
-% sorting of the elements of the two lists:
-% the fusion of X=[x|xs] and Y=[y|ys] is defined as
-%     fuse([x|xs], [y|ys], [x,y|r]) with x < y
-%     fuse([x|xs], [y|ys], [y,x|r]) with x > y
-% where r is the fusion of xs and ys
-fuse_by(_,     [],     [],       []):- !.
-fuse_by(_,     [],      L,        L):- !.
-fuse_by(_,      L,     [],        L):- !.
-fuse_by(F, [X|Xs], [Y|Ys], [X,Y|Ms]):- call(F, X, Y), !, fuse_by(F, Xs, Ys, Ms).
-fuse_by(F, [X|Xs], [Y|Ys], [Y,X|Ms]):- call(F, Y, X), fuse_by(F, Xs, Ys, Ms).
-
-% Fuses four sorted lists into two, pairwise, according to
-% function F. See predicate fuse_by for a formal definition of fusion.
-pfuse_by(_,           [],[],           [],[],                 [],[]):- !.
-pfuse_by(_,             X,Y,           [],[],                   X,Y):- !.
-pfuse_by(_,           [],[],             X,Y,                   X,Y):- !.
-pfuse_by(F, [X1|Xs],[Y1|Ys], [X2|Xr],[Y2|Yr], [X1,X2|Xz],[Y1,Y2|Yz]):-
-	call(F, X1, X2),
-	pfuse_by(F, Xs,Ys, Xr,Yr, Xz,Yz),
-	!.
-pfuse_by(F, [X1|Xs],[Y1|Ys], [X2|Xr],[Y2|Yr], [X2,X1|Xz],[Y2,Y1|Yz]):-
-	pfuse_by(F, Xs,Ys, Xr,Yr, Xz,Yz).
-
-% macros
-insert(X, L, R):- insert_by(@<, X, L, R).
-pinsert(X,Y, Xs,Ys, SX,SY):- pinsert_by(@<, X,Y, Xs,Ys, SX,SY).
-isort(L, R):- isort_by(@<, L, R).
-pisort(X,Y, SX,SY):- pisort_by(@<, X,Y, SX,SY).
-fuse(X,Y, M):- fuse_by(@<, X,Y, M).
-pfuse(X,Y, SX,SY, RX,RY):- pfuse_by(@<, X,Y, SX,SY, RX,RY).
-
 % COUNTING FUNCTIONS
 
 how_many_([X], [[X, 1]]):- !.
-how_many_([X|L], [[X, C] | RR]):-
-	how_many_(L, R), first(R, [X, N], RR), !, C is N + 1.
-how_many_([X|L], [[X, 1] | R]):-
-	how_many_(L, R).
+how_many_([X|L], [[X, C] | RR]):- how_many_(L, R), first(R, [X, N], RR), !, C is N + 1.
+how_many_([X|L], [[X, 1] | R]):- how_many_(L, R).
 
+/**
+	@form how_many(List, Counting)
+	@constraints List cannot be empty.
+	@descr Counting is a list containing lists of two elements, the
+	first of which is an element of List and the last is the number of
+	occurrences of that element in List.
+*/
 how_many(L, R):- isort(L, S), how_many_(S, R).
 
 % MATHEMATICAL OPERATIONS
 
-/*
-X = [x1, x2, ..., xn]
-Y = [y1, y2, ..., yn]
-R = x1*y1 + x2*y2 + ... + xn*yn
+/**
+	@form dot_prod(List1, List2, P)
+	@constraints List1 and List2 cannot be empty, both must contain
+	elements to which the operators '*' and '+' can be applied, and
+	must have the same length.
+	@descr P is the result of applying the dot product to the lists
+	List1 and List2 as if they were vectors.
+	List1 = [x1, x2, ..., xn]
+	List2 = [y1, y2, ..., yn]
+	P = x1*y1 + x2*y2 + ... + xn*yn
 */
 dot_prod([X], [Y], P):- P is X*Y, !.
 dot_prod([X|Xs], [Y|Ys], R):- P is X*Y, dot_prod(Xs, Ys, Q), R is P + Q, !.
 
-/*
-  | m n o p
-x | 0 B C D
---+-------------
-  | B C D P
-
-B = x*(m + 0)
-C = x*(n + B)
-D = x*(o + C)
-P = x*(p + D)
-
-L = [B,C,D]
+/**
+	@form ladder_prod(Divisor, StartValue, Coefficients, NewCoefficients, LastTerm)
+	@constraints Coefficients cannot be empty and must contain
+	elements to which the operators '*' and '+' can be applied.
+	@descr One should interpret this predicate as some sort of Ruffini's
+	rule generalisation.
+	Therefore, if Coefficients has the elements [m,n,o,p], Divisor has
+	the value 'x' and StartValue is 'A' then the ladder product is
+	defined as follows:
+	
+	  | m n o p
+	x | A B C D
+	--+-------------
+	  | T U V W
+	T = m + A
+	B = x*T = x*(m + A)
+	U = n + B
+	C = x*U = x*(n + B)
+	V = o + C
+	D = x*V = x*(o + C)
+	LastTerm = W = p + D
+	NewCoefficients = [T,U,V]
+	
+	For the case of Ruffini's rule:
+	-> Coefficients must be a list of integer values with a '1' in the
+	first element.
+	-> StartValue (A) has to be 0
+	-> Divisor must divide the last element of Coefficients
+	-> NewCoefficients are the integer values representing the coefficients
+	of a new polynomial.
+	-> LastTerm must be equal to 0 for Divisor to be a root of the
+	polynomial represented by Coefficients.
 */
-ladder_prod(X, A, [Y], [], P):-
-	P is X*(Y + A), !.
+ladder_prod(X, A, [Y], [], P):- P is X*(Y + A), !.
 ladder_prod(X, A, [Y|Ys], [R|L], Q):-
 	R is Y + A, P is X*R, ladder_prod(X, P, Ys, L, Q), !.
 

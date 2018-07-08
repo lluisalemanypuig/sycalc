@@ -24,8 +24,10 @@ NUMBER =												\
 	$(SRC_DIR)/core/number/arithmetic_evaluation.pl		\
 	$(SRC_DIR)/core/number.pl
 
-LISTS =								\
-	$(SRC_DIR)/core/list/list.pl 	\
+LISTS =									\
+	$(SRC_DIR)/core/list/list.pl 		\
+	$(SRC_DIR)/core/list/high_order.pl 	\
+	$(SRC_DIR)/core/list/sort_list.pl 	\
 	$(SRC_DIR)/core/list.pl
 
 POLYNOMIALS	= 																\
@@ -53,7 +55,7 @@ bindirectory: $(BIN_DIR)
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
-all: release debug
+all: release debug 
 
 include $(RUL_DIR)/Makefile.release
 include $(RUL_DIR)/Makefile.debug

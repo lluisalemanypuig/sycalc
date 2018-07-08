@@ -47,11 +47,11 @@ polynomial_reduction(P, R):-
 % This list has monomials with unique degree: [3*x^2, x, 1]
 unipoly_from_list_sum_sorted_list__(P1, D1, P2, D2, R):- D1 < D2, !,
 	NZEROES is D2 - D1,
-	padded_list_begin(NZEROES, P1, 0, PP1),
+	pad_begin(NZEROES, P1, 0, PP1),
 	zip_with(mon_sum, PP1, P2, R).
 unipoly_from_list_sum_sorted_list__(P1, D1, P2, D2, R):-
 	NZEROES is D1 - D2,
-	padded_list_begin(NZEROES, P2, 0, PP2),
+	pad_begin(NZEROES, P2, 0, PP2),
 	zip_with(mon_sum, P1, PP2, R).
 
 unipoly_from_list_sum_sorted_list_(PP1, PP2, R):-
@@ -86,11 +86,11 @@ polynomial_from_list_sum_list(P1, P2, R):-
 % This list has monomials with unique degree: [3*x^2, x, 1]
 unipoly_from_list_sub_sorted_list(P1, D1, P2, D2, R):- D1 < D2,
 	NZEROES is D2 - D1,
-	padded_list_begin(NZEROES, P1, 0, PP1),
+	pad_begin(NZEROES, P1, 0, PP1),
 	zip_with(mon_sub, PP1, P2, R), !.
 unipoly_from_list_sub_sorted_list(P1, D1, P2, D2, R):-
 	NZEROES is D1 - D2,
-	padded_list_begin(NZEROES, P2, 0, PP2),
+	pad_begin(NZEROES, P2, 0, PP2),
 	zip_with(mon_sub, P1, PP2, R).
 
 unipoly_from_list_sub_sorted_list(P1, [], P1):- !.
