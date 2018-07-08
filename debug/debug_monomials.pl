@@ -119,7 +119,7 @@ deb_mon_split(I, V, M, Mo,Mr):-
 	monomial_split(V, M, Vo,Wr), Vo == Mo, Wr == Mr, !, output_correct(I).
 deb_mon_split(I, V, M, Mo,Mr):-
 	monomial_split(V, M, Vo,Wr),
-	write(I), write('Splitting monomial '), write(M), write(' at '), write(V), write(' produces:'), nl,
+	write(I), write(' Splitting monomial '), write(M), write(' at '), write(V), write(' produces:'), nl,
 	write('     Vo='), write(Vo), write(' but expected '), write(Mo), nl,
 	write('     Wr='), write(Wr), write(' but expected '), write(Mr), nl,
 	false.
