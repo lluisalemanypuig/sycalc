@@ -31,9 +31,9 @@ deb_power(I, A, B, RES):-
 	write(I), write(' '), write(A), write('^'), write(B), write(' = '),
 	output_text(R, RES).
 
-deb_arithm(I, E, RES):- arithmetic_eval(E, RES), !, output_correct(I).
+deb_arithm(I, E, RES):- arith_expr_eval(E, RES), !, output_correct(I).
 deb_arithm(I, E, RES):-
-	arithmetic_eval(E, R),
+	arith_expr_eval(E, R),
 	write(I), write(' '), write(E), write(' = '), output_text(R, RES).
 
 deb_abs(I, E, RES):- abs_real(E, RES), !, output_correct(I).
@@ -109,15 +109,18 @@ debug_arithmetic_evaluation:-
 	deb_arithm('  1)', 3 + 3, 6),
 	deb_arithm('  2)', 3 - 4, -1),
 	deb_arithm('  3)', 3^4, 81),
-	deb_arithm('  4)', 2^2^2^2, 256),
-	deb_arithm('  5)', 2^2^2^2^2, 65536),
-	deb_arithm('  6)', 2^(1 + 1)^2, 16),
-	deb_arithm('  7)', 2^2^(2 + 1 - 1)^2^2, 65536),
-	deb_arithm('  8)', (1/2)^2 + 3/4, 1),
-	deb_arithm('  9)', (1/2)^0, 1),
-	deb_arithm(' 10)', (1/2)^0 + 3/4, 7/4),
-	deb_arithm(' 11)', 1 - (1 + 1), -1),
-	deb_arithm(' 12)', 1/2, 1/2),
+	deb_arithm('  4)', 2^2^2^2, 65536),
+	deb_arithm('  5)', 2^(2^(2^(2))), 65536),
+	deb_arithm('  6)', ((2^2)^2)^2, 256),
+	% deb_arithm('  -)', 2^2^2^2^2, 65536), % the result is too large
+	deb_arithm('  7)', (((2^2)^2)^2)^2, 65536),
+	deb_arithm('  8)', 2^(1 + 1)^2, 16),
+	deb_arithm('  9)', (2^2)^(2 + 1 - 1)^(2^2), 4294967296),
+	deb_arithm(' 10)', (1/2)^2 + 3/4, 1),
+	deb_arithm(' 11)', (1/2)^0, 1),
+	deb_arithm(' 12)', (1/2)^0 + 3/4, 7/4),
+	deb_arithm(' 13)', 1 - (1 + 1), -1),
+	deb_arithm(' 14)', 1/2, 1/2),
 
 	write('* ABSOLUTE VALUES'), nl,
 

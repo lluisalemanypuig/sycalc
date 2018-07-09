@@ -3,19 +3,27 @@
 
 % REALS
 
-% Is A a real number?
+/***
+	@descr This file contains the definition of a real number (either
+	a rational or an irrational number) and the definition of absolute
+	value of such a number.
+*/
+
+/**
+	@form real(A)
+	@descr This predicate failes if A is neither a rational or an
+	irrational value.
+*/
 real(A):- rational(A), !.
 real(A):- irrational(A).
 
 % Compute the absolute value of a real number
+/**
+	@form abs_real(X, A)
+	@constraints X is a real number.
+	@descr A is the aboslute value of X.
+*/
 abs_real(X, AX):- fraction(X), X < 0, neg_frac(X, AX), !.
 abs_real(X, X):- fraction(X), X > 0, !.
 abs_real(X, AX):- abs(X, AX).
 
-% UTILS
-
-max_num(X, Y, X):- X >= Y, !.
-max_num(_, Y, Y).
-
-min_num(X, Y, X):- X =< Y, !.
-min_num(_, Y, Y).

@@ -8,7 +8,7 @@
 % have an exponent which is also a numerical rational value (at the
 % right of the variable). The coefficient or the exponent may be
 % inexistent (= 1), and so can the variables. A reduced numerical value
-% is the result of arithmetic_eval(E) where E is an arithmetic
+% is the result of arith_expr_eval(E) where E is an arithmetic
 % expression.
 
 % Here we distinguish between two types of monomials: simple and complex
@@ -36,22 +36,22 @@ monomial_comps_(- (M), NC, V, E):-
 
 % Simple monomial: full
 monomial_comps_(C*V^E, CE, [V], [EE]):-
-	arithmetic_eval(C, CE),
-	arithmetic_eval(E, EE), !.
+	arith_expr_eval(C, CE),
+	arith_expr_eval(E, EE), !.
 
 % Simple monomial: partial (variable, exponent)
-monomial_comps_(X^E, 1, [X], [EE]):- atom(X), arithmetic_eval(E, EE), !.
+monomial_comps_(X^E, 1, [X], [EE]):- atom(X), arith_expr_eval(E, EE), !.
 % Simple monomial: partial (coeficient, variable)
-monomial_comps_(C*X, CE, [X], [1]):- atom(X), arithmetic_eval(C, CE), !.
+monomial_comps_(C*X, CE, [X], [1]):- atom(X), arith_expr_eval(C, CE), !.
 % Simple monomial: degenerate (coeficient)
-monomial_comps_(C, CE, [], []):- arithmetic_eval(C, CE), !.
+monomial_comps_(C, CE, [], []):- arith_expr_eval(C, CE), !.
 % Simple monomial: degenerate (variable)
 monomial_comps_(X, 1, [X], [1]):- not(expr(X)), !.
 % Complex monomial:
 %    coeficient * (variable^exponent) * ... * (variable^exponent)
 %    Last is: variable^exponent
 monomial_comps_(S*V^E, C, [V|Vs], [EE|Es]):-
-	arithmetic_eval(E, EE),
+	arith_expr_eval(E, EE),
 	monomial_comps_(S, C,Vs,Es),
 	!.
 %    Last is variable
@@ -138,10 +138,10 @@ monomial_vars_product(X, E, _, X^E).
 % list of variables and exponents are empty)
 collapse_vars_list(        [],        [],     [],  []):- !.
 collapse_vars_list(       [V],       [E],    [V], [E]):- !.
-collapse_vars_list(   [V1,V1],   [E1,E2],   [V1],[SE]):- arithmetic_eval(E1 + E2, SE), !.
+collapse_vars_list(   [V1,V1],   [E1,E2],   [V1],[SE]):- arith_expr_eval(E1 + E2, SE), !.
 collapse_vars_list(   [V1,V2],	      Es,[V1,V2],  Es):- !.
 collapse_vars_list([V1,V1|Xs],[E1,E2|Es],    CVs, CEs):-
-	arithmetic_eval(E1 + E2, SE),
+	arith_expr_eval(E1 + E2, SE),
 	collapse_vars_list([V1|Xs],[SE|Es], CVs, CEs), !.
 collapse_vars_list([V1,V2|Xs],[E1,E2|Es], [V1|CVs],[E1|CEs]):-
 	collapse_vars_list([V2|Xs],[E2|Es], CVs,CEs).
@@ -151,7 +151,7 @@ red_monomial_vars_list([_|Vs],[0|Es],     RVs,    REs):- red_monomial_vars_list(
 red_monomial_vars_list([V|Vs],[E|Es], [V|RVs],[E|REs]):- red_monomial_vars_list(Vs,Es, RVs,REs).
 red_monomial_comps(0, _, _,  0, [], []):- !.
 red_monomial_comps(C,Vs,Es, Rc,CVs,CEs):-
-	arithmetic_eval(C,Rc),
+	arith_expr_eval(C,Rc),
 	red_monomial_vars_list(Vs,Es, RVs, REs),
 	collapse_vars_list(RVs,REs, CVs,CEs).
 
@@ -160,13 +160,13 @@ red_monomial_comps(C,Vs,Es, Rc,CVs,CEs):-
 red_vars_monomial(    [],  [], _):- !.
 red_vars_monomial(   [_], [0], _):- !.
 red_vars_monomial(   [X], [1], X):- !.
-red_vars_monomial(   [X], [E], X^EE):- arithmetic_eval(E, EE), !.
+red_vars_monomial(   [X], [E], X^EE):- arith_expr_eval(E, EE), !.
 red_vars_monomial([_|Xs], [0|Es], RV):- red_vars_monomial(Xs, Es, RV), !.
 red_vars_monomial([X|Xs], [1|Es], R):-
 	red_vars_monomial(Xs, Es, RV),
 	monomial_vars_product(X, RV, R), !.
 red_vars_monomial([X|Xs], [E|Es], R):-
-	arithmetic_eval(E, EE),
+	arith_expr_eval(E, EE),
 	red_vars_monomial(Xs, Es, RV),
 	monomial_vars_product(X, EE, RV, R), !.
 
@@ -181,12 +181,12 @@ red_monomial__(-1, V, E, MR):-
 	neg_monomial_vars_product(RV, MR), !.
 red_monomial__( C, V, E, MR):-
 	red_vars_monomial(V,E, RV),
-	arithmetic_eval(C, CE),
+	arith_expr_eval(C, CE),
 	monomial_vars_product(CE, RV, MR), !.
 
 % R is the reduction of the monomial C*(V_i)^(E_i)
 red_monomial_from_comps(C,V,E, R):-
-	arithmetic_eval(C, CE), map(arithmetic_eval, E, EE),
+	arith_expr_eval(C, CE), map(arith_expr_eval, E, EE),
 	red_monomial_comps(CE,V,EE, Rc,RVs,REs),
 	pisort(RVs,REs, SVs,SEs),
 	red_monomial__(Rc,SVs,SEs, R).

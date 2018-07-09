@@ -9,7 +9,7 @@
 % when the monomials can not be fused then the result is sorted
 
 % null coeficients
-mon_sum_( _,C1,[],[],   _,C2,[],[], C):- arithmetic_eval(C1+C2, C), !.
+mon_sum_( _,C1,[],[],   _,C2,[],[], C):- arith_expr_eval(C1+C2, C), !.
 mon_sum_(M1, _, _, _,  M2,C2,[],[], M1 + M2):- C2 > 0, !.
 mon_sum_(M1, _, _, _,   _,C2,[],[], M1 - NC):- C2 < 0, !, rational_neg(C2,NC).
 mon_sum_( _,C1,[],[],  M2, _, _, _, M2 + C1):- C1 > 0, !.
@@ -70,7 +70,7 @@ mon_prod(M1, M2, PROD):-
 	red_monomial_comps(C2,V2,E2, RC2,RV2,RE2),
 	pfuse(RV1,RE1, RV2,RE2, MV,ME),
 	collapse_vars_list(MV,ME, CV,CE),
-	arithmetic_eval(RC1*RC2, CP),
+	arith_expr_eval(RC1*RC2, CP),
 	red_monomial_from_comps(CP,CV,CE, PROD).
 
 mon_prod([M1,M2], P):- mon_prod(M1, M2, P), !.
@@ -85,7 +85,7 @@ mon_prod([M1,M2], P):- mon_prod(M1, M2, P), !.
 monomial_value_evaluation(VAL, V, M, E):-
 	monomial_comps(M, C,Vs,Es),
 	monomial_exponent(V, Vs,Es, Vr,Er, EXP),
-	arithmetic_eval(C*(VAL^EXP), R),
+	arith_expr_eval(C*(VAL^EXP), R),
 	red_monomial_from_comps(R,Vr,Er, E), !.
 monomial_value_evaluation(  _, _, M, M).
 
