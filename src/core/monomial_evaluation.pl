@@ -84,7 +84,7 @@ mon_prod([M1,M2], P):- mon_prod(M1, M2, P), !.
 % E: M(VAL)
 monomial_value_evaluation(VAL, V, M, E):-
 	monomial_comps(M, C,Vs,Es),
-	monomial_exponent(V, Vs,Es, Vr,Er, EXP),
+	monomial_var_exp_comps(V, Vs,Es, Vr,Er, EXP),
 	arith_expr_eval(C*(VAL^EXP), R),
 	red_monomial_from_comps(R,Vr,Er, E), !.
 monomial_value_evaluation(  _, _, M, M).
