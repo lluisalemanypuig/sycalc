@@ -65,9 +65,9 @@ replace_last([X|L], Y, [X|R]):- replace_last(L, Y, R).
 	@descr This predicete replaces all elements equal to Value with
 	value With in List. NewList is the result of this substitution.
 */
-replace(_, _, [], []):- !.
-replace(V, I, [V], [I]):- !.
-replace(_, _, [X], [X]):- !.
+replace(_, _,     [],     []):- !.
+replace(V, I,    [V],    [I]):- !.
+replace(_, _,    [X],    [X]):- !.
 replace(V, I, [V|Xs], [I|Ds]):- replace(V, I, Xs, Ds), !.
 replace(V, I, [X|Xs], [X|Ds]):- replace(V, I, Xs, Ds).
 
@@ -76,11 +76,25 @@ replace(V, I, [X|Xs], [X|Ds]):- replace(V, I, Xs, Ds).
 	@descr NewList contains all elements from List except for those
 	equal to Value, according to \=.
 */
-drop(_, [], []):- !.
-drop(O, [O], []):- !.
-drop(_, [X], [X]):- !.
-drop(O, [O|Xs], D):- drop(O, Xs, D), !.
+drop(_,    [],      []):- !.
+drop(O,    [O],     []):- !.
+drop(_,    [X],    [X]):- !.
+drop(O, [O|Xs],      D):- drop(O, Xs, D), !.
 drop(O, [X|Xs], [X|Ds]):- drop(O, Xs, Ds).
+
+/**
+	@form pdrop(Value, List1,List2, NewList1,NewList2)
+	@constraints List1 and List2 must have the same length.
+	@descr NewList1 contains all elements from List1 except for those
+	equal to Value, according to \=. If i-th element of List1 is
+	dropped then the i-th element of List2 is also dropped and NewList2
+	will not contain it.
+*/
+pdrop(_,         [],[],           [],[]):- !.
+pdrop(X,       [X],[_],           [],[]):- !.
+pdrop(_,       [X],[Q],         [X],[Q]):- !.
+pdrop(X, [X|Xs],[_|Qs],         Dxs,Dqs):- pdrop(X, Xs,Qs, Dxs,Dqs), !.
+pdrop(X, [Y|Xs],[Q|Qs], [Y|Dxs],[Q|Dqs]):- pdrop(X, Xs,Qs, Dxs,Dqs).
 
 /**
 	@form split(Value,List, Left,Right)
@@ -90,27 +104,50 @@ drop(O, [X|Xs], [X|Ds]):- drop(O, Xs, Ds).
 	elements in List. The sum of lengths of Left and Right equals the
 	length of List.
 */
+split(X,    [X],    [X],[]):- !.
+split(X,    [X],    [],[X]):- !, false.
+split(_,    [Y],    [],[Y]):- !.
+split(X, [X|Xx], [X|Xs],Lr):- split(X, Xx, Xs,Lr), !.
+split(X,  [X|_],   _,[X|_]):- !, false.
+split(X, [Y|Yy], Xs,[Y|Lr]):- split(X, Yy, Xs,Lr).
+
+/*
+OLD SPLIT
 split(X,    [Y],    [Y],[]):- X == Y, !.
 split(X,    [Y],    [],[Y]):- X \= Y, !.
 split(X, [Y|Xx], [Y|Xs],Lr):- X == Y, split(X, Xx, Xs,Lr), !.
 split(X, [Y|Yy], Xs,[Y|Lr]):- X \= Y, split(X, Yy, Xs,Lr).
+*/
 
 /**
-	@form split(Value, List1,List2, L1,R1, L2,R2)
+	@form split(Value, List1,List2, L1,L2, R1,R2)
 	@constraints List1 and List2 must be non-empty and of equal length.
-	@descr Splits two lists each into two groups. The splitting is done
-	similarly as in predicate 'split'. However, here the splitting is
-	guided by List1, that is:
+	@descr Splits lists List1 and List2 each into two groups. The splitting
+	is done similarly as in predicate 'split'. However, here the splitting
+	is guided by List1, that is:
 		* if i-th element of List1 is equal to Value then L1 will contain
 		i-th element of List1 and L2 will contain i-th element of List2.
 		* if i-th element of List1 is not equal to Value then R1 will
 		contain i-th element of List1 and R2 will contain i-th element
 		of List2.
 */
-psplit(X,       [Y],[Q],       [Y],[Q],     [],[]):- X == Y, !.
-psplit(X,       [Y],[Q],         [],[],   [Y],[Q]):- X \= Y, !.
-psplit(X, [Y|Xx],[R|Rr], [X|Xs],[R|Rs],     Xr,Lr):- X == Y, psplit(X, Xx,Rr, Xs,Rs, Xr,Lr), !.
-psplit(X, [Y|Xx],[R|Rr],     Xs,Rs, [Y|Xr],[R|Lr]):- X \= Y, psplit(X, Xx,Rr, Xs,Rs, Xr,Lr).
+psplit(X,       [X],[Q],         [X],[Q],           [],[]):- !.
+psplit(X,       [X],[Q],           [],[],         [X],[Q]):- !, false.
+psplit(_,       [Y],[Q],           [],[],         [Y],[Q]):- !.
+
+psplit(X, [X|L1],[Q|L2], [X|Ls1],[Q|Ls2],         Rs1,Rs2):- psplit(X, L1,L2, Ls1,Ls2, Rs1,Rs2), !.
+psplit(X,       [X|_],_,             _,_,         [X|_],_):- !, false.
+psplit(X, [Y|L1],[Q|L2],         Ls1,Ls2, [Y|Rs1],[Q|Rs2]):- psplit(X, L1,L2, Ls1,Ls2, Rs1,Rs2), !.
+
+/*
+OLD PSPLIT
+
+F(X,       [X],[Q],         [X],[Q],           [],[]):- !.
+F(X,       [Y],[Q],           [],[],         [Y],[Q]):- X \= Y, !.
+F(X, [X|L1],[Q|L2], [X|Ls1],[Q|Ls2],         Rs1,Rs2):- F(X, L1,L2, Ls1,Ls2, Rs1,Rs2), !.
+F(X, [Y|L1],[Q|L2],         Ls1,Ls2, [Y|Rs1],[Q|Rs2]):- X \= Y, F(X, L1,L2, Ls1,Ls2, Rs1,Rs2).
+*/
+
 
 % COUNTING FUNCTIONS
 
@@ -144,37 +181,37 @@ dot_prod([X], [Y], P):- P is X*Y, !.
 dot_prod([X|Xs], [Y|Ys], R):- P is X*Y, dot_prod(Xs, Ys, Q), R is P + Q, !.
 
 /**
-@form ladder_prod(Divisor, StartValue, Coefficients, NewCoefficients, LastTerm)
-@constraints Coefficients cannot be empty and must contain
-elements to which the operators '*' and '+' can be applied.
-@descr One should interpret this predicate as some sort of Ruffini's
-rule generalisation.
-Therefore, if Coefficients has the elements [m,n,o,p], Divisor has
-the value 'x' and StartValue is 'A' then the ladder product is
-defined as follows:
+	@form ladder_prod(Divisor, StartValue, Coefficients, NewCoefficients, LastTerm)
+	@constraints Coefficients cannot be empty and must contain
+	elements to which the operators '*' and '+' can be applied.
+	@descr One should interpret this predicate as some sort of Ruffini's
+	rule generalisation.
+	Therefore, if Coefficients has the elements [m,n,o,p], Divisor has
+	the value 'x' and StartValue is 'A' then the ladder product is
+	defined as follows:
 
-  | m n o p
-x | A B C D
---+-------------
-  | T U V W
-T = m + A
-B = x*T = x*(m + A)
-U = n + B
-C = x*U = x*(n + B)
-V = o + C
-D = x*V = x*(o + C)
-LastTerm = W = p + D
-NewCoefficients = [T,U,V]
+	  | m n o p
+	x | A B C D
+	--+-------------
+	  | T U V W
+	T = m + A
+	B = x*T = x*(m + A)
+	U = n + B
+	C = x*U = x*(n + B)
+	V = o + C
+	D = x*V = x*(o + C)
+	LastTerm = W = p + D
+	NewCoefficients = [T,U,V]
 
-For the case of Ruffini's rule:
--> Coefficients must be a list of integer values with a '1' in the
-first element.
--> StartValue (A) has to be 0
--> Divisor must divide the last element of Coefficients
--> NewCoefficients are the integer values representing the coefficients
-of a new polynomial.
--> LastTerm must be equal to 0 for Divisor to be a root of the
-polynomial represented by Coefficients.
+	For the case of Ruffini's rule:
+	-> Coefficients must be a list of integer values with a '1' in the
+	first element.
+	-> StartValue (A) has to be 0
+	-> Divisor must divide the last element of Coefficients
+	-> NewCoefficients are the integer values representing the coefficients
+	of a new polynomial.
+	-> LastTerm must be equal to 0 for Divisor to be a root of the
+	polynomial represented by Coefficients.
 */
 ladder_prod(X, A, [Y], [], P):- P is X*(Y + A), !.
 ladder_prod(X, A, [Y|Ys], [R|L], Q):-

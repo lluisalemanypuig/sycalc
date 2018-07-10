@@ -26,9 +26,9 @@ deb_mon_comp(I, M, RC,RV,RE):-
 	write('('), write(RC), write(','), write(RV), write(','), write(RE), write(')'), false.
 
 deb_mon_reduced_vars(I, V,E, EV,EE):-
-	red_monomial_vars_list(V,E, EV,EE), !, output_correct(I).
+	pdrop(0, E,V, EE,EV), !, output_correct(I).
 deb_mon_reduced_vars(I, V,E, EV,EE):-
-	red_monomial_vars_list(V,E, RV,RE),
+	pdrop(0, E,V, RE,RV),
 	write(I), write(' The reduced variables are '), nl,
 	write('    V='), write(RV), write(' but expected '), write(EV), nl,
 	write('    E='), write(RE), write(' but expected '), write(EE), nl,
