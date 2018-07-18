@@ -20,7 +20,7 @@ real(A):- irrational(A).
 % Compute the absolute value of a real number
 /**
 	@form abs_real(X, A)
-	@constraints X is a real number.
+	@constrs X is a real number.
 	@descr A is the aboslute value of X.
 */
 abs_real(X, AX):- fraction(X), X < 0, neg_frac(X, AX), !.

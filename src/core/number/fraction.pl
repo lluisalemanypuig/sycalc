@@ -8,7 +8,7 @@
 
 /**
 	@form fraction(A/B)
-	@constraints A is an integer value, B is a strictly positive natural
+	@constrs A is an integer value, B is a strictly positive natural
 	value (> 0).
 	@descr A fraction is the quotient of an integer number and a natural
 	number. Any integer value X, although being equal to X/1, is not a
@@ -37,7 +37,7 @@ fraction_comp(F, N, D):- numerator(F, N), denominator(F, D).
 
 /**
 	@form irred_frac(A/B)
-	@constraints A/B is a fraction (predicate fraction(A/B) does not fail)
+	@constrs A/B is a fraction (predicate fraction(A/B) does not fail)
 	@descr Predicate fails if A/B can be reduced, that is, if the greatest
 	common divisor between A and B is not 1.
 */
@@ -47,7 +47,7 @@ irred_frac(A/B):- gcd(A, B, 1), !.
 
 /**
 	@form red_frac(A/B, C)
-	@constraints A/B is a fraction (predicate fraction(A/B) does not fail)
+	@constrs A/B is a fraction (predicate fraction(A/B) does not fail)
 	@descr C is either an integer value or an irreducible fraction equal
 	to A/B.
 */
@@ -61,7 +61,7 @@ red_frac(A/B, C/D):- gcd(A, B, G), C is A/G, D is B/G, !.
 
 /**
 	@form frac_sum(A/B, C/D, E/F)
-	@constraints A/B and C/D are fractions (predicates fraction(A/B) and
+	@constrs A/B and C/D are fractions (predicates fraction(A/B) and
 	fraction(C/D) do not fail)
 	@descr E/F is a fraction equal to A/B + C/D. May be reducible.
 */
@@ -70,7 +70,7 @@ frac_sum(A/B, C/D, E/F):- F is B*D, E is A*D + B*C.
 
 /**
 	@form frac_sub(A/B, C/D, E/F)
-	@constraints A/B and C/D are fractions (predicates fraction(A/B) and
+	@constrs A/B and C/D are fractions (predicates fraction(A/B) and
 	fraction(C/D) do not fail)
 	@descr E/F is a fraction equal to A/B - C/D. May be reducible.
 */
@@ -79,7 +79,7 @@ frac_sub(A/B, C/D, E/F):- F is B*D, E is A*D - B*C.
 
 /**
 	@form frac_prod(A/B, C/D, E/F)
-	@constraints A/B and C/D are fractions (predicates fraction(A/B) and
+	@constrs A/B and C/D are fractions (predicates fraction(A/B) and
 	fraction(C/D) do not fail)
 	@descr E/F is a fraction equal to (A/B)*(C/D). May be reducible.
 */
@@ -87,7 +87,7 @@ frac_prod(A/B, C/D, E/F):- E is A*C, F is B*D.
 
 /**
 	@form frac_div(A/B, C/D, E/F)
-	@constraints A/B and C/D are fractions (predicates fraction(A/B) and
+	@constrs A/B and C/D are fractions (predicates fraction(A/B) and
 	fraction(C/D) do not fail)
 	@descr E/F is a fraction equal to (A/B)/(C/D). May be reducible.
 */
@@ -95,7 +95,7 @@ frac_div(A/B, C/D, E/F):- E is A*D, F is B*C.
 
 /**
 	@form frac_div(A/B, C, E/F)
-	@constraints A/B is a fraction (predicate fraction(A/B) does not fail)
+	@constrs A/B is a fraction (predicate fraction(A/B) does not fail)
 	and C is a natural value.
 	@descr E/F is a fraction equal to (A/B)^C. May be reducible.
 */
@@ -103,7 +103,7 @@ frac_pow(A/B, C, E/F):- E is A^C, F is B^C.
 
 /**
 	@form frac_inv(A/B, C/D)
-	@constraints A/B is a fraction (predicate fraction(A/B) does not fail).
+	@constrs A/B is a fraction (predicate fraction(A/B) does not fail).
 	@descr C/D is a fraction equal to 1/(A/B).
 */
 frac_inv(A/B, BB/AA):- A < 0, BB is -B, AA is -A, !.
@@ -111,21 +111,21 @@ frac_inv(A/B, B/A).
 
 /**
 	@form neg_frac(A/B, C/D)
-	@constraints A/B is a fraction (predicate fraction(A/B) does not fail).
+	@constrs A/B is a fraction (predicate fraction(A/B) does not fail).
 	@descr C/D is a fraction equal to -(A/B).
 */
 neg_frac(A/B, C/B):- C is -A, !.
 
 /**
 	@form fraction_eval(A/B, C)
-	@constraints A/B is a fraction (predicate fraction(A/B) does not fail).
+	@constrs A/B is a fraction (predicate fraction(A/B) does not fail).
 	@descr C is a value equal to the result of dividing A by B.
 */
 fraction_eval(A/B, C):- C is A/B.
 
 /**
 	@form frac_gcd(A/B, C/D, F/G)
-	@constraints A/B and C/D are fractions (predicates fraction(A/B) and
+	@constrs A/B and C/D are fractions (predicates fraction(A/B) and
 	fraction(C/D) do not fail) and irreducible.
 	@descr F is the greatest common divisor and A and C; and G is the
 	greatest common divisor of B and D.
@@ -134,7 +134,7 @@ frac_gcd(A/B, C/D, FF/GG):- gcd(A, C, FF), gcd(B, D, GG).
 
 /**
 	@form frac_gcd_rel(A/B, C/D, F/G, AA/BB, CC/DD)
-	@constraints A/B and C/D are fractions (predicates fraction(A/B) and
+	@constrs A/B and C/D are fractions (predicates fraction(A/B) and
 	fraction(C/D) do not fail) and irreducible.
 	@descr F is the greatest common divisor and A and C; and G is the
 	greatest common divisor of B and D.

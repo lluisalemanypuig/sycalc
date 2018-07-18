@@ -6,7 +6,7 @@
 
 /**
 	@form min(List, Min)
-	@constraints List must have at least one element (what is the minimum
+	@constrs List must have at least one element (what is the minimum
 	value of a list with no values?).
 	@descr Min is the smallest value, according to '@>' in List
 */
@@ -16,7 +16,7 @@ min([X|_], X).
 
 /**
 	@form max(List, Max)
-	@constraints List must have at least one element (what is the maximum
+	@constrs List must have at least one element (what is the maximum
 	value of a list with no values?).
 	@descr Max is the smallest value, according to '@<' in List
 */
@@ -26,7 +26,7 @@ max([X|_], X).
 
 /**
 	@form first(List, First, Rest)
-	@constraints List cannot be empty.
+	@constrs List cannot be empty.
 	@descr First is the head of List and Rest are the other elements of
 	List.
 */
@@ -35,7 +35,7 @@ first([X|L], X, L).
 
 /**
 	@form last(List, Rest, Last)
-	@constraints List cannot be empty.
+	@constrs List cannot be empty.
 	@descr Last is the last element of List. Rest are the elements from
 	the first to the second to last.
 */
@@ -44,7 +44,7 @@ last([X|R], [X|K], L):- last(R, K, L).
 
 /**
 	@form replace_first(List, Value, NewList)
-	@constraints List cannot be empty.
+	@constrs List cannot be empty.
 	@descr NewList is List but the first value is now Value. NewList
 	has the same length as List.
 */
@@ -53,7 +53,7 @@ replace_first([_|L], Y, [Y|L]).
 
 /**
 	@form replace_last(List, Value, NewList)
-	@constraints List cannot be empty.
+	@constrs List cannot be empty.
 	@descr NewList is List but the last value is now Value. NewList
 	has the same length as List.
 */
@@ -84,7 +84,7 @@ drop(O, [X|Xs], [X|Ds]):- drop(O, Xs, Ds).
 
 /**
 	@form pdrop(Value, List1,List2, NewList1,NewList2)
-	@constraints List1 and List2 must have the same length.
+	@constrs List1 and List2 must have the same length.
 	@descr NewList1 contains all elements from List1 except for those
 	equal to Value, according to \=. If i-th element of List1 is
 	dropped then the i-th element of List2 is also dropped and NewList2
@@ -98,7 +98,7 @@ pdrop(X, [Y|Xs],[Q|Qs], [Y|Dxs],[Q|Dqs]):- pdrop(X, Xs,Qs, Dxs,Dqs).
 
 /**
 	@form split(Value,List, Left,Right)
-	@constraints List can not be empty.
+	@constrs List can not be empty.
 	@descr Splits List into two groups, Left and Right. Left contains
 	all elements in List equal to Value. Right contains all the other
 	elements in List. The sum of lengths of Left and Right equals the
@@ -121,7 +121,7 @@ split(X, [Y|Yy], Xs,[Y|Lr]):- X \= Y, split(X, Yy, Xs,Lr).
 
 /**
 	@form split(Value, List1,List2, L1,L2, R1,R2)
-	@constraints List1 and List2 must be non-empty and of equal length.
+	@constrs List1 and List2 must be non-empty and of equal length.
 	@descr Splits lists List1 and List2 each into two groups. The splitting
 	is done similarly as in predicate 'split'. However, here the splitting
 	is guided by List1, that is:
@@ -157,7 +157,7 @@ how_many_([X|L], [[X, 1] | R]):- how_many_(L, R).
 
 /**
 	@form how_many(List, Counting)
-	@constraints List cannot be empty.
+	@constrs List cannot be empty.
 	@descr Counting is a list containing lists of two elements, the
 	first of which is an element of List and the last is the number of
 	occurrences of that element in List.
@@ -168,7 +168,7 @@ how_many(L, R):- isort(L, S), how_many_(S, R).
 
 /**
 	@form dot_prod(List1, List2, P)
-	@constraints List1 and List2 cannot be empty, both must contain
+	@constrs List1 and List2 cannot be empty, both must contain
 	elements to which the operators '*' and '+' can be applied, and
 	must have the same length.
 	@descr P is the result of applying the dot product to the lists
@@ -182,7 +182,7 @@ dot_prod([X|Xs], [Y|Ys], R):- P is X*Y, dot_prod(Xs, Ys, Q), R is P + Q, !.
 
 /**
 	@form ladder_prod(Divisor, StartValue, Coefficients, NewCoefficients, LastTerm)
-	@constraints Coefficients cannot be empty and must contain
+	@constrs Coefficients cannot be empty and must contain
 	elements to which the operators '*' and '+' can be applied.
 	@descr One should interpret this predicate as some sort of Ruffini's
 	rule generalisation.

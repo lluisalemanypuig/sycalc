@@ -53,7 +53,7 @@ eval_div(A, B, A/B).
 
 /**
 	@form eval_pow(A,B, P)
-	@constraints B is a natural value.
+	@constrs B is a natural value.
 	@descr P is the result of raising A to the power B.
 */
 eval_pow(A, B, C):- fraction(A), frac_pow(A, B, R), red_frac(R, C), !.
@@ -104,7 +104,7 @@ factorial_(0, 1):- !.
 factorial_(N, F):- N1 is N - 1, factorial_(N1, F1), F is N*F1.
 /**
 	@form factorial(Expr, F)
-	@constraints Expr is an arithmetic expression.
+	@constrs Expr is an arithmetic expression.
 	@descr F is the factorial of the result of eavluating the arithmetic
 	expression Expr.
 */

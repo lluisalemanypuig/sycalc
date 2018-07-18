@@ -139,7 +139,7 @@ monomial_degrees(M, D):- monomial_comps(M, _, _, D).
 
 /**
 	@form unimonomial_degree(Monomial, Degree)
-	@constraints Monomial is a univariate monomial.
+	@constrs Monomial is a univariate monomial.
 	@descr Degree is the degree of Monomial, that is, the exponent of
 	the only variable.
 */
@@ -154,7 +154,7 @@ unimonomial_degree(M, D):- monomial_comps(M, _,_,Ds), !, first(Ds, D, _).
 
 /**
 	@form neg_monomial_vars_product(Vars, NegVars)
-	@constraints Vars cannot have a leading coefficient equal to -1.
+	@constrs Vars cannot have a leading coefficient equal to -1.
 	@descr NegVars is the set of variables Vars equal to (-1)*Vars.
 */
 neg_monomial_vars_product(RV, R):-
@@ -166,7 +166,7 @@ neg_monomial_vars_product(_, _).
 
 /**
 	@form monomial_vars_product(Var, Vars2, NegVars)
-	@constraints Var and Vars2 cannot have a leading coefficient equal to -1.
+	@constrs Var and Vars2 cannot have a leading coefficient equal to -1.
 	@descr NegVars is the set of variables Vars equal to (-1)*Var*vars2.
 */
 monomial_vars_product(X, RV, R):-
@@ -180,7 +180,7 @@ monomial_vars_product(X, _, X).
 
 /**
 	@form monomial_vars_product(Var, Exp, Vars2, NegVars)
-	@constraints Var and Vars2 cannot have a leading coefficient equal to -1.
+	@constrs Var and Vars2 cannot have a leading coefficient equal to -1.
 	@descr NegVars is the set of variables Vars equal to (-1)*(Var^E)*vars2.
 */
 monomial_vars_product(X, E, RV, R):-
@@ -197,7 +197,7 @@ monomial_vars_product(X, E, _, X^E).
 
 /**
 	@form collapse_vars_list(Vars,Exps, NewVars,NewExps)
-	@constraints Vars is a lexicographically sorted list of variables.
+	@constrs Vars is a lexicographically sorted list of variables.
 	The i-th element of Exps is the exponent of the i-th variable in
 	Vars. Vars and Exps must have the same length.
 	@descr NewVars and NewExps are the contraction of lists Vars and Exps
@@ -341,7 +341,7 @@ monomial_inv_comp(M1, M2):-
 
 /**
 	@form monomial_sort(List, SortedList)
-	@constraints List is a list of monomials.
+	@constrs List is a list of monomials.
 	@descr SortedList has the same elements as List but each pair of
 	elements in it meet the precedence relationship of '<'
 */
@@ -349,7 +349,7 @@ monomial_sort(L, R):- isort_by(monomial_comp, L, R).
 
 /**
 	@form monomial_inv_sort(List, SortedList)
-	@constraints List is a list of monomials.
+	@constrs List is a list of monomials.
 	@descr SortedList has the same elements as List but each pair of
 	elements in it meet the precedence relationship of '>'
 */

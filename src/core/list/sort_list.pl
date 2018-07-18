@@ -21,7 +21,7 @@ isort_by(F, [X|L], R):- isort_by(F, L, S), insert_by(F, X, S, R).
 
 /**
 	@form pinsert_by(F, Value1,Value2, List1,List2, NewList1,NewList2)
-	@constraints List1 and List2 must have the same length.
+	@constrs List1 and List2 must have the same length.
 	@descr Given two lists and two values, insert a into A as follows:
 	if position of Value1 in NewList1 is 'p' then position of Value2
 	in NewList2 is also 'p'. Note that NewList2 may not be sorted at the
@@ -33,7 +33,7 @@ pinsert_by(F, X,Y, [Xx|Xs],[Yy|Ys],   [Xx|Xr],  [Yy|Yr]):- pinsert_by(F, X,Y, Xs
 
 /**
 	@form pisort_by(Function, List1, List2, SortedList1, OtherList2)
-	@constraints List1 and List2 must have the same length.
+	@constrs List1 and List2 must have the same length.
 	@descr Sorts List1 using function F as guide. List2's elment's
 	positions are modified according to the changes made in List1.
 */
