@@ -23,7 +23,7 @@ inspection(F, [X|Xs]):- call(F, X), inspection(F, Xs).
 
 /**
 	@form zip(List1, List2, NewList)
-	@constraints List1 and List2 must have the same length.
+	@constrs List1 and List2 must have the same length.
 	@descr NewList is the result of an element-wise pairing of the
 	elements in List1 and List2. Each of NewList is a pair, where
 	the left element is an element from List1 and the right element
@@ -34,7 +34,7 @@ zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S).
 
 /**
 	@form zip(Function, List1, List2, NewList)
-	@constraints List1 and List2 must have the same length.
+	@constrs List1 and List2 must have the same length.
 	@descr NewList is the result of applying Function to the
 	i-th element of both List1 and List2.
 	In Haskell notation: zip_with :: (a -> b -> c) -> [a] -> [b] -> [c]
@@ -69,7 +69,7 @@ foldr(F, X, [Y|L], R):- foldr(F, X, L, S), call(F, Y, S, R).
 
 /**
 	@form make_list(Times, Value, NewList)
-	@constraints Times must be a positive (>= 0) integer.
+	@constrs Times must be a positive (>= 0) integer.
 	@descr NewList is a list containing Value as many times as Times.
 */
 make_list(0, _, []):- !.
@@ -77,7 +77,7 @@ make_list(K, S, [S|R]):- K1 is K - 1, make_list(K1, S, R).
 
 /**
 	@form pad_begin(Times, List, Value, NewList)
-	@constraints Times must be a positive (>= 0) integer.
+	@constrs Times must be a positive (>= 0) integer.
 	@descr NewList is the concatenation of a list of length Times
 	with all elements equal to Value and List.
 */
@@ -85,7 +85,7 @@ pad_begin(K, L, S, R):- make_list(K, S, B), list_concat(B, L, R).
 
 /**
 	@form pad_end(Times, List, Value, NewList)
-	@constraints Times must be a positive (>= 0) integer.
+	@constrs Times must be a positive (>= 0) integer.
 	@descr NewList is the concatenation of List and a list of length
 	Times with all elements equal to Value.
 */

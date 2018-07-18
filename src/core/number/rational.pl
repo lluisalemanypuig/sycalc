@@ -21,7 +21,7 @@ rational_neg(F, N):- neg_frac(F, N).
 
 /**
 	@form rational_gcd(A,B, G)
-	@constraints A and B are both rational numbers
+	@constrs A and B are both rational numbers
 	@descr G is the greatest common divisor of A and B.
 */
 rational_gcd(A, B, G):- integer(A), integer(B), gcd(A, B, G), !.
@@ -31,7 +31,7 @@ rational_gcd(A, B, G):- frac_gcd(A, B, GG), red_frac(GG, G).
 
 /**
 	@form rational_gcd_rel(A,B, G, C,D)
-	@constraints A and B are both rational numbers
+	@constrs A and B are both rational numbers
 	@descr G is the greatest common divisor of A and B. C and D are
 	the result of
 		gcd_rel(A,B, G, C,D)
