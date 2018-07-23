@@ -128,12 +128,14 @@ split(X, [Y|Yy], Xs,[Y|Lr]):- X \= Y, split(X, Yy, Xs,Lr).
 	@descr Splits lists @List1 and @List2 each into two groups. The
 	splitting is done similarly as in predicate ?split/4. However, here
 	the splitting is guided by @List1, that is:
-		* if i-th element of @List1 is equal to @Value then @L1 will
+	<++
+		!> if i-th element of @List1 is equal to @Value then @L1 will
 		contain i-th element of @List1 and @L2 will contain i-th element
 		of @List2.
-		* if i-th element of @List1 is not equal to @Value then @R1 will
+		!> if i-th element of @List1 is not equal to @Value then @R1 will
 		contain i-th element of @List1 and @R2 will contain i-th element
 		of @List2.
+	++>
 	@constrs @List1 and @List2 must be non-empty and of equal length.
 */
 psplit(X,       [X],[Q],         [X],[Q],           [],[]):- !.
@@ -175,9 +177,11 @@ how_many(L, R):- isort(L, S), how_many_(S, R).
 	@form dot_prod(List1, List2, P)
 	@descr @P is the result of applying the dot product to the lists
 	@List1 and @List2 as if they were vectors.
-	@List1 = [x1, x2, ..., xn]
-	@List2 = [y1, y2, ..., yn]
-	@P = x1*y1 + x2*y2 + ... + xn*yn
+	<--
+	List1 = [x1, x2, ..., xn]
+	List2 = [y1, y2, ..., yn]
+	P = x1*y1 + x2*y2 + ... + xn*yn
+	-->
 	@constrs @List1 and @List2 cannot be empty, both must contain
 	elements to which the operators '*' and '+' can be applied, and
 	must have the same length.
@@ -189,32 +193,36 @@ dot_prod([X|Xs], [Y|Ys], R):- P is X*Y, dot_prod(Xs, Ys, Q), R is P + Q, !.
 	@form ladder_prod(Divisor, StartValue, Coefficients, NewCoefficients, LastTerm)
 	@descr One should interpret this predicate as some sort of Ruffini's
 	rule generalisation.
-	Therefore, if Coefficients has the elements [m,n,o,p], Divisor has
-	the value 'x' and StartValue is 'A' then the ladder product is
+	Therefore, if @Coefficients has the elements [m,n,o,p], @Divisor has
+	the value 'x' and @StartValue is 'A' then the ladder product is
 	defined as follows:
-
+	<--
 	  | m n o p
 	x | A B C D
 	--+-------------
 	  | T U V W
+	
 	T = m + A
 	B = x*T = x*(m + A)
 	U = n + B
 	C = x*U = x*(n + B)
 	V = o + C
 	D = x*V = x*(o + C)
+	
 	LastTerm = W = p + D
 	NewCoefficients = [T,U,V]
-
+	-->
 	For the case of Ruffini's rule:
-	-> @Coefficients must be a list of integer values with a '1' in the
+	<++
+	!> @Coefficients must be a list of integer values with a '1' in the
 	first element.
-	-> @StartValue (A) has to be 0
-	-> @Divisor must divide the last element of Coefficients
-	-> @NewCoefficients are the integer values representing the coefficients
+	!> @StartValue (A) has to be 0
+	!> @Divisor must divide the last element of @Coefficients
+	!> @NewCoefficients are the integer values representing the coefficients
 	of a new polynomial.
-	-> @LastTerm must be equal to 0 for Divisor to be a root of the
-	polynomial represented by Coefficients.
+	!> @LastTerm must be equal to 0 for @Divisor to be a root of the
+	polynomial represented by @Coefficients.
+	++>
 	@constrs @Coefficients cannot be empty and must contain
 	elements to which the operators '*' and '+' can be applied.
 */

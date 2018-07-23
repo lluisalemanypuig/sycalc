@@ -5,39 +5,52 @@
 
 /**
 	@form map(Function, List, NewList)
-	@descr NewList is the result of applying Function to every element
-	of List.
-	In Haskell notation: map :: (a -> b) -> [a] -> [b]
+	@descr @NewList is the result of applying Function to every element
+	of @List.
+	
+	In Haskell notation:
+	<--
+	map :: (a -> b) -> [a] -> [b]
+	-->
 */
 map(_, [], []):- !.
 map(F, [X|L], [E|R]):- call(F, X, E), map(F, L, R), !.
 
 /**
 	@form inspection(Function, List)
-	@descr The inspection of List with Function is the verification
-	that applying Function to all elements in List does not fail. To
-	check this, the function is applied to every element of List.
+	@descr The inspection of @List with Function is the verification
+	that applying Function to all elements in @List does not fail. To
+	check this, the function is applied to every element of @List.
 */
 inspection(_, []):- !.
 inspection(F, [X|Xs]):- call(F, X), inspection(F, Xs).
 
 /**
 	@form zip(List1, List2, NewList)
-	@constrs List1 and List2 must have the same length.
-	@descr NewList is the result of an element-wise pairing of the
-	elements in List1 and List2. Each of NewList is a pair, where
-	the left element is an element from List1 and the right element
-	is an element from List2.
+	@descr @NewList is the result of an element-wise pairing of the
+	elements in @List1 and @List2. Each of NewList is a pair, where
+	the left element is an element from @List1 and the right element
+	is an element from @List2.
+	
+	In Haskell notation: 
+	<--
+	zip :: [a] -> [b] -> [(a, b)]
+	-->
+	@constrs @List1 and @List2 must have the same length.
 */
 zip([], [], []).
 zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S).
 
 /**
 	@form zip(Function, List1, List2, NewList)
-	@constrs List1 and List2 must have the same length.
-	@descr NewList is the result of applying Function to the
-	i-th element of both List1 and List2.
-	In Haskell notation: zip_with :: (a -> b -> c) -> [a] -> [b] -> [c]
+	@descr @NewList is the result of applying Function to the
+	i-th element of both @List1 and @List2.
+	
+	In Haskell notation: 
+	<--
+	zip_with :: (a -> b -> c) -> [a] -> [b] -> [c]
+	-->
+	@constrs @List1 and @List2 must have the same length.
 */
 zip_with(_,  [],  [],  []):- !.
 zip_with(F, [A], [B], [X]):- call(F, A, B, X), !.
@@ -45,8 +58,8 @@ zip_with(F, [A|L], [B|R], [C|S]):- call(F, A, B, C), zip_with(F, L, R, S).
 
 /**
 	@form list_concat(List1, List2, NewList)
-	@descr NewList is a list with all the elements in List1 followed
-	by all the elements in List2.
+	@descr @NewList is a list with all the elements in @List1 followed
+	by all the elements in @List2.
 */
 list_concat([], L, L).
 list_concat([A|L], R, [A|C]):- list_concat(L, R, C).
@@ -54,7 +67,11 @@ list_concat([A|L], R, [A|C]):- list_concat(L, R, C).
 /**
 	@form foldl(Function, Value, List, Result)
 	@descr foldl as usually defined.
-	In Haskell notation: foldl :: (b -> a -> b) -> b -> a -> b
+	
+	In Haskell notation:
+	<--
+	foldl :: (b -> a -> b) -> b -> a -> b
+	-->
 */
 foldl(_, X, [], X):- !.
 foldl(F, X, [Y|L], R):- call(F, X, Y, S), foldl(F, S, L, R).
@@ -62,39 +79,43 @@ foldl(F, X, [Y|L], R):- call(F, X, Y, S), foldl(F, S, L, R).
 /**
 	@form foldr(Function, Value, List, Result)
 	@descr foldr as usually defined.
-	In Haskell notation: foldr :: (a -> b -> b) -> b -> t a -> b
+	
+	In Haskell notation:
+	<--
+	foldr :: (a -> b -> b) -> b -> t a -> b
+	-->
 */
 foldr(_, X, [], X):- !.
 foldr(F, X, [Y|L], R):- foldr(F, X, L, S), call(F, Y, S, R).
 
 /**
 	@form make_list(Times, Value, NewList)
-	@constrs Times must be a positive (>= 0) integer.
-	@descr NewList is a list containing Value as many times as Times.
+	@constrs @Times must be a positive (>= 0) integer.
+	@descr @NewList is a list containing Value as many times as @Times.
 */
 make_list(0, _, []):- !.
 make_list(K, S, [S|R]):- K1 is K - 1, make_list(K1, S, R).
 
 /**
 	@form pad_begin(Times, List, Value, NewList)
-	@constrs Times must be a positive (>= 0) integer.
-	@descr NewList is the concatenation of a list of length Times
-	with all elements equal to Value and List.
+	@constrs @Times must be a positive (>= 0) integer.
+	@descr @NewList is the concatenation of a list of length @Times
+	with all elements equal to @Value and @List.
 */
 pad_begin(K, L, S, R):- make_list(K, S, B), list_concat(B, L, R).
 
 /**
 	@form pad_end(Times, List, Value, NewList)
-	@constrs Times must be a positive (>= 0) integer.
-	@descr NewList is the concatenation of List and a list of length
-	Times with all elements equal to Value.
+	@constrs @Times must be a positive (>= 0) integer.
+	@descr @NewList is the concatenation of @List and a list of length
+	@Times with all elements equal to @Value.
 */
 pad_end(K, L, S, R):- make_list(K, S, E), list_concat(L, E, R).
 
 /**
 	@form cartesian_product(List1, List2, CP)
-	@descr CP is the cartesian product of List1 and List2. Every element
-	of CP is a list of two elements.
+	@descr @CP is the cartesian product of @List1 and @List2. Every element
+	of @CP is a list of two elements.
 */
 cartesian_product([], _, []):- !.
 cartesian_product(_, [], []):- !.
@@ -105,11 +126,15 @@ cartesian_product([X|L], R, S):-
 
 /**
 	@form cartesian_product_by(Function, List1, List2, CP)
-	@descr CP is the result of applying Function to every element
-	of the cartesian product of List1 and List2. Similar to doing:
+	@descr @CP is the result of applying Function to every element
+	of the cartesian product of @List1 and @List2.
 	
+	This predicate performs a series of operations similar to doing:
+	
+	<--
 	cartesian_product_by(F, List1,List2, R):- 
 		cartesian_product(List1,List2, C), map(F,C, R)
+	-->
 	
 	However, this implementation should be faster because it does
 	a single pass on the elements of the cartesian product.
