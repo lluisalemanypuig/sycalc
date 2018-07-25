@@ -4,11 +4,13 @@
 */
 
 /**
-	@descr Predicate fails if parameter is not 0.
+	@form zero(Z)
+	@descr Predicate fails if @Z is not 0.
 */
 zero(0).
 /**
-	@descr Predicate fails if parameter is not 1.
+	@form one(O)
+	@descr Predicate fails if @O is not 1.
 */
 one(1).
 
@@ -22,7 +24,9 @@ natural(N):- integer(N), N >= 0.
 /**
 	@form next_natural(N)
 	@descr N is a natural. Example of usage:
+	<--
 		next_natural(N), write(N), nl, fail.
+	-->
 */
 next_natural(0).
 next_natural(N):- next_natural(M), N is M + 1.

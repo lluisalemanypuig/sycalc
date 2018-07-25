@@ -9,9 +9,9 @@
 
 /**
 	@form multiple(A,B)
-	@constrs A and B integer values.
-	@descr Succeeds if, and only if, A is a multiple of B, that is,
-	if B divides A evenly.
+	@descr Succeeds if, and only if, @A is a multiple of @B, that is,
+	if @B divides @A evenly.
+	@constrs @A and @B are both integer values.
 */
 multiple(_, 0):- !, false.
 multiple(_, 1):- !, true.
@@ -21,22 +21,22 @@ multiple(_, _):- false.
 
 /**
 	@form even(A)
-	@constrs A integer value.
-	@descr Predicate fails if A is odd.
+	@descr Predicate fails if @A is odd.
+	@constrs @A is an integer values.
 */
 even(A):- B is A mod 2, B == 0.
 
 /**
 	@form odd(A)
-	@constrs A integer value.
-	@descr Predicate fails if A is even.
+	@descr Predicate fails if @A is even.
+	@constrs @A is an integer values.
 */
 odd(A):- B is A mod 2, B == 1.
 
 /**
 	@form gcd(A,B, G)
-	@constrs A and B integer values.
-	@descr G is the greatest common divisor of two integers A and B.
+	@descr @G is the greatest common divisor of two integers @A and @B.
+	@constrs @A and @B are both integer values.
 */
 gcd(X, 0, X):- !.
 gcd(0, X, X):- !.
@@ -47,16 +47,17 @@ gcd(X, Y, D):- Z is Y mod X, gcd(X, Z, D).
 
 /**
 	@form gcd_rel(A,B, G, C,D)
-	@constrs A and B integer values.
-	@descr G is the greatest common divisor of two integers A and B.
-	C is the result of dividing A by G, and D of dividing D by G.
+	@descr @G is the greatest common divisor of two integers @A and @B.
+	@C is the result of dividing @A by @G, and @D of dividing @D by @G.
+	@constrs @A and @B are both integer values.
 */
 gcd_rel(A, B, G, C, D):- gcd(A, B, G), C is A/G, D is B/G, !.
 
 /**
 	@form gcd_list(List, G)
-	@constrs List cannot be empty and can only contain integer values.
-	@descr G is the greatest common divisor of all the integer values in
+	@descr @G is the greatest common divisor of all the integer values in
+	@constrs
+		@param List Cannot be empty and can only contain integer values.
 */
 gcd_list([X], X):- X > 0, !.
 gcd_list([X], Xp):- Xp is -X, !.
@@ -83,11 +84,13 @@ compare_divisors(X, Y):- X > 0, Y < 0, false.
 % Find all the divisors of a number (negative divisors included)
 /**
 	@form divisors(A, Divisors)
-	@constrs A integer value.
-	@descr Divisors contains all the divisors of A sorted by their
+	@descr Divisors contains all the divisors of @A sorted by their
 	absolute value, breaking ties by considering that positive divisors
 	go before negative values. The divisors of 30, for instance, are:
+	<--
 		[1,-1,2,-2,3,-3,5,-5,6,-6,10,-10,15,-15,30,-30]
+	-->
+	@constrs @A is an integer value.
 */
 divisors(1, [1,-1]):- !.
 divisors(-1, [1,-1]):- !.
