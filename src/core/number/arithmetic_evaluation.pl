@@ -10,13 +10,15 @@
 /***
 	@descr This file contains all predicates needed to evaluate arithmetic
 	expressions between real numbers, where the result of operating
-	two rational numbers is another rational number. For example, the
+	two rational numbers is another rational number.
+
+	For example, the
 	result of 2/3 + 4/5 is not given as 1.46667, but as 22/15.
 */
 
 /**
 	@form eval_sum(A,B, S)
-	@descr S is the summation of A and B.
+	@descr @S is the summation of @A and @B.
 */
 eval_sum(A, B, C):- fraction(A), fraction(B), frac_sum(A, B, R), red_frac(R, C), !.
 eval_sum(A, B, C):- fraction(A), frac_sum(A, B/1, R), red_frac(R, C), !.
@@ -25,7 +27,7 @@ eval_sum(A, B, C):- C is A + B.
 
 /**
 	@form eval_sub(A,B, S)
-	@descr S is the substraction of B from B.
+	@descr @S is the substraction of @A from @B.
 */
 eval_sub(A, B, C):- fraction(A), fraction(B), frac_sub(A, B, R), red_frac(R, C), !.
 eval_sub(A, B, C):- fraction(A), frac_sub(A, B/1, R), red_frac(R, C), !.
@@ -34,7 +36,7 @@ eval_sub(A, B, C):- C is A - B.
 
 /**
 	@form eval_prod(A,B, P)
-	@descr P is the product of A and B.
+	@descr @P is the product of @A and @B.
 */
 eval_prod(A, B, C):- fraction(A), fraction(B), frac_prod(A, B, R), red_frac(R, C), !.
 eval_prod(A, B, C):- fraction(A), frac_prod(A, B/1, R), red_frac(R, C), !.
@@ -43,7 +45,7 @@ eval_prod(A, B, C):- C is A*B.
 
 /**
 	@form eval_div(A,B, D)
-	@descr D is the result of dividing A and B.
+	@descr @D is the result of dividing @A and @B.
 */
 eval_div(A, B, C):- fraction(A), fraction(B), frac_div(A, B, R), red_frac(R, C), !.
 eval_div(A, B, C):- fraction(A), frac_div(A, B/1, R), red_frac(R, C), !.
@@ -53,15 +55,16 @@ eval_div(A, B, A/B).
 
 /**
 	@form eval_pow(A,B, P)
-	@constrs B is a natural value.
-	@descr P is the result of raising A to the power B.
+	@descr @P is the result of raising @A to the power @B.
+	@constrs
+		@param B A natural value.
 */
 eval_pow(A, B, C):- fraction(A), frac_pow(A, B, R), red_frac(R, C), !.
 eval_pow(A, B, C):- C is A^B.
 
 /**
 	@form eval_pow(A, N)
-	@descr C is the result of raising A to the power B.
+	@descr @N is the result of multiplying by (-1) the value @A.
 */
 eval_neg(A, B):- fraction(A), neg_frac(A, B), !.
 eval_neg(A, B):- B is -A, !.
@@ -71,7 +74,14 @@ eval_neg(A, B):- B is -A, !.
 /**
 	@form(Expr)
 	@descr Definition of arithmetic expression: this predicate fails on
-	all values of Expr that are not expressions.
+	all values of @Expr that are not expressions:
+	<--
+		A + B
+		A - B
+		A*B
+		A/B
+		A^B
+	-->
 */
 expr(_ + _):- !.
 expr(_ - _):- !.
@@ -81,15 +91,17 @@ expr(_^_):- !.
 
 /**
 	@form arith_expr_eval(Expr, Result)
-	@constraint Expr is an arithmetic expression. That is, it is either
+	@constraint @Expr is an arithmetic expression. That is, it is either
 	a real value, or an arithmetic expression of the form
+	<--
 		A + B
 		A - B
 		A*B
 		A/B
 		A^B
 		-A
-	where A and B are arithmetic expressions.
+	-->
+	where @A and @B are arithmetic expressions.
 */
 arith_expr_eval(A + B, C):- arith_expr_eval(A, AA), arith_expr_eval(B, BB), eval_sum(AA, BB, C), !.
 arith_expr_eval(A - B, C):- arith_expr_eval(A, AA), arith_expr_eval(B, BB), eval_sub(AA, BB, C), !.
@@ -105,8 +117,8 @@ factorial_(N, F):- N1 is N - 1, factorial_(N1, F1), F is N*F1.
 /**
 	@form factorial(Expr, F)
 	@constrs Expr is an arithmetic expression.
-	@descr F is the factorial of the result of eavluating the arithmetic
-	expression Expr.
+	@descr @F is the factorial of the result of eavluating the arithmetic
+	expression @Expr.
 */
 factorial(E, F):- expr(E), arith_expr_eval(E, N), natural(N), factorial_(N, F), !.
 factorial(N, F):- natural(N), factorial_(N, F).
