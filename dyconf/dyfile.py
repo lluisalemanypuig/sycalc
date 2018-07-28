@@ -36,20 +36,14 @@ include (load) what files. In this graph a directed
 edge (A,B) means 'file A includes (loads) file B'.
 Allowed values: True, False
 """
-FILE_INCLUSION_GRAPH	= False
+FILE_INCLUSION_GRAPH	= True
 
 """
 Same as for FILE_INCLUSION_GRAPH but this graph contains
 the graph for all the source files.
 Allowed values: True, False
 """
-PROJECT_INCLUSION_GRAPH	= False
-
-"""
-Remove or keep the .dot files used to generate the inclusion graphs.
-Allowed values: True, False
-"""
-KEEP_DOT				= False
+PROJECT_INCLUSION_GRAPH	= True
 
 """
 The maximum distance between a source vertex and a sink vertex
@@ -98,3 +92,18 @@ This executable must understand the DOT language. For more information,
 see: https://www.graphviz.org/
 """
 DOT_EXE_PATH			= "/usr/bin/"
+
+# ---------------------------------------------------------------------
+# CACHE SYSTEM
+
+"""
+Make a cache file for all source files. This file contains information
+that can be used to avoid generating html files that will not change at
+all.
+
+It also makes the software keep the .dot files to avoid unnecessary
+calls to dot.
+
+Allowed values: True, False
+"""
+CACHE_FILES				= True
