@@ -3,5 +3,5 @@
 :-ensure_loaded(list/sort_list).
 
 /***
-	@descr File used to include all predicate related to lists.
+	@descr File used to easily include all predicate related to lists.
 */
