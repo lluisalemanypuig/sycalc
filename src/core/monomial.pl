@@ -15,6 +15,7 @@
 	Attention: if the exponent or coeficient are rational, it is better
 	to use parentheses.
 	
+	
 	Henceforth, "unimonomial" will be used as a synonym for
 	"univariate monomial".
 */
@@ -152,16 +153,6 @@ monomial_var_exp(M, V, V^E):-
 */
 monomial_degrees(M, []):- monomial_comps(M, _, [],[]), !.
 monomial_degrees(M, D):- monomial_comps(M, _, _, D).
-
-/**
-	@form unimonomial_degree(Monomial, Degree)
-	@descr @Degree is the degree of @Monomial, that is, the exponent of
-	the only variable.
-	@constrs 
-		@param Monomial A univariate monomial.
-*/
-unimonomial_degree(M, 0):- monomial_comps(M, _,[],[]), !.
-unimonomial_degree(M, D):- monomial_comps(M, _,_,Ds), !, first(Ds, D, _).
 
 % Monomial reduction
 
@@ -414,3 +405,15 @@ monomial_split_(VAR, _, C,V, E, Vo,Wo):-
 monomial_split(VAR, M, Vo,Wo):-
 	monomial_comps(M, C,V,E),
 	monomial_split_(VAR, M,C,V,E, Vo,Wo).
+
+/*! The following predicates are restricted to unimonomials only. */
+
+/**
+	@form unimonomial_degree(Monomial, Degree)
+	@descr @Degree is the degree of @Monomial, that is, the exponent of
+	the only variable.
+	@constrs 
+		@param Monomial A univariate monomial.
+*/
+unimonomial_degree(M, 0):- monomial_comps(M, _,[],[]), !.
+unimonomial_degree(M, D):- monomial_comps(M, _,_,Ds), !, first(Ds, D, _).

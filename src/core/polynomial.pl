@@ -37,35 +37,6 @@ list_from_polynomial(A - B, S):-
 list_from_polynomial(M, [R]):- red_monomial(M, R), !.
 
 /**
-	@form padded_unipoly_mons_decr(MonList, PaddedList)
-	@descr Let [m1, m2, ..., mN] be the list of monomials @MonList.
-	@PaddedList is the list that results from inserting zeroes
-	between those monomials in @MonList with degrees di, dj such that
-	|di - dj| > 1.
-	@constrs
-		@param MonList A list of unimonomials decreasingly sorted.
-*/
-padded_unipoly_mons_decr([], []):- !.
-padded_unipoly_mons_decr([M], [M]):- monomial_degrees(M, []), !.
-padded_unipoly_mons_decr([M], R):-
-	unimonomial_degree(M, D),
-	pad_end(D, [M], 0, R), !.
-padded_unipoly_mons_decr([M|Ms], R):-
-	first(Ms, F, _), monomial_degrees(F, []), !,
-	unimonomial_degree(M, D),
-	K is D - 1,
-	pad_end(K, [M], 0, Q),
-	list_concat(Q, Ms, R).
-padded_unipoly_mons_decr([M|Ms], P):-
-	unimonomial_degree(M, D1),
-	first(Ms, F, _),
-	unimonomial_degree(F, D2),
-	K is D1 - D2 - 1,
-	pad_end(K, [M], 0, Q),    % K zeros between M and Ms
-	padded_unipoly_mons_decr(Ms, R),
-	list_concat(Q,R, P), !.
-
-/**
 	@form polynomial_first_monomial(Poly, FirstMon, RestMon)
 	@descr @FirstMon is the first monomial of polynomial @Poly. @RestMon
 	are the oher monomials of @Poly.
@@ -147,18 +118,49 @@ polynomial_neg(P, N):-
 	polynomial_from_list(L2, N).
 
 /**
-	@form unipolynomial_degree(UniPoly, Degree)
-	@descr @Degree is the degree of the univariate polynomial @UniPoly.
-*/
-unipolynomial_degree(P, D):-
-	list_from_polynomial(P, MS), map(unimonomial_degree, MS, DS), max(DS, D).
-
-/**
 	@form polynomial_list_revar(Var, With, Poly, Result)
 	@descr @Result is the polynomial resulting from the replacement of
 	@Poly's variable @Var with variable @With.
 */
 polynomial_list_revar(O,I, P, Q):- map(monomial_revar(O,I), P, Q).
+
+/*! The following predicates are restricted to unipolynomials only. */
+
+/**
+	@form padded_unipoly_mons_decr(MonList, PaddedList)
+	@descr Let [m1, m2, ..., mN] be the list of monomials @MonList.
+	@PaddedList is the list that results from inserting zeroes
+	between those monomials in @MonList with degrees di, dj such that
+	|di - dj| > 1.
+	@constrs
+		@param MonList A list of unimonomials decreasingly sorted.
+*/
+padded_unipoly_mons_decr([], []):- !.
+padded_unipoly_mons_decr([M], [M]):- monomial_degrees(M, []), !.
+padded_unipoly_mons_decr([M], R):-
+	unimonomial_degree(M, D),
+	pad_end(D, [M], 0, R), !.
+padded_unipoly_mons_decr([M|Ms], R):-
+	first(Ms, F, _), monomial_degrees(F, []), !,
+	unimonomial_degree(M, D),
+	K is D - 1,
+	pad_end(K, [M], 0, Q),
+	list_concat(Q, Ms, R).
+padded_unipoly_mons_decr([M|Ms], P):-
+	unimonomial_degree(M, D1),
+	first(Ms, F, _),
+	unimonomial_degree(F, D2),
+	K is D1 - D2 - 1,
+	pad_end(K, [M], 0, Q),    % K zeros between M and Ms
+	padded_unipoly_mons_decr(Ms, R),
+	list_concat(Q,R, P), !.
+
+/**
+	@form unipolynomial_degree(UniPoly, Degree)
+	@descr @Degree is the degree of the univariate polynomial @UniPoly.
+*/
+unipolynomial_degree(P, D):-
+	list_from_polynomial(P, MS), map(unimonomial_degree, MS, DS), max(DS, D).
 
 % recursive function called by pretty_polynomial_roots_
 pretty_polynomial_roots_([[X,1]], (x + XX)):- X < 0, rational_neg(X, XX).
