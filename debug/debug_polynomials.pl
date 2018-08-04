@@ -102,21 +102,21 @@ deb_pretty_polynomial_roots(I, R, RES):-
 	write(I), write(' Using roots '), write(R), write(' -> '), output_text(P, RES).
 
 deb_poly_roots(I, P, RES):-
-	polynomial_expression_evaluation(P, E), integer_roots_polynomial(E, R),
+	polynomial_expression_evaluation(P, E), integer_roots_unipolynomial(E, R),
 	msort(R, SR), msort(RES, SRES), SR == SRES, !, output_correct(I).
 deb_poly_roots(I, P, RES):-
-	polynomial_expression_evaluation(P, E), integer_roots_polynomial(E, R),
+	polynomial_expression_evaluation(P, E), integer_roots_unipolynomial(E, R),
 	write(I), write(' '), write(P), write(' -> '), output_text(R, RES).
 
 deb_poly_roots_eval_roots(I, R):-
 	pretty_polynomial_roots(R, P), polynomial_expression_evaluation(P, Q),
-	integer_roots_polynomial(Q, RES), sort(R, RS), sort(RES, RESS),
+	integer_roots_unipolynomial(Q, RES), sort(R, RS), sort(RES, RESS),
 	RS == RESS, !, output_correct(I).
 deb_poly_roots_eval_roots(I, R):-
 	write(I), write(' '),
 	pretty_polynomial_roots(R, P),
 	polynomial_expression_evaluation(P, Q),
-	integer_roots_polynomial(Q, L),
+	integer_roots_unipolynomial(Q, L),
 	all_to_string([R, space, ->, space, P, space, ->, space, Q, space, ->, space, L], S1),
 	all_to_string([R, space, ->, space, P, space, ->, space, Q, space, ->, space, R], S2),
 	output_text(S1, S2), nl.
