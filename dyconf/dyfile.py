@@ -25,7 +25,7 @@ Add a description for your project. It may contain html code.
 """
 PROJECT_DESCRIPTION		= "Sycalc is a small symbolic calculator \
 written in Prolog. It offers the basic arithmetic operations between \
-polynomials (except for the quotient)"
+polynomials (except for the quotient)."
 
 # ---------------------------------------------------------------------
 # GENERATED GRAPHS
