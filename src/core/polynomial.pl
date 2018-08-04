@@ -2,32 +2,49 @@
 :-ensure_loaded(number).
 :-ensure_loaded(monomial).
 
-% POLYNOMIALS
-% A polynomial is a sum of monomials.
-% These are monomials:
-%	x^3, -2*x, 6*x^2, x, -2, x*y
-% These are not monomials:
-%	(x + 3)*(x - 2),
-% A polynomial may be expanded:
-%   x^2 + 6*x + 6
-% or contraced:
-%   (x + 2)*(x + 3)
-% Expanded polynomials may be represented as lists of monomials
-%   x^2 - 3*x + 4 = [x^2, -3*x, 4]
-% Some polynomials may be both contracted and expanded at the same time:
-%   x + 3, -x^2, -9
+/***
+	@descr This file contains the definition of multivariate polynomials
+	and provides predicates for arithmetic operations and comparison.
+	
+	
+	A multivariate polynomial is a summation of multivariate monomials.
+	If all monomials are univariate then the polynomial is univariate.
+	
+	
+	Examples of polynomials are:
+	<--
+		x + 3, -x^2 - 9
+	-->
+	
+	Polynomials can only be operated with other polynomials when they are
+	represented as lists of reduced monomials. This list can be obtained
+	using predicate ?list_from_polynomial/2. However, some predicates
+	need the polynomial to be in expanded form. An expanded polynomial
+	is given as a sum of monomials as in the examples given above.
+	
+	
+	Henceforth, a univariate polynomial will be referred to as 'unipoly'.
+*/
 
-% Returns the list of reduced monomials from a polynomial
+/**
+	@form list_from_polynomial(Poly, MonList)
+	@descr Obtains the list of monomials @MonList in polynomial @Poly.
+*/
 list_from_polynomial(A + B, S):-
 	list_from_polynomial(A, L), list_from_polynomial(B, R), list_concat(L, R, S), !.
 list_from_polynomial(A - B, S):-
 	list_from_polynomial(A, L), list_from_polynomial(-B, R), list_concat(L, R, S), !.
 list_from_polynomial(M, [R]):- red_monomial(M, R), !.
 
-% Pads a list of uni-variate* monomials DECREASINGLY sorted.
-% If [m1, m2, ..., mN] is the list of monomials, this predicate will add 0s between
-% those monomials with degrees di, dj such that |di - dj| > 1
-% *: a polynomial is uni-variate if all monomials have the same variable (only one)
+/**
+	@form padded_unipoly_mons_decr(MonList, PaddedList)
+	@descr Let [m1, m2, ..., mN] be the list of monomials @MonList.
+	@PaddedList is the list that results from inserting zeroes
+	between those monomials in @MonList with degrees di, dj such that
+	|di - dj| > 1.
+	@constrs
+		@param MonList A list of unimonomials decreasingly sorted.
+*/
 padded_unipoly_mons_decr([], []):- !.
 padded_unipoly_mons_decr([M], [M]):- monomial_degrees(M, []), !.
 padded_unipoly_mons_decr([M], R):-
@@ -48,18 +65,40 @@ padded_unipoly_mons_decr([M|Ms], P):-
 	padded_unipoly_mons_decr(Ms, R),
 	list_concat(Q,R, P), !.
 
-% A + B is an expanded polynomial.
-% A is its first monomial
-% B is the rest of the polynomial
+/**
+	@form polynomial_first_monomial(Poly, FirstMon, RestMon)
+	@descr @FirstMon is the first monomial of polynomial @Poly. @RestMon
+	are the oher monomials of @Poly.
+	@constrs
+		@param Poly Is an expanded polynomial of the form
+		<++
+		!> A + B
+		!> A - B
+		!> C
+		++>
+		where B is a monomial, and A is either a monomial or a polynomial.
+		@Poly is of the form of C when it is a single monomial.
+*/
 polynomial_first_monomial(A + B, A,  B):- monomial(A), monomial(B), !.
 polynomial_first_monomial(A - B, A, NB):- monomial(A), monomial(B), monomial_neg(B, NB), !.
 polynomial_first_monomial(A + B, F, S + B):- polynomial_first_monomial(A, F, S), !.
 polynomial_first_monomial(A - B, F, S - B):- polynomial_first_monomial(A, F, S), !.
 polynomial_first_monomial(F, F, _).
 
-% A + B is an expanded polynomial.
-% A is the rest of the polynomial
-% B is its last monomial
+/**
+	@form polynomial_last_monomial(Poly, RestMon, LastMon)
+	@descr @LastMon is the last monomial of @Poly. @RestMon are the other
+	monomials.
+	@constrs
+		@param Poly Is an expanded polynomial of the form
+		<++
+		!> A + B
+		!> A - B
+		!> C
+		++>
+		where B is a monomial, and A is either a monomial or a polynomial.
+		@Poly is of the form of C when it is a single monomial.
+*/
 polynomial_last_monomial(A + B, A, B):- monomial(B), !.
 polynomial_last_monomial(A - B, A, N):- monomial(B), monomial_neg(B, N), !.
 
@@ -71,31 +110,54 @@ polynomial_from_list_([M|L], S + M):-
 	monomial_positive_coefficient(M), polynomial_from_list_(L, S), !.
 polynomial_from_list_([M|L], S - N):-
 	monomial_neg(M, N), polynomial_from_list_(L, S), !.
+/**
+	@form polynomial_from_list(MonList, Poly)
+	@descr @Poly is an expanded polynomial containing the monomials in
+	@MonList (basically, their summation).
+*/
 polynomial_from_list(M, P):-
 	monomial_inv_sort(M, MS), polynomial_from_list_(MS, P).
 
-% Compares two polynomials as list of monomials and fails if they are not equal
+/**
+	@form polynomial_list_eq(MonList1, MonList2)
+	@descr This predicate fails if @MonList1 and @MonList2 are not equal.
+*/
 polynomial_list_eq(M1, M2):- monomial_sort(M1, S1), monomial_sort(M2, S1).
 
-% Compares two expanded polynomials and fails if they are not equal
+/**
+	@form polynomial_eq(Poly1, Poly2)
+	@descr This predicate fails if @Poly1 and @Poly2 are not equal.
+*/
 polynomial_eq(P1, P2):-
 	list_from_polynomial(P1, M1), list_from_polynomial(P2, M2),
 	polynomial_list_eq(M1, M2).
 
-% Checks if P is an expanded polynomial
+/**
+	@form expanded_polynomial(Poly)
+	@descr This predicate fails if @Poly is not an expanded polynomial.
+*/
 expanded_polynomial(P):- list_from_polynomial(P, _).
 
-% P is an expanded polynomial. N = -P
+/**
+	@form polynomial_neg(Poly, NegPoly)
+	@descr @NegPoly equals -@Poly.
+*/
 polynomial_neg(P, N):-
 	list_from_polynomial(P, L1), map(monomial_neg, L1, L2),
 	polynomial_from_list(L2, N).
 
-% P is an expanded polynomial. D is the maximum degree of its monomials
-polynomial_degree(P, D):-
-	list_from_polynomial(P, MS), map(monomial_degree, MS, DS), max(DS, D).
+/**
+	@form unipolynomial_degree(UniPoly, Degree)
+	@descr @Degree is the degree of the univariate polynomial @UniPoly.
+*/
+unipolynomial_degree(P, D):-
+	list_from_polynomial(P, MS), map(unimonomial_degree, MS, DS), max(DS, D).
 
-% Replace the polynomial's variable O with I
-% The polynomial is passed as a list of monomials
+/**
+	@form polynomial_list_revar(Var, With, Poly, Result)
+	@descr @Result is the polynomial resulting from the replacement of
+	@Poly's variable @Var with variable @With.
+*/
 polynomial_list_revar(O,I, P, Q):- map(monomial_revar(O,I), P, Q).
 
 % recursive function called by pretty_polynomial_roots_
@@ -112,29 +174,43 @@ pretty_polynomial_roots_([[X,1]|L], P*(x - X)):-
 pretty_polynomial_roots_([[X,Po]|L], P*((x - X)^Po)):-
 	pretty_polynomial_roots_(L, P), !.
 
-% Given a list of rationals R, builds a univariate contracted polynomial
-% P on variable 'x' with these numbers as its roots.
+/**
+	@form pretty_polynomial_roots(Roots, Poly)
+	@descr @Poly is a contracted polynomial with roots in @Roots.
+	
+	For example, when given the values @Roots = [1,2,3], @Poly is the
+	polynomial
+	<--
+		(x-3)* (x-2)* (x-1)
+	-->
+*/
 pretty_polynomial_roots(R, P):- how_many(R, C), pretty_polynomial_roots_(C, P).
 
-% ruffini(C, D, R)
-% Given the list of integers C (coefficients of the monomials sorted
-% DECREASINGLY), the list of divisors D of the last coefficient (that is
-% a free term) applies Ruffini's method for polynomial factorization and
-% obtains the list of roots R.
-%
-% The list of integers (coefficients of the monomials sorted DECREASINGLY)
-% must be from a polynomial with ONLY integer roots.
+/**
+	@form ruffini(Coefs, Divs, Roots)
+	@descr @Roots is the list of roots of the polynomial with coefficients
+	@Coefs, where:
+	<++
+	!> @Coefs is a list of integer values representing the coefficients
+	of the monomials of a unipolynomial.
+	!> @Divs is a list of divisors of the last value in @Coefs
+	++>
+	@constrs
+		@param Coefs The list of coefficients is sorted decreasingly.
+		@param Roots Will contian only the integer roots of the polynomial.
+*/
 ruffini([_], _, []):- !.
 ruffini(CS, [D|_], [D|L]):-
 	ladder_prod(D, 0, CS, RS, 0), last(RS, _, NC), divisors(NC, ND),
 	ruffini(RS, ND, L), !.
 ruffini(CS, [_|Ds], L):- ruffini(CS, Ds, L), !.
 
-% Finds all the integer roots of a univariate polynomial P.
-% This predicate is simply a wrapper that calls 'ruffini/3' predicate.
-% This polynomial should have one free term (a constant multiplied by x^0)
-% and the first monomial be multiplied by 1 or -1.
-integer_roots_polynomial(P, R):-
+/**
+	@form integer_roots_unipolynomial(Poly, Roots)
+	@descr @Roots is a list of integer values for which @Poly is evaluated
+	to zero, that is, the integer roots of @Poly. Uses predicate ?ruffini/3.
+*/
+integer_roots_unipolynomial(P, R):-
 	% extract the padded monomial list of P
 	list_from_polynomial(P, M), monomial_sort(M, SM), padded_unipoly_mons_decr(SM, PAD_SM),
 
