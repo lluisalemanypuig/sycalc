@@ -35,13 +35,18 @@ mon_sum_(M1, _, _, _,  M2,C2, _, _, M1 - N2):-
 	monomial_comp(M1,M2), C2 < 0, monomial_neg(M2, N2), !.
 
 /**
-	@form mon_sum(Monomial1, Monomial2, MonomialSum)
-	@descr MonomialSum is the sum of Monomial1 and Monomial2.
-	If Monomial1 and Monomial2 do not have the same variables (or have
+	@form mon_sum(Mon1, Mon2, Sum)
+	@descr @Sum is the sum of @Mon1 and @Mon2.
+	<++
+	!> If @Mon1 and @Mon2 do not have the same variables (or have
 	the same variables but raised to different exponents) then
-	MonomialSum is an expression that is the arithmetic sum of Monomial1
-	and Monomial2. In the expression, the monomial to the left and the
-	monomial to the right are so that they make the comparison '<' true.
+	@Sum is an expression that is the arithmetic sum of @Mon1
+	and @Mon2. In the expression, the monomial to the left and the
+	monomial to the right are so that they make the comparison '@<' true.
+	!> If @Mon1 and @Mon2 have the same variables each raised to the
+	same exponents then @Sum contains these variables with a leading
+	coefficient equal to the sum of @Mon1's and @Mon2's leading coefficient.
+	++>
 */
 mon_sum(0, M2, M3):- red_monomial(M2, M3), !.
 mon_sum(M1, 0, M3):- red_monomial(M1, M3), !.
@@ -57,9 +62,11 @@ mon_sum(M1, M2, R):-
 	mon_sum_(RM1,RC1,RV1,RE1,  RM2,RC2,RV2,RE2,  R).
 
 /**
-	@form mon_sum(List, MonomialSum)
-	@constraints List has two elements.
-	@descr MonomialSum is the addition of the two elements in List.
+	@form mon_sum(MonomialList, Sum)
+	@descr @Sum equals the sum of the two elements in @MonomialList.
+	Uses predicate ?mon_sum/3.
+	@constrs
+		@param MonomialList Contains two elements.
 */
 mon_sum([M1,M2], S):- mon_sum(M1, M2, S).
 
@@ -70,14 +77,19 @@ mon_sum([M1,M2], S):- mon_sum(M1, M2, S).
 % when the monomials can not be fused then the result is sorted
 
 /**
-	@form mon_sub(Monomial1, Monomial2, MonomialSub)
-	@descr MonomialSub is the substraction of Monomial1 from Monomial2.
-	If Monomial1 and Monomial2 do not have the same variables (or have
+	@form mon_sub(Mon1, Mon2, Sub)
+	@descr @Sub is the sum of @Mon1 and @Mon2.
+	<++
+	!> If @Mon1 and @Mon2 do not have the same variables (or have
 	the same variables but raised to different exponents) then
-	MonomialSum is an expression that is the arithmetic substraction of
-	Monomial2 from Monomial1. In the expression, the monomial to the left
-	and the monomial to the right are so that they make the comparison
-	'<' true.
+	@Sub is an expression that is the arithmetic substraction of @Mon2
+	from @Mon1. In the expression, the monomial to the left and the
+	monomial to the right are so that they make the comparison '@<' true.
+	!> If @Mon1 and @Mon2 have the same variables each raised to the
+	same exponents then @Sub contains these variables with a leading
+	coefficient equal to the substraction of @Mon2's from @Mon1's leading
+	coefficient.
+	++>
 */
 mon_sub(0, M2, M3):- monomial_neg(M2, M3), !.
 mon_sub(M1, 0, M3):- red_monomial(M1, M3), !.
@@ -92,9 +104,11 @@ mon_sub(M1, M2, R):-
 	mon_sum_(RM1,RC1,RV1,RE1, RM2,N2,RV2,RE2, R).
 
 /**
-	@form mon_sub(List, MonomialSub)
-	@constraints List has two elements.
-	@descr MonomialSub is the substraction of the second element  of the two elements in List.
+	@form mon_sub(MonomialList, Sub)
+	@descr @Sub equals the sum of the two elements in @MonomialList.
+	Uses predicate ?mon_sub/3.
+	@constrs
+		@param MonomialList Contains two elements.
 */
 mon_sub([M1,M2], S):- mon_sub(M1, M2, S), !.
 
@@ -102,8 +116,8 @@ mon_sub([M1,M2], S):- mon_sub(M1, M2, S), !.
 % PRODUCT
 
 /**
-	@form mon_prod(Monomial1, Monomial2, MonomialProd)
-	@descr MonomialProd is the product of Monomial1 and Monomial2.
+	@form mon_prod(@Mon1, @Mon2, Prod)
+	@descr @Prod is the product of @Mon1 and @Mon2.
 */
 mon_prod(0, _, 0):- !.
 mon_prod(_, 0, 0):- !.
@@ -118,9 +132,11 @@ mon_prod(M1, M2, PROD):-
 	red_monomial_from_comps(CP,CV,CE, PROD).
 
 /**
-	@form mon_prod(List, MonomialProd)
-	@constraints List has two elements.
-	@descr MonomialProd is the product of the two elements in List.
+	@form mon_prod(MonomialList, Prod)
+	@descr @Prod is the product of the two elements in @MonomialList.
+	Uses predicate ?mon_prod/3.
+	@constrs
+		@param MonomialList Contains two elements.
 */
 mon_prod([M1,M2], P):- mon_prod(M1, M2, P), !.
 
@@ -135,15 +151,17 @@ mon_prod([M1,M2], P):- mon_prod(M1, M2, P), !.
 % E: M(VAL)
 /**
 	@form monomial_value_evaluation(Value,Variable, Monomial, Result)
-	@descr Result is the replacement of Variable by Value in Monomial.
+	@descr @Result is the replacement of @Variable by @Value in @Monomial.
 	The replacement of variable 'v_i' by 'q' in monomial
-		m(V) =
-			c*(v_1^e_1)* ... *(v_i^e_i)* ... *(v_n^e_n)
+	<--
+		m(V) = c*(v_1^e_1)* ... *(v_i^e_i)* ... *(v_n^e_n)
+	-->
 	gives
+	<--
 		m(V\{v_i}) =
 			c*(q^e_i)*
 			(v_1^e_1)* ... *(v_{i-1}^e_{i-1})*(v_{i+1}^e_{i+1})* ... *(v_n^e_n)
-	
+	-->
 	For example, the replacement of 'x' by '3' in '3*x^3*y^2' gives '81*y^2'.
 */
 monomial_value_evaluation(VAL, V, M, E):-

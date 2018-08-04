@@ -15,20 +15,24 @@
 	Attention: if the exponent or coeficient are rational, it is better
 	to use parentheses.
 	
-	Henceforth, a "unimonomial" will be used as a synonym for
+	Henceforth, "unimonomial" will be used as a synonym for
 	"univariate monomial".
 */
 
 /**
 	@form monomial(Value)
-	@descr This predicate fails if Value is not a monomial. A monomial
+	@descr This predicate fails if @Value is not a monomial. A monomial
 	is something we can extract monomial components from. The components
 	are:
-		-> a rational number as coefficient
-		-> a product of variables each one raised to a rational value
-		-> nothing else is a component
-		(the coefficient or any of the exponents may be written as
-		arithmetic expressions, e.g., 3*3, 2+1, ...)
+	
+	<++
+	!> a rational number as coefficient
+	!> a product of variables each one raised to a rational value
+	!> nothing else is a component
+	++>
+	
+	(the coefficient or any of the exponents may be written as
+	arithmetic expressions, e.g., 3*3, 2+1, ...)
 */
 monomial(M):-
 	monomial_comps(M, C,Vs,Es),
@@ -82,13 +86,20 @@ monomial_comps_(S*V, C, [V|Vs], [1|Es]):-
 
 /**
 	@form monomial_comps(Monomial, Coefficient,Variables,Exponents)
-	@descr Coefficient, Variables and Exponents are, respectively, the
-	value that multiplies all the variables, and the Variables the
-	variables of the monomial. The i-th variable in Variables has its
-	exponent in the i-th element of Exponents. The coefficients and
-	exponents are given in reduced form:
+	@descr Obtains the coefficient, list of variables and exponents of
+	the monomial.
 	
+	The coefficients and exponents are given in reduced form:
+	<--
 	(2 + 2)*x^(3 - 1) gives: C = 4, V = [x], E = [2]
+	-->
+	@constrs 
+		@param Coefficient The rational value that multiplies all the
+		variables
+		@param Variables The variables of the monomial
+		@param Exponents The rational values each variable is raised to.
+		The i-th value of this list is the exponent of the i-th variable
+		in @Variables.
 */
 monomial_comps(M, C,V,E):-
 	monomial_comps_(M,C,Vs,Es),
@@ -96,7 +107,7 @@ monomial_comps(M, C,V,E):-
 
 /**
 	@form monomial_neg(Monomial, NegMonomial)
-	@descr NegMonomial is a monomial equal to (-1)*Monomial.
+	@descr @NegMonomial is a monomial equal to (-1)*@Monomial.
 */
 monomial_neg(M, N):-
 	monomial_comps(M, C,V,E), rational_neg(C, CN),
@@ -104,17 +115,22 @@ monomial_neg(M, N):-
 
 /**
 	@form monomial_coefficient(Monomial, Value)
-	@descr Value is the rational value that multiplies the variables of
-	Monomial (the coefficient).
+	@descr @Value is the rational value that multiplies the variables of
+	@Monomial (the coefficient).
 */
 monomial_coefficient(M, C):- monomial_comps(M, C, _, _).
 
 /**
 	@form monomial_var_exp_comps(Var, Vars,Exps, RestVars,RestExps, Exp)
-	@descr Exp is the exponent of variable Var. Exp is a rational value
-	different from 0 if Var is in Vars, or 0 if otherwise. RestVars and
-	RestExps are the other variables and their exponents in Vars and Exps
-	in the order they appear in Vars and Exps.
+	@descr Find the exponent of variable @Var in @Exps. If @Var is a member
+	of @Exp then the value it takes is taken from @Exps. If @Var is not
+	a member then @Exp is 0.
+	@constrs
+		@param Var The variable whose exponent we want.
+		@param Vars The list of variables of the monomial.
+		@param Exps The exponents of the variables in @Vars.
+		@param RestVars The list of variables without @Var.
+		@param RestExps The list of exponents without @Var 's.
 */
 monomial_var_exp_comps(_,     [],     [],      _,     _, 0):- !.
 monomial_var_exp_comps(V, [V|Vs], [E|Es],     Vs,    Es, E):- !.
@@ -123,8 +139,8 @@ monomial_var_exp_comps(V, [X|Vs], [P|Es], [X|Vr],[P|Er], E):-
 
 /**
 	@form monomial_var_exp(Monomial, Var, Var^Exp)
-	@descr Exp is the exponent of variable Var. Exp is a rational value
-	different from 0 if Var is in Monomial, or 0 if otherwise.
+	@descr Finds the exponent of variable @Var. Uses predicate 
+	?monomial_var_exp_comps/6.
 */
 monomial_var_exp(M, V, V^E):-
 	monomial_comps(M, _,Vs,Es),
@@ -132,16 +148,17 @@ monomial_var_exp(M, V, V^E):-
 
 /**
 	@form monomial_degrees(Monomial, Degrees)
-	@descr Degrees are the exponents of the variables of Monomial.
+	@descr Obtain the exponent of each of the variables of @Monomial.
 */
 monomial_degrees(M, []):- monomial_comps(M, _, [],[]), !.
 monomial_degrees(M, D):- monomial_comps(M, _, _, D).
 
 /**
 	@form unimonomial_degree(Monomial, Degree)
-	@constrs Monomial is a univariate monomial.
-	@descr Degree is the degree of Monomial, that is, the exponent of
+	@descr @Degree is the degree of @Monomial, that is, the exponent of
 	the only variable.
+	@constrs 
+		@param Monomial A univariate monomial.
 */
 unimonomial_degree(M, 0):- monomial_comps(M, _,[],[]), !.
 unimonomial_degree(M, D):- monomial_comps(M, _,_,Ds), !, first(Ds, D, _).
@@ -154,8 +171,8 @@ unimonomial_degree(M, D):- monomial_comps(M, _,_,Ds), !, first(Ds, D, _).
 
 /**
 	@form neg_monomial_vars_product(Vars, NegVars)
-	@constrs Vars cannot have a leading coefficient equal to -1.
-	@descr NegVars is the set of variables Vars equal to (-1)*Vars.
+	@descr @NegVars is the set of variables @Vars equal to (-1)*@Vars.
+	@constrs @Vars cannot have a leading coefficient equal to -1.
 */
 neg_monomial_vars_product(RV, R):-
 	nonvar(RV),									% check RV is instanciated
@@ -166,8 +183,8 @@ neg_monomial_vars_product(_, _).
 
 /**
 	@form monomial_vars_product(Var, Vars2, NegVars)
-	@constrs Var and Vars2 cannot have a leading coefficient equal to -1.
-	@descr NegVars is the set of variables Vars equal to (-1)*Var*vars2.
+	@descr @NegVars is the set of variables equal to (-1)*@Var*@Vars2.
+	@constrs @Var and @Vars2 cannot have a leading coefficient equal to -1.
 */
 monomial_vars_product(X, RV, R):-
 	nonvar(RV),									% check RV is instanciated
