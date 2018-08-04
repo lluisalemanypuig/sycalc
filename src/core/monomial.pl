@@ -212,11 +212,15 @@ monomial_vars_product(X, E, _, X^E).
 	guided by Vars: two equal variables in consecutive positions in Vars
 	are collapsed into a single element and the exponents are added. For
 	example:
+	<--
 		[i, i, j, k,k, k, k, z],
 		[1,-1, 3, 1,1,-1,-1, 4]
+	-->
 	gives
+	<--
 		[i, j, k, z]
 		[0, 3, 0, 4]
+	-->
 */
 collapse_vars_list(        [],        [],     [],  []):- !.
 collapse_vars_list(       [V],       [E],    [V], [E]):- !.
@@ -251,9 +255,13 @@ red_monomial_comps(C,Vs,Es, Rc,RVs,REs):-
 	any variable has exponent 0 then it is not included in the product.
 	If the variable has exponent 1, the exponent does not appear in the
 	product. For example:
+	<--
 		[i,j,k,l], [0,1,2,3]
+	-->
 	gives
+	<--
 		j*k^2*l^3
+	-->
 */
 red_vars_monomial(    [],  [], _):- !.
 red_vars_monomial(   [_], [0], _):- !.
@@ -307,7 +315,7 @@ red_monomial(M, R):-
 /**
 	@form monomial_components_comp(Coef1,Vars1,Exps1, Coef2,Vars2,Exps2)
 	@descr Compares the monomials whose components are Coef1,Vars1,Exps1
-	and Coef2,Vars2,Exps2 and fails if the comparison '<' is false. This
+	and Coef2,Vars2,Exps2 and fails if the comparison '@<' is false. This
 	comparison is defined as:
 	* If both monomials have no variables then sort using coefficient.
 	* If one of the monomials does not have any variable, that monomial goes first
@@ -351,7 +359,7 @@ monomial_inv_comp(M1, M2):-
 	@form monomial_sort(List, SortedList)
 	@constrs List is a list of monomials.
 	@descr SortedList has the same elements as List but each pair of
-	elements in it meet the precedence relationship of '<'
+	elements in it meet the precedence relationship of '@<'
 */
 monomial_sort(L, R):- isort_by(monomial_comp, L, R).
 
@@ -359,7 +367,7 @@ monomial_sort(L, R):- isort_by(monomial_comp, L, R).
 	@form monomial_inv_sort(List, SortedList)
 	@constrs List is a list of monomials.
 	@descr SortedList has the same elements as List but each pair of
-	elements in it meet the precedence relationship of '>'
+	elements in it meet the precedence relationship of '@>'
 */
 monomial_inv_sort(L, R):- isort_by(monomial_inv_comp, L, R).
 
@@ -393,14 +401,18 @@ monomial_split_(VAR, _, C,V, E, Vo,Wo):-
 
 /**
 	@form monomial_split(Var, Monomial, VariableExponent, Rest)
-	@descr VariableExponent is the monomial consisting of variable Var
-	and its exponent, and Rest is the rest of Monomial. The product of
-	VariableExponent and Rest is equal to Monomial.
+	@descr @VariableExponent is the monomial consisting of variable @Var
+	and its exponent, and @Rest is the rest of @Monomial. The product of
+	@VariableExponent and @Rest is equal to @Monomial.
 	Splitting
+	<--
 		3*x*y^2*z
+	-->
 	at y gives
+	<--
 		VariableExponent= y^2, 
 		Rest= 3*x*z
+	-->
 */
 monomial_split(VAR, M, Vo,Wo):-
 	monomial_comps(M, C,V,E),
