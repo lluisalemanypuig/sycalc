@@ -48,7 +48,7 @@ Here are a few basic examples:
     - Compose the multivariate polynomial P(x,y) = x^2 + y^2 with the multivariate polynomial Q(x,y) = 3*x + y.
     In particular, compute P(Q(x,y), y) and P(x, Q(x,y))
     
-            ?- P=x^2 + y^2, Q=3*x+y, polynomial_composition(x,Q, P, C).
+            ?- P=x^2 + y^2, Q=3*x + y, polynomial_composition(x,Q, P, C).
             C = 6*x*y + 9*x^2 + 2*y^2.
             
             ?- P=x^2 + y^2, Q=3*x + y, polynomial_composition(y,Q, P, C).
