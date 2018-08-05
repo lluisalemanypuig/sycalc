@@ -19,6 +19,18 @@
 	3*x + 3*y - x
 	3*x^2 - 3*x*z^3 + y + x*z^3
 	-->
+	
+	Also, we defined the concepts of contracted and expanded polynomials.
+	An expanded polynomial is of the form of those in the examples above.
+	An expanded polynomial is a sum of monomials.
+	Informally, an expanded polynomial cannot have parenthesised expressions
+	like:
+	<--
+	3*(x + 3) - 4*x + 5*(x - 3)*(y + 2)
+	-->
+	
+	A contracted polynomial is a not fully expanded polynomial. Therefore
+	they may contain parenthesised expressions.
 */
 
 /**

@@ -136,9 +136,9 @@ deb_falling_factorial(I, P, F, RES):-
 	polynomial_expression_evaluation(RES, CORRECT_OUTPUT), output_text(R, CORRECT_OUTPUT).
 
 deb_mono_eval(I, M,V, E, RES):-
-	monomial_symb_evaluation(V, E, M, RES), !, output_correct(I).
+	monomial_composition(V, E, M, RES), !, output_correct(I).
 deb_mono_eval(I, M,V, E, RES):-
-	monomial_symb_evaluation(V, E, M, N),
+	monomial_composition(V, E, M, N),
 	write(I), write(' '),
 	write(M), write( '(-> '), write(E), write(' @ '), write(V), write(' )= '),
 	output_text(N, RES).

@@ -1,5 +1,13 @@
 :-ensure_loaded("../core").
 
+/***
+	@descr This file contains the algorithms to compute the polynomial
+	that represents the sum of the first n natural numbers each raised
+	to a certain power.
+	
+	This power is given in the predicate and must be a natural value.
+*/
+
 % FORMULA OF SUMS OF POWERS
 
 h_coefficient(C, H):-
@@ -57,10 +65,34 @@ power_sums_(D, SUM, L):-
 	list_concat([[D,SUM]], L1, L),
 	!.
 
-% S = f(n) = 1^D + 2^D + ... + n^D
+/**
+	@form power_sums(Power, Poly)
+	@descr @Poly is a univariate polynomial on variable n that computes
+	the value:
+	<--
+	\sum_{i=1}^n i^Power
+	-->
+	@constrs
+		@param Power A natural value.
+*/
 power_sums(D, S):- power_sums_(D, SS, _), polynomial_from_list(SS, S).
 
 % L = [i, f(n, i)] where f(n, i) = 1^i + 2^i + ... + n^i
+/**
+	@form power_sums_list(Power, ListPoly)
+	@descr The j-th element of @ListPoly is a list of two values:
+	<++
+	!> A natural value P
+	!> A univariate polynomial in variable n that computes the sum
+	<--
+	\sum_{i=1}^n i^P
+	-->
+	++>
+	@ListPoly is decreasingly sorted, that is, the first value P in @ListPoly
+	for @Power is @Power itself.
+	@constrs
+		@param Power A natural value.
+*/
 power_sums_list(D, L):- power_sums_(D, _, L).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
