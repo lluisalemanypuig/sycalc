@@ -20,6 +20,8 @@
 	"univariate monomial".
 */
 
+/*! Definition of monomial. */
+
 /**
 	@form monomial(Value)
 	@descr This predicate fails if @Value is not a monomial. A monomial
@@ -84,6 +86,8 @@ monomial_comps_(S*V^E, C, [V|Vs], [EE|Es]):-
 %    Last is variable
 monomial_comps_(S*V, C, [V|Vs], [1|Es]):-
 	monomial_comps_(S, C,Vs,Es), !.
+
+/*! Components of a monomial. */
 
 /**
 	@form monomial_comps(Monomial, Coefficient,Variables,Exponents)
@@ -154,7 +158,7 @@ monomial_var_exp(M, V, V^E):-
 monomial_degrees(M, []):- monomial_comps(M, _, [],[]), !.
 monomial_degrees(M, D):- monomial_comps(M, _, _, D).
 
-% Monomial reduction
+/*! Reduction of monomials. */
 
 % Joins in a nice way variables raised to an exponent multiplying a list
 % of variables, each probably raised to another exponent. Variants: put
@@ -310,7 +314,54 @@ red_monomial(M, R):-
 	pisort(V,E, SV,SE),
 	red_monomial_from_comps(C,SV,SE, R).
 
-% MONOMIAL COMPARISON
+/**
+	@form monomial_positive_coefficient(Monomial)
+	@descr Predicate fails if the monomial has a negative (< 0) coefficient.
+*/
+monomial_positive_coefficient(M):-
+	monomial_comps(M, C, _, _), C >= 0.
+
+/**
+	@form monomial_revar(OldVar,NewVar, Monomial, Replaced)
+	@descr Replaced is a monomial with the same coefficient and variables
+	as Monomial, except for variable OldVar which is replaced by NewVar.
+*/
+monomial_revar(VAR,I, M, R):-
+	monomial_comps(M, C,V,E),
+	replace(VAR, I, V, Rv),
+	pisort(Rv,E, Vs,Es),
+	red_monomial_from_comps(C,Vs,Es, R).
+
+% Vo is the variable O with its exponent
+% Wo is the rest of the monomial M
+% (if monomial M does not have variable O, Vo is 1)
+monomial_split_(  _, M,_,[],[], 1, M):- nl, !.
+monomial_split_(VAR, M, _,V, E, 1, M):- psplit(VAR, V,E, [],[], V,E), !.
+monomial_split_(VAR, _, C,V, E, Vo,Wo):-
+	psplit(VAR, V,E, Os,Oes, Vs,Es),
+	red_monomial_from_comps(1,Os,Oes, Vo),
+	red_monomial_from_comps(C,Vs,Es, Wo), !.
+
+/**
+	@form monomial_split(Var, Monomial, VariableExponent, Rest)
+	@descr @VariableExponent is the monomial consisting of variable @Var
+	and its exponent, and @Rest is the rest of @Monomial. The product of
+	@VariableExponent and @Rest is equal to @Monomial.
+	Splitting
+	<--
+		3*x*y^2*z
+	-->
+	at y gives
+	<--
+		VariableExponent= y^2, 
+		Rest= 3*x*z
+	-->
+*/
+monomial_split(VAR, M, Vo,Wo):-
+	monomial_comps(M, C,V,E),
+	monomial_split_(VAR, M,C,V,E, Vo,Wo).
+
+/*! Predicates for the comparison of monomials. */
 
 /**
 	@form monomial_components_comp(Coef1,Vars1,Exps1, Coef2,Vars2,Exps2)
@@ -370,53 +421,6 @@ monomial_sort(L, R):- isort_by(monomial_comp, L, R).
 	elements in it meet the precedence relationship of '@>'
 */
 monomial_inv_sort(L, R):- isort_by(monomial_inv_comp, L, R).
-
-/**
-	@form monomial_positive_coefficient(Monomial)
-	@descr Predicate fails if the monomial has a negative (< 0) coefficient.
-*/
-monomial_positive_coefficient(M):-
-	monomial_comps(M, C, _, _), C >= 0.
-
-/**
-	@form monomial_revar(OldVar,NewVar, Monomial, Replaced)
-	@descr Replaced is a monomial with the same coefficient and variables
-	as Monomial, except for variable OldVar which is replaced by NewVar.
-*/
-monomial_revar(VAR,I, M, R):-
-	monomial_comps(M, C,V,E),
-	replace(VAR, I, V, Rv),
-	pisort(Rv,E, Vs,Es),
-	red_monomial_from_comps(C,Vs,Es, R).
-
-% Vo is the variable O with its exponent
-% Wo is the rest of the monomial M
-% (if monomial M does not have variable O, Vo is 1)
-monomial_split_(  _, M,_,[],[], 1, M):- nl, !.
-monomial_split_(VAR, M, _,V, E, 1, M):- psplit(VAR, V,E, [],[], V,E), !.
-monomial_split_(VAR, _, C,V, E, Vo,Wo):-
-	psplit(VAR, V,E, Os,Oes, Vs,Es),
-	red_monomial_from_comps(1,Os,Oes, Vo),
-	red_monomial_from_comps(C,Vs,Es, Wo), !.
-
-/**
-	@form monomial_split(Var, Monomial, VariableExponent, Rest)
-	@descr @VariableExponent is the monomial consisting of variable @Var
-	and its exponent, and @Rest is the rest of @Monomial. The product of
-	@VariableExponent and @Rest is equal to @Monomial.
-	Splitting
-	<--
-		3*x*y^2*z
-	-->
-	at y gives
-	<--
-		VariableExponent= y^2, 
-		Rest= 3*x*z
-	-->
-*/
-monomial_split(VAR, M, Vo,Wo):-
-	monomial_comps(M, C,V,E),
-	monomial_split_(VAR, M,C,V,E, Vo,Wo).
 
 /*! The following predicates are restricted to unimonomials only. */
 

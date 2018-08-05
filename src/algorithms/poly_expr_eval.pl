@@ -78,21 +78,21 @@ polynomial_expression_evaluation_list(Q1 + Q2, R):-
 	polynomial_expression_evaluation_list(Q1, L1),
 	polynomial_expression_evaluation_list(Q2, L2),
 	list_concat(L1, L2, L),
-	list_red_polynomial_from_list(L, R), !.
+	red_list_monomials(L, R), !.
 
 polynomial_expression_evaluation_list(Q1 - Q2, R):-
 	polynomial_expression_evaluation_list(Q1, L1),
 	polynomial_expression_evaluation_list(Q2, L2),
 	map(monomial_neg, L2, NL2),
 	list_concat(L1, NL2, L),
-	list_red_polynomial_from_list(L, R), !.
+	red_list_monomials(L, R), !.
 
 polynomial_expression_evaluation_list(Q1*Q2, R):-
 	polynomial_expression_evaluation_list(Q1, L1),
 	polynomial_expression_evaluation_list(Q2, L2),
 	cartesian_product(L1, L2, L),
 	map(mon_prod, L, PROD),
-	list_red_polynomial_from_list(PROD, R), !.
+	red_list_monomials(PROD, R), !.
 
 polynomial_expression_evaluation_list((-Q1)^N, R):-
 	polynomial_expression_evaluation_list(Q1, L1),
@@ -106,7 +106,7 @@ polynomial_expression_evaluation_list(Q1^N, R):-
 polynomial_expression_evaluation_list(-Q1, R):-
 	polynomial_expression_evaluation_list(Q1, L1),
 	map(monomial_neg, L1, NL1),
-	list_red_polynomial_from_list(NL1, R), !.
+	red_list_monomials(NL1, R), !.
 
 % Convert a binomial into a polynomial.
 % I is either a natural number or an arithmetic expression that
@@ -167,7 +167,7 @@ polynomial_eval_eq(P1, P2):-
 expanded_polynomial_evaluation(VAL, V, P, E):-
 	list_from_polynomial(P, MS),
 	map(monomial_value_evaluation(VAL, V), MS, R),
-	list_red_polynomial_from_list(R, L),
+	red_list_monomials(R, L),
 	polynomial_from_list(L, E).
 
 % Takes a polynomial and evaluates it with the value VAL
