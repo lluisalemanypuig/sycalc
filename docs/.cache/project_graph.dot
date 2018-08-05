@@ -8,8 +8,6 @@ ranksep = 0.3
 "core/list.pl" -> "core/list/sort_list.pl"
 "core/list.pl" -> "core/list/high_order.pl"
 "core/list.pl" -> "core/list/basic.pl"
-"freq-comp-bip.pl" -> "core.pl"
-"freq-comp-bip.pl" -> "algorithms.pl"
 "algorithms.pl" -> "algorithms/poly_expr_eval.pl"
 "algorithms.pl" -> "algorithms/power_sums.pl"
 "core/number/real.pl" -> "core/number/irrational.pl"
