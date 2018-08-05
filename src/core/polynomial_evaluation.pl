@@ -1,43 +1,78 @@
 :-ensure_loaded(polynomial).
 :-ensure_loaded(list).
 
-% Takes a multivariate polynomial as a list of monomials and reduces it
-list_red_monomials([], []):- !.
-list_red_monomials([0], []):- !.
-list_red_monomials([M], [RM]):- red_monomial(M, RM), !.
-list_red_monomials([M1,M2], []):- mon_sum(M1, M2, R), R = 0, !.
-list_red_monomials([M1,M2], [S]):- mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)), !.
-list_red_monomials([M1,M2], [M1,M2]):- !.
-list_red_monomials([M1,M2|L], R):-
+/***
+	@descr This file contains predicates that define simple operations
+	with reduced polynomials.
+	
+	
+	In this file is used for the first time the concept of reduced
+	polynomial. A reduced polynomial is a polynomial for which the sum
+	of any pair of its monomials does not result into a single monomial.
+	These are reduced polynomials:
+	<--
+	3*x*y + 3*x^2
+	4*x + 5*z^3 - 4
+	-->
+	These are not reduced polynomials
+	<--
+	3*x + 3*y - x
+	3*x^2 - 3*x*z^3 + y + x*z^3
+	-->
+*/
+
+/**
+	@form red_sorted_list_monomials(List, RedList)
+	@descr @RedList is the reduction of @List by the arithmetic sum
+	of the monomials in @List.
+	
+	These are not reduced lists of polynomials:
+	<--
+		[x^2,-2*x^2, x, y]
+		[x^3, 0, 1]
+	-->
+	These are reduced lists of polynomials:
+	<--
+		[x^3, 1]
+		[x^3, 4*x^2, 1]
+	-->
+	@constrs
+		@param List Must be sorted
+*/
+red_sorted_list_monomials([], []):- !.
+red_sorted_list_monomials([0], []):- !.
+red_sorted_list_monomials([M], [RM]):- red_monomial(M, RM), !.
+red_sorted_list_monomials([M1,M2], []):- mon_sum(M1, M2, R), R = 0, !.
+red_sorted_list_monomials([M1,M2], [S]):- mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)), !.
+red_sorted_list_monomials([M1,M2], [M1,M2]):- !.
+red_sorted_list_monomials([M1,M2|L], R):-
 	mon_sum(M1, M2, S), not(polynomial_eq(M1 + M2, S)),
-	list_red_monomials([S|L], R), !.
-list_red_monomials([M1,M2|L], [M1|R]):- list_red_monomials([M2|L], R), !.
-list_red_monomials(X, X).
+	red_sorted_list_monomials([S|L], R), !.
+red_sorted_list_monomials([M1,M2|L], [M1|R]):- red_sorted_list_monomials([M2|L], R), !.
+red_sorted_list_monomials(X, X).
 
-% Takes a multivariate polynomial as a list and returns it as a reduced
-% list of monomials.
-% These are not reduced lists of polynomials:
-% - [x^2,-2*x^2, x, y]
-% - [x^3, 0, 1]
-% These are reduced lists of polynomials:
-% - [x^3, 1]
-% - [x^3, 4*x^2, 1]
-list_red_polynomial_from_list(L, LR):-
-	monomial_sort(L, R), list_red_monomials(R, LR).
-
-%%	ATTENTION:
-%%	All arithmetic operations between polynomials as lists of
-%%	monomials assume both polynomials to have the same single
-%%	variable. Therefore, the two polynomials must be univariate.
+/**
+	@form red_sorted_list_monomials(List, RedList)
+	@descr Similar to ?red_sorted_list_monomials/2 but @List is not
+	necessarily sorted.
+*/
+red_list_monomials(L, LR):-
+	monomial_sort(L, R), red_sorted_list_monomials(R, LR).
 
 %---------------
 %%	SUM
 
-% Takes an expanded multivariate polynomial and reduces it:
-% x + x + 2 -> 2*x + 2
+/*! Addition of two polynomials */
+
+/**
+	@form polynomial_reduction(Poly, RedPoly)
+	@descr @RedPoly is the reduction of polynomial @Poly.
+	@constrs
+		@param Poly An expanded multivariate polynomial.
+*/
 polynomial_reduction(P, R):-
 	list_from_polynomial(P, M),
-	list_red_polynomial_from_list(M, L),
+	red_list_monomials(M, L),
 	polynomial_from_list(L, R).
 
 % Takes two uni-variate polynomials each of them as reduced and
@@ -61,22 +96,38 @@ unipoly_from_list_sum_sorted_list_(PP1, PP2, R):-
 	unimonomial_degree(M2, D2),
 	unipoly_from_list_sum_sorted_list__(PP1, D1, PP2, D2, R).
 
+/**
+	@form unipoly_from_list_sum_sorted_list(Poly1, Poly2, RedPoly)
+	@descr @RedPoly is the addition of polynomials @Poly1 and @Poly2.
+	@RedPoly is a reduced list of monomials.
+	@constrs Both @Poly1 and @Poly2 are given as sorted reduced lists
+	of monomials, and are univariate on the same variable.
+*/
 unipoly_from_list_sum_sorted_list(P, [], P):- !.
 unipoly_from_list_sum_sorted_list([], P, P):- !.
 unipoly_from_list_sum_sorted_list(P1, P2, R):-
 	padded_unipoly_mons_decr(P1, PP1),
 	padded_unipoly_mons_decr(P2, PP2),
 	unipoly_from_list_sum_sorted_list_(PP1, PP2, LR),
-	list_red_monomials(LR, R), !.
+	red_sorted_list_monomials(LR, R), !.
 
-% Takes two polynomials each of them as a list, adds the second from the
-% first and returns it as a reduced list of monomials
+/**
+	@form polynomial_from_list_sum_list(Poly1, Poly2, RedPoly)
+	@descr @RedPoly is the addition of polynomials @Poly1 and @Poly2.
+	@RedPoly is a reduced list of monomials.
+	
+	Similar to ?unipoly_from_list_sum_sorted_list/3 but the lists are
+	not necessarily sorted and the polynomials may be multivariate.
+	@constrs Both @Poly1 and @Poly2 are given as lists of monomials.
+*/
 polynomial_from_list_sum_list(P1, P2, R):-
 	list_concat(P1, P2, P),
-	list_red_polynomial_from_list(P, R).
+	red_list_monomials(P, R).
 
 %---------------
 %%	SUB
+
+/*! Substraction of two polynomials */
 
 % Takes two uni-variate polynomials each of them as reduced and
 % DECREASINGLY sorted lists of monomials of unique degree and substracts
@@ -93,6 +144,13 @@ unipoly_from_list_sub_sorted_list(P1, D1, P2, D2, R):-
 	pad_begin(NZEROES, P2, 0, PP2),
 	zip_with(mon_sub, P1, PP2, R).
 
+/**
+	@form unipoly_from_list_sub_sorted_list(Poly1, Poly2, RedPoly)
+	@descr @RedPoly is the substrction of @Poly2 from @Poly1.
+	@RedPoly is a reduced list of monomials.
+	@constrs Both @Poly1 and @Poly2 are given as sorted reduced lists
+	of monomials, and are univariate on the same variable.
+*/
 unipoly_from_list_sub_sorted_list(P1, [], P1):- !.
 unipoly_from_list_sub_sorted_list([], P2, R):- map(monomial_neg, P2, R), !.
 unipoly_from_list_sub_sorted_list(P1, P2, R):-
@@ -102,20 +160,25 @@ unipoly_from_list_sub_sorted_list(P1, P2, R):-
 	unimonomial_degree(FMON1, D1),
 	unimonomial_degree(FMON2, D2),
 	unipoly_from_list_sub_sorted_list(PP1, D1, PP2, D2, LR),
-	list_red_monomials(LR, R), !.
+	red_sorted_list_monomials(LR, R), !.
 
-% Takes two uni-variate polynomials each of them as reduced and
-% DECREASINGLY sorted lists of monomials of unique degree and multiplies
-% the second and the first and returns it as a reduced list of
-% monomials.
-% This list has monomials with no unique degree: [2*x^2,x^2,x,1]
-% This list has monomials with unique degree: [3*x^2, x, 1]
+/**
+	@form polynomial_from_list_sub_list(Poly1, Poly2, RedPoly)
+	@descr @RedPoly is the substraction of polynomials @Poly2 from @Poly1.
+	@RedPoly is a reduced list of monomials.
+	
+	Similar to ?unipoly_from_list_sub_sorted_list/3 but the lists are
+	not necessarily sorted and the polynomials may be multivariate.
+	@constrs Both @Poly1 and @Poly2 are given as lists of monomials.
+*/
 polynomial_from_list_sub_list(P1, P2, R):-
 	map(monomial_neg, P2, NP2),
 	polynomial_from_list_sum_list(P1, NP2, R).
 
 %---------------
 %%	PROD
+
+/*! Product of polynomials */
 
 % Takes two uni-variate polynomials each of them as reduced and
 % DECREASINGLY sorted lists of monomials of unique degree and multiplies
@@ -130,22 +193,45 @@ unipoly_from_list_prod_sorted_list_([M|L], L2, [P|Q]):-
 	map(mon_prod(M), L2, P),
 	unipoly_from_list_prod_sorted_list_(L, L2, Q), !.
 
+/**
+	@form unipoly_from_list_prod_sorted_list(Poly1, Poly2, RedPoly)
+	@descr @RedPoly is the product of @Poly1 and @Poly2.
+	@RedPoly is a reduced list of monomials.
+	@constrs Both @Poly1 and @Poly2 are given as sorted reduced lists
+	of monomials, and are univariate on the same variable.
+*/
 unipoly_from_list_prod_sorted_list([], [], []):- !.
 unipoly_from_list_prod_sorted_list([],  _, []):- !.
 unipoly_from_list_prod_sorted_list( _, [], []):- !.
 unipoly_from_list_prod_sorted_list(L1, L2, L):-
 	unipoly_from_list_prod_sorted_list_(L1, L2, ML),
 	foldl(unipoly_from_list_sum_sorted_list, [], ML, LR),
-	list_red_monomials(LR, L), !.
+	red_sorted_list_monomials(LR, L), !.
 
-% Takes two polynomials each of them as a list, multiplies them and
-% returns it as a reduced list of monomials
+/**
+	@form polynomial_from_list_prod_list(Poly1, Poly2, RedPoly)
+	@descr @RedPoly is the product of polynomials @Poly2 from @Poly1.
+	@RedPoly is a reduced list of monomials.
+	
+	Similar to ?unipoly_from_list_prod_sorted_list/3 but the lists are
+	not necessarily sorted and the polynomials may be multivariate.
+	@constrs Both @Poly1 and @Poly2 are given as lists of monomials.
+*/
 polynomial_from_list_prod_list(L1, L2, L):-
 	cartesian_product_by(mon_prod, L1, L2, MON_PROD),
-	list_red_polynomial_from_list(MON_PROD, L).
+	red_list_monomials(MON_PROD, L).
 
-% Takes two expanded polynomials and multiplies them
-% polynomial_prod(P, Q, R), where R = P*Q
+/**
+	@form polynomial_prod(Poly1, Poly2, RedPoly)
+	@descr @RedPoly is the product of polynomials @Poly2 from @Poly1.
+
+	An example of usage is:
+	<--
+		?- polynomial_prod(3*x + 2*y, 4*z - x, R).
+		R = -2*x*y+12*x*z+8*y*z-3*x^2.
+	-->
+	@constrs Both @Poly1 and @Poly2 are expanded multivariate polynomials.
+*/
 polynomial_prod(P1, P2, P):-
 	list_from_polynomial(P1, L1), list_from_polynomial(P2, L2),
 	polynomial_from_list_prod_list(L1, L2, MON_PROD),
@@ -154,7 +240,15 @@ polynomial_prod(P1, P2, P):-
 %---------------
 %%	 POWER
 
-% Takes a polynomial as list, a natural number and computes P^N
+/*! Power of a polynomial */
+
+/**
+	@form polynomial_from_list_power_list(List, Value, PowerList)
+	@descr @PowerList is the reduced list of monomials equal to raising
+	to the power @Value the polynomial represented in @List.
+	@constrs
+		@param List A reduced list of monomials.
+*/
 polynomial_from_list_power_list(_, 0, [1]):- !.
 polynomial_from_list_power_list(L, 1, L):- !.
 polynomial_from_list_power_list(LP, N, LN):-
@@ -171,14 +265,23 @@ polynomial_from_list_power_list(LP, N, LN):-
 
 % Takes an expanded polynomial, an integer number and performs the power P^N
 % polynomial_prod(P, N, Q), where Q = P^N
+/**
+	@form polynomial_power(Poly, Value, PowerPoly)
+	@descr @PowerPoly is the reduced polynomial equal to raising
+	to the power @Value the polynomial @Poly.
+	
+	An example of usage is:
+	<--
+		?- polynomial_power(3*x + z, 2, R).
+		R = 6*x*z+9*x^2+z^2.
+	-->
+	@constrs @Poly is an expanded multivariate polynomial.
+*/
 polynomial_power(_, 0, 1):- !.
 polynomial_power(P, 1, P):- !.
 polynomial_power(P, N, PN):-
 	list_from_polynomial(P, M),
 	polynomial_from_list_power_list(M, N, L),
 	polynomial_from_list(L, PN).
-
-
-
 
 
