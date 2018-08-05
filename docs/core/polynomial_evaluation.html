@@ -1,0 +1,330 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>polynomial_evaluation.pl</title>
+	</head>
+	<body>
+		<h1>Documentation for Prolog file: polynomial_evaluation.pl</h1>
+		<dl>
+			<dt>This file contains predicates that define simple operations with reduced polynomials.</dt>
+			<br />
+			<dt>In this file is used for the first time the concept of reduced polynomial. A reduced polynomial is a polynomial for which the sum of any pair of its monomials does not result into a single monomial. These are reduced polynomials: </dt>
+<pre>
+ 	3*x*y + 3*x^2
+ 	4*x + 5*z^3 - 4
+</pre>
+			<dt> These are not reduced polynomials </dt>
+<pre>
+ 	3*x + 3*y - x
+ 	3*x^2 - 3*x*z^3 + y + x*z^3
+</pre>
+			<dt>Also, we defined the concepts of contracted and expanded polynomials. An expanded polynomial is of the form of those in the examples above. An expanded polynomial is a sum of monomials. Informally, an expanded polynomial cannot have parenthesised expressions like: </dt>
+<pre>
+ 	3*(x + 3) - 4*x + 5*(x - 3)*(y + 2)
+</pre>
+			<dt>A contracted polynomial is a not fully expanded polynomial. Therefore they may contain parenthesised expressions.</dt>
+		</dl>
+		<img src="polynomial_evaluation.png" alt="file_inclusion_map">
+		<h2><a name="included_files">Included files:</a></h2>
+		<ul id="included_files_list">
+			<li>
+				<p><a href="polynomial.html">polynomial.html</a></p>
+			</li>
+			<li>
+				<p><a href="list.html">list.html</a></p>
+			</li>
+		</ul>
+		<h2><a name="predicates">Predicates:</a></h2>
+		<ul id="predicate_list">
+			<li>
+				<p><a href="#red_sorted_list_monomials-2">red_sorted_list_monomials/2</a></p>
+			</li>
+			<li>
+				<p><a href="#red_sorted_list_monomials-2">red_sorted_list_monomials/2</a></p>
+			</li>
+			<dl>
+				<dt>Addition of two polynomials</dt>
+			</dl>
+			<li>
+				<p><a href="#polynomial_reduction-2">polynomial_reduction/2</a></p>
+			</li>
+			<li>
+				<p><a href="#unipoly_from_list_sum_sorted_list-3">unipoly_from_list_sum_sorted_list/3</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_from_list_sum_list-3">polynomial_from_list_sum_list/3</a></p>
+			</li>
+			<dl>
+				<dt>Substraction of two polynomials</dt>
+			</dl>
+			<li>
+				<p><a href="#unipoly_from_list_sub_sorted_list-3">unipoly_from_list_sub_sorted_list/3</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_from_list_sub_list-3">polynomial_from_list_sub_list/3</a></p>
+			</li>
+			<dl>
+				<dt>Product of polynomials</dt>
+			</dl>
+			<li>
+				<p><a href="#unipoly_from_list_prod_sorted_list-3">unipoly_from_list_prod_sorted_list/3</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_from_list_prod_list-3">polynomial_from_list_prod_list/3</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_prod-3">polynomial_prod/3</a></p>
+			</li>
+			<dl>
+				<dt>Power of a polynomial</dt>
+			</dl>
+			<li>
+				<p><a href="#polynomial_from_list_power_list-3">polynomial_from_list_power_list/3</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_power-3">polynomial_power/3</a></p>
+			</li>
+		</ul>
+		<h2><a name="details">Predicate Details:</a></h2>
+		<ul id="predicate_details">
+			<li>
+				<h3><a name="red_sorted_list_monomials-2">red_sorted_list_monomials/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>red_sorted_list_monomials(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">RedList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">RedList</i> is the reduction of <i style="color:#cc33ff">List</i> by the arithmetic sum of the monomials in <i style="color:#cc33ff">List</i>.</dt>
+						<dt>These are not reduced lists of polynomials: </dt>
+<pre>
+ 		[x^2,-2*x^2, x, y]
+ 		[x^3, 0, 1]
+</pre>
+						<dt> These are reduced lists of polynomials: </dt>
+<pre>
+ 		[x^3, 1]
+ 		[x^3, 4*x^2, 1]
+</pre>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+					</dl>
+					<ul>
+						<li>
+							<dl>
+								<dt><i style="color:#0099ff"><u>List</u></i> Must be sorted
+</dt>
+							</dl>
+						</li>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="red_sorted_list_monomials-2">red_sorted_list_monomials/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>red_sorted_list_monomials(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">RedList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Similar to <a href="#red_sorted_list_monomials-2"><u>red_sorted_list_monomials/2</u></a> but <i style="color:#cc33ff">List</i> is not necessarily sorted.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_reduction-2">polynomial_reduction/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_reduction(<i style="color:#ff0000">Poly</i>, <i style="color:#ff0000">RedPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">RedPoly</i> is the reduction of polynomial <i style="color:#cc33ff">Poly</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+					</dl>
+					<ul>
+						<li>
+							<dl>
+								<dt><i style="color:#0099ff"><u>Poly</u></i> An expanded multivariate polynomial.
+</dt>
+							</dl>
+						</li>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="unipoly_from_list_sum_sorted_list-3">unipoly_from_list_sum_sorted_list/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>unipoly_from_list_sum_sorted_list(<i style="color:#ff0000">Poly1</i>, <i style="color:#ff0000">Poly2</i>, <i style="color:#ff0000">RedPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">RedPoly</i> is the addition of polynomials <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i>. <i style="color:#cc33ff">RedPoly</i> is a reduced list of monomials.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>Both <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i> are given as sorted reduced lists of monomials, and are univariate on the same variable.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_from_list_sum_list-3">polynomial_from_list_sum_list/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_from_list_sum_list(<i style="color:#ff0000">Poly1</i>, <i style="color:#ff0000">Poly2</i>, <i style="color:#ff0000">RedPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">RedPoly</i> is the addition of polynomials <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i>. <i style="color:#cc33ff">RedPoly</i> is a reduced list of monomials.</dt>
+						<dt>Similar to <a href="#unipoly_from_list_sum_sorted_list-3"><u>unipoly_from_list_sum_sorted_list/3</u></a> but the lists are not necessarily sorted and the polynomials may be multivariate.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>Both <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i> are given as lists of monomials.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="unipoly_from_list_sub_sorted_list-3">unipoly_from_list_sub_sorted_list/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>unipoly_from_list_sub_sorted_list(<i style="color:#ff0000">Poly1</i>, <i style="color:#ff0000">Poly2</i>, <i style="color:#ff0000">RedPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">RedPoly</i> is the substrction of <i style="color:#cc33ff">Poly2</i> from <i style="color:#cc33ff">Poly1</i>. <i style="color:#cc33ff">RedPoly</i> is a reduced list of monomials.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>Both <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i> are given as sorted reduced lists of monomials, and are univariate on the same variable.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_from_list_sub_list-3">polynomial_from_list_sub_list/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_from_list_sub_list(<i style="color:#ff0000">Poly1</i>, <i style="color:#ff0000">Poly2</i>, <i style="color:#ff0000">RedPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">RedPoly</i> is the substraction of polynomials <i style="color:#cc33ff">Poly2</i> from <i style="color:#cc33ff">Poly1</i>. <i style="color:#cc33ff">RedPoly</i> is a reduced list of monomials.</dt>
+						<dt>Similar to <a href="#unipoly_from_list_sub_sorted_list-3"><u>unipoly_from_list_sub_sorted_list/3</u></a> but the lists are not necessarily sorted and the polynomials may be multivariate.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>Both <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i> are given as lists of monomials.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="unipoly_from_list_prod_sorted_list-3">unipoly_from_list_prod_sorted_list/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>unipoly_from_list_prod_sorted_list(<i style="color:#ff0000">Poly1</i>, <i style="color:#ff0000">Poly2</i>, <i style="color:#ff0000">RedPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">RedPoly</i> is the product of <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i>. <i style="color:#cc33ff">RedPoly</i> is a reduced list of monomials.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>Both <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i> are given as sorted reduced lists of monomials, and are univariate on the same variable.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_from_list_prod_list-3">polynomial_from_list_prod_list/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_from_list_prod_list(<i style="color:#ff0000">Poly1</i>, <i style="color:#ff0000">Poly2</i>, <i style="color:#ff0000">RedPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">RedPoly</i> is the product of polynomials <i style="color:#cc33ff">Poly2</i> from <i style="color:#cc33ff">Poly1</i>. <i style="color:#cc33ff">RedPoly</i> is a reduced list of monomials.</dt>
+						<dt>Similar to <a href="#unipoly_from_list_prod_sorted_list-3"><u>unipoly_from_list_prod_sorted_list/3</u></a> but the lists are not necessarily sorted and the polynomials may be multivariate.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>Both <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i> are given as lists of monomials.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_prod-3">polynomial_prod/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_prod(<i style="color:#ff0000">Poly1</i>, <i style="color:#ff0000">Poly2</i>, <i style="color:#ff0000">RedPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">RedPoly</i> is the product of polynomials <i style="color:#cc33ff">Poly2</i> from <i style="color:#cc33ff">Poly1</i>.</dt>
+						<dt>An example of usage is: </dt>
+<pre>
+ 		?- polynomial_prod(3*x + 2*y, 4*z - x, R).
+ 		R = -2*x*y+12*x*z+8*y*z-3*x^2.
+</pre>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>Both <i style="color:#cc33ff">Poly1</i> and <i style="color:#cc33ff">Poly2</i> are expanded multivariate polynomials.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_from_list_power_list-3">polynomial_from_list_power_list/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_from_list_power_list(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">Value</i>, <i style="color:#ff0000">PowerList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">PowerList</i> is the reduced list of monomials equal to raising to the power <i style="color:#cc33ff">Value</i> the polynomial represented in <i style="color:#cc33ff">List</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+					</dl>
+					<ul>
+						<li>
+							<dl>
+								<dt><i style="color:#0099ff"><u>List</u></i> A reduced list of monomials.
+</dt>
+							</dl>
+						</li>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_power-3">polynomial_power/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_power(<i style="color:#ff0000">Poly</i>, <i style="color:#ff0000">Value</i>, <i style="color:#ff0000">PowerPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">PowerPoly</i> is the reduced polynomial equal to raising to the power <i style="color:#cc33ff">Value</i> the polynomial <i style="color:#cc33ff">Poly</i>.</dt>
+						<dt>An example of usage is: </dt>
+<pre>
+ 		?- polynomial_power(3*x + z, 2, R).
+ 		R = 6*x*z+9*x^2+z^2.
+</pre>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Poly</i> is an expanded multivariate polynomial.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+	</body>
+</html>

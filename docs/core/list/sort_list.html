@@ -1,0 +1,227 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>sort_list.pl</title>
+	</head>
+	<body>
+		<h1>Documentation for Prolog file: sort_list.pl</h1>
+		<dl>
+			<dt>This file contains a number of simple sorting algorithms, and two "list-fusion" algorithms.</dt>
+		</dl>
+		<h2><a name="predicates">Predicates:</a></h2>
+		<ul id="predicate_list">
+			<li>
+				<p><a href="#insert_by-4">insert_by/4</a></p>
+			</li>
+			<li>
+				<p><a href="#isort_by-3">isort_by/3</a></p>
+			</li>
+			<li>
+				<p><a href="#pinsert_by-7">pinsert_by/7</a></p>
+			</li>
+			<li>
+				<p><a href="#pisort_by-5">pisort_by/5</a></p>
+			</li>
+			<li>
+				<p><a href="#fuse_by-4">fuse_by/4</a></p>
+			</li>
+			<li>
+				<p><a href="#pfuse_by-7">pfuse_by/7</a></p>
+			</li>
+			<li>
+				<p><a href="#insert-3">insert/3</a></p>
+			</li>
+			<li>
+				<p><a href="#pinsert-6">pinsert/6</a></p>
+			</li>
+			<li>
+				<p><a href="#isort-2">isort/2</a></p>
+			</li>
+			<li>
+				<p><a href="#pisort-4">pisort/4</a></p>
+			</li>
+			<li>
+				<p><a href="#fuse-3">fuse/3</a></p>
+			</li>
+			<li>
+				<p><a href="#pfuse-6">pfuse/6</a></p>
+			</li>
+		</ul>
+		<h2><a name="details">Predicate Details:</a></h2>
+		<ul id="predicate_details">
+			<li>
+				<h3><a name="insert_by-4">insert_by/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>insert_by(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">Value</i>, <i style="color:#ff0000">List</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Inserts <i style="color:#cc33ff">Value</i> into <i style="color:#cc33ff">List</i> according to <i style="color:#cc33ff">Function</i> using the insertion sort algorithm.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="isort_by-3">isort_by/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>isort_by(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">List</i>, <i style="color:#ff0000">SortedList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Insertion sort according guided by <i style="color:#cc33ff">Function</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="pinsert_by-7">pinsert_by/7</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>pinsert_by(<i style="color:#ff0000">F</i>, <i style="color:#ff0000">Value1</i>, <i style="color:#ff0000">Value2</i>, <i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">NewList1</i>, <i style="color:#ff0000">NewList2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Given two lists and two values, insert <i style="color:#cc33ff">Value1</i> into <i style="color:#cc33ff">List1</i> as follows: if position of <i style="color:#cc33ff">Value1</i> in <i style="color:#cc33ff">NewList1</i> is 'p' then position of <i style="color:#cc33ff">Value2</i> in <i style="color:#cc33ff">NewList2</i> is also 'p'. Note that <i style="color:#cc33ff">NewList2</i> may not be sorted at the end. The insertion is guided by function <i style="color:#cc33ff">F</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> must have the same length.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="pisort_by-5">pisort_by/5</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>pisort_by(<i style="color:#ff0000">F</i>, <i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">SortedList1</i>, <i style="color:#ff0000">OtherList2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Sorts <i style="color:#cc33ff">List1</i> using function <i style="color:#cc33ff">F</i> as guide. <i style="color:#cc33ff">List2</i> 's elment's positions are modified according to the changes made in <i style="color:#cc33ff">List1</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> must have the same length.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="fuse_by-4">fuse_by/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>fuse_by(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Fuses two sorted lists into one, guided by <i style="color:#cc33ff">Function</i>. The result of fusing two lists is the concatenation of the element-wise sorting of the elements of the two lists: take the i-th element of both lists and put first the one that is defined "to go before" according to <i style="color:#cc33ff">Function</i>. Assuming that Function is @<: </dt>
+<pre>
+ 		fuse([X|Xs], [Y|Ys], [X,Y|R]) with X < Y
+ 		fuse([X|Xs], [Y|Ys], [Y,X|R]) with X > Y
+</pre>
+						<dt> where R is the fusion of Xs and Ys</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="pfuse_by-7">pfuse_by/7</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>pfuse_by(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">LeftList1</i>, <i style="color:#ff0000">RightList1</i>, <i style="color:#ff0000">LeftList2</i>, <i style="color:#ff0000">RightList2</i>, <i style="color:#ff0000">NewList1</i>, <i style="color:#ff0000">NewList2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Fuses two pairs of sorted lists into one, guided by <i style="color:#cc33ff">Function</i> and the pair of lists <i style="color:#cc33ff">LeftList1</i> and <i style="color:#cc33ff">LeftList2</i>: take the i-th element of <i style="color:#cc33ff">LeftList1</i> and <i style="color:#cc33ff">LeftList2</i> and let ll1 and ll2 be such elements. If we have that </dt>
+<pre>
+ Function(ll1,ll2)
+</pre>
+						<dt>is true, read as "ll1 < ll2", then the ordering of the second pair of lists (<i style="color:#cc33ff">RightList1</i> and <i style="color:#cc33ff">RightList2</i>) is forced to be the same: first goes the element of <i style="color:#cc33ff">RightList1</i> and then the element of <i style="color:#cc33ff">RightList2</i>.</dt>
+						<dt>Assuming that <i style="color:#cc33ff">Function</i> is '@<' </dt>
+<pre>
+ 		pfuse([X1|Xs1],[Y1|Ys1], [X2|Xs2],[Y2|Ys2], [X1,X2|R1],[Y1,Y2|R2]) with X1 < X2
+ 		pfuse([X1|Xs1],[Y1|Ys1], [X2|Xs2],[Y2|Ys2], [X2,X1|R1],[Y2,Y2|R2]) with X1 > X2
+</pre>
+						<dt> where R1 and R2 are the result of applying </dt>
+<pre>
+ 		pfuse(Xs1,Ys1, Xs2,Ys2, R1,R2)
+</pre>
+						<dt>Notice that it is not necessarily true that </dt>
+						<ul>
+							<li>
+								<dt>X2 < Y2 when X1 < Y1, or that </dt>
+							</li>
+							<li>
+								<dt>X2 > Y2 when X1 > Y1 </dt>
+							</li>
+						</ul>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="insert-3">insert/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>insert(<i style="color:#ff0000">Value</i>, <i style="color:#ff0000">List</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Applies <a href="#insert_by-4"><u>insert_by/4</u></a> with operator '@<'.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="pinsert-6">pinsert/6</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>pinsert(<i style="color:#ff0000">Value1</i>, <i style="color:#ff0000">Value2</i>, <i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">NewList1</i>, <i style="color:#ff0000">NewList2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Applies <a href="#pinsert_by-7"><u>pinsert_by/7</u></a> with operator '@<'.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="isort-2">isort/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>isort(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">SortedList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Applies <a href="#isort_by-3"><u>isort_by/3</u></a> with operator '@<'.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="pisort-4">pisort/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>pisort(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">SortedList1</i>, <i style="color:#ff0000">SortedList2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Applies <a href="#pisort_by-5"><u>pisort_by/5</u></a> with operator '@<'.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="fuse-3">fuse/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>fuse(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Applies <a href="#fuse_by-4"><u>fuse_by/4</u></a> with operator '@<'.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="pfuse-6">pfuse/6</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>pfuse(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">SortedList1</i>, <i style="color:#ff0000">SortedList2</i>, <i style="color:#ff0000">NewList1</i>, <i style="color:#ff0000">NewList2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Applies <a href="#pfuse_by-7"><u>pfuse_by/7</u></a> with operator '@<'.</dt>
+					</dl>
+				</dl>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+	</body>
+</html>

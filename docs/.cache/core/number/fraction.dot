@@ -1,0 +1,6 @@
+digraph file_graph {
+node [shape=rectangle]
+nodesep = 0.1
+ranksep = 0.3
+"core/number/fraction.pl" -> "core/number/integer.pl"
+}

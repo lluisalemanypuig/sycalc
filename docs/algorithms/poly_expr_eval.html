@@ -1,0 +1,305 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>poly_expr_eval.pl</title>
+	</head>
+	<body>
+		<h1>Documentation for Prolog file: poly_expr_eval.pl</h1>
+		<dl>
+			<dt>This file contains useful predicates for the evaluation of monomials and polynomials. Composition and summation of monomials are two examples of such evaluation.</dt>
+		</dl>
+		<img src="poly_expr_eval.png" alt="file_inclusion_map">
+		<h2><a name="included_files">Included files:</a></h2>
+		<ul id="included_files_list">
+			<li>
+				<p><a href="../core.html">../core.html</a></p>
+			</li>
+			<li>
+				<p><a href="power_sums.html">power_sums.html</a></p>
+			</li>
+		</ul>
+		<h2><a name="predicates">Predicates:</a></h2>
+		<ul id="predicate_list">
+			<dl>
+				<dt>Monomial evaluation.</dt>
+			</dl>
+			<li>
+				<p><a href="#monomial_composition-4">monomial_composition/4</a></p>
+			</li>
+			<li>
+				<p><a href="#monomial_summation-5">monomial_summation/5</a></p>
+			</li>
+			<dl>
+				<dt>Polynomial evaluation.</dt>
+			</dl>
+			<li>
+				<p><a href="#polynomial_composition-4">polynomial_composition/4</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_expression_evaluation_list-2">polynomial_expression_evaluation_list/2</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_expression_evaluation-2">polynomial_expression_evaluation/2</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_expression_sum-3">polynomial_expression_sum/3</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_expression_sub-3">polynomial_expression_sub/3</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_expression_prod-3">polynomial_expression_prod/3</a></p>
+			</li>
+			<dl>
+				<dt>Other useful predicates for polynomials.</dt>
+			</dl>
+			<li>
+				<p><a href="#symbolic_dot_prod-3">symbolic_dot_prod/3</a></p>
+			</li>
+			<li>
+				<p><a href="#falling_factorial-3">falling_factorial/3</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_eval_eq-2">polynomial_eval_eq/2</a></p>
+			</li>
+			<li>
+				<p><a href="#expanded_polynomial_evaluation-4">expanded_polynomial_evaluation/4</a></p>
+			</li>
+			<li>
+				<p><a href="#polynomial_value_evaluation-4">polynomial_value_evaluation/4</a></p>
+			</li>
+		</ul>
+		<h2><a name="details">Predicate Details:</a></h2>
+		<ul id="predicate_details">
+			<li>
+				<h3><a name="monomial_composition-4">monomial_composition/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>monomial_composition(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Expr</i>, <i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Result</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Result</i> is the replacement of variable <i style="color:#cc33ff">Var</i> in <i style="color:#cc33ff">Monomial</i> with expression <i style="color:#cc33ff">Expr</i>. In other words, compose <i style="color:#cc33ff">Monomial</i> with <i style="color:#cc33ff">Expr</i> at variable <i style="color:#cc33ff">Var</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="monomial_summation-5">monomial_summation/5</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>monomial_summation(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Ini</i>, <i style="color:#ff0000">Fin</i>, <i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Sum</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Sum</i> is the result of the algebraic summation of <i style="color:#cc33ff">Monomial</i> on variable <i style="color:#cc33ff">Var</i> from <i style="color:#cc33ff">Ini</i> to <i style="color:#cc33ff">Fin</i>.</dt>
+						<dt>Examples: </dt>
+						<ul>
+							<li>
+								<dt>If we want to calculate the sum of all the values a monomial can take on a certain variable: </dt>
+<pre>
+ 	?- monomial_summation(i, 0,10, i, S).
+ 	S = 55.
+</pre>
+								<dt> because </dt>
+<pre>
+ 	\sum_{i=0}^{10} i = 55
+</pre>
+							</li>
+							<li>
+								<dt>If we want to calculate the sum of all the values a monomial can take on a variable not in the monomial: </dt>
+<pre>
+ 	?- monomial_summation(j, 0,10, i, S).
+ 	S = 11*i.
+</pre>
+								<dt> because </dt>
+<pre>
+ 	\sum_{j=0}^{10} i = 11*i
+</pre>
+							</li>
+						</ul>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_composition-4">polynomial_composition/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_composition(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Expr</i>, <i style="color:#ff0000">Poly</i>, <i style="color:#ff0000">Result</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Result</i> if the composition of all monomials of polynomial <i style="color:#cc33ff">Poly</i> at variable <i style="color:#cc33ff">Var</i> with expression <i style="color:#cc33ff">Expr</i>. Uses predicate <a href="#monomial_composition-4"><u>monomial_composition/4</u></a>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_expression_evaluation_list-2">polynomial_expression_evaluation_list/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_expression_evaluation_list(<i style="color:#ff0000">Expr</i>, <i style="color:#ff0000">List</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">List</i> is the list of monomials that results from evaluating the polynomial expression <i style="color:#cc33ff">Expr</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Expr</i> is either a monomial or a polynomial expression of the form: </dt>
+<pre>
+ 	A + B
+ 	A - B
+ 	A*B
+ 	(-A)^N
+ 	A^N
+ 	-A
+ 	choose(A, N)
+</pre>
+						<dt>where both A and B are polynomial expressions and N an integer value.</dt>
+						<dt>choose(A,N) represents the binomial \binom{A}{N}. For example: </dt>
+<pre>
+ 	?- polynomial_expression_evaluation_list( choose(n,2), R ).
+ 	R = 1/2*n^2 - 1/2*n.
+</pre>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_expression_evaluation-2">polynomial_expression_evaluation/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_expression_evaluation(<i style="color:#ff0000">Expr</i>, <i style="color:#ff0000">Poly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Poly</i> is the reduced polynomial that results from evaluating the polynomial expression <i style="color:#cc33ff">Expr</i>. Uses predicate <a href="#polynomial_expression_evaluation_list-2"><u>polynomial_expression_evaluation_list/2</u></a>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>Constraints as in predicate <a href="#polynomial_expression_evaluation_list-2"><u>polynomial_expression_evaluation_list/2</u></a>.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_expression_sum-3">polynomial_expression_sum/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_expression_sum(<i style="color:#ff0000">P</i>, <i style="color:#ff0000">Q</i>, <i style="color:#ff0000">R</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">R</i> equals <i style="color:#cc33ff">P</i>+<i style="color:#cc33ff">Q</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_expression_sub-3">polynomial_expression_sub/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_expression_sub(<i style="color:#ff0000">P</i>, <i style="color:#ff0000">Q</i>, <i style="color:#ff0000">R</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">R</i> equals <i style="color:#cc33ff">P</i>-<i style="color:#cc33ff">Q</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_expression_prod-3">polynomial_expression_prod/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_expression_prod(<i style="color:#ff0000">P</i>, <i style="color:#ff0000">Q</i>, <i style="color:#ff0000">R</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">R</i> equals <i style="color:#cc33ff">P</i>*<i style="color:#cc33ff">Q</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="symbolic_dot_prod-3">symbolic_dot_prod/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>symbolic_dot_prod(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">P</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">P</i> is the dot product of the elements in <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> may both contain polynomial expressions and must have the same, strictly positive length.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="falling_factorial-3">falling_factorial/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>falling_factorial(<i style="color:#ff0000">Poly</i>, <i style="color:#ff0000">N</i>, <i style="color:#ff0000">FallingFactorial</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Computes the product: </dt>
+<pre>
+ 	FallingFactorial = \prod_{i=0}^{N} (Poly - i)
+</pre>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Poly</i> is a polynomial expression.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_eval_eq-2">polynomial_eval_eq/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_eval_eq(<i style="color:#ff0000">Expr1</i>, <i style="color:#ff0000">Expr2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>This predicate fails if the polynomial expressions <i style="color:#cc33ff">Expr1</i> and <i style="color:#cc33ff">Expr2</i> are not equal.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="expanded_polynomial_evaluation-4">expanded_polynomial_evaluation/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>expanded_polynomial_evaluation(<i style="color:#ff0000">Value</i>, <i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Poly</i>, <i style="color:#ff0000">Res</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Evaluates all monomials in the polynomial <i style="color:#cc33ff">Poly</i> at variable <i style="color:#cc33ff">Var</i> with value <i style="color:#cc33ff">Value</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+					</dl>
+					<ul>
+						<li>
+							<dl>
+								<dt><i style="color:#0099ff"><u>Value</u></i> Must be a rational value.
+</dt>
+							</dl>
+						</li>
+						<li>
+							<dl>
+								<dt><i style="color:#0099ff"><u>Poly</u></i> Must be an expanded polynomial.
+</dt>
+							</dl>
+						</li>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="polynomial_value_evaluation-4">polynomial_value_evaluation/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>polynomial_value_evaluation(<i style="color:#ff0000">Value</i>, <i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Poly</i>, <i style="color:#ff0000">Res</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Res</i> is the result of replacing variable <i style="color:#cc33ff">Var</i> in <i style="color:#cc33ff">Poly</i> with value <i style="color:#cc33ff">Value</i>. Uses predicate <a href="#expanded_polynomial_evaluation-4"><u>expanded_polynomial_evaluation/4</u></a>.</dt>
+					</dl>
+				</dl>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+	</body>
+</html>

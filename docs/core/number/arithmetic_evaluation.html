@@ -1,0 +1,190 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>arithmetic_evaluation.pl</title>
+	</head>
+	<body>
+		<h1>Documentation for Prolog file: arithmetic_evaluation.pl</h1>
+		<dl>
+			<dt>This file contains all predicates needed to evaluate arithmetic expressions between real numbers, where the result of operating two rational numbers is another rational number.</dt>
+			<dt>For example, the result of 2/3 + 4/5 is not given as 1.46667, but as 22/15.</dt>
+		</dl>
+		<img src="arithmetic_evaluation.png" alt="file_inclusion_map">
+		<h2><a name="included_files">Included files:</a></h2>
+		<ul id="included_files_list">
+			<li>
+				<p><a href="natural.html">natural.html</a></p>
+			</li>
+			<li>
+				<p><a href="integer.html">integer.html</a></p>
+			</li>
+			<li>
+				<p><a href="fraction.html">fraction.html</a></p>
+			</li>
+			<li>
+				<p><a href="rational.html">rational.html</a></p>
+			</li>
+			<li>
+				<p><a href="irrational.html">irrational.html</a></p>
+			</li>
+			<li>
+				<p><a href="real.html">real.html</a></p>
+			</li>
+		</ul>
+		<h2><a name="predicates">Predicates:</a></h2>
+		<ul id="predicate_list">
+			<li>
+				<p><a href="#eval_sum-3">eval_sum/3</a></p>
+			</li>
+			<li>
+				<p><a href="#eval_sub-3">eval_sub/3</a></p>
+			</li>
+			<li>
+				<p><a href="#eval_prod-3">eval_prod/3</a></p>
+			</li>
+			<li>
+				<p><a href="#eval_div-3">eval_div/3</a></p>
+			</li>
+			<li>
+				<p><a href="#eval_pow-3">eval_pow/3</a></p>
+			</li>
+			<li>
+				<p><a href="#eval_pow-2">eval_pow/2</a></p>
+			</li>
+			<li>
+				<p><a href="#Expr-1">Expr/1</a></p>
+			</li>
+			<li>
+				<p><a href="#arith_expr_eval-4">arith_expr_eval/4</a></p>
+			</li>
+			<li>
+				<p><a href="#factorial-2">factorial/2</a></p>
+			</li>
+		</ul>
+		<h2><a name="details">Predicate Details:</a></h2>
+		<ul id="predicate_details">
+			<li>
+				<h3><a name="eval_sum-3">eval_sum/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>eval_sum(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">B</i>, <i style="color:#ff0000">S</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">S</i> is the summation of <i style="color:#cc33ff">A</i> and <i style="color:#cc33ff">B</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="eval_sub-3">eval_sub/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>eval_sub(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">B</i>, <i style="color:#ff0000">S</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">S</i> is the substraction of <i style="color:#cc33ff">A</i> from <i style="color:#cc33ff">B</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="eval_prod-3">eval_prod/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>eval_prod(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">B</i>, <i style="color:#ff0000">P</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">P</i> is the product of <i style="color:#cc33ff">A</i> and <i style="color:#cc33ff">B</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="eval_div-3">eval_div/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>eval_div(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">B</i>, <i style="color:#ff0000">D</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">D</i> is the result of dividing <i style="color:#cc33ff">A</i> and <i style="color:#cc33ff">B</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="eval_pow-3">eval_pow/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>eval_pow(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">B</i>, <i style="color:#ff0000">P</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">P</i> is the result of raising <i style="color:#cc33ff">A</i> to the power <i style="color:#cc33ff">B</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+					</dl>
+					<ul>
+						<li>
+							<dl>
+								<dt><i style="color:#0099ff"><u>B</u></i> A natural value.
+</dt>
+							</dl>
+						</li>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="eval_pow-2">eval_pow/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>eval_pow(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">N</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">N</i> is the result of multiplying by (-1) the value <i style="color:#cc33ff">A</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="Expr-1">Expr/1</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>Expr(<i style="color:#ff0000">Expr</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Definition of arithmetic expression: this predicate fails on all values of <i style="color:#cc33ff">Expr</i> that are not expressions: </dt>
+<pre>
+ 		A + B
+ 		A - B
+ 		A*B
+ 		A/B
+ 		A^B
+</pre>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="arith_expr_eval-4">arith_expr_eval/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>arith_expr_eval(<i style="color:#ff0000">Expr</i>, <i style="color:#ff0000">Result</i>)</dd>
+					<dt><b>Description:</b></dt>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="factorial-2">factorial/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>factorial(<i style="color:#ff0000">Expr</i>, <i style="color:#ff0000">F</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F</i> is the factorial of the result of eavluating the arithmetic expression <i style="color:#cc33ff">Expr</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>Expr is an arithmetic expression.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+	</body>
+</html>

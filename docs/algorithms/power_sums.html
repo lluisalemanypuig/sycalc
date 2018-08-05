@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>power_sums.pl</title>
+	</head>
+	<body>
+		<h1>Documentation for Prolog file: power_sums.pl</h1>
+		<dl>
+			<dt>This file contains the algorithms to compute the polynomial that represents the sum of the first n natural numbers each raised to a certain power.</dt>
+			<dt>This power is given in the predicate and must be a natural value.</dt>
+		</dl>
+		<img src="power_sums.png" alt="file_inclusion_map">
+		<h2><a name="included_files">Included files:</a></h2>
+		<ul id="included_files_list">
+			<li>
+				<p><a href="../core.html">../core.html</a></p>
+			</li>
+		</ul>
+		<h2><a name="predicates">Predicates:</a></h2>
+		<ul id="predicate_list">
+			<li>
+				<p><a href="#power_sums-2">power_sums/2</a></p>
+			</li>
+			<li>
+				<p><a href="#power_sums_list-2">power_sums_list/2</a></p>
+			</li>
+		</ul>
+		<h2><a name="details">Predicate Details:</a></h2>
+		<ul id="predicate_details">
+			<li>
+				<h3><a name="power_sums-2">power_sums/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>power_sums(<i style="color:#ff0000">Power</i>, <i style="color:#ff0000">Poly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Poly</i> is a univariate polynomial on variable n that computes the value: </dt>
+<pre>
+ 	\sum_{i=1}^n i^Power
+</pre>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+					</dl>
+					<ul>
+						<li>
+							<dl>
+								<dt><i style="color:#0099ff"><u>Power</u></i> A natural value.
+</dt>
+							</dl>
+						</li>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="power_sums_list-2">power_sums_list/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>power_sums_list(<i style="color:#ff0000">Power</i>, <i style="color:#ff0000">ListPoly</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>The j-th element of <i style="color:#cc33ff">ListPoly</i> is a list of two values: </dt>
+						<ul>
+							<li>
+								<dt>A natural value P </dt>
+							</li>
+							<li>
+								<dt>A univariate polynomial in variable n that computes the sum </dt>
+<pre>
+ 	\sum_{i=1}^n i^P
+</pre>
+							</li>
+						</ul>
+						<dt> <i style="color:#cc33ff">ListPoly</i> is decreasingly sorted, that is, the first value P in <i style="color:#cc33ff">ListPoly</i> for <i style="color:#cc33ff">Power</i> is <i style="color:#cc33ff">Power</i> itself.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+					</dl>
+					<ul>
+						<li>
+							<dl>
+								<dt><i style="color:#0099ff"><u>Power</u></i> A natural value.
+</dt>
+							</dl>
+						</li>
+					</ul>
+				</dl>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+	</body>
+</html>

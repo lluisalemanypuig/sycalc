@@ -1,0 +1,79 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>natural.pl</title>
+	</head>
+	<body>
+		<h1>Documentation for Prolog file: natural.pl</h1>
+		<dl>
+			<dt>This file contains the basic definitions for what a natural number is, two constants (zero and one),</dt>
+		</dl>
+		<h2><a name="predicates">Predicates:</a></h2>
+		<ul id="predicate_list">
+			<li>
+				<p><a href="#zero-1">zero/1</a></p>
+			</li>
+			<li>
+				<p><a href="#one-1">one/1</a></p>
+			</li>
+			<li>
+				<p><a href="#natural-1">natural/1</a></p>
+			</li>
+			<li>
+				<p><a href="#next_natural-1">next_natural/1</a></p>
+			</li>
+		</ul>
+		<h2><a name="details">Predicate Details:</a></h2>
+		<ul id="predicate_details">
+			<li>
+				<h3><a name="zero-1">zero/1</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>zero(<i style="color:#ff0000">Z</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Predicate fails if <i style="color:#cc33ff">Z</i> is not 0.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="one-1">one/1</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>one(<i style="color:#ff0000">O</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Predicate fails if <i style="color:#cc33ff">O</i> is not 1.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="natural-1">natural/1</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>natural(<i style="color:#ff0000">N</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Predicates fails on any non-integer value, or negative integer value.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="next_natural-1">next_natural/1</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>next_natural(<i style="color:#ff0000">N</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>N is a natural. Example of usage: </dt>
+<pre>
+ 		next_natural(N), write(N), nl, fail.
+</pre>
+					</dl>
+				</dl>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+	</body>
+</html>

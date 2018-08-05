@@ -1,0 +1,244 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>high_order.pl</title>
+	</head>
+	<body>
+		<h1>Documentation for Prolog file: high_order.pl</h1>
+		<dl>
+			<dt>This file contains a number of high-order predicates for list manipulation, such as map, foldl, foldr, zip, ...</dt>
+		</dl>
+		<h2><a name="predicates">Predicates:</a></h2>
+		<ul id="predicate_list">
+			<li>
+				<p><a href="#map-3">map/3</a></p>
+			</li>
+			<li>
+				<p><a href="#inspection-2">inspection/2</a></p>
+			</li>
+			<li>
+				<p><a href="#zip-3">zip/3</a></p>
+			</li>
+			<li>
+				<p><a href="#zip-4">zip/4</a></p>
+			</li>
+			<li>
+				<p><a href="#list_concat-3">list_concat/3</a></p>
+			</li>
+			<li>
+				<p><a href="#foldl-4">foldl/4</a></p>
+			</li>
+			<li>
+				<p><a href="#foldr-4">foldr/4</a></p>
+			</li>
+			<li>
+				<p><a href="#make_list-3">make_list/3</a></p>
+			</li>
+			<li>
+				<p><a href="#pad_begin-4">pad_begin/4</a></p>
+			</li>
+			<li>
+				<p><a href="#pad_end-4">pad_end/4</a></p>
+			</li>
+			<li>
+				<p><a href="#cartesian_product-3">cartesian_product/3</a></p>
+			</li>
+			<li>
+				<p><a href="#cartesian_product_by-4">cartesian_product_by/4</a></p>
+			</li>
+		</ul>
+		<h2><a name="details">Predicate Details:</a></h2>
+		<ul id="predicate_details">
+			<li>
+				<h3><a name="map-3">map/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>map(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">List</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">NewList</i> is the result of applying Function to every element of <i style="color:#cc33ff">List</i>.</dt>
+						<dt>In Haskell notation: </dt>
+<pre>
+ 	map :: (a -> b) -> [a] -> [b]
+</pre>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="inspection-2">inspection/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>inspection(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">List</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>The inspection of <i style="color:#cc33ff">List</i> with Function is the verification that applying Function to all elements in <i style="color:#cc33ff">List</i> does not fail. To check this, the function is applied to every element of <i style="color:#cc33ff">List</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="zip-3">zip/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>zip(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">NewList</i> is the result of an element-wise pairing of the elements in <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i>. Each of NewList is a pair, where the left element is an element from <i style="color:#cc33ff">List1</i> and the right element is an element from <i style="color:#cc33ff">List2</i>.</dt>
+						<dt>In Haskell notation: </dt>
+<pre>
+ 	zip :: [a] -> [b] -> [(a, b)]
+</pre>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> must have the same length.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="zip-4">zip/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>zip(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">NewList</i> is the result of applying Function to the i-th element of both <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i>.</dt>
+						<dt>In Haskell notation: </dt>
+<pre>
+ 	zip_with :: (a -> b -> c) -> [a] -> [b] -> [c]
+</pre>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> must have the same length.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="list_concat-3">list_concat/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>list_concat(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">NewList</i> is a list with all the elements in <i style="color:#cc33ff">List1</i> followed by all the elements in <i style="color:#cc33ff">List2</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="foldl-4">foldl/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>foldl(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">Value</i>, <i style="color:#ff0000">List</i>, <i style="color:#ff0000">Result</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>foldl as usually defined.</dt>
+						<dt>In Haskell notation: </dt>
+<pre>
+ 	foldl :: (b -> a -> b) -> b -> a -> b
+</pre>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="foldr-4">foldr/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>foldr(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">Value</i>, <i style="color:#ff0000">List</i>, <i style="color:#ff0000">Result</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>foldr as usually defined.</dt>
+						<dt>In Haskell notation: </dt>
+<pre>
+ 	foldr :: (a -> b -> b) -> b -> t a -> b
+</pre>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="make_list-3">make_list/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>make_list(<i style="color:#ff0000">Times</i>, <i style="color:#ff0000">Value</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">NewList</i> is a list containing Value as many times as <i style="color:#cc33ff">Times</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Times</i> must be a positive (>= 0) integer.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="pad_begin-4">pad_begin/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>pad_begin(<i style="color:#ff0000">Times</i>, <i style="color:#ff0000">List</i>, <i style="color:#ff0000">Value</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">NewList</i> is the concatenation of a list of length <i style="color:#cc33ff">Times</i> with all elements equal to <i style="color:#cc33ff">Value</i> and <i style="color:#cc33ff">List</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Times</i> must be a positive (>= 0) integer.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="pad_end-4">pad_end/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>pad_end(<i style="color:#ff0000">Times</i>, <i style="color:#ff0000">List</i>, <i style="color:#ff0000">Value</i>, <i style="color:#ff0000">NewList</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">NewList</i> is the concatenation of <i style="color:#cc33ff">List</i> and a list of length <i style="color:#cc33ff">Times</i> with all elements equal to <i style="color:#cc33ff">Value</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">Times</i> must be a positive (>= 0) integer.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="cartesian_product-3">cartesian_product/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>cartesian_product(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">CP</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">CP</i> is the cartesian product of <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i>. Every element of <i style="color:#cc33ff">CP</i> is a list of two elements.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="cartesian_product_by-4">cartesian_product_by/4</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>cartesian_product_by(<i style="color:#ff0000">Function</i>, <i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">CP</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">CP</i> is the result of applying Function to every element of the cartesian product of <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i>.</dt>
+						<dt>This predicate performs a series of operations similar to doing:</dt>
+<pre>
+ 	cartesian_product_by(F, List1,List2, R):- 
+ 		cartesian_product(List1,List2, C), map(F,C, R)
+</pre>
+						<dt>However, this implementation should be faster because it does a single pass on the elements of the cartesian product.</dt>
+					</dl>
+				</dl>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+	</body>
+</html>

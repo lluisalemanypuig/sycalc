@@ -1,0 +1,169 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>integer.pl</title>
+	</head>
+	<body>
+		<h1>Documentation for Prolog file: integer.pl</h1>
+		<dl>
+			<dt>This file contains basic integer-related predicates. Is a number even or odd? What is the greatest common divisor of two numbers, or among a list of numbers?</dt>
+			<dt>All parameters must be integer, or contain integer values in case they are lists.</dt>
+		</dl>
+		<h2><a name="predicates">Predicates:</a></h2>
+		<ul id="predicate_list">
+			<li>
+				<p><a href="#multiple-2">multiple/2</a></p>
+			</li>
+			<li>
+				<p><a href="#even-1">even/1</a></p>
+			</li>
+			<li>
+				<p><a href="#odd-1">odd/1</a></p>
+			</li>
+			<li>
+				<p><a href="#gcd-3">gcd/3</a></p>
+			</li>
+			<li>
+				<p><a href="#gcd_rel-5">gcd_rel/5</a></p>
+			</li>
+			<li>
+				<p><a href="#gcd_list-2">gcd_list/2</a></p>
+			</li>
+			<li>
+				<p><a href="#divisors-2">divisors/2</a></p>
+			</li>
+		</ul>
+		<h2><a name="details">Predicate Details:</a></h2>
+		<ul id="predicate_details">
+			<li>
+				<h3><a name="multiple-2">multiple/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>multiple(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">B</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Succeeds if, and only if, <i style="color:#cc33ff">A</i> is a multiple of <i style="color:#cc33ff">B</i>, that is, if <i style="color:#cc33ff">B</i> divides <i style="color:#cc33ff">A</i> evenly.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">A</i> and <i style="color:#cc33ff">B</i> are both integer values.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="even-1">even/1</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>even(<i style="color:#ff0000">A</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Predicate fails if <i style="color:#cc33ff">A</i> is odd.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">A</i> is an integer values.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="odd-1">odd/1</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>odd(<i style="color:#ff0000">A</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Predicate fails if <i style="color:#cc33ff">A</i> is even.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">A</i> is an integer values.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="gcd-3">gcd/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>gcd(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">B</i>, <i style="color:#ff0000">G</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">G</i> is the greatest common divisor of two integers <i style="color:#cc33ff">A</i> and <i style="color:#cc33ff">B</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">A</i> and <i style="color:#cc33ff">B</i> are both integer values.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="gcd_rel-5">gcd_rel/5</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>gcd_rel(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">B</i>, <i style="color:#ff0000">G</i>, <i style="color:#ff0000">C</i>, <i style="color:#ff0000">D</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">G</i> is the greatest common divisor of two integers <i style="color:#cc33ff">A</i> and <i style="color:#cc33ff">B</i>. <i style="color:#cc33ff">C</i> is the result of dividing <i style="color:#cc33ff">A</i> by <i style="color:#cc33ff">G</i>, and <i style="color:#cc33ff">D</i> of dividing <i style="color:#cc33ff">D</i> by <i style="color:#cc33ff">G</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">A</i> and <i style="color:#cc33ff">B</i> are both integer values.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="gcd_list-2">gcd_list/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>gcd_list(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">G</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">G</i> is the greatest common divisor of all the integer values in</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+					</dl>
+					<ul>
+						<li>
+							<dl>
+								<dt><i style="color:#0099ff"><u>List</u></i> Cannot be empty and can only contain integer values.
+</dt>
+							</dl>
+						</li>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="divisors-2">divisors/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>divisors(<i style="color:#ff0000">A</i>, <i style="color:#ff0000">Divisors</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Divisors contains all the divisors of <i style="color:#cc33ff">A</i> sorted by their absolute value, breaking ties by considering that positive divisors go before negative values. The divisors of 30, for instance, are: </dt>
+<pre>
+ 		[1,-1,2,-2,3,-3,5,-5,6,-6,10,-10,15,-15,30,-30]
+</pre>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">A</i> is an integer value.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+	</body>
+</html>

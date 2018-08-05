@@ -1,0 +1,314 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>fraction.pl</title>
+	</head>
+	<body>
+		<h1>Documentation for Prolog file: fraction.pl</h1>
+		<dl>
+			<dt>This file contains rational-related predicates. The definition of rational value (the quotient of an integer value and a natural value), reduced fractions, ...</dt>
+			<dt>Henceforth, it will be assumed that any fraction F is of the form F, where both A and B are ground.</dt>
+		</dl>
+		<img src="fraction.png" alt="file_inclusion_map">
+		<h2><a name="included_files">Included files:</a></h2>
+		<ul id="included_files_list">
+			<li>
+				<p><a href="integer.html">integer.html</a></p>
+			</li>
+		</ul>
+		<h2><a name="predicates">Predicates:</a></h2>
+		<ul id="predicate_list">
+			<li>
+				<p><a href="#fraction-1">fraction/1</a></p>
+			</li>
+			<li>
+				<p><a href="#numerator-2">numerator/2</a></p>
+			</li>
+			<li>
+				<p><a href="#denominator-2">denominator/2</a></p>
+			</li>
+			<li>
+				<p><a href="#fraction_comp-3">fraction_comp/3</a></p>
+			</li>
+			<li>
+				<p><a href="#irred_frac-1">irred_frac/1</a></p>
+			</li>
+			<li>
+				<p><a href="#red_frac-2">red_frac/2</a></p>
+			</li>
+			<li>
+				<p><a href="#frac_sum-3">frac_sum/3</a></p>
+			</li>
+			<li>
+				<p><a href="#frac_sum-3">frac_sum/3</a></p>
+			</li>
+			<li>
+				<p><a href="#frac_sum-3">frac_sum/3</a></p>
+			</li>
+			<li>
+				<p><a href="#frac_sum-3">frac_sum/3</a></p>
+			</li>
+			<li>
+				<p><a href="#frac_div-3">frac_div/3</a></p>
+			</li>
+			<li>
+				<p><a href="#frac_inv-2">frac_inv/2</a></p>
+			</li>
+			<li>
+				<p><a href="#neg_frac-2">neg_frac/2</a></p>
+			</li>
+			<li>
+				<p><a href="#fraction_eval-2">fraction_eval/2</a></p>
+			</li>
+			<li>
+				<p><a href="#frac_gcd-3">frac_gcd/3</a></p>
+			</li>
+			<li>
+				<p><a href="#frac_gcd_rel-5">frac_gcd_rel/5</a></p>
+			</li>
+		</ul>
+		<h2><a name="details">Predicate Details:</a></h2>
+		<ul id="predicate_details">
+			<li>
+				<h3><a name="fraction-1">fraction/1</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>fraction(<i style="color:#ff0000">F</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>A fraction is the quotient of an integer number and a natural number. Any integer value X, although being equal to X/1, is not a fraction.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="numerator-2">numerator/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>numerator(<i style="color:#ff0000">F</i>, <i style="color:#ff0000">A</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>The numerator of a fraction <i style="color:#cc33ff">F</i> is the value <i style="color:#cc33ff">A</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="denominator-2">denominator/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>denominator(<i style="color:#ff0000">F</i>, <i style="color:#ff0000">B</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>The denominator of a fraction <i style="color:#cc33ff">F</i> is the value <i style="color:#cc33ff">B</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="fraction_comp-3">fraction_comp/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>fraction_comp(<i style="color:#ff0000">F</i>, <i style="color:#ff0000">A</i>, <i style="color:#ff0000">B</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>The components of a fraction <i style="color:#cc33ff">F</i> are the numerator <i style="color:#cc33ff">A</i> and the denominator <i style="color:#cc33ff">B</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="irred_frac-1">irred_frac/1</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>irred_frac(<i style="color:#ff0000">F</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Predicate fails if <i style="color:#cc33ff">F</i> can be reduced, that is, if the greatest common divisor between its numerator and denominator is not 1.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="red_frac-2">red_frac/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>red_frac(<i style="color:#ff0000">F</i>, <i style="color:#ff0000">C</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">C</i> is either an integer value or an irreducible fraction equal to <i style="color:#cc33ff">F</i>.</dt>
+					</dl>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="frac_sum-3">frac_sum/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>frac_sum(<i style="color:#ff0000">F1</i>, <i style="color:#ff0000">F2</i>, <i style="color:#ff0000">F3</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F3</i> is a fraction equal to <i style="color:#cc33ff">F1</i> + <i style="color:#cc33ff">F2</i>. May be reducible.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F1</i> and <i style="color:#cc33ff">F2</i> are fractions.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="frac_sum-3">frac_sum/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>frac_sum(<i style="color:#ff0000">F1</i>, <i style="color:#ff0000">F2</i>, <i style="color:#ff0000">F3</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F3</i> is a fraction equal to <i style="color:#cc33ff">F1</i> - <i style="color:#cc33ff">F2</i>. May be reducible.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>@F and <i style="color:#cc33ff">F2</i> are fractions.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="frac_sum-3">frac_sum/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>frac_sum(<i style="color:#ff0000">F1</i>, <i style="color:#ff0000">F2</i>, <i style="color:#ff0000">F3</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F3</i> is a fraction equal to <i style="color:#cc33ff">F1</i>*<i style="color:#cc33ff">F2</i>. May be reducible.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F1</i> and <i style="color:#cc33ff">F2</i> are fractions.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="frac_sum-3">frac_sum/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>frac_sum(<i style="color:#ff0000">F1</i>, <i style="color:#ff0000">F2</i>, <i style="color:#ff0000">F3</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F3</i> is a fraction equal to <i style="color:#cc33ff">F1</i>/<i style="color:#cc33ff">F2</i>. May be reducible.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>@F and <i style="color:#cc33ff">F2</i> are fractions.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="frac_div-3">frac_div/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>frac_div(<i style="color:#ff0000">F1</i>, <i style="color:#ff0000">C</i>, <i style="color:#ff0000">F2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F2</i> is a fraction equal to <i style="color:#cc33ff">F1</i>^<i style="color:#cc33ff">C</i>. May be reducible.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F1</i> is a fraction and <i style="color:#cc33ff">C</i> is a natural value.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="frac_inv-2">frac_inv/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>frac_inv(<i style="color:#ff0000">F1</i>, <i style="color:#ff0000">F2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F2</i> is a fraction equal to 1/<i style="color:#cc33ff">F1</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F1</i> is a fraction.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="neg_frac-2">neg_frac/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>neg_frac(<i style="color:#ff0000">F1</i>, <i style="color:#ff0000">F2</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F2</i> is a fraction equal to -<i style="color:#cc33ff">F1</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F1</i> is a fraction.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="fraction_eval-2">fraction_eval/2</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>fraction_eval(<i style="color:#ff0000">F</i>, <i style="color:#ff0000">C</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">C</i> is a value equal to the result of evaluating <i style="color:#cc33ff">F</i>.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F</i> is a fraction.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="frac_gcd-3">frac_gcd/3</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>frac_gcd(<i style="color:#ff0000">F1</i>, <i style="color:#ff0000">F2</i>, <i style="color:#ff0000">F3</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Let <i style="color:#cc33ff">F1</i>=A/B, <i style="color:#cc33ff">F2</i>=C/D, <i style="color:#cc33ff">F3</i>=F/G.</dt>
+						<dt>F is the greatest common divisor and A and C; and G is the greatest common divisor of B and D.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt><i style="color:#cc33ff">F1</i> and <i style="color:#cc33ff">F2</i> are irreducible fractions.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+			<li>
+				<h3><a name="frac_gcd_rel-5">frac_gcd_rel/5</a></h3>
+				<dl>
+					<dt><b>Form: </b></dt>
+					<dd>frac_gcd_rel(<i style="color:#ff0000">F1</i>, <i style="color:#ff0000">F2</i>, <i style="color:#ff0000">F3</i>, <i style="color:#ff0000">F4</i>, <i style="color:#ff0000">F5</i>)</dd>
+					<dt><b>Description:</b></dt>
+					<dl>
+						<dt>Let <i style="color:#cc33ff">F1</i>=A/B, <i style="color:#cc33ff">F2</i>=C/D, <i style="color:#cc33ff">F3</i>=F/G, <i style="color:#cc33ff">F4</i>=AA/BB, <i style="color:#cc33ff">F5</i>=CC/DD.</dt>
+						<dt>F is the greatest common divisor and A and C; and G is the greatest common divisor of B and D.</dt>
+					</dl>
+					<dt><b>Constraints:</b></dt>
+					<dl>
+						<dt>@1F and <i style="color:#cc33ff">F2</i> are irreducible fractions.</dt>
+					</dl>
+					<ul>
+					</ul>
+				</dl>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+	</body>
+</html>
