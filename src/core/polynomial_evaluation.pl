@@ -263,8 +263,6 @@ polynomial_from_list_power_list(LP, N, LN):-
 	polynomial_from_list_prod_list(L, L, LN1),
 	polynomial_from_list_prod_list(LN1, LP, LN), !.
 
-% Takes an expanded polynomial, an integer number and performs the power P^N
-% polynomial_prod(P, N, Q), where Q = P^N
 /**
 	@form polynomial_power(Poly, Value, PowerPoly)
 	@descr @PowerPoly is the reduced polynomial equal to raising
