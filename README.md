@@ -53,3 +53,18 @@ Here are a few basic examples:
             
             ?- P=x^2 + y^2, Q=3*x + y, polynomial_composition(y,Q, P, C).
             C = 6*x*y + 10*x^2 + y^2.
+
+## Compiling
+
+To compile the interactive version of the calculator, issue the following commands in the project's root
+directory:
+
+        cd build
+        make -f Makefile release
+
+This will create a directory called _bin/_ with a executable file called _sycalc_ in the
+project's root directory. In addition to this, one can also compile the tests that look
+for bugs in the code issuing the following commands:
+
+        cd build
+        make -f Makefile debug
