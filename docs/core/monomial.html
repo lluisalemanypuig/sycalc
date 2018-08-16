@@ -128,401 +128,401 @@
 								<dt>a product of variables each one raised to a rational value </dt>
 							</li>
 							<li>
-								<dt>nothing else is a component </dt>
+								<dt>nothing else is a component ++> </dt>
+								<dt>(the coefficient or any of the exponents may be written as arithmetic expressions, e.g., 3*3, 2+1, ...)</dt>
 							</li>
 						</ul>
-						<dt>(the coefficient or any of the exponents may be written as arithmetic expressions, e.g., 3*3, 2+1, ...)</dt>
 					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_comps-4">monomial_comps/4</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_comps(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Coefficient</i>, <i style="color:#ff0000">Variables</i>, <i style="color:#ff0000">Exponents</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Obtains the coefficient, list of variables and exponents of the monomial.</dt>
-						<dt>The coefficients and exponents are given in reduced form: </dt>
+					<li>
+						<h3><a name="monomial_comps-4">monomial_comps/4</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_comps(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Coefficient</i>, <i style="color:#ff0000">Variables</i>, <i style="color:#ff0000">Exponents</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>Obtains the coefficient, list of variables and exponents of the monomial.</dt>
+								<dt>The coefficients and exponents are given in reduced form: </dt>
 <pre>
  	(2 + 2)*x^(3 - 1) gives: C = 4, V = [x], E = [2]
 </pre>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-					</dl>
-					<ul>
-						<li>
-							<dl>
-								<dt><i style="color:#0099ff"><u>Coefficient</u></i> The rational value that multiplies all the variables
-</dt>
 							</dl>
-						</li>
-						<li>
+							<dt><b>Constraints:</b></dt>
 							<dl>
-								<dt><i style="color:#0099ff"><u>Variables</u></i> The variables of the monomial
-</dt>
 							</dl>
-						</li>
-						<li>
+							<ul>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>Coefficient</u></i> The rational value that multiplies all the variables
+</dt>
+									</dl>
+								</li>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>Variables</u></i> The variables of the monomial
+</dt>
+									</dl>
+								</li>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>Exponents</u></i> The rational values each variable is raised to. The i-th value of this list is the exponent of the i-th variable in <i style="color:#cc33ff">Variables</i>.
+</dt>
+									</dl>
+								</li>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_neg-2">monomial_neg/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_neg(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">NegMonomial</i>)</dd>
+							<dt><b>Description:</b></dt>
 							<dl>
-								<dt><i style="color:#0099ff"><u>Exponents</u></i> The rational values each variable is raised to. The i-th value of this list is the exponent of the i-th variable in <i style="color:#cc33ff">Variables</i>.
-</dt>
+								<dt><i style="color:#cc33ff">NegMonomial</i> is a monomial equal to (-1)*<i style="color:#cc33ff">Monomial</i>.</dt>
 							</dl>
-						</li>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_neg-2">monomial_neg/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_neg(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">NegMonomial</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">NegMonomial</i> is a monomial equal to (-1)*<i style="color:#cc33ff">Monomial</i>.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_coefficient-2">monomial_coefficient/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_coefficient(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Value</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Value</i> is the rational value that multiplies the variables of <i style="color:#cc33ff">Monomial</i> (the coefficient).</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_var_exp_comps-6">monomial_var_exp_comps/6</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_var_exp_comps(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">RestVars</i>, <i style="color:#ff0000">RestExps</i>, <i style="color:#ff0000">Exp</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Find the exponent of variable <i style="color:#cc33ff">Var</i> in <i style="color:#cc33ff">Exps</i>. If <i style="color:#cc33ff">Var</i> is a member of <i style="color:#cc33ff">Exp</i> then the value it takes is taken from <i style="color:#cc33ff">Exps</i>. If <i style="color:#cc33ff">Var</i> is not a member then <i style="color:#cc33ff">Exp</i> is 0.</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-					</dl>
-					<ul>
-						<li>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_coefficient-2">monomial_coefficient/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_coefficient(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Value</i>)</dd>
+							<dt><b>Description:</b></dt>
 							<dl>
-								<dt><i style="color:#0099ff"><u>Var</u></i> The variable whose exponent we want.
-</dt>
+								<dt><i style="color:#cc33ff">Value</i> is the rational value that multiplies the variables of <i style="color:#cc33ff">Monomial</i> (the coefficient).</dt>
 							</dl>
-						</li>
-						<li>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_var_exp_comps-6">monomial_var_exp_comps/6</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_var_exp_comps(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">RestVars</i>, <i style="color:#ff0000">RestExps</i>, <i style="color:#ff0000">Exp</i>)</dd>
+							<dt><b>Description:</b></dt>
 							<dl>
-								<dt><i style="color:#0099ff"><u>Vars</u></i> The list of variables of the monomial.
-</dt>
+								<dt>Find the exponent of variable <i style="color:#cc33ff">Var</i> in <i style="color:#cc33ff">Exps</i>. If <i style="color:#cc33ff">Var</i> is a member of <i style="color:#cc33ff">Exp</i> then the value it takes is taken from <i style="color:#cc33ff">Exps</i>. If <i style="color:#cc33ff">Var</i> is not a member then <i style="color:#cc33ff">Exp</i> is 0.</dt>
 							</dl>
-						</li>
-						<li>
+							<dt><b>Constraints:</b></dt>
 							<dl>
-								<dt><i style="color:#0099ff"><u>Exps</u></i> The exponents of the variables in <i style="color:#cc33ff">Vars</i>.
-</dt>
 							</dl>
-						</li>
-						<li>
+							<ul>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>Var</u></i> The variable whose exponent we want.
+</dt>
+									</dl>
+								</li>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>Vars</u></i> The list of variables of the monomial.
+</dt>
+									</dl>
+								</li>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>Exps</u></i> The exponents of the variables in <i style="color:#cc33ff">Vars</i>.
+</dt>
+									</dl>
+								</li>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>RestVars</u></i> The list of variables without <i style="color:#cc33ff">Var</i>.
+</dt>
+									</dl>
+								</li>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>RestExps</u></i> The list of exponents without <i style="color:#cc33ff">Var</i> 's.
+</dt>
+									</dl>
+								</li>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_var_exp-3">monomial_var_exp/3</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_var_exp(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Var^Exp</i>)</dd>
+							<dt><b>Description:</b></dt>
 							<dl>
-								<dt><i style="color:#0099ff"><u>RestVars</u></i> The list of variables without <i style="color:#cc33ff">Var</i>.
-</dt>
+								<dt>Finds the exponent of variable <i style="color:#cc33ff">Var</i>. Uses predicate <a href="#monomial_var_exp_comps-6"><u>monomial_var_exp_comps/6</u></a>.</dt>
 							</dl>
-						</li>
-						<li>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_degrees-2">monomial_degrees/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_degrees(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Degrees</i>)</dd>
+							<dt><b>Description:</b></dt>
 							<dl>
-								<dt><i style="color:#0099ff"><u>RestExps</u></i> The list of exponents without <i style="color:#cc33ff">Var</i> 's.
-</dt>
+								<dt>Obtain the exponent of each of the variables of <i style="color:#cc33ff">Monomial</i>.</dt>
 							</dl>
-						</li>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_var_exp-3">monomial_var_exp/3</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_var_exp(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Var^Exp</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Finds the exponent of variable <i style="color:#cc33ff">Var</i>. Uses predicate <a href="#monomial_var_exp_comps-6"><u>monomial_var_exp_comps/6</u></a>.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_degrees-2">monomial_degrees/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_degrees(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Degrees</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Obtain the exponent of each of the variables of <i style="color:#cc33ff">Monomial</i>.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="neg_monomial_vars_product-2">neg_monomial_vars_product/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>neg_monomial_vars_product(<i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">NegVars</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">NegVars</i> is the set of variables <i style="color:#cc33ff">Vars</i> equal to (-1)*<i style="color:#cc33ff">Vars</i>.</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Vars</i> cannot have a leading coefficient equal to -1.</dt>
-					</dl>
-					<ul>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_vars_product-3">monomial_vars_product/3</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_vars_product(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Vars2</i>, <i style="color:#ff0000">NegVars</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">NegVars</i> is the set of variables equal to (-1)*<i style="color:#cc33ff">Var</i>*<i style="color:#cc33ff">Vars2</i>.</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Var</i> and <i style="color:#cc33ff">Vars2</i> cannot have a leading coefficient equal to -1.</dt>
-					</dl>
-					<ul>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_vars_product-4">monomial_vars_product/4</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_vars_product(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Exp</i>, <i style="color:#ff0000">Vars2</i>, <i style="color:#ff0000">NegVars</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>NegVars is the set of variables Vars equal to (-1)*(Var^E)*vars2.</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt>Var and Vars2 cannot have a leading coefficient equal to -1.</dt>
-					</dl>
-					<ul>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="collapse_vars_list-4">collapse_vars_list/4</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>collapse_vars_list(<i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">NewVars</i>, <i style="color:#ff0000">NewExps</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>NewVars and NewExps are the contraction of lists Vars and Exps guided by Vars: two equal variables in consecutive positions in Vars are collapsed into a single element and the exponents are added. For example: </dt>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="neg_monomial_vars_product-2">neg_monomial_vars_product/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>neg_monomial_vars_product(<i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">NegVars</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">NegVars</i> is the set of variables <i style="color:#cc33ff">Vars</i> equal to (-1)*<i style="color:#cc33ff">Vars</i>.</dt>
+							</dl>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">Vars</i> cannot have a leading coefficient equal to -1.</dt>
+							</dl>
+							<ul>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_vars_product-3">monomial_vars_product/3</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_vars_product(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Vars2</i>, <i style="color:#ff0000">NegVars</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">NegVars</i> is the set of variables equal to (-1)*<i style="color:#cc33ff">Var</i>*<i style="color:#cc33ff">Vars2</i>.</dt>
+							</dl>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">Var</i> and <i style="color:#cc33ff">Vars2</i> cannot have a leading coefficient equal to -1.</dt>
+							</dl>
+							<ul>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_vars_product-4">monomial_vars_product/4</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_vars_product(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Exp</i>, <i style="color:#ff0000">Vars2</i>, <i style="color:#ff0000">NegVars</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>NegVars is the set of variables Vars equal to (-1)*(Var^E)*vars2.</dt>
+							</dl>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+								<dt>Var and Vars2 cannot have a leading coefficient equal to -1.</dt>
+							</dl>
+							<ul>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="collapse_vars_list-4">collapse_vars_list/4</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>collapse_vars_list(<i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">NewVars</i>, <i style="color:#ff0000">NewExps</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>NewVars and NewExps are the contraction of lists Vars and Exps guided by Vars: two equal variables in consecutive positions in Vars are collapsed into a single element and the exponents are added. For example: </dt>
 <pre>
  		[i, i, j, k,k, k, k, z],
  		[1,-1, 3, 1,1,-1,-1, 4]
 </pre>
-						<dt> gives </dt>
+								<dt> gives </dt>
 <pre>
  		[i, j, k, z]
  		[0, 3, 0, 4]
 </pre>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt>Vars is a lexicographically sorted list of variables. The i-th element of Exps is the exponent of the i-th variable in Vars. Vars and Exps must have the same length.</dt>
-					</dl>
-					<ul>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="red_monomial_comps-6">red_monomial_comps/6</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>red_monomial_comps(<i style="color:#ff0000">Coef</i>, <i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">Rcoef</i>, <i style="color:#ff0000">Rvars</i>, <i style="color:#ff0000">Rexps</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Rcoef,Rvars and Rexps are the reduced coefficient, reduced variables and reduced exponents of the monomial defined by Coef, Vars and Exps. A reduced coefficient is the result of the evaluation of the arithmetic expression. The reduced variables are the list of variables without those that have null exponent, and, for example, if a variable appears twice, the exponents for each of its occurrences are added up (see collapse_vars_list).</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="red_vars_monomial-3">red_vars_monomial/3</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>red_vars_monomial(<i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">Monomial</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Monomial is the product of the variables each raised to the corresponding power in Exps. The resulting monomial is reduced: if any variable has exponent 0 then it is not included in the product. If the variable has exponent 1, the exponent does not appear in the product. For example: </dt>
+							</dl>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+								<dt>Vars is a lexicographically sorted list of variables. The i-th element of Exps is the exponent of the i-th variable in Vars. Vars and Exps must have the same length.</dt>
+							</dl>
+							<ul>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="red_monomial_comps-6">red_monomial_comps/6</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>red_monomial_comps(<i style="color:#ff0000">Coef</i>, <i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">Rcoef</i>, <i style="color:#ff0000">Rvars</i>, <i style="color:#ff0000">Rexps</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>Rcoef,Rvars and Rexps are the reduced coefficient, reduced variables and reduced exponents of the monomial defined by Coef, Vars and Exps. A reduced coefficient is the result of the evaluation of the arithmetic expression. The reduced variables are the list of variables without those that have null exponent, and, for example, if a variable appears twice, the exponents for each of its occurrences are added up (see collapse_vars_list).</dt>
+							</dl>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="red_vars_monomial-3">red_vars_monomial/3</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>red_vars_monomial(<i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">Monomial</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>Monomial is the product of the variables each raised to the corresponding power in Exps. The resulting monomial is reduced: if any variable has exponent 0 then it is not included in the product. If the variable has exponent 1, the exponent does not appear in the product. For example: </dt>
 <pre>
  		[i,j,k,l], [0,1,2,3]
 </pre>
-						<dt> gives </dt>
+								<dt> gives </dt>
 <pre>
  		j*k^2*l^3
 </pre>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="red_monomial_from_comps-4">red_monomial_from_comps/4</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>red_monomial_from_comps(<i style="color:#ff0000">Coef</i>, <i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">Monomial</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Monomial is a reduced monomial obtained from a list of monomial components that need not be reduced.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="red_monomial_from_comps-2">red_monomial_from_comps/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>red_monomial_from_comps(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">RedMonomial</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>RedMonomial is a reduced monomial equal to Monomial.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_positive_coefficient-1">monomial_positive_coefficient/1</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_positive_coefficient(<i style="color:#ff0000">Monomial</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Predicate fails if the monomial has a negative (< 0) coefficient.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_revar-4">monomial_revar/4</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_revar(<i style="color:#ff0000">OldVar</i>, <i style="color:#ff0000">NewVar</i>, <i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Replaced</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Replaced is a monomial with the same coefficient and variables as Monomial, except for variable OldVar which is replaced by NewVar.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_split-4">monomial_split/4</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_split(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">VariableExponent</i>, <i style="color:#ff0000">Rest</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">VariableExponent</i> is the monomial consisting of variable <i style="color:#cc33ff">Var</i> and its exponent, and <i style="color:#cc33ff">Rest</i> is the rest of <i style="color:#cc33ff">Monomial</i>. The product of <i style="color:#cc33ff">VariableExponent</i> and <i style="color:#cc33ff">Rest</i> is equal to <i style="color:#cc33ff">Monomial</i>. Splitting </dt>
+							</dl>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="red_monomial_from_comps-4">red_monomial_from_comps/4</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>red_monomial_from_comps(<i style="color:#ff0000">Coef</i>, <i style="color:#ff0000">Vars</i>, <i style="color:#ff0000">Exps</i>, <i style="color:#ff0000">Monomial</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>Monomial is a reduced monomial obtained from a list of monomial components that need not be reduced.</dt>
+							</dl>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="red_monomial_from_comps-2">red_monomial_from_comps/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>red_monomial_from_comps(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">RedMonomial</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>RedMonomial is a reduced monomial equal to Monomial.</dt>
+							</dl>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_positive_coefficient-1">monomial_positive_coefficient/1</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_positive_coefficient(<i style="color:#ff0000">Monomial</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>Predicate fails if the monomial has a negative (< 0) coefficient.</dt>
+							</dl>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_revar-4">monomial_revar/4</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_revar(<i style="color:#ff0000">OldVar</i>, <i style="color:#ff0000">NewVar</i>, <i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Replaced</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>Replaced is a monomial with the same coefficient and variables as Monomial, except for variable OldVar which is replaced by NewVar.</dt>
+							</dl>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_split-4">monomial_split/4</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_split(<i style="color:#ff0000">Var</i>, <i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">VariableExponent</i>, <i style="color:#ff0000">Rest</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">VariableExponent</i> is the monomial consisting of variable <i style="color:#cc33ff">Var</i> and its exponent, and <i style="color:#cc33ff">Rest</i> is the rest of <i style="color:#cc33ff">Monomial</i>. The product of <i style="color:#cc33ff">VariableExponent</i> and <i style="color:#cc33ff">Rest</i> is equal to <i style="color:#cc33ff">Monomial</i>. Splitting </dt>
 <pre>
  		3*x*y^2*z
 </pre>
-						<dt> at y gives </dt>
+								<dt> at y gives </dt>
 <pre>
  		VariableExponent= y^2, 
  		Rest= 3*x*z
 </pre>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_components_comp-6">monomial_components_comp/6</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_components_comp(<i style="color:#ff0000">Coef1</i>, <i style="color:#ff0000">Vars1</i>, <i style="color:#ff0000">Exps1</i>, <i style="color:#ff0000">Coef2</i>, <i style="color:#ff0000">Vars2</i>, <i style="color:#ff0000">Exps2</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Compares the monomials whose components are Coef1,Vars1,Exps1 and Coef2,Vars2,Exps2 and fails if the comparison '@<' is false. This comparison is defined as: * If both monomials have no variables then sort using coefficient. * If one of the monomials does not have any variable, that monomial goes first * If the variables are equal and exponents are equal, sort by coefficient * If the variables are equal and exponents are different, sort by exponent * If the variables are different then take the lengths -> lexicographically sort the variables lengths are equal -> else sort by length</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_comp-2">monomial_comp/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_comp(<i style="color:#ff0000">Monomial1</i>, <i style="color:#ff0000">Monomial2</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Compares the monomials Monomial1 and Monomial2. This predicate fails if it is not true that Monomial1 < Monomial2.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_inv_comp-2">monomial_inv_comp/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_inv_comp(<i style="color:#ff0000">Monomial1</i>, <i style="color:#ff0000">Monomial2</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>Compares the monomials Monomial1 and Monomial2. This predicate fails if it is not true that Monomial1 > Monomial2.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_sort-2">monomial_sort/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_sort(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">SortedList</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>SortedList has the same elements as List but each pair of elements in it meet the precedence relationship of '@<'</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt>List is a list of monomials.</dt>
-					</dl>
-					<ul>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_inv_sort-2">monomial_inv_sort/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_inv_sort(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">SortedList</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>SortedList has the same elements as List but each pair of elements in it meet the precedence relationship of '@>'</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt>List is a list of monomials.</dt>
-					</dl>
-					<ul>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="unimonomial_degree-2">unimonomial_degree/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>unimonomial_degree(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Degree</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Degree</i> is the degree of <i style="color:#cc33ff">Monomial</i>, that is, the exponent of the only variable.</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-					</dl>
-					<ul>
-						<li>
-							<dl>
-								<dt><i style="color:#0099ff"><u>Monomial</u></i> A univariate monomial.
-</dt>
 							</dl>
-						</li>
-					</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_components_comp-6">monomial_components_comp/6</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_components_comp(<i style="color:#ff0000">Coef1</i>, <i style="color:#ff0000">Vars1</i>, <i style="color:#ff0000">Exps1</i>, <i style="color:#ff0000">Coef2</i>, <i style="color:#ff0000">Vars2</i>, <i style="color:#ff0000">Exps2</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>Compares the monomials whose components are Coef1,Vars1,Exps1 and Coef2,Vars2,Exps2 and fails if the comparison '@<' is false. This comparison is defined as: * If both monomials have no variables then sort using coefficient. * If one of the monomials does not have any variable, that monomial goes first * If the variables are equal and exponents are equal, sort by coefficient * If the variables are equal and exponents are different, sort by exponent * If the variables are different then take the lengths -> lexicographically sort the variables lengths are equal -> else sort by length</dt>
+							</dl>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_comp-2">monomial_comp/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_comp(<i style="color:#ff0000">Monomial1</i>, <i style="color:#ff0000">Monomial2</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>Compares the monomials Monomial1 and Monomial2. This predicate fails if it is not true that Monomial1 < Monomial2.</dt>
+							</dl>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_inv_comp-2">monomial_inv_comp/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_inv_comp(<i style="color:#ff0000">Monomial1</i>, <i style="color:#ff0000">Monomial2</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>Compares the monomials Monomial1 and Monomial2. This predicate fails if it is not true that Monomial1 > Monomial2.</dt>
+							</dl>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_sort-2">monomial_sort/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_sort(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">SortedList</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>SortedList has the same elements as List but each pair of elements in it meet the precedence relationship of '@<'</dt>
+							</dl>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+								<dt>List is a list of monomials.</dt>
+							</dl>
+							<ul>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="monomial_inv_sort-2">monomial_inv_sort/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>monomial_inv_sort(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">SortedList</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>SortedList has the same elements as List but each pair of elements in it meet the precedence relationship of '@>'</dt>
+							</dl>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+								<dt>List is a list of monomials.</dt>
+							</dl>
+							<ul>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="unimonomial_degree-2">unimonomial_degree/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>unimonomial_degree(<i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Degree</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">Degree</i> is the degree of <i style="color:#cc33ff">Monomial</i>, that is, the exponent of the only variable.</dt>
+							</dl>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+							</dl>
+							<ul>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>Monomial</u></i> A univariate monomial.
+</dt>
+									</dl>
+								</li>
+							</ul>
+						</dl>
+					</li>
 				</dl>
+				<hr>
+				<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
 			</li>
 		</ul>
-		<hr>
-		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
 	</body>
 </html>

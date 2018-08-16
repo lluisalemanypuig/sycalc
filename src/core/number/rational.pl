@@ -33,10 +33,10 @@ rational_gcd(A, B, G):- frac_gcd(A, B, GG), red_frac(GG, G).
 	@form rational_gcd_rel(A,B, G, C,D)
 	@descr @G is the greatest common divisor of @A and @B. @C and @D are
 	the result of
-	<--
+	\bverbatim
 		gcd_rel(A,B, G, C,D)
 		frac_gcd_rel(A,B, G, C,D)
-	-->
+	\everbatim
 	@constrs @A and @B are both rational numbers.
 */
 rational_gcd_rel(A, B, G, C, D):-

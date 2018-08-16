@@ -54,131 +54,133 @@
 								<dt>If <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i> do not have the same variables (or have the same variables but raised to different exponents) then <i style="color:#cc33ff">Sum</i> is an expression that is the arithmetic sum of <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i>. In the expression, the monomial to the left and the monomial to the right are so that they make the comparison '@<' true. </dt>
 							</li>
 							<li>
-								<dt>If <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i> have the same variables each raised to the same exponents then <i style="color:#cc33ff">Sum</i> contains these variables with a leading coefficient equal to the sum of <i style="color:#cc33ff">Mon1</i>'s and <i style="color:#cc33ff">Mon2</i>'s leading coefficient. </dt>
+								<dt>If <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i> have the same variables each raised to the same exponents then <i style="color:#cc33ff">Sum</i> contains these variables with a leading coefficient equal to the sum of <i style="color:#cc33ff">Mon1</i>'s and <i style="color:#cc33ff">Mon2</i>'s leading coefficient. ++</dt>
+								<dt>></dt>
 							</li>
 						</ul>
 					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="mon_sum-2">mon_sum/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>mon_sum(<i style="color:#ff0000">MonomialList</i>, <i style="color:#ff0000">Sum</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Sum</i> equals the sum of the two elements in <i style="color:#cc33ff">MonomialList</i>. Uses predicate <a href="#mon_sum-3"><u>mon_sum/3</u></a>.</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-					</dl>
-					<ul>
-						<li>
+					<li>
+						<h3><a name="mon_sum-2">mon_sum/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>mon_sum(<i style="color:#ff0000">MonomialList</i>, <i style="color:#ff0000">Sum</i>)</dd>
+							<dt><b>Description:</b></dt>
 							<dl>
-								<dt><i style="color:#0099ff"><u>MonomialList</u></i> Contains two elements.
-</dt>
+								<dt><i style="color:#cc33ff">Sum</i> equals the sum of the two elements in <i style="color:#cc33ff">MonomialList</i>. Uses predicate <a href="#mon_sum-3"><u>mon_sum/3</u></a>.</dt>
 							</dl>
-						</li>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="mon_sub-3">mon_sub/3</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>mon_sub(<i style="color:#ff0000">Mon1</i>, <i style="color:#ff0000">Mon2</i>, <i style="color:#ff0000">Sub</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Sub</i> is the sum of <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i>. </dt>
-						<ul>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+							</dl>
+							<ul>
+								<li>
+									<dl>
+										<dt><i style="color:#0099ff"><u>MonomialList</u></i> Contains two elements.
+</dt>
+									</dl>
+								</li>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="mon_sub-3">mon_sub/3</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>mon_sub(<i style="color:#ff0000">Mon1</i>, <i style="color:#ff0000">Mon2</i>, <i style="color:#ff0000">Sub</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">Sub</i> is the sum of <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i>. </dt>
+								<ul>
+									<li>
+										<dt>If <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i> do not have the same variables (or have the same variables but raised to different exponents) then <i style="color:#cc33ff">Sub</i> is an expression that is the arithmetic substraction of <i style="color:#cc33ff">Mon2</i> from <i style="color:#cc33ff">Mon1</i>. In the expression, the monomial to the left and the monomial to the right are so that they make the comparison '@<' true. </dt>
+									</li>
+									<li>
+										<dt>If <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i> have the same variables each raised to the same exponents then <i style="color:#cc33ff">Sub</i> contains these variables with a leading coefficient equal to the substraction of <i style="color:#cc33ff">Mon2</i>'s from <i style="color:#cc33ff">Mon1</i>'s leading coefficient. ++</dt>
+										<dt>></dt>
+									</li>
+								</ul>
+							</dl>
 							<li>
-								<dt>If <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i> do not have the same variables (or have the same variables but raised to different exponents) then <i style="color:#cc33ff">Sub</i> is an expression that is the arithmetic substraction of <i style="color:#cc33ff">Mon2</i> from <i style="color:#cc33ff">Mon1</i>. In the expression, the monomial to the left and the monomial to the right are so that they make the comparison '@<' true. </dt>
+								<h3><a name="mon_sub-2">mon_sub/2</a></h3>
+								<dl>
+									<dt><b>Form: </b></dt>
+									<dd>mon_sub(<i style="color:#ff0000">MonomialList</i>, <i style="color:#ff0000">Sub</i>)</dd>
+									<dt><b>Description:</b></dt>
+									<dl>
+										<dt><i style="color:#cc33ff">Sub</i> equals the sum of the two elements in <i style="color:#cc33ff">MonomialList</i>. Uses predicate <a href="#mon_sub-3"><u>mon_sub/3</u></a>.</dt>
+									</dl>
+									<dt><b>Constraints:</b></dt>
+									<dl>
+									</dl>
+									<ul>
+										<li>
+											<dl>
+												<dt><i style="color:#0099ff"><u>MonomialList</u></i> Contains two elements.
+</dt>
+											</dl>
+										</li>
+									</ul>
+								</dl>
 							</li>
 							<li>
-								<dt>If <i style="color:#cc33ff">Mon1</i> and <i style="color:#cc33ff">Mon2</i> have the same variables each raised to the same exponents then <i style="color:#cc33ff">Sub</i> contains these variables with a leading coefficient equal to the substraction of <i style="color:#cc33ff">Mon2</i>'s from <i style="color:#cc33ff">Mon1</i>'s leading coefficient. </dt>
+								<h3><a name="mon_prod-3">mon_prod/3</a></h3>
+								<dl>
+									<dt><b>Form: </b></dt>
+									<dd>mon_prod(<i style="color:#ff0000">@Mon1</i>, <i style="color:#ff0000">@Mon2</i>, <i style="color:#ff0000">Prod</i>)</dd>
+									<dt><b>Description:</b></dt>
+									<dl>
+										<dt><i style="color:#cc33ff">Prod</i> is the product of @Mon1 and @Mon2.</dt>
+									</dl>
+								</dl>
 							</li>
-						</ul>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="mon_sub-2">mon_sub/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>mon_sub(<i style="color:#ff0000">MonomialList</i>, <i style="color:#ff0000">Sub</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Sub</i> equals the sum of the two elements in <i style="color:#cc33ff">MonomialList</i>. Uses predicate <a href="#mon_sub-3"><u>mon_sub/3</u></a>.</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-					</dl>
-					<ul>
-						<li>
-							<dl>
-								<dt><i style="color:#0099ff"><u>MonomialList</u></i> Contains two elements.
+							<li>
+								<h3><a name="mon_prod-2">mon_prod/2</a></h3>
+								<dl>
+									<dt><b>Form: </b></dt>
+									<dd>mon_prod(<i style="color:#ff0000">MonomialList</i>, <i style="color:#ff0000">Prod</i>)</dd>
+									<dt><b>Description:</b></dt>
+									<dl>
+										<dt><i style="color:#cc33ff">Prod</i> is the product of the two elements in <i style="color:#cc33ff">MonomialList</i>. Uses predicate <a href="#mon_prod-3"><u>mon_prod/3</u></a>.</dt>
+									</dl>
+									<dt><b>Constraints:</b></dt>
+									<dl>
+									</dl>
+									<ul>
+										<li>
+											<dl>
+												<dt><i style="color:#0099ff"><u>MonomialList</u></i> Contains two elements.
 </dt>
-							</dl>
-						</li>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="mon_prod-3">mon_prod/3</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>mon_prod(<i style="color:#ff0000">@Mon1</i>, <i style="color:#ff0000">@Mon2</i>, <i style="color:#ff0000">Prod</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Prod</i> is the product of @Mon1 and @Mon2.</dt>
-					</dl>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="mon_prod-2">mon_prod/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>mon_prod(<i style="color:#ff0000">MonomialList</i>, <i style="color:#ff0000">Prod</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Prod</i> is the product of the two elements in <i style="color:#cc33ff">MonomialList</i>. Uses predicate <a href="#mon_prod-3"><u>mon_prod/3</u></a>.</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-					</dl>
-					<ul>
-						<li>
-							<dl>
-								<dt><i style="color:#0099ff"><u>MonomialList</u></i> Contains two elements.
-</dt>
-							</dl>
-						</li>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="monomial_value_evaluation-4">monomial_value_evaluation/4</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>monomial_value_evaluation(<i style="color:#ff0000">Value</i>, <i style="color:#ff0000">Variable</i>, <i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Result</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Result</i> is the replacement of <i style="color:#cc33ff">Variable</i> by <i style="color:#cc33ff">Value</i> in <i style="color:#cc33ff">Monomial</i>. The replacement of variable 'v_i' by 'q' in monomial </dt>
+											</dl>
+										</li>
+									</ul>
+								</dl>
+							</li>
+							<li>
+								<h3><a name="monomial_value_evaluation-4">monomial_value_evaluation/4</a></h3>
+								<dl>
+									<dt><b>Form: </b></dt>
+									<dd>monomial_value_evaluation(<i style="color:#ff0000">Value</i>, <i style="color:#ff0000">Variable</i>, <i style="color:#ff0000">Monomial</i>, <i style="color:#ff0000">Result</i>)</dd>
+									<dt><b>Description:</b></dt>
+									<dl>
+										<dt><i style="color:#cc33ff">Result</i> is the replacement of <i style="color:#cc33ff">Variable</i> by <i style="color:#cc33ff">Value</i> in <i style="color:#cc33ff">Monomial</i>. The replacement of variable 'v_i' by 'q' in monomial </dt>
 <pre>
  		m(V) = c*(v_1^e_1)* ... *(v_i^e_i)* ... *(v_n^e_n)
 </pre>
-						<dt> gives </dt>
+										<dt> gives </dt>
 <pre>
  		m(V\{v_i}) =
  			c*(q^e_i)*
  			(v_1^e_1)* ... *(v_{i-1}^e_{i-1})*(v_{i+1}^e_{i+1})* ... *(v_n^e_n)
 </pre>
-						<dt> For example, the replacement of 'x' by '3' in '3*x^3*y^2' gives '81*y^2'.</dt>
-					</dl>
+										<dt> For example, the replacement of 'x' by '3' in '3*x^3*y^2' gives '81*y^2'.</dt>
+									</dl>
+								</dl>
+							</li>
+						</dl>
+						<hr>
+						<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+					</li>
 				</dl>
 			</li>
 		</ul>
-		<hr>
-		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
 	</body>
 </html>

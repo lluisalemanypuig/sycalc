@@ -87,9 +87,9 @@ compare_divisors(X, Y):- X > 0, Y < 0, false.
 	@descr Divisors contains all the divisors of @A sorted by their
 	absolute value, breaking ties by considering that positive divisors
 	go before negative values. The divisors of 30, for instance, are:
-	<--
+	\bverbatim
 		[1,-1,2,-2,3,-3,5,-5,6,-6,10,-10,15,-15,30,-30]
-	-->
+	\everbatim
 	@constrs @A is an integer value.
 */
 divisors(1, [1,-1]):- !.

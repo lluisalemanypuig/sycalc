@@ -256,65 +256,64 @@
 								<dt>if i-th element of <i style="color:#cc33ff">List1</i> is equal to <i style="color:#cc33ff">Value</i> then <i style="color:#cc33ff">L1</i> will contain i-th element of <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">L2</i> will contain i-th element of <i style="color:#cc33ff">List2</i>. </dt>
 							</li>
 							<li>
-								<dt>if i-th element of <i style="color:#cc33ff">List1</i> is not equal to <i style="color:#cc33ff">Value</i> then <i style="color:#cc33ff">R1</i> will contain i-th element of <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">R2</i> will contain i-th element of <i style="color:#cc33ff">List2</i>. </dt>
+								<dt>if i-th element of <i style="color:#cc33ff">List1</i> is not equal to <i style="color:#cc33ff">Value</i> then <i style="color:#cc33ff">R1</i> will contain i-th element of <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">R2</i> will contain i-th element of <i style="color:#cc33ff">List2</i>. ++</dt>
+								<dt>></dt>
 							</li>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> must be non-empty and of equal length.</dt>
+							</dl>
+							<ul>
+							</ul>
 						</ul>
 					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> must be non-empty and of equal length.</dt>
-					</dl>
-					<ul>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="how_many-2">how_many/2</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>how_many(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">Counting</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Counting</i> is a list containing lists of two elements, the first of which is an element of <i style="color:#cc33ff">List</i> and the last is the number of occurrences of that element in <i style="color:#cc33ff">List</i>.</dt>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">List</i> cannot be empty.</dt>
-					</dl>
-					<ul>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="dot_prod-3">dot_prod/3</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>dot_prod(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">P</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">P</i> is the result of applying the dot product to the lists <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> as if they were vectors. </dt>
+					<li>
+						<h3><a name="how_many-2">how_many/2</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>how_many(<i style="color:#ff0000">List</i>, <i style="color:#ff0000">Counting</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">Counting</i> is a list containing lists of two elements, the first of which is an element of <i style="color:#cc33ff">List</i> and the last is the number of occurrences of that element in <i style="color:#cc33ff">List</i>.</dt>
+							</dl>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">List</i> cannot be empty.</dt>
+							</dl>
+							<ul>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="dot_prod-3">dot_prod/3</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>dot_prod(<i style="color:#ff0000">List1</i>, <i style="color:#ff0000">List2</i>, <i style="color:#ff0000">P</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">P</i> is the result of applying the dot product to the lists <i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> as if they were vectors. </dt>
 <pre>
  	List1 = [x1, x2, ..., xn]
  	List2 = [y1, y2, ..., yn]
  	P = x1*y1 + x2*y2 + ... + xn*yn
 </pre>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> cannot be empty, both must contain elements to which the operators '*' and '+' can be applied, and must have the same length.</dt>
-					</dl>
-					<ul>
-					</ul>
-				</dl>
-			</li>
-			<li>
-				<h3><a name="ladder_prod-5">ladder_prod/5</a></h3>
-				<dl>
-					<dt><b>Form: </b></dt>
-					<dd>ladder_prod(<i style="color:#ff0000">Divisor</i>, <i style="color:#ff0000">StartValue</i>, <i style="color:#ff0000">Coefficients</i>, <i style="color:#ff0000">NewCoefficients</i>, <i style="color:#ff0000">LastTerm</i>)</dd>
-					<dt><b>Description:</b></dt>
-					<dl>
-						<dt>One should interpret this predicate as some sort of Ruffini's rule generalisation. Therefore, if <i style="color:#cc33ff">Coefficients</i> has the elements [m,n,o,p], <i style="color:#cc33ff">Divisor</i> has the value 'x' and <i style="color:#cc33ff">StartValue</i> is 'A' then the ladder product is defined as follows: </dt>
+							</dl>
+							<dt><b>Constraints:</b></dt>
+							<dl>
+								<dt><i style="color:#cc33ff">List1</i> and <i style="color:#cc33ff">List2</i> cannot be empty, both must contain elements to which the operators '*' and '+' can be applied, and must have the same length.</dt>
+							</dl>
+							<ul>
+							</ul>
+						</dl>
+					</li>
+					<li>
+						<h3><a name="ladder_prod-5">ladder_prod/5</a></h3>
+						<dl>
+							<dt><b>Form: </b></dt>
+							<dd>ladder_prod(<i style="color:#ff0000">Divisor</i>, <i style="color:#ff0000">StartValue</i>, <i style="color:#ff0000">Coefficients</i>, <i style="color:#ff0000">NewCoefficients</i>, <i style="color:#ff0000">LastTerm</i>)</dd>
+							<dt><b>Description:</b></dt>
+							<dl>
+								<dt>One should interpret this predicate as some sort of Ruffini's rule generalisation. Therefore, if <i style="color:#cc33ff">Coefficients</i> has the elements [m,n,o,p], <i style="color:#cc33ff">Divisor</i> has the value 'x' and <i style="color:#cc33ff">StartValue</i> is 'A' then the ladder product is defined as follows: </dt>
 <pre>
  	  | m n o p
  	x | A B C D
@@ -331,35 +330,38 @@
  	LastTerm = W = p + D
  	NewCoefficients = [T,U,V]
 </pre>
-						<dt> For the case of Ruffini's rule: </dt>
-						<ul>
-							<li>
-								<dt><i style="color:#cc33ff">Coefficients</i> must be a list of integer values with a '1' in the first element. </dt>
-							</li>
-							<li>
-								<dt><i style="color:#cc33ff">StartValue</i> (A) has to be 0 </dt>
-							</li>
-							<li>
-								<dt><i style="color:#cc33ff">Divisor</i> must divide the last element of <i style="color:#cc33ff">Coefficients</i> </dt>
-							</li>
-							<li>
-								<dt><i style="color:#cc33ff">NewCoefficients</i> are the integer values representing the coefficients of a new polynomial. </dt>
-							</li>
-							<li>
-								<dt><i style="color:#cc33ff">LastTerm</i> must be equal to 0 for <i style="color:#cc33ff">Divisor</i> to be a root of the polynomial represented by <i style="color:#cc33ff">Coefficients</i>. </dt>
-							</li>
-						</ul>
-					</dl>
-					<dt><b>Constraints:</b></dt>
-					<dl>
-						<dt><i style="color:#cc33ff">Coefficients</i> cannot be empty and must contain elements to which the operators '*' and '+' can be applied.</dt>
-					</dl>
-					<ul>
-					</ul>
+								<dt> For the case of Ruffini's rule: </dt>
+								<ul>
+									<li>
+										<dt><i style="color:#cc33ff">Coefficients</i> must be a list of integer values with a '1' in the first element. </dt>
+									</li>
+									<li>
+										<dt><i style="color:#cc33ff">StartValue</i> (A) has to be 0 </dt>
+									</li>
+									<li>
+										<dt><i style="color:#cc33ff">Divisor</i> must divide the last element of <i style="color:#cc33ff">Coefficients</i> </dt>
+									</li>
+									<li>
+										<dt><i style="color:#cc33ff">NewCoefficients</i> are the integer values representing the coefficients of a new polynomial. </dt>
+									</li>
+									<li>
+										<dt><i style="color:#cc33ff">LastTerm</i> must be equal to 0 for <i style="color:#cc33ff">Divisor</i> to be a root of the polynomial represented by <i style="color:#cc33ff">Coefficients</i>. ++</dt>
+										<dt>></dt>
+									</li>
+									<dt><b>Constraints:</b></dt>
+									<dl>
+										<dt><i style="color:#cc33ff">Coefficients</i> cannot be empty and must contain elements to which the operators '*' and '+' can be applied.</dt>
+									</dl>
+									<ul>
+									</ul>
+								</ul>
+							</dl>
+						</dl>
+						<hr>
+						<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
+					</li>
 				</dl>
 			</li>
 		</ul>
-		<hr>
-		<p><a href="http://github.com/lluisalemanypuig/docyourprolog.git">Generated with DYP</a></p>
 	</body>
 </html>

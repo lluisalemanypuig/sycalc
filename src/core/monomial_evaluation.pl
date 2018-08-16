@@ -37,13 +37,13 @@ mon_sum_(M1, _, _, _,  M2,C2, _, _, M1 - N2):-
 /**
 	@form mon_sum(Mon1, Mon2, Sum)
 	@descr @Sum is the sum of @Mon1 and @Mon2.
-	<++
-	!> If @Mon1 and @Mon2 do not have the same variables (or have
+	\blist
+	\item If @Mon1 and @Mon2 do not have the same variables (or have
 	the same variables but raised to different exponents) then
 	@Sum is an expression that is the arithmetic sum of @Mon1
 	and @Mon2. In the expression, the monomial to the left and the
 	monomial to the right are so that they make the comparison '@<' true.
-	!> If @Mon1 and @Mon2 have the same variables each raised to the
+	\item If @Mon1 and @Mon2 have the same variables each raised to the
 	same exponents then @Sum contains these variables with a leading
 	coefficient equal to the sum of @Mon1's and @Mon2's leading coefficient.
 	++>
@@ -79,13 +79,13 @@ mon_sum([M1,M2], S):- mon_sum(M1, M2, S).
 /**
 	@form mon_sub(Mon1, Mon2, Sub)
 	@descr @Sub is the sum of @Mon1 and @Mon2.
-	<++
-	!> If @Mon1 and @Mon2 do not have the same variables (or have
+	\blist
+	\item If @Mon1 and @Mon2 do not have the same variables (or have
 	the same variables but raised to different exponents) then
 	@Sub is an expression that is the arithmetic substraction of @Mon2
 	from @Mon1. In the expression, the monomial to the left and the
 	monomial to the right are so that they make the comparison '@<' true.
-	!> If @Mon1 and @Mon2 have the same variables each raised to the
+	\item If @Mon1 and @Mon2 have the same variables each raised to the
 	same exponents then @Sub contains these variables with a leading
 	coefficient equal to the substraction of @Mon2's from @Mon1's leading
 	coefficient.
@@ -153,15 +153,15 @@ mon_prod([M1,M2], P):- mon_prod(M1, M2, P), !.
 	@form monomial_value_evaluation(Value,Variable, Monomial, Result)
 	@descr @Result is the replacement of @Variable by @Value in @Monomial.
 	The replacement of variable 'v_i' by 'q' in monomial
-	<--
+	\bverbatim
 		m(V) = c*(v_1^e_1)* ... *(v_i^e_i)* ... *(v_n^e_n)
-	-->
+	\everbatim
 	gives
-	<--
+	\bverbatim
 		m(V\{v_i}) =
 			c*(q^e_i)*
 			(v_1^e_1)* ... *(v_{i-1}^e_{i-1})*(v_{i+1}^e_{i+1})* ... *(v_n^e_n)
-	-->
+	\everbatim
 	For example, the replacement of 'x' by '3' in '3*x^3*y^2' gives '81*y^2'.
 */
 monomial_value_evaluation(VAL, V, M, E):-

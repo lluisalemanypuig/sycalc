@@ -10,24 +10,24 @@
 	polynomial. A reduced polynomial is a polynomial for which the sum
 	of any pair of its monomials does not result into a single monomial.
 	These are reduced polynomials:
-	<--
+	\bverbatim
 	3*x*y + 3*x^2
 	4*x + 5*z^3 - 4
-	-->
+	\everbatim
 	These are not reduced polynomials
-	<--
+	\bverbatim
 	3*x + 3*y - x
 	3*x^2 - 3*x*z^3 + y + x*z^3
-	-->
+	\everbatim
 	
 	Also, we defined the concepts of contracted and expanded polynomials.
 	An expanded polynomial is of the form of those in the examples above.
 	An expanded polynomial is a sum of monomials.
 	Informally, an expanded polynomial cannot have parenthesised expressions
 	like:
-	<--
+	\bverbatim
 	3*(x + 3) - 4*x + 5*(x - 3)*(y + 2)
-	-->
+	\everbatim
 	
 	A contracted polynomial is a not fully expanded polynomial. Therefore
 	they may contain parenthesised expressions.
@@ -39,15 +39,15 @@
 	of the monomials in @List.
 	
 	These are not reduced lists of polynomials:
-	<--
+	\bverbatim
 		[x^2,-2*x^2, x, y]
 		[x^3, 0, 1]
-	-->
+	\everbatim
 	These are reduced lists of polynomials:
-	<--
+	\bverbatim
 		[x^3, 1]
 		[x^3, 4*x^2, 1]
-	-->
+	\everbatim
 	@constrs
 		@param List Must be sorted
 */
@@ -238,10 +238,10 @@ polynomial_from_list_prod_list(L1, L2, L):-
 	@descr @RedPoly is the product of polynomials @Poly2 from @Poly1.
 
 	An example of usage is:
-	<--
+	\bverbatim
 		?- polynomial_prod(3*x + 2*y, 4*z - x, R).
 		R = -2*x*y+12*x*z+8*y*z-3*x^2.
-	-->
+	\everbatim
 	@constrs Both @Poly1 and @Poly2 are expanded multivariate polynomials.
 */
 polynomial_prod(P1, P2, P):-
@@ -281,10 +281,10 @@ polynomial_from_list_power_list(LP, N, LN):-
 	to the power @Value the polynomial @Poly.
 	
 	An example of usage is:
-	<--
+	\bverbatim
 		?- polynomial_power(3*x + z, 2, R).
 		R = 6*x*z+9*x^2+z^2.
-	-->
+	\everbatim
 	@constrs @Poly is an expanded multivariate polynomial.
 */
 polynomial_power(_, 0, 1):- !.

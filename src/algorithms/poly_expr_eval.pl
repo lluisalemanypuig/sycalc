@@ -62,27 +62,27 @@ monomial_summation_(VAR, I,F, M, S):-	% I < F
 	on variable @Var from @Ini to @Fin.
 	
 	Examples:
-	<++
-	!> If we want to calculate the sum of all the values a monomial
+	\blist
+	\item If we want to calculate the sum of all the values a monomial
 	can take on a certain variable:
-	<--
+	\bverbatim
 	?- monomial_summation(i, 0,10, i, S).
 	S = 55.
-	-->
+	\everbatim
 	because
-	<--
+	\bverbatim
 	\sum_{i=0}^{10} i = 55
-	-->
-	!> If we want to calculate the sum of all the values a monomial
+	\everbatim
+	\item If we want to calculate the sum of all the values a monomial
 	can take on a variable not in the monomial:
-	<--
+	\bverbatim
 	?- monomial_summation(j, 0,10, i, S).
 	S = 11*i.
-	-->
+	\everbatim
 	because
-	<--
+	\bverbatim
 	\sum_{j=0}^{10} i = 11*i
-	-->
+	\everbatim
 	++>
 */
 monomial_summation(VAR, I,F, M, S):-
@@ -119,7 +119,7 @@ polynomial_composition(V,E, P, R):-
 	the polynomial expression @Expr.
 	@constrs @Expr is either a monomial or a polynomial expression of the
 	form:
-	<--
+	\bverbatim
 	A + B
 	A - B
 	A*B
@@ -127,14 +127,14 @@ polynomial_composition(V,E, P, R):-
 	A^N
 	-A
 	choose(A, N)
-	-->
+	\everbatim
 	where both A and B are polynomial expressions and N an integer value.
 	
 	choose(A,N) represents the binomial \binom{A}{N}. For example:
-	<--
+	\bverbatim
 	?- polynomial_expression_evaluation_list( choose(n,2), R ).
 	R = 1/2*n^2 - 1/2*n.
-	-->
+	\everbatim
 */
 polynomial_expression_evaluation_list(P, [R]):-
 	monomial(P), red_monomial(P, R), !.
@@ -233,9 +233,9 @@ symbolic_dot_prod([X|Xs], [Y|Ys], R):-
 /**
 	@form falling_factorial(Poly, N, FallingFactorial)
 	@descr Computes the product:
-	<--
+	\bverbatim
 	FallingFactorial = \prod_{i=0}^{N} (Poly - i)
-	-->
+	\everbatim
 	@constrs @Poly is a polynomial expression.
 */
 falling_factorial(P, 1, FF):- polynomial_expression_evaluation(P, FF), !.

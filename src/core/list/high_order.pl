@@ -9,9 +9,9 @@
 	of @List.
 	
 	In Haskell notation:
-	<--
+	\bverbatim
 	map :: (a -> b) -> [a] -> [b]
-	-->
+	\everbatim
 */
 map(_, [], []):- !.
 map(F, [X|L], [E|R]):- call(F, X, E), map(F, L, R), !.
@@ -33,9 +33,9 @@ inspection(F, [X|Xs]):- call(F, X), inspection(F, Xs).
 	is an element from @List2.
 	
 	In Haskell notation: 
-	<--
+	\bverbatim
 	zip :: [a] -> [b] -> [(a, b)]
-	-->
+	\everbatim
 	@constrs @List1 and @List2 must have the same length.
 */
 zip([], [], []).
@@ -47,9 +47,9 @@ zip([A|L], [B|R], [(A, B)|S]):- zip(L, R, S).
 	i-th element of both @List1 and @List2.
 	
 	In Haskell notation: 
-	<--
+	\bverbatim
 	zip_with :: (a -> b -> c) -> [a] -> [b] -> [c]
-	-->
+	\everbatim
 	@constrs @List1 and @List2 must have the same length.
 */
 zip_with(_,  [],  [],  []):- !.
@@ -69,9 +69,9 @@ list_concat([A|L], R, [A|C]):- list_concat(L, R, C).
 	@descr foldl as usually defined.
 	
 	In Haskell notation:
-	<--
+	\bverbatim
 	foldl :: (b -> a -> b) -> b -> a -> b
-	-->
+	\everbatim
 */
 foldl(_, X, [], X):- !.
 foldl(F, X, [Y|L], R):- call(F, X, Y, S), foldl(F, S, L, R).
@@ -81,9 +81,9 @@ foldl(F, X, [Y|L], R):- call(F, X, Y, S), foldl(F, S, L, R).
 	@descr foldr as usually defined.
 	
 	In Haskell notation:
-	<--
+	\bverbatim
 	foldr :: (a -> b -> b) -> b -> t a -> b
-	-->
+	\everbatim
 */
 foldr(_, X, [], X):- !.
 foldr(F, X, [Y|L], R):- foldr(F, X, L, S), call(F, Y, S, R).
@@ -131,10 +131,10 @@ cartesian_product([X|L], R, S):-
 	
 	This predicate performs a series of operations similar to doing:
 	
-	<--
+	\bverbatim
 	cartesian_product_by(F, List1,List2, R):- 
 		cartesian_product(List1,List2, C), map(F,C, R)
-	-->
+	\everbatim
 	
 	However, this implementation should be faster because it does
 	a single pass on the elements of the cartesian product.

@@ -12,9 +12,9 @@
 	
 	
 	Examples of polynomials are:
-	<--
+	\bverbatim
 		x + 3, -x^2 - 9
-	-->
+	\everbatim
 	
 	Polynomials can only be operated with other polynomials when they are
 	represented as lists of reduced monomials. This list can be obtained
@@ -42,10 +42,10 @@ list_from_polynomial(M, [R]):- red_monomial(M, R), !.
 	are the oher monomials of @Poly.
 	@constrs
 		@param Poly Is an expanded polynomial of the form
-		<++
-		!> A + B
-		!> A - B
-		!> C
+		\blist
+		\item A + B
+		\item A - B
+		\item C
 		++>
 		where B is a monomial, and A is either a monomial or a polynomial.
 		@Poly is of the form of C when it is a single monomial.
@@ -62,10 +62,10 @@ polynomial_first_monomial(F, F, _).
 	monomials.
 	@constrs
 		@param Poly Is an expanded polynomial of the form
-		<++
-		!> A + B
-		!> A - B
-		!> C
+		\blist
+		\item A + B
+		\item A - B
+		\item C
 		++>
 		where B is a monomial, and A is either a monomial or a polynomial.
 		@Poly is of the form of C when it is a single monomial.
@@ -182,9 +182,9 @@ pretty_polynomial_roots_([[X,Po]|L], P*((x - X)^Po)):-
 	
 	For example, when given the values @Roots = [1,2,3], @Poly is the
 	polynomial
-	<--
+	\bverbatim
 		(x-3)* (x-2)* (x-1)
-	-->
+	\everbatim
 */
 pretty_polynomial_roots(R, P):- how_many(R, C), pretty_polynomial_roots_(C, P).
 
@@ -192,10 +192,10 @@ pretty_polynomial_roots(R, P):- how_many(R, C), pretty_polynomial_roots_(C, P).
 	@form ruffini(Coefs, Divs, Roots)
 	@descr @Roots is the list of roots of the polynomial with coefficients
 	@Coefs, where:
-	<++
-	!> @Coefs is a list of integer values representing the coefficients
+	\blist
+	\item @Coefs is a list of integer values representing the coefficients
 	of the monomials of a unipolynomial.
-	!> @Divs is a list of divisors of the last value in @Coefs
+	\item @Divs is a list of divisors of the last value in @Coefs
 	++>
 	@constrs
 		@param Coefs The list of coefficients is sorted decreasingly.

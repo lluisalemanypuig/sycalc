@@ -49,10 +49,10 @@ pisort_by(F, [X|Xs],[Y|Ys],  Rx, Ry):-
 	sorting of the elements of the two lists: take the i-th element
 	of both lists and put first the one that is defined "to go before"
 	according to @Function. Assuming that Function is @<:
-	<--
+	\bverbatim
 		fuse([X|Xs], [Y|Ys], [X,Y|R]) with X < Y
 		fuse([X|Xs], [Y|Ys], [Y,X|R]) with X > Y
-	-->
+	\everbatim
 	where R is the fusion of Xs and Ys
 */
 fuse_by(_,     [],     [],       []):- !.
@@ -66,25 +66,25 @@ fuse_by(F, [X|Xs], [Y|Ys], [Y,X|Ms]):- call(F, Y, X), fuse_by(F, Xs, Ys, Ms).
 	@descr Fuses two pairs of sorted lists into one, guided by @Function
 	and the pair of lists @LeftList1 and @LeftList2: take the i-th element
 	of @LeftList1 and @LeftList2 and let ll1 and ll2 be such elements. If
-	we have that <-- Function(ll1,ll2) --> is true, read as "ll1 < ll2",
+	we have that \bverbatim Function(ll1,ll2) \everbatim is true, read as "ll1 < ll2",
 	then the ordering of the second pair of lists (@RightList1 and @RightList2)
 	is forced to be the same: first goes the element of @RightList1 and
 	then the element of @RightList2.
 	
 	Assuming that @Function is '@<'
-	<--
+	\bverbatim
 		pfuse([X1|Xs1],[Y1|Ys1], [X2|Xs2],[Y2|Ys2], [X1,X2|R1],[Y1,Y2|R2]) with X1 < X2
 		pfuse([X1|Xs1],[Y1|Ys1], [X2|Xs2],[Y2|Ys2], [X2,X1|R1],[Y2,Y2|R2]) with X1 > X2
-	-->
+	\everbatim
 	where R1 and R2 are the result of applying
-	<--
+	\bverbatim
 		pfuse(Xs1,Ys1, Xs2,Ys2, R1,R2)
-	-->
+	\everbatim
 	
 	Notice that it is not necessarily true that
-	<++
-	!> X2 < Y2 when X1 < Y1, or that
-	!> X2 > Y2 when X1 > Y1	
+	\blist
+	\item X2 < Y2 when X1 < Y1, or that
+	\item X2 > Y2 when X1 > Y1	
 	++>
 */
 pfuse_by(_,           [],[],           [],[],                 [],[]):- !.

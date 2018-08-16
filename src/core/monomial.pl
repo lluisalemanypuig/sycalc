@@ -28,10 +28,10 @@
 	is something we can extract monomial components from. The components
 	are:
 	
-	<++
-	!> a rational number as coefficient
-	!> a product of variables each one raised to a rational value
-	!> nothing else is a component
+	\blist
+	\item a rational number as coefficient
+	\item a product of variables each one raised to a rational value
+	\item nothing else is a component
 	++>
 	
 	(the coefficient or any of the exponents may be written as
@@ -95,9 +95,9 @@ monomial_comps_(S*V, C, [V|Vs], [1|Es]):-
 	the monomial.
 	
 	The coefficients and exponents are given in reduced form:
-	<--
+	\bverbatim
 	(2 + 2)*x^(3 - 1) gives: C = 4, V = [x], E = [2]
-	-->
+	\everbatim
 	@constrs 
 		@param Coefficient The rational value that multiplies all the
 		variables
@@ -216,15 +216,15 @@ monomial_vars_product(X, E, _, X^E).
 	guided by Vars: two equal variables in consecutive positions in Vars
 	are collapsed into a single element and the exponents are added. For
 	example:
-	<--
+	\bverbatim
 		[i, i, j, k,k, k, k, z],
 		[1,-1, 3, 1,1,-1,-1, 4]
-	-->
+	\everbatim
 	gives
-	<--
+	\bverbatim
 		[i, j, k, z]
 		[0, 3, 0, 4]
-	-->
+	\everbatim
 */
 collapse_vars_list(        [],        [],     [],  []):- !.
 collapse_vars_list(       [V],       [E],    [V], [E]):- !.
@@ -259,13 +259,13 @@ red_monomial_comps(C,Vs,Es, Rc,RVs,REs):-
 	any variable has exponent 0 then it is not included in the product.
 	If the variable has exponent 1, the exponent does not appear in the
 	product. For example:
-	<--
+	\bverbatim
 		[i,j,k,l], [0,1,2,3]
-	-->
+	\everbatim
 	gives
-	<--
+	\bverbatim
 		j*k^2*l^3
-	-->
+	\everbatim
 */
 red_vars_monomial(    [],  [], _):- !.
 red_vars_monomial(   [_], [0], _):- !.
@@ -348,14 +348,14 @@ monomial_split_(VAR, _, C,V, E, Vo,Wo):-
 	and its exponent, and @Rest is the rest of @Monomial. The product of
 	@VariableExponent and @Rest is equal to @Monomial.
 	Splitting
-	<--
+	\bverbatim
 		3*x*y^2*z
-	-->
+	\everbatim
 	at y gives
-	<--
+	\bverbatim
 		VariableExponent= y^2, 
 		Rest= 3*x*z
-	-->
+	\everbatim
 */
 monomial_split(VAR, M, Vo,Wo):-
 	monomial_comps(M, C,V,E),

@@ -69,9 +69,9 @@ power_sums_(D, SUM, L):-
 	@form power_sums(Power, Poly)
 	@descr @Poly is a univariate polynomial on variable n that computes
 	the value:
-	<--
+	\bverbatim
 	\sum_{i=1}^n i^Power
-	-->
+	\everbatim
 	@constrs
 		@param Power A natural value.
 */
@@ -81,12 +81,12 @@ power_sums(D, S):- power_sums_(D, SS, _), polynomial_from_list(SS, S).
 /**
 	@form power_sums_list(Power, ListPoly)
 	@descr The j-th element of @ListPoly is a list of two values:
-	<++
-	!> A natural value P
-	!> A univariate polynomial in variable n that computes the sum
-	<--
+	\blist
+	\item A natural value P
+	\item A univariate polynomial in variable n that computes the sum
+	\bverbatim
 	\sum_{i=1}^n i^P
-	-->
+	\everbatim
 	++>
 	@ListPoly is decreasingly sorted, that is, the first value P in @ListPoly
 	for @Power is @Power itself.

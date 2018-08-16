@@ -24,9 +24,9 @@ natural(N):- integer(N), N >= 0.
 /**
 	@form next_natural(N)
 	@descr N is a natural. Example of usage:
-	<--
+	\bverbatim
 		next_natural(N), write(N), nl, fail.
-	-->
+	\everbatim
 */
 next_natural(0).
 next_natural(N):- next_natural(M), N is M + 1.

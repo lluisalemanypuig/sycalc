@@ -75,13 +75,13 @@ eval_neg(A, B):- B is -A, !.
 	@form(Expr)
 	@descr Definition of arithmetic expression: this predicate fails on
 	all values of @Expr that are not expressions:
-	<--
+	\bverbatim
 		A + B
 		A - B
 		A*B
 		A/B
 		A^B
-	-->
+	\everbatim
 */
 expr(_ + _):- !.
 expr(_ - _):- !.
@@ -93,14 +93,14 @@ expr(_^_):- !.
 	@form arith_expr_eval(Expr, Result)
 	@constraint @Expr is an arithmetic expression. That is, it is either
 	a real value, or an arithmetic expression of the form
-	<--
+	\bverbatim
 		A + B
 		A - B
 		A*B
 		A/B
 		A^B
 		-A
-	-->
+	\everbatim
 	where @A and @B are arithmetic expressions.
 */
 arith_expr_eval(A + B, C):- arith_expr_eval(A, AA), arith_expr_eval(B, BB), eval_sum(AA, BB, C), !.
