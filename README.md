@@ -54,6 +54,14 @@ Here are a few basic examples:
             ?- P=x^2 + y^2, Q=3*x + y, polynomial_composition(y,Q, P, C).
             C = 6*x*y + 10*x^2 + y^2.
 
+## Dependencies
+
+### Tools
+
+The user will need to have the [SWI-Prolog](http://www.swi-prolog.org/) implementation
+of the language, and the 'make' tool is needed to execute the necessary commands to
+compile the project.
+
 ## Compiling
 
 To compile the interactive version of the calculator, issue the following commands in the project's root
