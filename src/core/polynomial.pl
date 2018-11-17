@@ -196,7 +196,7 @@ pretty_polynomial_roots(R, P):- how_many(R, C), pretty_polynomial_roots_(C, P).
 	\item @Coefs is a list of integer values representing the coefficients
 	of the monomials of a unipolynomial.
 	\item @Divs is a list of divisors of the last value in @Coefs
-	++>
+	\elist
 	@constrs
 		@param Coefs The list of coefficients is sorted decreasingly.
 		@param Roots Will contian only the integer roots of the polynomial.

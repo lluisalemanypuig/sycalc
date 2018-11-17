@@ -65,8 +65,7 @@ Allowed values: True, False
 RECURSIVE				= True
 
 """
-Document all files whose extension match the ones
-in the list.
+Document all files whose extension match the ones in the list.
 Allowed values: any list of strings of alphanumeric characters, all
 of them starting with a '.'.
 """
