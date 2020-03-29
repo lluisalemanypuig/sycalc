@@ -24,7 +24,10 @@
 /***
 	@descr This file contains the algorithms to compute the polynomial
 	that represents the sum of the first n natural numbers each raised
-	to a certain power.
+	to a certain power. Formally, computes the polynomial p_k(x) where
+	\bverbatim
+	p_k(n) = \sum_{i=1}^n i^k,   for all integer n >= 0
+	\everbatim
 	
 	This power is given in the predicate and must be a natural value.
 */
@@ -124,5 +127,3 @@ sum_from_1_to_n_to_D(1, _, 1):- !.
 sum_from_1_to_n_to_D(N, D, S):-
 	N1 is N - 1, sum_from_1_to_n_to_D(N1, D, S1),
 	S is S1 + N^D.
-
-%D is 3, power_sums(D, S1), power_sums(D, S2).
