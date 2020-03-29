@@ -2,7 +2,7 @@ digraph file_graph {
 node [shape=rectangle]
 nodesep = 0.1
 ranksep = 0.3
+"core/list.pl" -> "core/list/basic.pl"
 "core/list.pl" -> "core/list/sort_list.pl"
 "core/list.pl" -> "core/list/high_order.pl"
-"core/list.pl" -> "core/list/basic.pl"
 }

@@ -2,8 +2,8 @@ digraph file_graph {
 node [shape=rectangle]
 nodesep = 0.1
 ranksep = 0.3
-"core/number/rational.pl" -> "core/number/integer.pl"
 "core/number/rational.pl" -> "core/number/natural.pl"
 "core/number/rational.pl" -> "core/number/fraction.pl"
+"core/number/rational.pl" -> "core/number/integer.pl"
 "core/number/fraction.pl" -> "core/number/integer.pl"
 }
